@@ -32,6 +32,9 @@
             z-index: 1000;
             padding: 0.75rem 1rem;
         }
+	.product_card p{
+	     text-align: center
+	}
         .nav-container {
             max-width: 1280px;
             margin: 0 auto;
@@ -503,6 +506,48 @@
                 font-size: 1.1rem;
             }
         }
+	.progress-container {
+  width: 100%;
+  max-width: 400px;
+  margin: 20px auto;
+}
+
+.progress-bar {
+  height: 30px;
+  background-color: #e0e0e0;
+  border-radius: 15px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.progress-bar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: var(--progress, 50%);
+  background: linear-gradient(90deg, #4CAF50, #8BC34A);
+  border-radius: 15px;
+  transition: width 0.5s ease-in-out;
+}
+
+.progress-text {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #333;
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  z-index: 1;
+}
+
     </style>
 </head>
 <body>
@@ -529,6 +574,26 @@
                 <p>Разрабатываем продукты с 2024 года, постоянно совершенствуем движки и добавляем инновационные методы обнаружения угроз.</p>
             </div>
         </section>
+	
+	<div class="progress-container">
+	  <div class="progress-bar" style="--progress: 10%;">
+ 	   <span class="progress-text">Сбор на улучшения ниже (500р/5000р)</span>
+    	  </div>
+	</div>
+	<div class='product-card'>
+	  <p>- Родительский контроль</p>
+	  <p>- Фаервол</p>
+	  <p>- Защита данных и куки от кражи</p>
+	  <p>- Проверка через ИИ</p>
+	  <p>- Запуск определенного файла на песочнице</p>
+	  <p>- Режим быстрого скана просто по одному из уровней (хэши/сигнатуры/другое)</p>
+	  <p>- Защита интернета</p>
+	  <p>- Резервное копирование на облако</p>
+	  <p>- Очистка системного кэша</p>
+	  <p>- Разработка версии для других ОС или других их версий</p>
+	  <p>- Создание версии для Android</p>
+	  <p>- Очистка кэша в известных играх (например Minecraft)</p>
+	</div>
 
         <section id="products">
             <h2 class="section-title">Наши продукты</h2>
