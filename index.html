@@ -7,7 +7,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="icon" href="./favicon.ico" type="image/x-icon">
-
     <style>
         * {
             margin: 0;
@@ -32,9 +31,6 @@
             z-index: 1000;
             padding: 0.75rem 1rem;
         }
-	.product_card p{
-	     text-align: center
-	}
         .nav-container {
             max-width: 1280px;
             margin: 0 auto;
@@ -113,13 +109,95 @@
             background: #2C7A4D;
             border-radius: 4px;
         }
-        .about-card {
-            background: #F9FBF9;
+        /* КАРТОЧКА СБОРА СРЕДСТВ (улучшенная) */
+        .fundraising-card {
+            background: linear-gradient(145deg, #F9FCF9, #F1F6F1);
             border-radius: 32px;
-            padding: 1.8rem;
-            box-shadow: 0 12px 30px rgba(0,0,0,0.03);
-            border: 1px solid #ECF0EC;
+            padding: 2rem 1.8rem;
+            margin: 2rem auto;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.05);
+            border: 1px solid #DEE8DE;
+            max-width: 1000px;
         }
+        .fundraising-header {
+            text-align: center;
+            margin-bottom: 1.8rem;
+        }
+        .fundraising-header h3 {
+            font-size: 1.9rem;
+            font-weight: 700;
+            color: #1C5C3A;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .fundraising-header i {
+            font-size: 2rem;
+            color: #FFB347;
+        }
+        .progress-wrapper {
+            max-width: 500px;
+            margin: 0 auto 2rem auto;
+        }
+        .progress-bar-custom {
+            height: 32px;
+            background-color: #E8EFE8;
+            border-radius: 40px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .progress-fill {
+            width: 10%;
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #8BC34A);
+            border-radius: 40px;
+            transition: width 0.4s ease;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 12px;
+            color: white;
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+        .progress-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            font-size: 0.85rem;
+            color: #2C5A42;
+            font-weight: 500;
+        }
+        .goals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 1rem;
+            margin-top: 1.2rem;
+        }
+        .goal-item {
+            background: white;
+            border-radius: 28px;
+            padding: 0.8rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            border: 1px solid #E2EDE2;
+            transition: all 0.2s;
+        }
+        .goal-item i {
+            font-size: 1.6rem;
+            color: #2C7A4D;
+            width: 32px;
+            text-align: center;
+        }
+        .goal-item span {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #1F3D32;
+        }
+        /* Обычные карточки продуктов */
         .products-grid {
             display: flex;
             flex-wrap: wrap;
@@ -156,7 +234,6 @@
         .product-card p {
             color: #4B5E5A;
             margin-bottom: 1.2rem;
-            font-style: normal;
         }
         .click-hint {
             font-style: italic;
@@ -176,60 +253,19 @@
             color: #8A9A92;
             margin-left: 0.5rem;
         }
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 2000;
-            left: 0;
-            top: 0;
+        /* ТАБЛИЦА СРАВНЕНИЯ (исправлена ширина) */
+        .comparison-wrapper {
             width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.8);
-            backdrop-filter: blur(5px);
-            align-items: center;
-            justify-content: center;
-        }
-        .modal-content {
-            background: white;
-            padding: 1.5rem;
+            overflow-x: auto;
+            margin-top: 2rem;
             border-radius: 24px;
-            max-width: 90%;
-            max-height: 90%;
-            overflow-y: auto;
-            position: relative;
-        }
-        .modal-content img {
-            max-width: 100%;
-            border-radius: 16px;
-        }
-        .close-modal {
-            position: absolute;
-            top: 10px;
-            right: 20px;
-            font-size: 2rem;
-            cursor: pointer;
-            color: #333;
-            background: rgba(255,255,255,0.8);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background: #FFFFFF;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03), 0 8px 24px rgba(0,0,0,0.05);
         }
         .comparison-table {
             width: 100%;
             border-collapse: collapse;
-            background: #FFFFFF;
-            border-radius: 24px;
-            overflow-x: auto;
-            display: block;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.03), 0 8px 24px rgba(0,0,0,0.05);
-            margin-top: 2rem;
-        }
-        .comparison-table table {
-            width: 100%;
-            min-width: 600px;
+            min-width: 640px;
         }
         .comparison-table th, .comparison-table td {
             padding: 0.9rem 0.8rem;
@@ -263,6 +299,14 @@
             display: inline-block;
             margin-left: 6px;
         }
+        /* Остальные секции */
+        .about-card {
+            background: #F9FBF9;
+            border-radius: 32px;
+            padding: 1.8rem;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.03);
+            border: 1px solid #ECF0EC;
+        }
         .launcher-wrapper {
             display: flex;
             flex-wrap: wrap;
@@ -295,7 +339,7 @@
             font-size: 1rem;
             text-decoration: none;
             margin-top: 1.5rem;
-            transition: background 0.2s, transform 0.1s;
+            transition: background 0.2s;
             border: none;
             cursor: pointer;
         }
@@ -331,10 +375,6 @@
             font-weight: 500;
             cursor: pointer;
         }
-        .faq-item a:hover {
-            text-decoration: underline;
-        }
-        /* Блок покупки */
         .purchase-card {
             background: #F9FBF9;
             border-radius: 32px;
@@ -358,7 +398,7 @@
             font-family: inherit;
             font-size: 1rem;
         }
-        .purchase-card .checkbox {
+        .checkbox {
             display: flex;
             align-items: center;
             gap: 0.5rem;
@@ -399,10 +439,6 @@
             transition: background 0.2s;
             margin-top: 1rem;
         }
-        .btn-pay:disabled {
-            background: #9EBFAB;
-            cursor: not-allowed;
-        }
         .requirements-table {
             width: 100%;
             border-collapse: collapse;
@@ -436,14 +472,46 @@
         .social-links a {
             color: #2C6B4A;
             font-size: 1.5rem;
-            transition: 0.2s;
         }
-        .social-links a:hover {
-            color: #144A31;
+        /* Модалки */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+            align-items: center;
+            justify-content: center;
         }
-        .contacts {
-            margin: 1rem 0;
+        .modal-content {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 24px;
+            max-width: 90%;
+            max-height: 90%;
+            overflow-y: auto;
+            position: relative;
         }
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #333;
+            background: rgba(255,255,255,0.8);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        /* Адаптивность для телефонов (улучшенная) */
         @media (max-width: 820px) {
             .nav-container {
                 flex-direction: row;
@@ -491,10 +559,31 @@
             .product-card {
                 min-width: auto;
             }
+            .fundraising-card {
+                padding: 1.5rem;
+                margin: 1rem;
+            }
+            .goals-grid {
+                grid-template-columns: 1fr;
+            }
+            .goal-item {
+                padding: 0.7rem 1rem;
+            }
+            .goal-item i {
+                font-size: 1.3rem;
+            }
+            .goal-item span {
+                font-size: 0.9rem;
+            }
         }
         @media (max-width: 600px) {
-            .comparison-table {
-                overflow-x: auto;
+            .comparison-wrapper {
+                margin: 1rem -0.5rem;
+                border-radius: 16px;
+            }
+            .comparison-table th, .comparison-table td {
+                padding: 0.7rem 0.5rem;
+                font-size: 0.8rem;
             }
             .download-btn {
                 padding: 0.8rem 1.5rem;
@@ -505,480 +594,389 @@
             .faq-category h3 {
                 font-size: 1.1rem;
             }
+            .progress-fill {
+                font-size: 0.7rem;
+                padding-right: 6px;
+            }
         }
-	.progress-container {
-  width: 100%;
-  max-width: 400px;
-  margin: 20px auto;
-}
-
-.progress-bar {
-  height: 30px;
-  background-color: #e0e0e0;
-  border-radius: 15px;
-  overflow: hidden;
-  position: relative;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.progress-bar::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: var(--progress, 50%);
-  background: linear-gradient(90deg, #4CAF50, #8BC34A);
-  border-radius: 15px;
-  transition: width 0.5s ease-in-out;
-}
-
-.progress-text {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #333;
-  font-family: Arial, sans-serif;
-  font-weight: bold;
-  z-index: 1;
-}
-
     </style>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="logo">GRADUS<span>SECURITY</span></div>
-            <button class="menu-toggle" id="menuToggle" aria-label="Меню"><i class="fas fa-bars"></i></button>
-            <ul class="nav-links" id="navLinks">
-                <li><a href="#about">О нас</a></li>
-                <li><a href="#products">Продукты</a></li>
-                <!-- <li><a href="#requirements">Системные требования</a></li> -->
-                <li><a href="#purchase">Купить</a></li>
-                <li><a href="#launcher">Скачать лаунчер</a></li>
-                <li><a href="#faq">Техподдержка</a></li>
-            </ul>
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="logo">GRADUS<span>SECURITY</span></div>
+        <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#about">О нас</a></li>
+            <li><a href="#products">Продукты</a></li>
+            <li><a href="#purchase">Купить</a></li>
+            <li><a href="#launcher">Скачать лаунчер</a></li>
+            <li><a href="#faq">Техподдержка</a></li>
+        </ul>
+    </div>
+</nav>
+<main>
+    <section id="about">
+        <h2 class="section-title">О нас</h2>
+        <div class="about-card">
+            <p style="font-size: 1.1rem; line-height: 1.5; margin-bottom: 1rem;"><strong>Gradus Team</strong> — команда энтузиастов и профессионалов в области информационной безопасности. Наша цель — создавать доступные, мощные и прозрачные антивирусные решения. Мы верим, что каждый пользователь заслуживает надёжную защиту без скрытых подписок.</p>
+            <p>Разрабатываем продукты с 2024 года, постоянно совершенствуем движки и добавляем инновационные методы обнаружения угроз.</p>
         </div>
-    </nav>
+    </section>
 
-    <main>
-        <section id="about">
-            <h2 class="section-title">О нас</h2>
-            <div class="about-card">
-                <p style="font-size: 1.1rem; line-height: 1.5; margin-bottom: 1rem;"><strong>Gradus Team</strong> — команда энтузиастов и профессионалов в области информационной безопасности. Наша цель — создавать доступные, мощные и прозрачные антивирусные решения. Мы верим, что каждый пользователь заслуживает надёжную защиту без скрытых подписок.</p>
-                <p>Разрабатываем продукты с 2024 года, постоянно совершенствуем движки и добавляем инновационные методы обнаружения угроз.</p>
+    <!-- НОВЫЙ КРАСИВЫЙ БЛОК СБОРА СРЕДСТВ -->
+    <div style="max-width: 1280px; margin: 0 auto; padding: 0 1rem;">
+        <div class="fundraising-card">
+            <div class="fundraising-header">
+                <h3><i class="fas fa-hand-holding-heart"></i> Сбор средств на улучшения</h3>
+                <p style="margin-top: 0.5rem;">Каждая ваша помощь ускоряет разработку новых функций</p>
             </div>
-        </section>
-	
-	<div class="progress-container">
-	  <div class="progress-bar" style="--progress: 10%;">
- 	   <span class="progress-text">Сбор на улучшения ниже (500р/5000р)</span>
-    	  </div>
-	</div>
-	<div class='product-card'>
-	  <p>- Родительский контроль</p>
-	  <p>- Фаервол</p>
-	  <p>- Защита данных и куки от кражи</p>
-	  <p>- Проверка через ИИ</p>
-	  <p>- Запуск определенного файла на песочнице</p>
-	  <p>- Режим быстрого скана просто по одному из уровней (хэши/сигнатуры/другое)</p>
-	  <p>- Защита интернета</p>
-	  <p>- Резервное копирование на облако</p>
-	  <p>- Очистка системного кэша</p>
-	  <p>- Разработка версии для других ОС или других их версий</p>
-	  <p>- Создание версии для Android</p>
-	  <p>- Очистка кэша в известных играх (например Minecraft)</p>
-	</div>
-
-        <section id="products">
-            <h2 class="section-title">Наши продукты</h2>
-            <div class="products-grid">
-                <div class="product-card" data-product="free">
-                    <div class="product-icon"><i class="fas fa-shield-alt"></i></div>
-                    <h3>Gradus Free</h3>
-                    <p>Базовая защита для домашних компьютеров. Проверка файлов и архивирование, минималистичный функционал.</p>
-                    <div class="price">0 ₽</div>
-                    <span class="click-hint">(Нажми на карточку чтобы посмотреть скриншот)</span>
+            <div class="progress-wrapper">
+                <div class="progress-bar-custom">
+                    <div class="progress-fill" style="width: 10%;">10%</div>
                 </div>
-                <div class="product-card" data-product="standard">
-                    <div class="product-icon"><i class="fas fa-chart-line"></i></div>
-                    <h3>Gradus Standard</h3>
-                    <p>Расширенная защита: авто-сканер, резервное копирование, антифишинг второго уровня.</p>
-                    <div class="price">990 ₽ <span class="old-price">1 490 ₽</span></div>
-                    <span class="click-hint">(Нажми на карточку чтобы посмотреть скриншот)</span>
-                </div>
-                <div class="product-card" data-product="pro">
-                    <div class="product-icon"><i class="fas fa-crown"></i></div>
-                    <h3>Gradus Pro</h3>
-                    <p>Максимальная безопасность: VirusTotal, авто-удаление, приоритетная помощь специалистов.</p>
-                    <div class="price">1 990 ₽ <span class="old-price">2 490 ₽</span></div>
-                    <span class="click-hint">(Нажми на карточку чтобы посмотреть скриншот)</span>
+                <div class="progress-stats">
+                    <span>Собрано: 500 ₽</span>
+                    <span>Цель: 5 000 ₽</span>
                 </div>
             </div>
+            <div class="goals-grid">
+                <div class="goal-item"><i class="fas fa-child"></i> <span>Родительский контроль</span></div>
+                <div class="goal-item"><i class="fas fa-shield-alt"></i> <span>Фаервол</span></div>
+                <div class="goal-item"><i class="fas fa-database"></i> <span>Защита данных и куки</span></div>
+                <div class="goal-item"><i class="fas fa-microchip"></i> <span>Проверка через ИИ</span></div>
+                <div class="goal-item"><i class="fas fa-flask"></i> <span>Песочница для файлов</span></div>
+                <div class="goal-item"><i class="fas fa-bolt"></i> <span>Быстрый скан по уровням</span></div>
+                <div class="goal-item"><i class="fas fa-globe"></i> <span>Защита интернета</span></div>
+                <div class="goal-item"><i class="fas fa-cloud-upload-alt"></i> <span>Резервное копирование в облако</span></div>
+                <div class="goal-item"><i class="fas fa-broom"></i> <span>Очистка системного кэша</span></div>
+                <div class="goal-item"><i class="fab fa-linux"></i> <span>Версии для других ОС</span></div>
+                <div class="goal-item"><i class="fab fa-android"></i> <span>Android версия</span></div>
+                <div class="goal-item"><i class="fas fa-gamepad"></i> <span>Очистка кэша игр</span></div>
+            </div>
+        </div>
+    </div>
 
-        <!-- Системные требования (общие) -->
-        <section id="requirements">
-            <h2 class="section-title">Системные требования</h2>
-            <table class="requirements-table">
-                <thead><tr><th>Компонент</th><th>Минимальные</th><th>Рекомендуемые</th></tr></thead>
+    <section id="products">
+        <h2 class="section-title">Наши продукты</h2>
+        <div class="products-grid">
+            <div class="product-card" data-product="free">
+                <div class="product-icon"><i class="fas fa-shield-alt"></i></div>
+                <h3>Gradus Free</h3>
+                <p>Базовая защита для домашних компьютеров. Проверка файлов и архивирование.</p>
+                <div class="price">0 ₽</div>
+                <span class="click-hint">(Нажми для скриншота)</span>
+            </div>
+            <div class="product-card" data-product="standard">
+                <div class="product-icon"><i class="fas fa-chart-line"></i></div>
+                <h3>Gradus Standard</h3>
+                <p>Расширенная защита: авто-сканер, резервное копирование, антифишинг 2‑го уровня.</p>
+                <div class="price">990 ₽ <span class="old-price">1 490 ₽</span></div>
+                <span class="click-hint">(Нажми для скриншота)</span>
+            </div>
+            <div class="product-card" data-product="pro">
+                <div class="product-icon"><i class="fas fa-crown"></i></div>
+                <h3>Gradus Pro</h3>
+                <p>Максимальная безопасность: VirusTotal, авто-удаление, приоритетная помощь.</p>
+                <div class="price">1 990 ₽ <span class="old-price">2 490 ₽</span></div>
+                <span class="click-hint">(Нажми для скриншота)</span>
+            </div>
+        </div>
+
+        <!-- СИСТЕМНЫЕ ТРЕБОВАНИЯ -->
+        <h2 class="section-title" style="margin-top: 2rem;">Системные требования</h2>
+        <table class="requirements-table">
+            <thead><tr><th>Компонент</th><th>Минимальные</th><th>Рекомендуемые</th></tr></thead>
+            <tbody>
+                <tr><td>Процессор</td><td>>1ГГц, >3 потоков</td><td>>2ГГц, >5 потоков</td></tr>
+                <tr><td>Видеокарта</td><td>250 МБ видеопамяти</td><td>500 МБ видеопамяти</td></tr>
+                <tr><td>Оперативная память</td><td>1 ГБ</td><td>4 ГБ</td></tr>
+                <tr><td>Встроенная память</td><td>50 МБ</td><td>150 МБ</td></tr>
+            </tbody>
+        </table>
+
+        <!-- ТАБЛИЦА СРАВНЕНИЯ (исправлена ширина и скролл) -->
+        <div class="comparison-wrapper">
+            <table class="comparison-table">
+                <thead><tr><th>Функция / Версия</th><th>Free</th><th>Standard</th><th>Pro</th></tr></thead>
                 <tbody>
-                    <tr><td>Процессор</td><td>>1ГГц частоты и >3 потоков</td><td>>2ГГц и >5 потоков</td></tr>
-                    <tr><td>Видеокарта</td><td>250мб видеопамяти</td><td>500мб видеопамяти</td></tr>
-                    <tr><td>Оперативная память</td><td>1 ГБ</td><td>4 ГБ</td></tr>
-                    <tr><td>Встроенная память</td><td>50 МБ</td><td>150 МБ (для логов и кэша)</td></tr>
+                    <tr><td>Цена</td><td>0 ₽</td><td>990 ₽</td><td>1 990 ₽</td></tr>
+                    <tr><td>Последнее обновление</td><td>08.05.26</td><td>08.05.26</td><td>08.05.26</td></tr>
+                    <tr><td>Последняя версия</td><td>1.1.0.2</td><td>1.1.0.1</td><td>1.1.0.3</td></tr>
+                    <tr><td>Защита от вирусов</td><td class="check-true">✔ базовая</td><td class="check-true">✔ полная</td><td class="check-true">✔ расширенная</td></tr>
+                    <tr><td>Анти-фишинг</td><td class="check-false">✘</td><td class="check-true">✔ (2 ур.)</td><td class="check-true">✔ (3 ур.)</td></tr>
+                    <tr><td>Резервное копирование</td><td class="check-false">✘</td><td class="check-true">✔</td><td class="check-true">✔</td></tr>
+                    <tr><td>Автоматическое сканирование</td><td class="check-false">✘</td><td class="check-true">✔</td><td class="check-true">✔</td></tr>
+                    <tr><td>Авто-удаление вирусов</td><td class="check-false">✘</td><td class="check-false">✘</td><td class="check-true">✔</td></tr>
+                    <tr><td>Проверка через VirusTotal</td><td class="check-false">✘</td><td class="check-false">✘</td><td class="check-true">✔</td></tr>
+                    <tr><td>Помощь специалистов</td><td class="check-false">✘</td><td class="check-false">✘</td><td class="check-true">✔ <span class="badge-pro">Pro</span></td></tr>
+                    <tr><td>Техподдержка</td><td class="check-true">✔ базовая</td><td class="check-true">✔ приоритет</td><td class="check-true">✔ VIP</td></tr>
                 </tbody>
             </table>
-        </section>
+        </div>
+    </section>
 
-            <div class="comparison-table">
-                <table>
-                    <thead><tr><th>Функция / Версия</th><th>Free</th><th>Standard</th><th>Pro</th></tr></thead>
-                    <tbody>
-                        <tr><td>Цена</td><td>0 ₽</td><td>990 ₽</td><td>1 990 ₽</td></tr>
-                        <tr><td>Последнее обновление</td><td>08.05.26</td><td>08.05.26</td><td>08.05.26</td></tr>
-                        <tr><td>Последняя версия</td><td>1.1.0.2</td><td>1.1.0.1</td><td>1.1.0.3</td></tr>
-                        <tr><td>Защита от вирусов</td><td class="check-true">✔ базовый</td><td class="check-true">✔ полный</td><td class="check-true">✔ расширенный</td></tr>
-                        <tr><td>Анти-фишинг</td><td class="check-false">✘</td><td class="check-true">✔ (2 ур.)</td><td class="check-true">✔ (3 ур.)</td></tr>
-                        <tr><td>Резервное копирование</td><td class="check-false">✘</td><td class="check-true">✔</td><td class="check-true">✔</td></tr>
-                        <tr><td>Автоматическое сканирование</td><td class="check-false">✘</td><td class="check-true">✔</td><td class="check-true">✔</td></tr>
-                        <tr><td>Авто-удаление вирусов</td><td class="check-false">✘</td><td class="check-false">✘</td><td class="check-true">✔</td></tr>
-                        <tr><td>Проверка через VirusTotal</td><td class="check-false">✘</td><td class="check-false">✘</td><td class="check-true">✔</td></tr>
-                        <tr><td>Доступ к помощи специалистов</td><td class="check-false">✘</td><td class="check-false">✘</td><td class="check-true">✔ <span class="badge-pro">Pro</span></td></tr>
-                        <tr><td>Доступ к техподдержке</td><td class="check-true">✔ (базовый)</td><td class="check-true">✔ (приоритет)</td><td class="check-true">✔ (VIP)</td></tr>
-                    </tbody>
-                </table>
+    <section id="purchase">
+        <h2 class="section-title">Купить лицензию</h2>
+        <div class="purchase-card">
+            <form id="purchaseForm">
+                <label>Ваш Email (куда отправить ключ):</label>
+                <input type="email" id="email" required placeholder="example@domain.com">
+                <label>Альтернативный способ связи (Telegram / ВК / телефон):</label>
+                <input type="text" id="alternative" required placeholder="@username или номер">
+                <label>Версия антивируса:</label>
+                <select id="version">
+                    <option value="standard">Gradus Standard — 990 ₽</option>
+                    <option value="pro">Gradus Pro — 1 990 ₽</option>
+                </select>
+                <label>Количество ключей:</label>
+                <input type="number" id="quantity" value="1" min="1" max="10" step="1">
+                <div id="priceInfo" class="total-price">Сумма: 0 ₽</div>
+                <div class="help-text">* При покупке от 2 ключей скидка 25% на всю сумму.</div>
+                <div class="checkbox">
+                    <input type="checkbox" id="agreeTerms" required>
+                    <label>Я принимаю <a href="#" id="showLicenseLink">лицензионное соглашение</a> и условия оплаты</label>
+                </div>
+                <div id="donationMessageContainer" style="display:none;">
+                    <div class="help-text">Ваше уникальное сообщение для доната (скопируйте его полностью):</div>
+                    <div class="donation-message" id="donationMessage"></div>
+                    <div class="help-text">Сумма к оплате: <strong id="finalAmount"></strong> ₽</div>
+                    <div class="help-text">⚠️ <strong>Важно:</strong> При переводе на Donation Alerts укажите именно эту сумму и этот текст сообщения. Никнейм донатера может быть любым. Если сумма или текст не совпадут, мы не сможем идентифицировать платёж.</div>
+                    <div class="help-text">После оплаты свяжитесь с нами через техподдержку (контакты внизу страницы) и сообщите время платежа. Ключи будут отправлены на указанный email.</div>
+                </div>
+                <button type="button" id="generateBtn" class="btn-pay">Сгенерировать сообщение</button>
+                <button type="button" id="generateBtn2" class="btn-pay">Перейти к оплате</button>
+            </form>
+        </div>
+    </section>
+
+    <section id="launcher">
+        <h2 class="section-title">Скачать лаунчер</h2>
+        <div class="launcher-wrapper">
+            <div class="launcher-desc">
+                <p style="font-size: 1.1rem; margin-bottom: 1rem;">Удобный инсталлятор Gradus AV установит выбранную версию антивируса, проверит лицензионный ключ (для Standard/Pro) и распакует все файлы.</p>
+                <ul style="margin-bottom: 1.2rem; padding-left: 1.5rem;">
+                    <li>Автоматическая загрузка актуальной версии</li>
+                    <li>Поддержка ключей активации и деактивация после установки</li>
+                    <li>Выбор папки установки, прогресс-бар</li>
+                </ul>
+                <a href="files/GradusAVInstaller.jar" class="download-btn" download><i class="fas fa-download"></i> Скачать лаунчер (Windows 10/11 .jar)</a>
             </div>
-        </section>
-
-        <!-- Блок покупки через Donation Alerts -->
-        <section id="purchase">
-            <h2 class="section-title">Купить лицензию</h2>
-            <div class="purchase-card">
-                <form id="purchaseForm">
-                    <label>Ваш Email (куда отправить ключ):</label>
-                    <input type="email" id="email" required placeholder="example@domain.com">
-
-                    <label>Альтернативный способ связи (Telegram / ВК / телефон):</label>
-                    <input type="text" id="alternative" required placeholder="@username или номер">
-
-                    <label>Версия антивируса:</label>
-                    <select id="version">
-                        <option value="standard">Gradus Standard — 990 ₽</option>
-                        <option value="pro">Gradus Pro — 1 990 ₽</option>
-                    </select>
-
-                    <label>Количество ключей:</label>
-                    <input type="number" id="quantity" value="1" min="1" max="10" step="1">
-
-                    <div id="priceInfo" class="total-price">Сумма: 0 ₽</div>
-                    <div class="help-text">* При покупке от 2 ключей скидка 25% на всю сумму.</div>
-
-                    <div class="checkbox">
-                        <input type="checkbox" id="agreeTerms" required>
-                        <label style="display:inline">Я принимаю <a href="#" id="showLicenseLink">лицензионное соглашение</a> и условия оплаты</label>
-                    </div>
-
-                    <div id="donationMessageContainer" style="display:none;">
-                        <div class="help-text">Ваше уникальное сообщение для доната (скопируйте его полностью):</div>
-                        <div class="donation-message" id="donationMessage"></div>
-                        <div class="help-text">Сумма к оплате: <strong id="finalAmount"></strong> ₽</div>
-                        <div class="help-text">⚠️ <strong>Важно:</strong> При переводе на Donation Alerts укажите именно эту сумму и этот текст сообщения. Никнейм донатера может быть любым. Если сумма или текст не совпадут, мы не сможем идентифицировать платёж.</div>
-                        <div class="help-text">После оплаты свяжитесь с нами через техподдержку (контакты внизу страницы) и сообщите время платежа. Ключи будут отправлены на указанный email.</div>
-                    </div>
-
-                    <button type="button" id="generateBtn" class="btn-pay">Сгенерировать сообщение</button>
-                    <button type="button" id="generateBtn2" class="btn-pay">Перейти к оплате</button>
-                </form>
+            <div class="launcher-img">
+                <img src="img/launcher-screenshot.png" alt="Интерфейс лаунчера" onerror="this.src='https://placehold.co/500x300?text=Gradus+Launcher'">
+                <p style="margin-top: 8px; font-size: 0.8rem;">Пример интерфейса установщика</p>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section id="launcher">
-            <h2 class="section-title">Скачать лаунчер</h2>
-            <div class="launcher-wrapper">
-                <div class="launcher-desc">
-                    <p style="font-size: 1.1rem; margin-bottom: 1rem;">Удобный инсталлятор Gradus AV установит выбранную версию антивируса, проверит лицензионный ключ (для Standard/Pro) и распакует все файлы в нужную директорию.</p>
-                    <ul style="margin-bottom: 1.2rem; list-style: disc; padding-left: 1.5rem;">
-                        <li>Автоматическая загрузка актуальной версии</li>
-                        <li>Поддержка ключей активации и деактивация после установки</li>
-                        <li>Выбор папки установки, прогресс-бар</li>
-                    </ul>
-                    <a href="files/GradusAVInstaller.jar" class="download-btn" download><i class="fas fa-download"></i> Скачать лаунчер (Windows 10/11 .jar)</a>
-                </div>
-                <div class="launcher-img">
-                    <img src="img/launcher-screenshot.png" alt="Интерфейс лаунчера" onerror="this.src='https://placehold.co/500x300?text=Gradus+Launcher'">
-                    <p style="margin-top: 8px; font-size: 0.8rem;">Пример интерфейса установщика</p>
-                </div>
+    <section id="faq">
+        <h2 class="section-title">Часто задаваемые вопросы</h2>
+        <div style="margin-top: 1rem; text-align: center; background: #F0F5F0; padding: 1rem; border-radius: 60px;">
+            <p>❗️ Пожалуйста, сначала проверьте, решена ли ваша проблема в этом списке. Если нет, <a href="#contacts" style="color:#1F5E42; font-weight:600;">нажмите сюда</a> — мы поможем.</p>
+        </div>
+        <div class="faq-list">
+            <div class="faq-category">
+                <h3><i class="fas fa-cogs"></i> 1. Проблемы с установкой</h3>
+                <div class="faq-item"><a data-faq="1.1">1.1 Как установить антивирус?</a></div>
+                <div class="faq-item"><a data-faq="1.2">1.2 Ошибка JRE / Java не найдена</a></div>
+                <div class="faq-item"><a data-faq="1.3">1.3 На сервере не найден файл</a></div>
             </div>
-        </section>
-
-        <!-- FAQ секция с модальными окнами -->
-        <section id="faq">
-            <h2 class="section-title">Часто задаваемые вопросы</h2>
-            <div style="margin-top: 1.5rem; text-align: center; background: #F0F5F0; padding: 1rem; border-radius: 60px;">
-                <p>❗️ Пожалуйста, сначала проверьте, решена ли ваша проблема уже в этом списке. Если нет, <a href="#contacts" style="color:#1F5E42; font-weight:600;">нажмите сюда</a> — мы поможем.</p>
+            <div class="faq-category">
+                <h3><i class="fas fa-credit-card"></i> 2. Проблемы с оплатой / ключами</h3>
+                <div class="faq-item"><a data-faq="2.1">2.1 Как оплатить лицензию?</a></div>
+                <div class="faq-item"><a data-faq="2.2">2.2 Ключ активации уже использован</a></div>
+                <div class="faq-item"><a data-faq="2.3">2.3 Ключ не работает / ошибка активации</a></div>
             </div>
-            <div class="faq-list">
-                <div class="faq-category">
-                    <h3><i class="fas fa-cogs"></i> 1. Проблемы с установкой</h3>
-                    <div class="faq-item"><a data-faq="1.1">1.1 Как установить антивирус?</a></div>
-                    <div class="faq-item"><a data-faq="1.2">1.2 Ошибка JRE / Java не найдена</a></div>
-                    <div class="faq-item"><a data-faq="1.3">1.3 На сервере не найден файл (ошибки загрузки)</a></div>
-                </div>
-                <div class="faq-category">
-                    <h3><i class="fas fa-credit-card"></i> 2. Проблемы с оплатой / ключами</h3>
-                    <div class="faq-item"><a data-faq="2.1">2.1 Как оплатить лицензию?</a></div>
-                    <div class="faq-item"><a data-faq="2.2">2.2 Ключ активации уже использован</a></div>
-                    <div class="faq-item"><a data-faq="2.3">2.3 Ключ не работает / ошибка активации</a></div>
-                </div>
-                <div class="faq-category">
-                    <h3><i class="fas fa-desktop"></i> 3. Проблемы с работой антивируса</h3>
-                    <div class="faq-item"><a data-faq="3.1">3.1 Как запустить антивирус после установки?</a></div>
-                    <div class="faq-item"><a data-faq="3.2">3.2 Ошибка JRE — переустановка Java внутри комплекта</a></div>
-                    <div class="faq-item"><a data-faq="3.3">3.3 Приложение не запускается (общие советы)</a></div>
-                    <div class="faq-item"><a data-faq="3.4">3.4 Антивирус помечает системный файл как вирус (ложное срабатывание)</a></div>
-                </div>
-                <div class="faq-category">
-                    <h3><i class="fas fa-question-circle"></i> 4. Общие вопросы</h3>
-                    <div class="faq-item"><a data-faq="4.1">4.1 На какой срок даётся лицензия?</a></div>
-                    <div class="faq-item"><a data-faq="4.2">4.2 Бесплатны ли обновления для купленных версий?</a></div>
-                    <div class="faq-item"><a data-faq="4.3">4.3 Как получить бесплатное обновление, если ключ использован?</a></div>
-                </div>
+            <div class="faq-category">
+                <h3><i class="fas fa-desktop"></i> 3. Проблемы с работой антивируса</h3>
+                <div class="faq-item"><a data-faq="3.1">3.1 Как запустить антивирус после установки?</a></div>
+                <div class="faq-item"><a data-faq="3.2">3.2 Ошибка JRE — переустановка Java</a></div>
+                <div class="faq-item"><a data-faq="3.3">3.3 Приложение не запускается (общие советы)</a></div>
+                <div class="faq-item"><a data-faq="3.4">3.4 Ложное срабатывание на системный файл</a></div>
             </div>
-        </section>
+            <div class="faq-category">
+                <h3><i class="fas fa-question-circle"></i> 4. Общие вопросы</h3>
+                <div class="faq-item"><a data-faq="4.1">4.1 На какой срок лицензия?</a></div>
+                <div class="faq-item"><a data-faq="4.2">4.2 Бесплатны ли обновления?</a></div>
+                <div class="faq-item"><a data-faq="4.3">4.3 Как получить обновление, если ключ использован?</a></div>
+            </div>
+        </div>
         <div id="contacts" style="scroll-margin-top: 80px;"></div>
-    </main>
+    </section>
+</main>
 
-    <footer class="footer">
-        <div class="contacts">
-            <p>📧 Связь с поддержкой: <a href="mailto:gradus.support@gmail.com">gradus.support@gmail.com</a> (ответ в течение 24 часов)</p>
-        </div>
-        <div class="social-links">
-            <a href="https://vk.com/official_gradus" target="_blank" rel="noopener noreferrer" aria-label="VK"><i class="fab fa-vk"></i></a>
-        </div>
-        <p style="margin-top: 1rem;">&copy; 2025 Gradus Team. Все права защищены.</p>
-    </footer>
-
-    <!-- Модальные окна (скриншоты и FAQ) -->
-    <div id="screenshotModal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <img id="modalImage" src="" alt="Скриншот продукта">
-            <p id="modalCaption" style="margin-top: 12px;"></p>
-        </div>
+<footer class="footer">
+    <div class="contacts">
+        <p>📧 Связь с поддержкой: <a href="mailto:gradus.support@gmail.com">gradus.support@gmail.com</a> (ответ в течение 24 часов)</p>
     </div>
-
-    <div id="faqModal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal" id="closeFaqModal">&times;</span>
-            <div id="faqAnswer"></div>
-        </div>
+    <div class="social-links">
+        <a href="https://vk.com/official_gradus" target="_blank" rel="noopener noreferrer" aria-label="VK"><i class="fab fa-vk"></i></a>
     </div>
+    <p style="margin-top: 1rem;">&copy; 2025 Gradus Team. Все права защищены.</p>
+</footer>
 
-    <div id="licenseModal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal" id="closeLicenseModal">&times;</span>
-            <div id="licenseText">
-                <h3>Лицензионное соглашение и правила оплаты (оферта)</h3>
-                <p><strong>Настоящий документ является публичной офертой.</strong> Используя форму оплаты, вы соглашаетесь со всеми условиями.</p>
-                <ol>
-                    <li><strong>Платёж производится строго в сумме, вычисленной на сайте, и сопровождается уникальным сообщением, сгенерированным системой.</strong> Отсутствие этого сообщения или неверная сумма приравниваются к нецелевому платежу и не дают права на получение лицензий.</li>
-                    <li><strong>Если полученная сумма меньше 100% стоимости, но больше 0%, лицензии выдаются пропорционально оплаченной доле с округлением вниз (например, оплата 50% → вы получите ключ для 1 устройства, если заказывали 2).</strong> Частичный возврат не предусмотрен.</li>
-                    <li><strong>В случае, если полученная сумма составляет менее 50% от стоимости заказа, лицензионные ключи не выдаются и денежные средства не возвращаются</strong> – это считается добровольным пожертвованием на развитие проекта согласно ст. 582 ГК РФ.</li>
-                    <li>Лицензионные ключи высылаются на указанную электронную почту в течение <strong>72 часов после зачисления средств на счёт Donation Alerts</strong> (обычно в течение 24 часов). Задержки возможны по вине платёжного агрегатора.</li>
-                    <li><strong>Передача ключей третьим лицам запрещена и влечёт блокировку лицензии без возврата средств.</strong> Каждый ключ активируется один раз.</li>
-                    <li><strong>Возврат денежных средств возможен только в случае, если ключи не были высланы в течение 10 рабочих дней с момента оплаты</strong>. Для возврата необходимо написать в поддержку с указанием точного времени платежа, суммы и сообщения доната.</li>
-                    <li><strong>Проект не возвращает деньги, если после активации антивируса пользователь передумал пользоваться им или обнаружил, что его компьютер не заражён.</strong> Услуга считается оказанной в момент передачи лицензионного ключа.</li>
-                    <li>Применяется материальное право РФ.</li>
-                </ol>
-                <p><strong>Нажимая «Принимаю», вы подтверждаете, что ознакомлены с условиями и согласны с ними.</strong></p>
-            </div>
-        </div>
-    </div>
+<!-- Модалки -->
+<div id="screenshotModal" class="modal"><div class="modal-content"><span class="close-modal">&times;</span><img id="modalImage" src="" alt="Скриншот"><p id="modalCaption"></p></div></div>
+<div id="faqModal" class="modal"><div class="modal-content"><span class="close-modal" id="closeFaqModal">&times;</span><div id="faqAnswer"></div></div></div>
+<div id="licenseModal" class="modal"><div class="modal-content"><span class="close-modal" id="closeLicenseModal">&times;</span><div id="licenseText"><h3>Лицензионное соглашение и правила оплаты (оферта)</h3><p><strong>Настоящий документ является публичной офертой.</strong> Используя форму оплаты, вы соглашаетесь со всеми условиями.</p><ol><li>Платёж производится строго в сумме, вычисленной на сайте, и сопровождается уникальным сообщением, сгенерированным системой. Отсутствие этого сообщения или неверная сумма приравниваются к нецелевому платежу.</li><li>Если полученная сумма меньше 100% стоимости, но больше 0%, лицензии выдаются пропорционально оплаченной доле с округлением вниз. Частичный возврат не предусмотрен.</li><li>Если сумма составляет менее 50% от стоимости заказа, ключи не выдаются и деньги не возвращаются — это добровольное пожертвование.</li><li>Ключи высылаются на указанную почту в течение 72 часов после зачисления средств (обычно 24 часа).</li><li>Передача ключей третьим лицам запрещена, блокировка лицензии без возврата средств.</li><li>Возврат только если ключи не высланы в течение 10 рабочих дней с момента оплаты.</li><li>Проект не возвращает деньги, если пользователь передумал пользоваться антивирусом.</li><li>Применяется право РФ.</li></ol><p><strong>Нажимая «Принимаю», вы подтверждаете ознакомление и согласие.</strong></p></div></div></div>
 
-    <script>
-        // ----- FAQ контент (HTML с поддержкой тегов) -----
-        const faqContent = {
-            "1.1": "<b>Как установить антивирус?</b><br>Скачайте лаунчер (раздел «Скачать лаунчер»), запустите файл .jar и следуйте инструкциям.",
-            "1.2": "<b>Ошибка JRE / Java не найдена</b><br>Установите Java Runtime Environment (версия 21 или выше) с официального сайта Oracle или OpenJDK.",
-            "1.3": "<b>На сервере не найден файл (ошибки загрузки)</b><br>Проверьте подключение к интернету. Если ошибка повторяется – используйте VPN или свяжитесь с поддержкой.",
-            "2.1": "<b>Как оплатить лицензию?</b><br>Перейдите в раздел «Купить», заполните форму, сгенерируйте сообщение и переведите указанную сумму на Donation Alerts с точным текстом сообщения.",
-            "2.2": "<b>Ключ активации уже использован</b><br>Ключи одноразовые. Если вы не активировали его, но система говорит об обратном – напишите в поддержку.",
-            "2.3": "<b>Ключ не работает / ошибка активации</b><br>Убедитесь, что вы вводите ключ без лишних пробелов. Если проблема сохраняется – обратитесь в техподдержку.",
-            "3.1": "<b>Как запустить антивирус после установки?</b><br>Запустите файл <b>gradus.exe</b> из папки установки.",
-            "3.2": "<b>Ошибка JRE — переустановка Java внутри комплекта</b><br>Установите Java отдельно, либо скопируйте исполняемый файл JRE в папку с антивирусом.",
-            "3.3": "<b>Приложение не запускается (общие советы)</b><br>Проверьте, что Java установлена, а путь к папке не содержит кириллицу. Попробуйте запустить из командной строки.",
-            "3.4": "<b>Антивирус помечает системный файл как вирус (ложное срабатывание)</b><br>Добавьте файл в карантин (исключения) и сообщите о ложном срабатывании в поддержку.",
-            "4.1": "<b>На какой срок даётся лицензия?</b><br>Лицензия бессрочная на одну версию. Обновления в течение 1 года бесплатно.",
-            "4.2": "<b>Бесплатны ли обновления для купленных версий?</b><br>Да, все обновления в рамках мажорной версии (например, 1.x) бесплатны.",
-            "4.3": "<b>Как получить бесплатное обновление, если ключ использован?</b><br>Обратитесь в техподдержку, мы проверим оплату и выдадим новый ключ для новой версии."
-        };
-
-        // ----- Скриншоты -----
-        const screenshots = {
-            free: { img: 'img/screenshot_free.png', caption: 'Gradus Free – главное окно' },
-            standard: { img: 'img/screenshot_standard.png', caption: 'Gradus Standard – расширенные настройки' },
-            pro: { img: 'img/screenshot_pro.png', caption: 'Gradus Pro – облачная проверка и утилиты' }
-        };
-
-        // ----- Открытие скриншотов -----
-        const modal = document.getElementById('screenshotModal');
-        const modalImg = document.getElementById('modalImage');
-        const modalCaption = document.getElementById('modalCaption');
-        const closeModal = document.querySelector('.close-modal');
-        document.querySelectorAll('.product-card').forEach(card => {
-            card.addEventListener('click', () => {
-                const product = card.getAttribute('data-product');
-                if (product && screenshots[product]) {
-                    modalImg.src = screenshots[product].img;
-                    modalCaption.textContent = screenshots[product].caption;
-                    modal.style.display = 'flex';
-                    modalImg.onerror = () => { modalImg.src = 'https://placehold.co/800x500?text=Gradus+'+product.toUpperCase(); };
-                } else {
-                    modalImg.src = 'https://placehold.co/800x500?text=Скриншот+будет+добавлен';
-                    modalCaption.textContent = `Скриншот ${card.querySelector('h3').innerText} (в разработке)`;
-                    modal.style.display = 'flex';
-                }
-            });
-        });
-        closeModal.addEventListener('click', () => modal.style.display = 'none');
-        window.addEventListener('click', (e) => { if (e.target === modal) modal.style.display = 'none'; });
-
-        // ----- FAQ модальное окно -----
-        const faqModal = document.getElementById('faqModal');
-        const faqAnswerDiv = document.getElementById('faqAnswer');
-        const closeFaqModal = document.getElementById('closeFaqModal');
-        document.querySelectorAll('.faq-item a').forEach(link => {
-            link.addEventListener('click', (e) => {
-                const key = link.getAttribute('data-faq');
-                if (faqContent[key]) {
-                    faqAnswerDiv.innerHTML = faqContent[key];
-                    faqModal.style.display = 'flex';
-                }
-            });
-        });
-        closeFaqModal.addEventListener('click', () => faqModal.style.display = 'none');
-        window.addEventListener('click', (e) => { if (e.target === faqModal) faqModal.style.display = 'none'; });
-
-        // ----- Лицензионное соглашение (модальное) -----
-        const licenseModal = document.getElementById('licenseModal');
-        const showLicenseLink = document.getElementById('showLicenseLink');
-        const closeLicenseModal = document.getElementById('closeLicenseModal');
-        showLicenseLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            licenseModal.style.display = 'flex';
-        });
-        closeLicenseModal.addEventListener('click', () => licenseModal.style.display = 'none');
-        window.addEventListener('click', (e) => { if (e.target === licenseModal) licenseModal.style.display = 'none'; });
-
-        // ----- Расчёт суммы и генерация сообщения -----
-        const versionSelect = document.getElementById('version');
-        const quantityInput = document.getElementById('quantity');
-        const priceInfo = document.getElementById('priceInfo');
-        const emailInput = document.getElementById('email');
-        const alternativeInput = document.getElementById('alternative');
-        const agreeCheckbox = document.getElementById('agreeTerms');
-        const generateBtn = document.getElementById('generateBtn');
-        const generateBtn2 = document.getElementById('generateBtn2');
-        const donationMessageContainer = document.getElementById('donationMessageContainer');
-        const donationMessageDiv = document.getElementById('donationMessage');
-        const finalAmountSpan = document.getElementById('finalAmount');
-
-        function getRandomChars(len) {
-            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-            let result = '';
-            for (let i = 0; i < len; i++) {
-                result += chars.charAt(Math.floor(Math.random() * chars.length));
+<script>
+    // --- FAQ контент ---
+    const faqContent = {
+        "1.1": "<b>Как установить антивирус?</b><br>Скачайте лаунчер (раздел «Скачать лаунчер»), запустите .jar, следуйте инструкциям.",
+        "1.2": "<b>Ошибка JRE / Java не найдена</b><br>Установите Java Runtime Environment 21 или новее с официального сайта.",
+        "1.3": "<b>На сервере не найден файл</b><br>Проверьте интернет. Если повторяется – используйте VPN или напишите в поддержку.",
+        "2.1": "<b>Как оплатить лицензию?</b><br>Заполните форму, сгенерируйте сообщение и переведите сумму на Donation Alerts с точным текстом.",
+        "2.2": "<b>Ключ активации уже использован</b><br>Ключи одноразовые. Если вы не активировали его – обратитесь в поддержку.",
+        "2.3": "<b>Ключ не работает</b><br>Проверьте пробелы. Если не помогает – техподдержка.",
+        "3.1": "<b>Как запустить антивирус?</b><br>Запустите gradus.exe из папки установки.",
+        "3.2": "<b>Ошибка JRE — переустановка Java</b><br>Установите Java отдельно или скопируйте JRE в папку с антивирусом.",
+        "3.3": "<b>Приложение не запускается</b><br>Проверьте Java, путь без кириллицы. Запустите из командной строки.",
+        "3.4": "<b>Ложное срабатывание</b><br>Добавьте файл в карантин (исключения) и сообщите нам.",
+        "4.1": "<b>На какой срок лицензия?</b><br>Бессрочная на версию. Обновления в течение 1 года бесплатно.",
+        "4.2": "<b>Бесплатны ли обновления?</b><br>Да, в рамках мажорной версии (например, 1.x).",
+        "4.3": "<b>Как получить обновление, если ключ использован?</b><br>Обратитесь в поддержку – проверим оплату и выдадим новый ключ для новой версии."
+    };
+    // Скриншоты
+    const screenshots = {
+        free: { img: 'img/screenshot_free.png', caption: 'Gradus Free – главное окно' },
+        standard: { img: 'img/screenshot_standard.png', caption: 'Gradus Standard – расширенные настройки' },
+        pro: { img: 'img/screenshot_pro.png', caption: 'Gradus Pro – облачная проверка' }
+    };
+    // Модальные окна
+    const modal = document.getElementById('screenshotModal');
+    const modalImg = document.getElementById('modalImage');
+    const modalCaption = document.getElementById('modalCaption');
+    const closeModal = document.querySelector('#screenshotModal .close-modal');
+    document.querySelectorAll('.product-card').forEach(card => {
+        card.addEventListener('click', () => {
+            const product = card.getAttribute('data-product');
+            if (product && screenshots[product]) {
+                modalImg.src = screenshots[product].img;
+                modalCaption.textContent = screenshots[product].caption;
+                modal.style.display = 'flex';
+                modalImg.onerror = () => modalImg.src = 'https://placehold.co/800x500?text=Gradus+'+product.toUpperCase();
+            } else {
+                modalImg.src = 'https://placehold.co/800x500?text=Скриншот+будет+добавлен';
+                modalCaption.textContent = `Скриншот ${card.querySelector('h3').innerText} (в разработке)`;
+                modal.style.display = 'flex';
             }
-            return result;
-        }
+        });
+    });
+    if (closeModal) closeModal.addEventListener('click', () => modal.style.display = 'none');
+    window.addEventListener('click', (e) => { if (e.target === modal) modal.style.display = 'none'; });
 
-        function updatePrice() {
-            let version = versionSelect.value;
-            let quantity = parseInt(quantityInput.value) || 1;
-            let price = version === 'standard' ? 990 : 1990;
-            let total = price * quantity;
-            if (quantity > 2) {
-                total = total * 0.75; // скидка 25%
+    const faqModal = document.getElementById('faqModal');
+    const faqAnswerDiv = document.getElementById('faqAnswer');
+    const closeFaqModal = document.getElementById('closeFaqModal');
+    document.querySelectorAll('.faq-item a').forEach(link => {
+        link.addEventListener('click', (e) => {
+            const key = link.getAttribute('data-faq');
+            if (faqContent[key]) {
+                faqAnswerDiv.innerHTML = faqContent[key];
+                faqModal.style.display = 'flex';
             }
-            priceInfo.innerText = `Сумма: ${Math.round(total)} ₽`;
-            return Math.round(total);
+        });
+    });
+    if (closeFaqModal) closeFaqModal.addEventListener('click', () => faqModal.style.display = 'none');
+    window.addEventListener('click', (e) => { if (e.target === faqModal) faqModal.style.display = 'none'; });
+
+    const licenseModal = document.getElementById('licenseModal');
+    const showLicenseLink = document.getElementById('showLicenseLink');
+    const closeLicenseModal = document.getElementById('closeLicenseModal');
+    if (showLicenseLink) showLicenseLink.addEventListener('click', (e) => { e.preventDefault(); licenseModal.style.display = 'flex'; });
+    if (closeLicenseModal) closeLicenseModal.addEventListener('click', () => licenseModal.style.display = 'none');
+    window.addEventListener('click', (e) => { if (e.target === licenseModal) licenseModal.style.display = 'none'; });
+
+    // --- Логика покупки ---
+    const versionSelect = document.getElementById('version');
+    const quantityInput = document.getElementById('quantity');
+    const priceInfo = document.getElementById('priceInfo');
+    const emailInput = document.getElementById('email');
+    const alternativeInput = document.getElementById('alternative');
+    const agreeCheckbox = document.getElementById('agreeTerms');
+    const generateBtn = document.getElementById('generateBtn');
+    const generateBtn2 = document.getElementById('generateBtn2');
+    const donationMessageContainer = document.getElementById('donationMessageContainer');
+    const donationMessageDiv = document.getElementById('donationMessage');
+    const finalAmountSpan = document.getElementById('finalAmount');
+
+    function getRandomChars(len) {
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let result = '';
+        for (let i = 0; i < len; i++) result += chars.charAt(Math.floor(Math.random() * chars.length));
+        return result;
+    }
+    function updatePrice() {
+        let version = versionSelect.value;
+        let quantity = parseInt(quantityInput.value) || 1;
+        let price = version === 'standard' ? 990 : 1990;
+        let total = price * quantity;
+        if (quantity >= 2) total = total * 0.75;
+        priceInfo.innerText = `Сумма: ${Math.round(total)} ₽`;
+        return Math.round(total);
+    }
+    versionSelect.addEventListener('change', updatePrice);
+    quantityInput.addEventListener('input', updatePrice);
+    updatePrice();
+
+    generateBtn.addEventListener('click', () => {
+        if (!emailInput.value || !alternativeInput.value || !agreeCheckbox.checked) {
+            alert('Пожалуйста, заполните все поля и примите лицензионное соглашение.');
+            return;
         }
+        const email = emailInput.value.trim();
+        const alternative = alternativeInput.value.trim();
+        const version = versionSelect.value;
+        const quantity = parseInt(quantityInput.value) || 1;
+        let totalSum = updatePrice();
+        const rand = getRandomChars(12);
+        const message = `${rand}_${email}_${alternative}_${version}+${quantity}_${Date.now()}`;
+        donationMessageDiv.innerText = message;
+        finalAmountSpan.innerText = totalSum;
+        donationMessageContainer.style.display = 'block';
+    });
 
-        versionSelect.addEventListener('change', updatePrice);
-        quantityInput.addEventListener('input', updatePrice);
-        updatePrice();
+    generateBtn2.addEventListener('click', () => {
+        alert('Переход на страницу оплаты. Скопируйте сообщение из поля выше и вставьте его в комментарий к донату.\nСумма уже предустановлена.');
+        window.open('https://www.donationalerts.com/r/gradus_team', '_blank');
+    });
 
-        generateBtn.addEventListener('click', () => {
-            if (!emailInput.value || !alternativeInput.value || !agreeCheckbox.checked) {
-                alert('Пожалуйста, заполните все поля и примите лицензионное соглашение.');
-                return;
+    // Мобильное меню
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.getElementById('navLinks');
+    if (menuToggle) {
+        menuToggle.addEventListener('click', () => navLinks.classList.toggle('active'));
+    }
+    document.querySelectorAll('.nav-links a').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            if (window.innerWidth <= 820) navLinks.classList.remove('active');
+            const targetId = this.getAttribute('href');
+            if (targetId && targetId.startsWith('#')) {
+                e.preventDefault();
+                const target = document.querySelector(targetId);
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
-            const email = emailInput.value.trim();
-            const alternative = alternativeInput.value.trim();
-            const version = versionSelect.value;
-            const quantity = parseInt(quantityInput.value) || 1;
-            let totalSum = updatePrice();
-            const random1 = getRandomChars(10);
-            const random2 = getRandomChars(4);
-            const random3 = getRandomChars(8);
-            const random4 = getRandomChars(6);
-            const message = `${random1}_${email}_${random2}_${alternative}_${random3}_${version}+${quantity}+${random4}`;
-            donationMessageDiv.innerText = message;
-            finalAmountSpan.innerText = totalSum;
-            donationMessageContainer.style.display = 'block';
         });
-
-        generateBtn2.addEventListener('click', () => {
-            alert('Вы будете перенаправлены на страницу оплаты. Скопируйте сообщение из поля выше и вставьте его в комментарий к донату.\nСумма уже предустановлена.');
-            const donateUrl = 'https://www.donationalerts.com/r/gradus_team';
-            window.open(donateUrl, '_blank');
+    });
+    window.addEventListener('scroll', () => {
+        const scrollPos = window.scrollY + 100;
+        const sections = document.querySelectorAll('section');
+        let activeId = '';
+        sections.forEach(sec => {
+            const offsetTop = sec.offsetTop;
+            const offsetBottom = offsetTop + sec.offsetHeight;
+            if (scrollPos >= offsetTop && scrollPos < offsetBottom) activeId = sec.getAttribute('id');
         });
-
-        // ----- Мобильное меню -----
-        const menuToggle = document.getElementById('menuToggle');
-        const navLinksList = document.getElementById('navLinks');
-        if (menuToggle) {
-            menuToggle.addEventListener('click', () => {
-                navLinksList.classList.toggle('active');
-            });
-        }
-        document.querySelectorAll('.nav-links a').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                if (window.innerWidth <= 820) navLinksList.classList.remove('active');
-                const targetId = this.getAttribute('href');
-                if(targetId && targetId.startsWith('#')) {
-                    e.preventDefault();
-                    const targetElement = document.querySelector(targetId);
-                    if(targetElement) {
-                        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                        history.pushState(null, null, targetId);
-                    }
-                }
-            });
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.style.borderBottomColor = 'transparent';
+            link.style.color = '#2C3E44';
+            if (link.getAttribute('href') === `#${activeId}`) {
+                link.style.borderBottomColor = '#2C7A4D';
+                link.style.color = '#2C7A4D';
+            }
         });
-        window.addEventListener('scroll', () => {
-            const scrollPos = window.scrollY + 100;
-            const sections = document.querySelectorAll('section');
-            let activeId = '';
-            sections.forEach(sec => {
-                const offsetTop = sec.offsetTop;
-                const offsetBottom = offsetTop + sec.offsetHeight;
-                if(scrollPos >= offsetTop && scrollPos < offsetBottom) activeId = sec.getAttribute('id');
-            });
-            document.querySelectorAll('.nav-links a').forEach(link => {
-                link.style.borderBottomColor = 'transparent';
-                link.style.color = '#2C3E44';
-                if(link.getAttribute('href') === `#${activeId}`) {
-                    link.style.borderBottomColor = '#2C7A4D';
-                    link.style.color = '#2C7A4D';
-                }
-            });
-        });
-    </script>
+    });
+</script>
 </body>
 </html>
