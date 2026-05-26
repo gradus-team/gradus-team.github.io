@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GradusCore — Документация</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            max-width: 960px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            line-height: 1.6;
+            color: #1e1e1e;
+            background: #fafafa;
+        }
+        h1 { font-size: 2.2rem; border-bottom: 3px solid #4caf50; padding-bottom: 0.3rem; }
+        h2 { font-size: 1.6rem; margin-top: 2.5rem; color: #2e7d32; }
+        h3 { font-size: 1.2rem; margin-top: 2rem; color: #388e3c; }
+        code {
+            background: #e8e8e8;
+            padding: 0.2em 0.4em;
+            border-radius: 4px;
+            font-family: 'Cascadia Code', 'Fira Code', monospace;
+            font-size: 0.9em;
+        }
+        pre {
+            background: #263238;
+            color: #eeffff;
+            padding: 1.2rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Cascadia Code', 'Fira Code', monospace;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 1.5rem 0;
+            display: block;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 0.6rem 0.8rem;
+            text-align: left;
+        }
+        th { background: #e0e0e0; }
+        .note {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 0.8rem 1rem;
+            margin: 1.5rem 0;
+        }
+        a { color: #1976d2; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        hr { margin: 2.5rem 0; border: 0; border-top: 1px solid #ddd; }
+
+        /* адаптивность для мобильных */
+        @media (max-width: 600px) {
+            body { padding: 0 0.5rem; margin: 1rem auto; }
+            h1 { font-size: 1.8rem; }
+            h2 { font-size: 1.3rem; }
+            pre { padding: 0.8rem; font-size: 0.8em; }
+            table { font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <h1>🛡️ GradusCore — Антивирусное ядро</h1>
+    <p>Лёгкое сигнатурное ядро для сканирования файлов и папок, написанное на <strong>Java</strong>, <strong>Python</strong> и <strong>JavaScript (Node.js)</strong>.<br>
+    Не требует внешних файлов — все сигнатуры встроены в код.<br>
+    Подходит для встраивания в приложения, ботов, системы автоматической проверки.</p>
+
+    <h2>✨ Возможности</h2>
+    <ul>
+        <li>Сигнатурный анализ (bat, js, exe, url, py, rootkits и др.)</li>
+        <li>Опциональная проверка через <strong>MalwareBazaar</strong> по SHA‑256</li>
+        <li>Сканирование файлов, папок, буферов в памяти и текста</li>
+        <li>Возвращает максимальный процент угрозы (0–100)</li>
+        <li>Никаких внешних зависимостей (кроме стандартной библиотеки)</li>
+    </ul>
+
+    <hr>
+
+    <h2>☕ Java (GradusCore.java)</h2>
+    <h3>Командная строка</h3>
+    <pre><>java -jar GradusCore.jar &lt;путь к файлу или папке&gt;
+java -jar GradusCore.jar docs</pre>
+
+    <h3>Как библиотека</h3>
+    <pre>import graduscore.GradusCore;
+import graduscore.GradusCore.Settings;
+
+Settings settings = new Settings();
+settings.useSignatures = true;      // по умолчанию true
+settings.useMalwareBazaar = false;  // по умолчанию false
+
+GradusCore core = new GradusCore(settings);
+int threat = core.scan(new File("C:/test"));
+System.out.println("Угроза: " + threat + "%");</pre>
+
+    <h3>⚙️ Настройки (Settings)</h3>
+    <table>
+        <tr><th>Параметр</th><th>Тип</th><th>По умолчанию</th><th>Описание</th></tr>
+        <tr><td><code>notifications</code></td><td>boolean</td><td>false</td><td>Выводить ли прогресс в консоль</td></tr>
+        <tr><td><code>useSignatures</code></td><td>boolean</td><td>true</td><td>Использовать сигнатуры</td></tr>
+        <tr><td><code>useMalwareBazaar</code></td><td>boolean</td><td>false</td><td>Проверять хэш через API MalwareBazaar</td></tr>
+    </table>
+
+    <hr>
+
+    <h2>🐍 Python (graduscore_py.py)</h2>
+    <p>Установка не требуется. Достаточно скопировать файл <code>graduscore_py.py</code> в проект или бот.</p>
+
+    <h3>Командная строка</h3>
+    <pre>python graduscore_py.py &lt;путь к файлу или папке&gt;
+python graduscore_py.py docs</pre>
+
+    <h3>Как библиотека</h3>
+    <pre>from graduscore_py import GradusCore, Settings
+
+settings = Settings()
+settings.use_signatures = True
+settings.use_malwarebazaar = False
+
+core = GradusCore(settings)
+
+# Сканирование по пути
+threat = core.scan("/путь/к/файлу.exe")
+
+# Сканирование байтов (например, из Telegram-бота)
+file_bytes = ...  # получили от пользователя
+threat = core.scan_bytes(file_bytes, "file.exe")
+
+# Сканирование текста (без сохранения файла)
+text = core.get_text_from_file("script.bat")
+threat = core.scan_text(text, "script.bat")</pre>
+
+    <div class="note">
+        <strong>🤖 Интеграция в Telegram-бота (aiogram 2.x)</strong><br>
+        Ниже показано, как принимать файлы и текстовые сообщения от пользователей.
+    </div>
+
+    <pre>from aiogram import Bot, Dispatcher, types
+from graduscore_py import GradusCore, Settings
+
+bot = Bot(token="YOUR_TOKEN")
+dp = Dispatcher(bot)
+core = GradusCore(Settings())
+core.settings.notifications = False
+
+@dp.message_handler(content_types=types.ContentType.DOCUMENT)
+async def handle_document(message: types.Message):
+    document = message.document
+    file = await bot.get_file(document.file_id)
+    file_bytes = await file.download_as_bytes()
+    threat = core.scan_bytes(file_bytes, document.file_name)
+    await message.reply(f"Уровень угрозы: {threat}%")
+
+@dp.message_handler(content_types=types.ContentType.TEXT)
+async def handle_text(message: types.Message):
+    text = message.text
+    threat = core.scan_text(text, "script.bat")
+    await message.reply(f"Уровень угрозы: {threat}%")</pre>
+
+    <h3>⚙️ Настройки</h3>
+    <table>
+        <tr><th>Параметр</th><th>Тип</th><th>По умолчанию</th><th>Описание</th></tr>
+        <tr><td><code>notifications</code></td><td>bool</td><td>False</td><td>Выводить ли прогресс в консоль</td></tr>
+        <tr><td><code>use_signatures</code></td><td>bool</td><td>True</td><td>Использовать сигнатуры</td></tr>
+        <tr><td><code>use_malwarebazaar</code></td><td>bool</td><td>False</td><td>Проверять хэш через API MalwareBazaar</td></tr>
+    </table>
+
+    <hr>
+
+    <h2>🟩 JavaScript / Node.js (graduscore_js.js)</h2>
+    <p>Установка не требуется. Подключается как обычный модуль.</p>
+
+    <h3>Командная строка</h3>
+    <pre>node graduscore_js.js &lt;путь к файлу или папке&gt;
+node graduscore_js.js docs</pre>
+
+    <h3>Как библиотека</h3>
+    <pre>const { GradusCore, Settings } = require('./graduscore_js.js');
+
+const settings = new Settings();
+settings.useSignatures = true;
+settings.useMalwareBazaar = false;
+
+const core = new GradusCore(settings);
+
+// Синхронное сканирование (без MalwareBazaar)
+const threat = core.scan('/путь/к/файлу.exe');
+
+// Сканирование буфера (например, из бота)
+const buffer = fs.readFileSync('file.exe');
+const threat = core.scanBuffer(buffer, 'file.exe');
+
+// Асинхронное с проверкой MalwareBazaar
+(async () => {
+    const threat = await core.scanBufferAsync(buffer, 'file.exe');
+    console.log(`Угроза: ${threat}%`);
+})();
+
+// Сканирование текста
+const threat = core.scanText('some malicious code', 'script.bat');</pre>
+
+    <h3>🤖 Пример для node-telegram-bot-api</h3>
+    <pre>const TelegramBot = require('node-telegram-bot-api');
+const { GradusCore, Settings } = require('./graduscore_js.js');
+
+const bot = new TelegramBot('YOUR_TOKEN', { polling: true });
+const core = new GradusCore(new Settings());
+
+bot.on('document', async (msg) => {
+    const fileId = msg.document.file_id;
+    const file = await bot.getFile(fileId);
+    const buffer = await bot.downloadFile(file.file_path, './');
+    const threat = core.scanBuffer(buffer, msg.document.file_name);
+    bot.sendMessage(msg.chat.id, `Уровень угрозы: ${threat}%`);
+});</pre>
+
+    <h3>⚙️ Настройки</h3>
+    <table>
+        <tr><th>Параметр</th><th>Тип</th><th>По умолчанию</th><th>Описание</th></tr>
+        <tr><td><code>notifications</code></td><td>boolean</td><td>false</td><td>Выводить ли прогресс в консоль</td></tr>
+        <tr><td><code>useSignatures</code></td><td>boolean</td><td>true</td><td>Использовать сигнатуры</td></tr>
+        <tr><td><code>useMalwareBazaar</code></td><td>boolean</td><td>false</td><td>Проверять хэш через API MalwareBazaar</td></tr>
+    </table>
+
+    <hr>
+
+    <h2>🔍 Принцип работы</h2>
+    <p>Ядро содержит встроенные наборы сигнатур для различных типов файлов. При сканировании определяется расширение файла и применяются соответствующие регулярные выражения. Для исполняемых файлов (PE) дополнительно ищутся подозрительные строки в бинарном коде. При включённой опции <code>useMalwareBazaar</code> вычисляется SHA‑256 и отправляется запрос к публичному API.</p>
+
+    <hr>
+
+    <h2>📄 Лицензия</h2>
+    <p>Проект распространяется под лицензией <strong>MIT</strong>. Используйте на свой страх и риск.</p>
+</body>
+</html>
