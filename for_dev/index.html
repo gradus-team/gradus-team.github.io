@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GradusCore — Для разработчиков</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 3rem 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container { max-width: 1100px; width: 100%; }
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+            font-weight: 700;
+        }
+        .subtitle {
+            text-align: center;
+            color: #475569;
+            margin-bottom: 3rem;
+            font-size: 1.2rem;
+        }
+        .cards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+        }
+        .card {
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08), 0 8px 16px rgba(0,0,0,0.04);
+            padding: 2rem 1.8rem;
+            flex: 1 1 300px;
+            max-width: 330px;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 28px 50px rgba(0,0,0,0.12), 0 12px 24px rgba(0,0,0,0.06);
+        }
+        .icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin-bottom: 1.2rem;
+        }
+        .java { background: #f89820; color: white; }
+        .python { background: #3776AB; color: white; }
+        .javascript { background: #F7DF1E; color: #323330; }
+
+        h3 { font-size: 1.6rem; margin-bottom: 0.5rem; color: #0f172a; }
+        .desc {
+            color: #475569;
+            margin-bottom: 1.8rem;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        .desc small {
+            color: #64748b;
+            font-size: 0.85rem;
+        }
+        .actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            width: 100%;
+            margin-top: auto;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background 0.2s, transform 0.1s;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .btn-primary { background: #4f46e5; color: white; }
+        .btn-primary:hover { background: #4338ca; transform: scale(1.02); }
+        .btn-secondary { background: #f1f5f9; color: #1e293b; border: 1px solid #cbd5e1; }
+        .btn-secondary:hover { background: #e2e8f0; }
+
+        /* адаптивность */
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            .subtitle { font-size: 1rem; }
+        }
+        @media (max-width: 480px) {
+            body { padding: 2rem 0.5rem; }
+            h1 { font-size: 1.8rem; }
+            .card { padding: 1.5rem 1rem; }
+            .btn { padding: 0.7rem 1rem; font-size: 0.95rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🛡️ GradusCore для разработчиков</h1>
+        <p class="subtitle">Встраиваемое антивирусное ядро на Java, Python и JavaScript</p>
+
+        <div class="cards">
+            <!-- Java Card -->
+            <div class="card">
+                <div class="icon java"><i class="fab fa-java"></i></div>
+                <h3>Java</h3>
+                <p class="desc">
+                    Полностью автономный JAR-совместимый класс. Встройте в своё приложение за минуту.<br>
+                    <small>MalwareBazaar включается одной строкой в коде</small>
+                </p>
+                <div class="actions">
+                    <a href="GradusCore.jar" class="btn btn-primary" download>
+                        <i class="fas fa-download"></i> Скачать
+                    </a>
+                    <a href="./readme" class="btn btn-secondary" target="_blank">
+                        <i class="fas fa-book"></i> Документация
+                    </a>
+                </div>
+            </div>
+
+            <!-- Python Card -->
+            <div class="card">
+                <div class="icon python"><i class="fab fa-python"></i></div>
+                <h3>Python</h3>
+                <p class="desc">
+                    Идеально для ботов и серверов. Работает без внешних зависимостей.<br>
+                    <small>MalwareBazaar включается одной строкой в коде</small>
+                </p>
+                <div class="actions">
+                    <a href="graduscore_py.py" class="btn btn-primary" download>
+                        <i class="fas fa-download"></i> Скачать
+                    </a>
+                    <a href="./readme" class="btn btn-secondary" target="_blank">
+                        <i class="fas fa-book"></i> Документация
+                    </a>
+                </div>
+            </div>
+
+            <!-- JavaScript Card -->
+            <div class="card">
+                <div class="icon javascript"><i class="fab fa-js"></i></div>
+                <h3>JavaScript</h3>
+                <p class="desc">
+                    Node.js модуль. Встраивается в серверные приложения и ботов.<br>
+                    <small>MalwareBazaar включается одной строкой в коде</small>
+                </p>
+                <div class="actions">
+                    <a href="graduscore_js.js" class="btn btn-primary" download>
+                        <i class="fas fa-download"></i> Скачать
+                    </a>
+                    <a href="./readme" class="btn btn-secondary" target="_blank">
+                        <i class="fas fa-book"></i> Документация
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function setupDownload(buttonId, selectId) {
+            const button = document.getElementById(buttonId);
+            const select = document.getElementById(selectId);
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                const selectedOption = select.options[select.selectedIndex];
+                const filename = selectedOption.getAttribute('data-file');
+                // Имитация скачивания: создаём ссылку с атрибутом download
+                const link = document.createElement('a');
+                link.href = filename; // предполагается, что файлы лежат рядом с developer.html
+                link.download = filename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            });
+        }
+
+        setupDownload('download-java', 'java-version');
+        setupDownload('download-python', 'python-version');
+        setupDownload('download-js', 'js-version');
+    </script>
+</body>
+</html>
