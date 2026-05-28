@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AntiCheat — Документация</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            max-width: 960px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            line-height: 1.6;
+            color: #1e1e1e;
+            background: #fafafa;
+        }
+        h1 { font-size: 2.2rem; border-bottom: 3px solid #e53935; padding-bottom: 0.3rem; }
+        h2 { font-size: 1.6rem; margin-top: 2.5rem; color: #c62828; }
+        h3 { font-size: 1.2rem; margin-top: 2rem; color: #d32f2f; }
+        code {
+            background: #e8e8e8;
+            padding: 0.2em 0.4em;
+            border-radius: 4px;
+            font-family: 'Cascadia Code', 'Fira Code', monospace;
+            font-size: 0.9em;
+        }
+        pre {
+            background: #263238;
+            color: #eeffff;
+            padding: 1.2rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Cascadia Code', 'Fira Code', monospace;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 1.5rem 0;
+            display: block;
+            overflow-x: auto;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 0.6rem 0.8rem;
+            text-align: left;
+        }
+        th { background: #e0e0e0; }
+        .note {
+            background: #ffebee;
+            border-left: 4px solid #e53935;
+            padding: 0.8rem 1rem;
+            margin: 1.5rem 0;
+        }
+        a { color: #1976d2; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        hr { margin: 2.5rem 0; border: 0; border-top: 1px solid #ddd; }
+
+        @media (max-width: 600px) {
+            body { padding: 0 0.5rem; margin: 1rem auto; }
+            h1 { font-size: 1.8rem; }
+            h2 { font-size: 1.3rem; }
+            pre { padding: 0.8rem; font-size: 0.8em; }
+        }
+    </style>
+</head>
+<body>
+    <h1>🛡️ Gradus AntiCheat — Защита от читов</h1>
+    <p>
+        Микро-модуль для скрытия настоящих значений переменных от программ вроде Cheat Engine.<br>
+        Значения хранятся в искажённом виде с помощью случайных сдвигов (<code>randint</code>, <code>randfloat</code>, <code>randstr</code>).<br>
+        Даже если злоумышленник найдёт ячейку памяти, он увидит ложное число или строку.
+    </p>
+
+    <h2>✨ Возможности</h2>
+    <ul>
+        <li>Поддержка типов: <strong>int, float, bool, str, dict, list</strong></li>
+        <li>Автоматическое искажение при сохранении, восстановление при чтении</li>
+        <li>Проверка целостности: метод <code>isHacked()</code> определяет подмену</li>
+        <li>Мониторинг можно включать/отключать</li>
+        <li>Кроссплатформенность: Java, Python, JavaScript (Node.js/браузер)</li>
+    </ul>
+
+    <hr>
+
+    <h2>🐍 Python (gradus_anti_cheat.py)</h2>
+    <h3>Быстрый старт</h3>
+    <pre>from gradus_anti_cheat import AntiCheat
+
+ac = AntiCheat()
+ac.start_monitoring()
+
+# Добавляем здоровье (int) – в памяти будет лежать другое число!
+hp = ac.add_variable("health", 100)
+# Где-то в коде проверяем
+if ac.is_hacked("health", 100):
+    print("Читер!")
+else:
+    print("Всё чисто")
+</pre>
+
+    <h3>Все методы</h3>
+    <table>
+        <tr><th>Метод</th><th>Описание</th></tr>
+        <tr><td><code>add_variable(name, value)</code></td><td>Сохраняет переменную с искажением. Возвращает реальное имя (если name="VARIABLE", генерируется уникальное)</td></tr>
+        <tr><td><code>get_variable(name)</code></td><td>Извлекает оригинальное значение</td></tr>
+        <tr><td><code>is_hacked(name, expected)</code></td><td>Сравнивает сохранённое значение с ожидаемым. Требует включённый мониторинг</td></tr>
+        <tr><td><code>start_monitoring()</code></td><td>Включает проверку целостности</td></tr>
+        <tr><td><code>stop_monitoring()</code></td><td>Отключает мониторинг (is_hacked всегда false)</td></tr>
+    </table>
+
+    <div class="note">
+        <strong>🔐 Секретные сдвиги</strong><br>
+        При создании объекта генерируются <code>randint</code> (10000–99999), <code>randfloat</code> (10000.0–99999.9) и <code>randstr</code> (случайное слово).<br>
+        Они используются для искажения: int/float увеличиваются на сдвиг, bool инвертируется, к строке дописывается слово.<br>
+        Таким образом, сканер памяти никогда не найдёт истинное значение.
+    </div>
+
+    <hr>
+
+    <h2>☕ Java (GradusAntiCheat.java)</h2>
+    <pre>GradusAntiCheat ac = new GradusAntiCheat();
+ac.startMonitoring();
+
+String name = ac.addVariable("coins", 500);
+int realCoins = (int) ac.getVariable(name);
+
+// Проверка взлома
+if (ac.isHacked(name, 500)) {
+    System.out.println("Обнаружена подмена!");
+}
+</pre>
+    <p>Полный код смотрите в скачиваемом файле <code>GradusAntiCheat.java</code>.</p>
+
+    <hr>
+
+    <h2>🟨 JavaScript (gradus-anti-cheat.js)</h2>
+    <pre>const GradusAntiCheat = require('./gradus-anti-cheat.js');
+const ac = new GradusAntiCheat();
+ac.startMonitoring();
+
+let current = 100;
+let hp = ac.addVariable("health", 100);
+
+if (ac.isHacked(hp, current)) {
+    console.log("Читер!");
+}
+</pre>
+
+    <hr>
+
+    <h2>🔍 Принцип работы</h2>
+    <p>
+        Вся защита строится на том, что реальное значение никогда не хранится в памяти открыто.<br>
+        Например, для <code>health = 100</code> в памяти будет <code>100 + randint</code> (например, 50678).<br>
+        Когда игра запрашивает <code>get_variable</code>, модуль вычитает сдвиг и возвращает 100.<br>
+        Если читер попытается подменить значение напрямую (через Cheat Engine), <code>is_hacked</code> сравнит сохранённое искажённое значение с эталонным и обнаружит несоответствие.
+    </p>
+
+    <hr>
+
+    <h2>📄 Лицензия</h2>
+    <p>MIT — используйте в своих проектах свободно.</p>
+</body>
+</html>
