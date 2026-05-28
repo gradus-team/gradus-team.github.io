@@ -3,10 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GradusCore — Для разработчиков</title>
+    <title>Gradus для разработчиков</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
         body {
             font-family: 'Segoe UI', system-ui, sans-serif;
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
@@ -16,7 +20,10 @@
             flex-direction: column;
             align-items: center;
         }
-        .container { max-width: 1100px; width: 100%; }
+        .container {
+            max-width: 900px;
+            width: 100%;
+        }
         h1 {
             text-align: center;
             font-size: 2.5rem;
@@ -30,175 +37,299 @@
             margin-bottom: 3rem;
             font-size: 1.2rem;
         }
-        .cards {
+
+        .products {
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 2rem;
+            flex-direction: column;
+            gap: 2.5rem;
         }
+
         .card {
             background: #ffffff;
-            border-radius: 24px;
+            border-radius: 28px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.08), 0 8px 16px rgba(0,0,0,0.04);
-            padding: 2rem 1.8rem;
-            flex: 1 1 300px;
-            max-width: 330px;
-            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            padding: 2.5rem 2rem 2rem;
+            transition: transform 0.2s, box-shadow 0.2s;
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
         }
         .card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 28px 50px rgba(0,0,0,0.12), 0 12px 24px rgba(0,0,0,0.06);
+            transform: translateY(-4px);
+            box-shadow: 0 28px 50px rgba(0,0,0,0.12);
         }
-        .icon {
-            width: 80px;
-            height: 80px;
-            border-radius: 20px;
+
+        .product-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: #0f172a;
+        }
+
+        .lang-switch {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 1.8rem;
+            width: 100%;
+            flex-wrap: wrap;
+        }
+        .lang-btn {
+            flex: 1 1 0;
+            min-width: 100px;
+            padding: 0.75rem 0.5rem;
+            border: none;
+            border-radius: 16px;
+            font-weight: 600;
+            font-size: 0.95rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2.5rem;
-            margin-bottom: 1.2rem;
+            gap: 0.5rem;
+            background: #f1f5f9;
+            color: #334155;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            letter-spacing: 0.3px;
         }
-        .java { background: #f89820; color: white; }
-        .python { background: #3776AB; color: white; }
-        .javascript { background: #F7DF1E; color: #323330; }
+        .lang-btn i {
+            font-size: 1.1rem;
+        }
+        .lang-btn:hover {
+            background: #e2e8f0;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+        }
+        .lang-btn.active {
+            color: white;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+            transform: translateY(-2px);
+        }
+        .lang-btn.active.java { background: #f89820; }
+        .lang-btn.active.python { background: #3776AB; }
+        .lang-btn.active.javascript { background: #F7DF1E; color: #323330; }
 
-        h3 { font-size: 1.6rem; margin-bottom: 0.5rem; color: #0f172a; }
-        .desc {
+        .tool-info {
+            margin-bottom: 2rem;
+            min-height: 70px;
+        }
+        .tool-desc {
             color: #475569;
-            margin-bottom: 1.8rem;
-            font-size: 0.95rem;
-            line-height: 1.5;
+            font-size: 1rem;
+            line-height: 1.6;
         }
-        .desc small {
+        .tool-desc small {
             color: #64748b;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
         }
+
         .actions {
             display: flex;
             flex-direction: column;
             gap: 0.8rem;
             width: 100%;
-            margin-top: auto;
+            max-width: 260px;
         }
         .btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
-            padding: 0.75rem 1.5rem;
-            border-radius: 12px;
+            padding: 0.8rem 1.5rem;
+            border-radius: 14px;
             font-weight: 600;
             text-decoration: none;
-            transition: background 0.2s, transform 0.1s;
+            transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
             border: none;
             cursor: pointer;
             font-size: 1rem;
         }
-        .btn-primary { background: #4f46e5; color: white; }
-        .btn-primary:hover { background: #4338ca; transform: scale(1.02); }
-        .btn-secondary { background: #f1f5f9; color: #1e293b; border: 1px solid #cbd5e1; }
-        .btn-secondary:hover { background: #e2e8f0; }
+        .btn-primary {
+            background: #4f46e5;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #4338ca;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(79, 70, 229, 0.4);
+        }
+        .btn-secondary {
+            background: #f1f5f9;
+            color: #1e293b;
+            border: 1px solid #cbd5e1;
+        }
+        .btn-secondary:hover {
+            background: #e2e8f0;
+        }
 
-        /* адаптивность */
-        @media (max-width: 768px) {
+        @media (max-width: 600px) {
             h1 { font-size: 2rem; }
             .subtitle { font-size: 1rem; }
-        }
-        @media (max-width: 480px) {
-            body { padding: 2rem 0.5rem; }
-            h1 { font-size: 1.8rem; }
-            .card { padding: 1.5rem 1rem; }
-            .btn { padding: 0.7rem 1rem; font-size: 0.95rem; }
+            .card { padding: 1.8rem 1rem 1.5rem; }
+            .lang-btn { min-width: 80px; font-size: 0.85rem; }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🛡️ GradusCore для разработчиков</h1>
-        <p class="subtitle">Встраиваемое антивирусное ядро на Java, Python и JavaScript</p>
+        <h1>🛡️ Инструменты от Gradus</h1>
+        <p class="subtitle">Встраиваемые решения для защиты приложений</p>
 
-        <div class="cards">
-            <!-- Java Card -->
-            <div class="card">
-                <div class="icon java"><i class="fab fa-java"></i></div>
-                <h3>Java</h3>
-                <p class="desc">
-                    Полностью автономный JAR-совместимый класс. Встройте в своё приложение за минуту.<br>
-                    <small>MalwareBazaar включается одной строкой в коде</small>
-                </p>
+        <div class="products">
+            <!-- ====== GradusCore (антивирус) ====== -->
+            <div class="card" id="graduscore-card">
+                <div class="product-title">🔍 GradusCore — Антивирусное ядро</div>
+                <div class="lang-switch" id="graduscore-lang-switch">
+                    <button class="lang-btn active java" data-lang="java"><i class="fab fa-java"></i> Java</button>
+                    <button class="lang-btn python" data-lang="python"><i class="fab fa-python"></i> Python</button>
+                    <button class="lang-btn javascript" data-lang="javascript"><i class="fab fa-js"></i> JavaScript</button>
+                </div>
+                <div class="tool-info" id="graduscore-info">
+                    <p class="tool-desc">Полностью автономный JAR-совместимый класс. Встройте в своё приложение за минуту.<br><small>MalwareBazaar включается одной строкой в коде</small></p>
+                </div>
                 <div class="actions">
-                    <a href="GradusCore.jar" class="btn btn-primary" download>
+                    <a id="graduscore-download" href="GradusCore.jar" class="btn btn-primary" data-download="GradusCore.jar">
                         <i class="fas fa-download"></i> Скачать
                     </a>
-                    <a href="./readme" class="btn btn-secondary" target="_blank">
+                    <a id="graduscore-docs" href="./readme" class="btn btn-secondary" target="_blank">
                         <i class="fas fa-book"></i> Документация
                     </a>
                 </div>
             </div>
 
-            <!-- Python Card -->
-            <div class="card">
-                <div class="icon python"><i class="fab fa-python"></i></div>
-                <h3>Python</h3>
-                <p class="desc">
-                    Идеально для ботов и серверов. Работает без внешних зависимостей.<br>
-                    <small>MalwareBazaar включается одной строкой в коде</small>
-                </p>
-                <div class="actions">
-                    <a href="graduscore_py.py" class="btn btn-primary" download>
-                        <i class="fas fa-download"></i> Скачать
-                    </a>
-                    <a href="./readme" class="btn btn-secondary" target="_blank">
-                        <i class="fas fa-book"></i> Документация
-                    </a>
+            <!-- ====== AntiCheat (защита от читов) ====== -->
+            <div class="card" id="anticheat-card">
+                <div class="product-title">🛡️ AntiCheat — Микро-модуль защиты от читов</div>
+                <div class="lang-switch" id="anticheat-lang-switch">
+                    <button class="lang-btn active java" data-lang="java"><i class="fab fa-java"></i> Java</button>
+                    <button class="lang-btn python" data-lang="python"><i class="fab fa-python"></i> Python</button>
+                    <button class="lang-btn javascript" data-lang="javascript"><i class="fab fa-js"></i> JavaScript</button>
                 </div>
-            </div>
-
-            <!-- JavaScript Card -->
-            <div class="card">
-                <div class="icon javascript"><i class="fab fa-js"></i></div>
-                <h3>JavaScript</h3>
-                <p class="desc">
-                    Node.js модуль. Встраивается в серверные приложения и ботов.<br>
-                    <small>MalwareBazaar включается одной строкой в коде</small>
-                </p>
+                <div class="tool-info" id="anticheat-info">
+                    <p class="tool-desc">Скрывает настоящие значения переменных от читерских программ (Cheat Engine).<br><small>Значения искажаются случайными сдвигами, подбор невозможен.</small></p>
+                </div>
                 <div class="actions">
-                    <a href="graduscore_js.js" class="btn btn-primary" download>
+                    <a id="anticheat-download" href="GradusAntiCheat.java" class="btn btn-primary" data-download="GradusAntiCheat.java">
                         <i class="fas fa-download"></i> Скачать
                     </a>
-                    <a href="./readme" class="btn btn-secondary" target="_blank">
+                    <a id="anticheat-docs" href="./antivirus" class="btn btn-secondary" target="_blank">
                         <i class="fas fa-book"></i> Документация
                     </a>
                 </div>
             </div>
         </div>
     </div>
-    <script>
-        function setupDownload(buttonId, selectId) {
-            const button = document.getElementById(buttonId);
-            const select = document.getElementById(selectId);
-            button.addEventListener('click', (e) => {
-                e.preventDefault();
-                const selectedOption = select.options[select.selectedIndex];
-                const filename = selectedOption.getAttribute('data-file');
-                // Имитация скачивания: создаём ссылку с атрибутом download
-                const link = document.createElement('a');
-                link.href = filename; // предполагается, что файлы лежат рядом с developer.html
-                link.download = filename;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            });
-        }
 
-        setupDownload('download-java', 'java-version');
-        setupDownload('download-python', 'python-version');
-        setupDownload('download-js', 'js-version');
+    <script>
+        (function() {
+            // Данные для GradusCore
+            const graduscoreData = {
+                java: {
+                    desc: `Полностью автономный JAR-совместимый класс. Встройте в своё приложение за минуту.<br><small>MalwareBazaar включается одной строкой в коде</small>`,
+                    file: 'GradusCore.jar',
+                    docs: './readme'
+                },
+                python: {
+                    desc: `Идеально для ботов и серверов. Работает без внешних зависимостей.<br><small>MalwareBazaar включается одной строкой в коде</small>`,
+                    file: 'graduscore_py.py',
+                    docs: './readme'
+                },
+                javascript: {
+                    desc: `Node.js модуль. Встраивается в серверные приложения и ботов.<br><small>MalwareBazaar включается одной строкой в коде</small>`,
+                    file: 'graduscore_js.js',
+                    docs: './readme'
+                }
+            };
+
+            // Данные для AntiCheat
+            const anticheatData = {
+                java: {
+                    desc: `Скрывает настоящие значения переменных от читерских программ (Cheat Engine).<br><small>Значения искажаются случайными сдвигами, подбор невозможен.</small>`,
+                    file: 'GradusAntiCheat.java',
+                    docs: './antivirus'
+                },
+                python: {
+                    desc: `Прячет переменные игры от сканеров памяти. Идеален для Pygame, Godot, Telegram-игр.<br><small>Использует секретные randint, randfloat, randstr</small>`,
+                    file: 'gradus_anti_cheat.py',
+                    docs: './antivirus'
+                },
+                javascript: {
+                    desc: `Защита от читов в браузерных и Node.js играх. Работает с любыми типами данных.<br><small>Автоматическое скрытие int, float, bool, string</small>`,
+                    file: 'gradus-anti-cheat.js',
+                    docs: './antivirus'
+                }
+            };
+
+            // Функция принудительного скачивания через Blob (работает для всех файлов)
+            function forceDownload(url, filename) {
+                fetch(url)
+                    .then(response => {
+                        if (!response.ok) throw new Error('Ошибка загрузки');
+                        return response.blob();
+                    })
+                    .then(blob => {
+                        const blobUrl = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = blobUrl;
+                        a.download = filename || url.split('/').pop();
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(blobUrl);
+                    })
+                    .catch(err => {
+                        alert('Не удалось скачать файл: ' + err.message);
+                    });
+            }
+
+            // Привязываем обработчики ко всем кнопкам "Скачать"
+            document.querySelectorAll('.btn-primary[data-download]').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const filename = this.getAttribute('data-download');
+                    const href = this.getAttribute('href');
+                    if (filename && href) {
+                        forceDownload(href, filename);
+                    }
+                });
+            });
+
+            // Логика переключения языков
+            function setupCard(cardId, switchId, infoId, downloadId, docsId, data) {
+                const btns = document.querySelectorAll(`#${switchId} .lang-btn`);
+                const infoDiv = document.getElementById(infoId);
+                const downloadBtn = document.getElementById(downloadId);
+                const docsBtn = document.getElementById(docsId);
+
+                function setLang(lang) {
+                    btns.forEach(b => {
+                        const l = b.getAttribute('data-lang');
+                        b.classList.remove('active', 'java', 'python', 'javascript');
+                        if (l === lang) b.classList.add('active', lang);
+                    });
+                    if (data[lang]) {
+                        infoDiv.innerHTML = `<p class="tool-desc">${data[lang].desc}</p>`;
+                        downloadBtn.href = data[lang].file;
+                        downloadBtn.setAttribute('data-download', data[lang].file);
+                        docsBtn.href = data[lang].docs;
+                    }
+                }
+
+                btns.forEach(b => b.addEventListener('click', (e) => {
+                    setLang(e.currentTarget.getAttribute('data-lang'));
+                }));
+
+                // Инициализация
+                const activeBtn = document.querySelector(`#${switchId} .lang-btn.active`);
+                if (activeBtn) setLang(activeBtn.getAttribute('data-lang'));
+                else setLang('java');
+            }
+
+            setupCard('graduscore-card', 'graduscore-lang-switch', 'graduscore-info', 'graduscore-download', 'graduscore-docs', graduscoreData);
+            setupCard('anticheat-card', 'anticheat-lang-switch', 'anticheat-info', 'anticheat-download', 'anticheat-docs', anticheatData);
+        })();
     </script>
 </body>
 </html>
