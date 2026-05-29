@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gradus Web — Документация</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            max-width: 960px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            line-height: 1.6;
+            color: #1e1e1e;
+            background: #fafafa;
+        }
+        h1 { font-size: 2.2rem; border-bottom: 3px solid #ff9800; padding-bottom: 0.3rem; margin-bottom: 1.5rem; }
+        h2 { font-size: 1.6rem; margin-top: 2.5rem; color: #e65100; }
+        h3 { font-size: 1.2rem; margin-top: 2rem; color: #ef6c00; }
+        code {
+            background: #e8e8e8;
+            padding: 0.2em 0.4em;
+            border-radius: 4px;
+            font-family: 'Cascadia Code', 'Fira Code', monospace;
+            font-size: 0.9em;
+        }
+        pre {
+            background: #263238;
+            color: #eeffff;
+            padding: 1.2rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Cascadia Code', 'Fira Code', monospace;
+            font-size: 0.9em;
+            line-height: 1.5;
+            margin: 1rem 0;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 1.5rem 0;
+            display: block;
+            overflow-x: auto;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 0.6rem 0.8rem;
+            text-align: left;
+        }
+        th { background: #e0e0e0; }
+        .note {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 0.8rem 1rem;
+            margin: 1.5rem 0;
+        }
+        a { color: #1976d2; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        hr { margin: 2.5rem 0; border: 0; border-top: 1px solid #ddd; }
+
+        @media (max-width: 600px) {
+            body { padding: 0 0.5rem; margin: 1rem auto; }
+            h1 { font-size: 1.8rem; }
+            h2 { font-size: 1.3rem; }
+            pre { padding: 0.8rem; font-size: 0.8em; }
+        }
+    </style>
+</head>
+<body>
+    <h1>🌐 Gradus Web — Утилиты для сайтов</h1>
+    <p>
+        Единый JavaScript‑модуль для статических сайтов. Включает: кэширование, кастомное кодирование,
+        капчу, защиту от DDoS (rate‑limiter), генераторы случайных данных и красивые всплывающие уведомления.
+        <br>Подключение: <code>&lt;script src="gradus-web.js"&gt;&lt;/script&gt;</code>
+    </p>
+
+    <h2>✨ Возможности</h2>
+    <ul>
+        <li><strong>Кэш</strong> в localStorage с TTL (время жизни)</li>
+        <li><strong>Кодирование/декодирование</strong> по расширенной таблице символов (кириллица, латиница, спецсимволы)</li>
+        <li><strong>Простая математическая капча</strong> (вставка в HTML и проверка)</li>
+        <li><strong>Клиентский DDoS‑протектор</strong> (ограничение частоты действий)</li>
+        <li><strong>Генераторы</strong>: UUID v4, криптостойкий пароль, случайное целое</li>
+        <li><strong>Тосты‑уведомления</strong> (success, error, info, warning) с автоскрытием</li>
+    </ul>
+
+    <hr>
+
+    <h2>1. 📦 Кэш (GradusWeb.cache)</h2>
+    <pre>GradusWeb.cache.set('user', { name: 'Иван' }, 600); // на 10 минут
+const user = GradusWeb.cache.get('user');           // { name: 'Иван' }
+GradusWeb.cache.remove('user');
+GradusWeb.cache.clear(); // очищает весь кэш Gradus</pre>
+    <table>
+        <tr><th>Метод</th><th>Описание</th></tr>
+        <tr><td><code>set(key, value, ttlSeconds)</code></td><td>Сохраняет значение с временем жизни (по умолчанию 3600 сек)</td></tr>
+        <tr><td><code>get(key)</code></td><td>Возвращает значение или <code>null</code>, если просрочено / отсутствует</td></tr>
+        <tr><td><code>remove(key)</code></td><td>Удаляет запись</td></tr>
+        <tr><td><code>clear()</code></td><td>Удаляет все записи с префиксом <code>gradus_cache_</code></td></tr>
+    </table>
+
+    <hr>
+
+    <h2>2. 🔐 Кодирование (GradusWeb.encode / decode)</h2>
+    <p>Преобразует строку по специальной таблице: каждый символ заменяется на четырёхсимвольный код <code>_xxx</code>.</p>
+    <pre>const original = 'Привет, мир!';
+const encoded = GradusWeb.encode(original);
+// => "_050_018_010_003_006_020_129_000_014_010_018_132"
+const decoded = GradusWeb.decode(encoded);
+// => "Привет, мир!"</pre>
+    <div class="note">
+        <strong>Таблица кодирования</strong> включает русские и латинские буквы (заглавные и строчные), цифры,
+        пробел, знаки препинания, скобки, кавычки, решётку, обратную косую черту и даже символы перевода строки (<code>\n</code>, <code>\r</code>).
+        Отсутствующие в таблице символы остаются без изменений.
+    </div>
+
+    <hr>
+
+    <h2>3. 🤖 Капча (GradusWeb.captcha)</h2>
+    <p>Математическая капча: случайный пример (сложение, вычитание, умножение).</p>
+
+    <h3>Программное использование</h3>
+    <pre>const cap = GradusWeb.captcha.generate();
+console.log(cap.question); // "3 + 5 = ?"
+// позже проверяем ответ пользователя
+if (GradusWeb.captcha.check(cap, userInput)) {
+    // верно
+}</pre>
+
+    <h3>Готовый HTML‑виджет</h3>
+    <pre>&lt;div id="captcha-box"&gt;&lt;/div&gt;
+&lt;button onclick="checkCaptcha()"&gt;Проверить&lt;/button&gt;
+
+&lt;script&gt;
+GradusWeb.captcha.render('captcha-box');
+function checkCaptcha() {
+    if (GradusWeb.captcha.verify('captcha-box')) {
+        GradusWeb.notify.success('Проверка пройдена');
+    } else {
+        GradusWeb.notify.error('Неверный ответ');
+    }
+}
+&lt;/script&gt;</pre>
+
+    <hr>
+
+    <h2>4. 🛡️ DDoS Protection (GradusWeb.ddos)</h2>
+    <p>Клиентский ограничитель частоты действий (rate limiter).</p>
+    <pre>// Разрешить не более 3 кликов за 10 секунд для действия 'submit_btn'
+document.getElementById('btn').addEventListener('click', () => {
+    if (GradusWeb.ddos.isAllowed('submit_btn', 3, 10)) {
+        // выполнить действие
+    } else {
+        GradusWeb.notify.warning('Слишком много запросов. Подождите.');
+    }
+});</pre>
+    <table>
+        <tr><th>Метод</th><th>Описание</th></tr>
+        <tr><td><code>isAllowed(id, maxRequests, intervalSeconds)</code></td><td>Возвращает <code>true</code>, если действие разрешено</td></tr>
+        <tr><td><code>reset(id)</code></td><td>Сбрасывает счётчик для указанного ID</td></tr>
+        <tr><td><code>clear()</code></td><td>Сбрасывает все ограничения</td></tr>
+    </table>
+
+    <hr>
+
+    <h2>5. 🎲 Генераторы (GradusWeb.generate)</h2>
+    <pre>const id = GradusWeb.generate.uuid();          // "550e8400-e29b-41d4-a716-446655440000"
+const pass = GradusWeb.generate.password(16);   // "aB3$xK9!pL2@qW7#"
+const num = GradusWeb.generate.randomInt(1, 100); // случайное целое от 1 до 100</pre>
+
+    <hr>
+
+    <h2>6. 💬 Уведомления (GradusWeb.notify)</h2>
+    <pre>GradusWeb.notify.success('Файл сохранён');
+GradusWeb.notify.error('Ошибка соединения');
+GradusWeb.notify.info('Идёт загрузка...');
+GradusWeb.notify.warning('Время сессии истекает');</pre>
+    <p>Появляются в правом верхнем углу и автоматически исчезают через 3 секунды (можно передать свою длительность).</p>
+
+    <hr>
+
+    <h2>📄 Лицензия</h2>
+    <p>MIT. Используйте в любых проектах.</p>
+</body>
+</html>
