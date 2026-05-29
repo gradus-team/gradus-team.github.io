@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gradus Static.JS — Документация для начинающих</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: #f8fafc;
+            color: #1e293b;
+            line-height: 1.6;
+            padding: 2rem 1rem;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.05);
+        }
+        h1 { font-size: 2.4rem; border-bottom: 4px solid #ff9800; padding-bottom: 0.4rem; margin-bottom: 2rem; }
+        h2 { font-size: 1.8rem; margin-top: 2.5rem; color: #e65100; border-left: 5px solid #ff9800; padding-left: 1rem; }
+        h3 { font-size: 1.4rem; margin-top: 2rem; color: #ef6c00; }
+        h4 { font-size: 1.2rem; margin-top: 1.5rem; color: #f57c00; }
+        p { margin: 1rem 0; }
+        code {
+            background: #e2e8f0;
+            padding: 0.2em 0.5em;
+            border-radius: 5px;
+            font-family: 'Cascadia Code', 'Fira Code', monospace;
+            font-size: 0.9em;
+        }
+        pre {
+            background: #1e293b;
+            color: #f1f5f9;
+            padding: 1.2rem;
+            border-radius: 12px;
+            overflow-x: auto;
+            font-family: 'Cascadia Code', 'Fira Code', monospace;
+            font-size: 0.9em;
+            line-height: 1.5;
+            margin: 1.2rem 0;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 1.5rem 0;
+            display: block;
+            overflow-x: auto;
+        }
+        th, td {
+            border: 1px solid #cbd5e1;
+            padding: 0.8rem 1rem;
+            text-align: left;
+        }
+        th {
+            background: #ffcc80;
+            color: #1e293b;
+            font-weight: 600;
+        }
+        .note {
+            background: #fff3e0;
+            border-left: 5px solid #ff9800;
+            padding: 1rem 1.2rem;
+            margin: 1.5rem 0;
+            border-radius: 6px;
+        }
+        .warning {
+            background: #ffebee;
+            border-left: 5px solid #f44336;
+            padding: 1rem 1.2rem;
+            margin: 1.5rem 0;
+            border-radius: 6px;
+            color: #b71c1c;
+        }
+        a { color: #1976d2; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        ul, ol { margin: 1rem 0 1rem 2rem; }
+        li { margin-bottom: 0.3rem; }
+
+        @media (max-width: 600px) {
+            .container { padding: 1.5rem 1rem; }
+            h1 { font-size: 1.8rem; }
+            h2 { font-size: 1.4rem; }
+            pre { font-size: 0.8rem; padding: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <h1>📘 Gradus Static.JS — Полная документация</h1>
+    <p>
+        <strong>Gradus Static.JS</strong> — это микро‑фреймворк для создания динамических сайтов на статических хостингах (GitHub Pages, Netlify, обычный сервер без PHP/Python).<br>
+        Он позволяет вставлять в HTML специальные метки <code>{функция:аргументы}</code>, которые при загрузке страницы заменяются на реальные данные: из кэша, локальной базы, API, генераторов и т.д.
+    </p>
+    <p>
+        <strong>Главная особенность:</strong> вам не нужно писать серверный код — всё работает прямо в браузере. Вы просто пишете обычный HTML и добавляете плейсхолдеры.
+    </p>
+
+    <h2>🚀 Как это работает (для совсем новичков)</h2>
+    <ol>
+        <li>Скачиваете архив фреймворка</li>
+        <li>Распаковываете в папку вашего сайта</li>
+        <li>В <code>site.js</code> пишете свои настройки и собственные функции (по желанию)</li>
+        <li>В HTML вставляете плейсхолдеры (по желанию) и страница сама наполняется данными</li>
+    </ol>
+
+    <div class="note">
+        <strong>⚡ Важно:</strong> Фреймворк не требует сервера для работы. Вы можете открыть <code>index.html</code> прямо в браузере (через локальный сервер для корректной загрузки внешних данных, но сам HTML работает и без него).
+    </div>
+
+    <h2>📁 Структура файлов</h2>
+    <pre>
+мой-сайт/
+├── gradus-web.js        ← утилиты (кэш, кодирование, капча и др.) — НЕ ТРОГАЙТЕ
+├── database.js          ← локальная база данных (JSON + localStorage) — НЕ ТРОГАЙТЕ
+├── server.js            ← запросы к API и Firebase — НЕ ТРОГАЙТЕ
+├── client.js            ← движок плейсхолдеров {} — НЕ ТРОГАЙТЕ
+├── core.js              ← сборка и запуск фреймворка — НЕ ТРОГАЙТЕ
+├── site.js              ← ВАШ КОД: настройки, свои функции, инициализация
+├── index.html           ← ВАША СТРАНИЦА (можно создавать сколько угодно)
+└── db.json              ← ПРИМЕР начальных данных (можно удалить или изменить)
+</pre>
+
+    <div class="warning">
+        <strong>🛑 Никогда не изменяйте файлы:</strong> <code>gradus-web.js</code>, <code>database.js</code>, <code>server.js</code>, <code>client.js</code>, <code>core.js</code>. Они составляют ядро фреймворка. Все ваши дополнения и настройки должны быть только в <code>site.js</code> и ваших HTML-файлах. Это правило придумано, чтобы вы могли легко обновлять фреймворк, не теряя свои изменения.
+    </div>
+
+    <h2>📄 Назначение каждого файла</h2>
+
+    <h3>1. gradus-web.js (утилиты)</h3>
+    <p>Содержит глобальный объект <code>GradusWeb</code> с модулями:</p>
+    <ul>
+        <li><code>cache</code> — хранение данных в localStorage с временем жизни (TTL).</li>
+        <li><code>encode / decode</code> — кастомное кодирование строк по большой таблице символов.</li>
+        <li><code>captcha</code> — математическая капча (генерация + проверка).</li>
+        <li><code>ddos</code> — защита от слишком частых действий (rate limiter).</li>
+        <li><code>generate</code> — генерация UUID, паролей, случайных чисел.</li>
+        <li><code>notify</code> — красивые всплывающие уведомления на странице.</li>
+    </ul>
+    <p>Вы можете использовать эти утилиты в своём коде (<code>site.js</code>) напрямую: <code>GradusWeb.cache.set(...)</code>, <code>GradusWeb.notify.success(...)</code> и т.д. Но не редактируйте сам файл.</p>
+
+    <h3>2. database.js (локальная БД)</h3>
+    <p>Объект <code>GradusDB</code> позволяет хранить данные между сессиями пользователя. При инициализации он:</p>
+    <ol>
+        <li>Пытается загрузить начальные данные из файла <code>/db.json</code> (если файл существует и доступен).</li>
+        <li>Затем применяет изменения, сохранённые в localStorage (более приоритетные).</li>
+    </ol>
+    <p>Методы: <code>get(key)</code> — асинхронное чтение, <code>set(key, value)</code> — запись (сразу в localStorage), <code>delete(key)</code> — удаление. Данные хранятся в localStorage в открытом виде.</p>
+    <div class="warning">
+        <strong>⚠️ Не храните в <code>db.json</code> или через <code>GradusDB.set()</code> пароли, токены Firebase, личные ключи!</strong> Эти данные доступны любому, кто откроет инструменты разработчика в браузере. <code>db.json</code> — только для общедоступных начальных настроек (например, текст приветствия, ID товаров). Для секретов используйте серверную часть.
+    </div>
+
+    <h3>3. server.js (запросы наружу)</h3>
+    <p>Объект <code>GradusServer</code> даёт методы для HTTP-запросов:</p>
+    <ul>
+        <li><code>get(url)</code> — GET-запрос, возвращает текст ответа.</li>
+        <li><code>post(url, body)</code> — POST-запрос с JSON-телом.</li>
+        <li><code>firebaseGet(path)</code> — обёртка для GET к Firebase REST API (полный URL с <code>.json</code>).</li>
+        <li><code>firebaseSet(path, data)</code> — запись данных в Firebase через PUT.</li>
+    </ul>
+    <p>Используйте их в своих обработчиках для получения данных с любых публичных API.</p>
+
+    <h3>4. client.js (парсер шаблонов)</h3>
+    <p>Это сердце фреймворка. После загрузки страницы он проходит по всем элементам и текстовым узлам, ищет конструкции вида <code>{функция:аргументы}</code> и заменяет их на результат выполнения функции. Поддерживает вложенные вызовы!</p>
+
+    <h3>5. core.js (инициализатор)</h3>
+    <p>Объект <code>GradusStatic</code> запускает фреймворк: загружает БД, вызывает вашу функцию <code>initSite()</code> (если она объявлена в <code>site.js</code>), затем запускает рендеринг страницы.</p>
+
+    <h2>⚙️ Файл site.js — ваша главная песочница</h2>
+    <p><code>site.js</code> — единственное место, куда вы пишете свой код. В нём можно:</p>
+    <ul>
+        <li>Настроить конфигурацию (debug, путь к db.json).</li>
+        <li>Зарегистрировать собственные функции для плейсхолдеров.</li>
+        <li>Выполнить любую подготовительную логику (например, положить что-то в кэш).</li>
+        <li>Полностью удалить примеры — оставить только настройки и запуск.</li>
+    </ul>
+    <p>Обязательная структура <code>site.js</code>:</p>
+    <pre>// 1. Ваши настройки
+const siteConfig = {
+    debug: true,            // показывать логи в консоли
+    dbFile: '/db.json'      // путь к файлу начальных данных (можно убрать, если не нужен)
+};
+
+// 2. (Необязательно) Функция инициализации
+async function initSite() {
+    // Здесь можно регистрировать свои обработчики, писать в кэш и т.д.
+    GradusWeb.cache.set('username', 'Гость');
+    // ... ваш код ...
+}
+
+// 3. Запуск фреймворка
+window.addEventListener('load', () => {
+    GradusStatic.init(siteConfig);
+});
+</pre>
+    <p>Если вы не определите <code>initSite</code>, ничего страшного — фреймворк просто запустит рендеринг без дополнительных действий. Вы можете вообще очистить <code>site.js</code> до такого состояния:</p>
+    <pre>const siteConfig = {};
+window.addEventListener('load', () => GradusStatic.init(siteConfig));
+</pre>
+
+    <h2>🧩 Все встроенные функции для {}</h2>
+    <p>Ниже перечислены все функции, которые можно использовать прямо в HTML внутри фигурных скобок. Регистр важен!</p>
+    <table>
+        <tr><th>Функция</th><th>Аргументы</th><th>Описание</th><th>Пример</th></tr>
+        <tr><td><code>cache_read</code></td><td>ключ</td><td>Читает значение из кэша. Если нет — пустая строка.</td><td><code>{cache_read:username}</code></td></tr>
+        <tr><td><code>cache_write</code></td><td>ключ, значение, TTL (необяз.)</td><td>Сохраняет в кэш, ничего не выводит. TTL в секундах (по умолч. 3600).</td><td><code>{cache_write:cart,пусто,600}</code></td></tr>
+        <tr><td><code>cache_delete</code></td><td>ключ</td><td>Удаляет запись из кэша.</td><td><code>{cache_delete:tmp}</code></td></tr>
+        <tr><td><code>db_read</code></td><td>ключ</td><td>Читает значение из локальной БД (GradusDB).</td><td><code>{db_read:site_title}</code></td></tr>
+        <tr><td><code>db_write</code></td><td>ключ, значение</td><td>Записывает в БД. Ничего не выводит.</td><td><code>{db_write:counter,10}</code></td></tr>
+        <tr><td><code>db_delete</code></td><td>ключ</td><td>Удаляет ключ из БД.</td><td><code>{db_delete:old_data}</code></td></tr>
+        <tr><td><code>server_get</code></td><td>URL</td><td>Делает GET-запрос и вставляет ответ.</td><td><code>{server_get:https://api.example.com/news}</code></td></tr>
+        <tr><td><code>server_post</code></td><td>URL, тело (JSON)</td><td>POST-запрос. Возвращает ответ сервера.</td><td><code>{server_post:https://api.example.com/save,{"x":1}}</code></td></tr>
+        <tr><td><code>firebase_get</code></td><td>полный URL (с .json)</td><td>Читает данные из Firebase Realtime Database.</td><td><code>{firebase_get:https://myapp.firebaseio.com/users/1.json}</code></td></tr>
+        <tr><td><code>firebase_set</code></td><td>URL, данные</td><td>Записывает данные в Firebase (PUT).</td><td><code>{firebase_set:https://.../users/1.json,{"name":"Ivan"}}</code></td></tr>
+        <tr><td><code>encode</code></td><td>строка</td><td>Кодирует строку по таблице Gradus Web. Пробелы и запятые нужно передавать через вложенные вызовы или кэш.</td><td><code>{encode:{cache_read:greeting}}</code></td></tr>
+        <tr><td><code>decode</code></td><td>закодированная строка</td><td>Декодирует обратно.</td><td><code>{decode:_050_018_...}</code></td></tr>
+        <tr><td><code>random_uuid</code></td><td>нет</td><td>Генерирует UUID v4.</td><td><code>{random_uuid}</code></td></tr>
+        <tr><td><code>random_password</code></td><td>длина (по умолч. 12)</td><td>Создаёт криптостойкий пароль.</td><td><code>{random_password:16}</code></td></tr>
+        <tr><td><code>random_int</code></td><td>диапазон (min-max или одно число)</td><td>Случайное целое число. Если не указано — от 1 до 100.</td><td><code>{random_int:10-50}</code></td></tr>
+        <tr><td><code>date</code></td><td>локаль (например ru-RU)</td><td>Текущая дата в читаемом формате.</td><td><code>{date:ru-RU}</code></td></tr>
+        <tr><td><code>time</code></td><td>локаль</td><td>Текущее время.</td><td><code>{time:ru-RU}</code></td></tr>
+        <tr><td><code>timestamp</code></td><td>нет</td><td>Unix timestamp в миллисекундах.</td><td><code>{timestamp}</code></td></tr>
+        <tr><td><code>calc</code></td><td>математическое выражение</td><td>Вычисляет простое выражение (без букв).</td><td><code>{calc:5+3*2}</code></td></tr>
+        <tr><td><code>upper</code></td><td>строка</td><td>Переводит в верхний регистр.</td><td><code>{upper:hello}</code></td></tr>
+        <tr><td><code>lower</code></td><td>строка</td><td>В нижний регистр.</td><td><code>{lower:HELLO}</code></td></tr>
+        <tr><td><code>concat</code></td><td>строка1, строка2, …</td><td>Склеивает аргументы в одну строку.</td><td><code>{concat:Hello, ,World}</code></td></tr>
+        <tr><td><code>substring</code></td><td>строка, начало, конец (необяз.)</td><td>Вырезает подстроку.</td><td><code>{substring:Hello,1,3}</code> → "el"</td></tr>
+        <tr><td><code>config</code></td><td>название параметра</td><td>Показывает значение настройки из siteConfig.</td><td><code>{config:debug}</code></td></tr>
+        <tr><td><code>notify</code></td><td>текст, тип, длительность</td><td>Показывает всплывающее уведомление (не для вывода текста). Тип: success, error, info, warning.</td><td><code>{notify:Привет!,success,3000}</code></td></tr>
+    </table>
+
+    <h2>👨‍💻 Создание своих функций</h2>
+    <p>Вы можете добавить любую логику, зарегистрировав обработчик в <code>initSite()</code>. Функция может быть синхронной или асинхронной, принимать несколько аргументов.</p>
+    <pre>async function initSite() {
+    // Регистрируем обработчик "hello"
+    GradusStatic.registerHandler('hello', (name) => {
+        return `Привет, ${name}!`;
+    });
+
+    // Более сложный: запрос к API
+    GradusStatic.registerHandler('get_price', async (productId) => {
+        const url = `https://api.example.com/price/${productId}`;
+        const resp = await GradusServer.get(url);
+        return resp;  // вернёт JSON как строку (можно распарсить)
+    });
+}</pre>
+    <p>После регистрации используйте в HTML:</p>
+    <pre>&lt;p&gt;{hello:{cache_read:username}}&lt;/p&gt;
+&lt;p&gt;Цена товара: {get_price:123}&lt;/p&gt;</pre>
+    <p><strong>Важно:</strong> аргументы передаются через запятую, поэтому если вам нужна запятая внутри аргумента, сохраните значение в кэш/БД и используйте вложенный вызов: <code>{myFunc:{cache_read:myKey}}</code>.</p>
+
+    <h2>🧠 Вложенные вызовы и несколько аргументов</h2>
+    <p>Фреймворк умеет обрабатывать конструкции, где внутри аргумента находится другой вызов:</p>
+    <pre>{hello:{cache_read:username}}           ← сначала выполнится cache_read, потом hello</pre>
+    <p>Несколько аргументов разделяются запятыми:</p>
+    <pre>{concat:Hello, ,World!}               → "Hello World!"
+{currency_rate:USD,RUB}              → вызовет функцию currency_rate("USD", "RUB")</pre>
+    <p>Если внутри аргумента нет двоеточия, он считается простой строкой. Если есть — рекурсивно обрабатывается.</p>
+
+    <h2>📦 Использование database.js и db.json</h2>
+    <p>По умолчанию при запуске фреймворк пытается загрузить <code>/db.json</code>. Вы можете изменить путь в настройках <code>dbFile: '/data/initial.json'</code> или убрать вовсе (<code>dbFile: ''</code>), если БД не нужна.</p>
+    <p>Пример <code>db.json</code>:</p>
+    <pre>{
+  "site_title": "Мой блог",
+  "theme": "light",
+  "items_per_page": 10
+}</pre>
+    <p>В HTML используйте <code>{db_read:site_title}</code>. Изменения, сделанные через <code>{db_write:theme,dark}</code> или <code>GradusDB.set('theme', 'dark')</code>, сохранятся в localStorage и переживут обновление страницы.</p>
+    <div class="note">
+        <strong>💡 Совет:</strong> если вы используете GitHub Pages, файл <code>db.json</code> будет загружен, но любые изменения на сервер не сохранятся — они останутся только у посетителя в браузере.
+    </div>
+
+    <h2>🚫 Ограничения и безопасность</h2>
+    <ul>
+        <li><strong>Не храните секреты в коде и данных.</strong> Весь JavaScript выполняется на стороне клиента и может быть прочитан. Токены, ключи API, пароли должны быть на сервере.</li>
+        <li><strong>Firebase:</strong> если используете Firebase, убедитесь, что правила доступа настроены правильно. Для публичных данных можно разрешить чтение всем.</li>
+        <li><strong>Локальная БД:</strong> используйте только для нечувствительных настроек (тема, язык, никнейм). Не пишите туда email, настоящие имена и т.п. — они доступны в localStorage.</li>
+        <li><strong>Математическая функция <code>calc</code>:</strong> выполняет выражение через <code>Function()</code>, но фильтрует всё, кроме цифр и знаков. Не передавайте туда пользовательский ввод.</li>
+        <li><strong>Капча и DDoS-защита</strong> реализованы на клиенте и легко обходятся — они служат лишь для удобства, а не как серьёзная защита.</li>
+    </ul>
+
+    <h2>🏁 Быстрый старт с нуля</h2>
+    <ol>
+        <li>Создайте папку проекта.</li>
+        <li>Скачайте все 5 файлов ядра (<code>gradus-web.js</code>, <code>database.js</code>, <code>server.js</code>, <code>client.js</code>, <code>core.js</code>) и положите в неё.</li>
+        <li>Создайте <code>index.html</code> с подключением скриптов (как в примере ниже).</li>
+        <li>Создайте <code>site.js</code> с минимальной конфигурацией (см. выше).</li>
+        <li>Откройте терминал в папке и запустите <code>python -m http.server 8000</code> (если есть Python). Или используйте любой другой локальный сервер.</li>
+        <li>Откройте браузер и перейдите на <code>http://localhost:8000</code>.</li>
+    </ol>
+
+    <h3>Минимальный index.html</h3>
+    <pre>&lt;!DOCTYPE html&gt;
+&lt;html lang="ru"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;Мой сайт&lt;/title&gt;
+    &lt;script src="gradus-web.js"&gt;&lt;/script&gt;
+    &lt;script src="database.js"&gt;&lt;/script&gt;
+    &lt;script src="server.js"&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;{hello:{cache_read:username}}&lt;/h1&gt;
+
+    &lt;script src="client.js"&gt;&lt;/script&gt;
+    &lt;script src="core.js"&gt;&lt;/script&gt;
+    &lt;script src="site.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+
+    <h2>📚 Пример полного site.js с комментариями</h2>
+    <pre>// site.js — ваш файл управления
+
+// 1. Конфигурация
+const siteConfig = {
+    debug: true,          // выводить в консоль информацию о работе
+    dbFile: '/db.json'    // начальные данные (можно закомментировать)
+};
+
+// 2. Инициализация (вызывается автоматически перед рендерингом)
+async function initSite() {
+    // Можем сразу положить что-то в кэш
+    GradusWeb.cache.set('username', 'Гость', 3600);   // хранить час
+    GradusWeb.cache.set('greeting', 'Привет, Мир!'); // без TTL будет 3600 сек по умолчанию
+
+    // Регистрируем кастомную функцию для получения курса валют
+    GradusStatic.registerHandler('currency_rate', async (from, to) => {
+        try {
+            const url = `https://api.exchangerate-api.com/v4/latest/${from}`;
+            const resp = await GradusServer.get(url);
+            const data = JSON.parse(resp);
+            if (data && data.rates && data.rates[to]) {
+                return data.rates[to].toFixed(2);
+            }
+            return '—';
+        } catch (e) {
+            return '—';
+        }
+    });
+
+    // Простая функция приветствия
+    GradusStatic.registerHandler('hello', (name) => `Привет, ${name}!`);
+}
+
+// 3. Запускаем фреймворк при полной загрузке страницы
+window.addEventListener('load', () => {
+    GradusStatic.init(siteConfig);
+});
+</pre>
+
+    <h2>🔄 Что можно менять, а что нельзя</h2>
+    <ul>
+        <li><strong>ИЗМЕНЯЙТЕ СМЕЛО:</strong> <code>site.js</code>, <code>index.html</code> (и другие ваши HTML), <code>db.json</code> (или удалите его, если не нужен).</li>
+        <li><strong>НЕ ТРОГАЙТЕ:</strong> <code>gradus-web.js</code>, <code>database.js</code>, <code>server.js</code>, <code>client.js</code>, <code>core.js</code>. Эти файлы — ядро, их обновления могут выходить отдельно, и ваши правки будут потеряны.</li>
+    </ul>
+    <p>Если вам нужно расширить функциональность, пишите код в <code>site.js</code> и используйте <code>GradusStatic.registerHandler</code>.</p>
+
+    <h2>🧪 Проверка работы</h2>
+    <p>Откройте консоль браузера (F12). Если <code>debug: true</code>, вы увидите сообщения <code>[CORE]</code>, <code>[DB]</code> и т.д. Ошибки в плейсхолдерах также будут видны. В рабочем режиме ставьте <code>debug: false</code>.</p>
+
+    <h2>📞 Обратная связь</h2>
+    <p>Этот фреймворк создан как часть экосистемы Gradus. По всем вопросам обращайтесь к документации Gradus или в репозиторий проекта.</p>
+
+</div>
+</body>
+</html>
