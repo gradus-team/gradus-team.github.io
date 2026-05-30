@@ -2,609 +2,193 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Gradus Team — Антивирусные решения</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="icon" href="./favicon.ico" type="image/x-icon">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', sans-serif;
             background-color: #FFFFFF;
             color: #1E2A3A;
             scroll-behavior: smooth;
             line-height: 1.5;
+            width: 100%;
+            overflow-x: hidden;
         }
         .navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(8px);
+            position: fixed; top: 0; left: 0; width: 100%;
+            background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(8px);
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02), 0 1px 0 rgba(0, 0, 0, 0.05);
-            z-index: 1000;
-            padding: 0.75rem 1rem;
+            z-index: 1000; padding: 0.75rem 1rem;
         }
         .nav-container {
-            max-width: 1280px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
+            max-width: 1280px; margin: 0 auto;
+            display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;
+            width: 100%;
         }
         .logo {
-            font-size: 1.8rem;
-            font-weight: 700;
+            font-size: 1.8rem; font-weight: 700;
             background: linear-gradient(135deg, #2C7A4D, #1E5A3A);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+            -webkit-background-clip: text; background-clip: text; color: transparent;
             letter-spacing: -0.5px;
         }
-        .logo span {
-            font-size: 1rem;
-            font-weight: 400;
-            color: #4B6E5B;
-            background: none;
-        }
-        .menu-toggle {
-            display: none;
-            font-size: 1.8rem;
-            background: none;
-            border: none;
-            color: #2C7A4D;
-            cursor: pointer;
-            padding: 0.5rem;
-        }
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            list-style: none;
-            transition: all 0.3s ease;
-        }
-        .nav-links a {
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 1rem;
-            color: #2C3E44;
-            transition: color 0.2s;
-            padding: 0.5rem 0;
-            border-bottom: 2px solid transparent;
-        }
-        .nav-links a:hover {
-            color: #2C7A4D;
-            border-bottom-color: #2C7A4D;
-        }
-        main {
-            margin-top: 75px;
-        }
-        section {
-            padding: 4rem 1.5rem;
-            max-width: 1280px;
-            margin: 0 auto;
-            border-bottom: 1px solid #EFF2F5;
-        }
+        .logo span { font-size: 1rem; font-weight: 400; color: #4B6E5B; background: none; }
+        .menu-toggle { display: none; font-size: 1.8rem; background: none; border: none; color: #2C7A4D; cursor: pointer; padding: 0.5rem; }
+        .nav-links { display: flex; gap: 2rem; list-style: none; transition: all 0.3s ease; }
+        .nav-links a { text-decoration: none; font-weight: 500; font-size: 1rem; color: #2C3E44; transition: color 0.2s; padding: 0.5rem 0; border-bottom: 2px solid transparent; }
+        .nav-links a:hover { color: #2C7A4D; border-bottom-color: #2C7A4D; }
+        main { margin-top: 75px; width: 100%; }
+        section { padding: 4rem 1.5rem; max-width: 1280px; margin: 0 auto; border-bottom: 1px solid #EFF2F5; width: 100%; }
         .section-title {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 2rem;
-            letter-spacing: -0.3px;
-            position: relative;
-            display: inline-block;
+            font-size: 2rem; font-weight: 700; margin-bottom: 2rem; letter-spacing: -0.3px;
+            position: relative; display: inline-block;
         }
         .section-title:after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 0;
-            width: 60px;
-            height: 4px;
-            background: #2C7A4D;
-            border-radius: 4px;
+            content: ''; position: absolute; bottom: -10px; left: 0; width: 60px; height: 4px;
+            background: #2C7A4D; border-radius: 4px;
         }
-        /* КАРТОЧКА СБОРА СРЕДСТВ (улучшенная) */
+
         .fundraising-card {
-            background: linear-gradient(145deg, #F9FCF9, #F1F6F1);
-            border-radius: 32px;
-            padding: 2rem 1.8rem;
-            margin: 2rem auto;
-            box-shadow: 0 12px 30px rgba(0,0,0,0.05);
-            border: 1px solid #DEE8DE;
-            max-width: 1000px;
+            background: linear-gradient(145deg, #F9FCF9, #F1F6F1); border-radius: 32px;
+            padding: 2rem 1.8rem; margin: 2rem auto; box-shadow: 0 12px 30px rgba(0,0,0,0.05);
+            border: 1px solid #DEE8DE; max-width: 1000px; width: 100%;
         }
-        .fundraising-header {
-            text-align: center;
-            margin-bottom: 1.8rem;
-        }
-        .fundraising-header h3 {
-            font-size: 1.9rem;
-            font-weight: 700;
-            color: #1C5C3A;
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .fundraising-header i {
-            font-size: 2rem;
-            color: #FFB347;
-        }
-        .progress-wrapper {
-            max-width: 500px;
-            margin: 0 auto 2rem auto;
-        }
-        .progress-bar-custom {
-            height: 32px;
-            background-color: #E8EFE8;
-            border-radius: 40px;
-            overflow: hidden;
-            position: relative;
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
-        }
+        .fundraising-header { text-align: center; margin-bottom: 1.8rem; }
+        .fundraising-header h3 { font-size: 1.9rem; font-weight: 700; color: #1C5C3A; display: inline-flex; align-items: center; gap: 12px; }
+        .fundraising-header i { font-size: 2rem; color: #FFB347; }
+        .progress-wrapper { max-width: 500px; margin: 0 auto 2rem auto; width: 100%; }
+        .progress-bar-custom { height: 32px; background-color: #E8EFE8; border-radius: 40px; overflow: hidden; position: relative; box-shadow: inset 0 1px 3px rgba(0,0,0,0.1); }
         .progress-fill {
-            width: 10%;
-            height: 100%;
-            background: linear-gradient(90deg, #4CAF50, #8BC34A);
-            border-radius: 40px;
-            transition: width 0.4s ease;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            padding-right: 12px;
-            color: white;
-            font-weight: bold;
-            font-size: 0.85rem;
+            width: 7.5%; height: 100%; background: linear-gradient(90deg, #4CAF50, #8BC34A);
+            border-radius: 40px; transition: width 0.4s ease; display: flex; align-items: center;
+            justify-content: flex-end; padding-right: 12px; color: white; font-weight: bold; font-size: 0.85rem;
         }
-        .progress-stats {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 8px;
-            font-size: 0.85rem;
-            color: #2C5A42;
-            font-weight: 500;
-        }
-        .goals-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            gap: 1rem;
-            margin-top: 1.2rem;
-        }
+        .progress-stats { display: flex; justify-content: space-between; margin-top: 8px; font-size: 0.85rem; color: #2C5A42; font-weight: 500; }
+        .goals-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1rem; margin-top: 1.2rem; }
         .goal-item {
-            background: white;
-            border-radius: 28px;
-            padding: 0.8rem 1rem;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
-            border: 1px solid #E2EDE2;
-            transition: all 0.2s;
+            background: white; border-radius: 28px; padding: 0.8rem 1rem; display: flex;
+            align-items: center; gap: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            border: 1px solid #E2EDE2; transition: all 0.2s;
         }
-        .goal-item i {
-            font-size: 1.6rem;
-            color: #2C7A4D;
-            width: 32px;
-            text-align: center;
-        }
-        .goal-item span {
-            font-size: 0.95rem;
-            font-weight: 500;
-            color: #1F3D32;
-        }
-        /* Обычные карточки продуктов */
-        .products-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1.5rem;
-            justify-content: space-between;
-            margin-bottom: 2rem;
-        }
+        .goal-item i { font-size: 1.6rem; color: #2C7A4D; width: 32px; text-align: center; }
+        .goal-item span { font-size: 0.95rem; font-weight: 500; color: #1F3D32; }
+
+        .products-grid { display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: space-between; margin-bottom: 2rem; }
         .product-card {
-            flex: 1;
-            min-width: 240px;
-            background: #FFFFFF;
-            border-radius: 28px;
-            padding: 1.5rem;
-            border: 1px solid #EAEEEA;
-            transition: all 0.25s;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.02);
+            flex: 1; min-width: 240px; background: #FFFFFF; border-radius: 28px; padding: 1.5rem;
+            border: 1px solid #EAEEEA; transition: all 0.25s; box-shadow: 0 8px 20px rgba(0,0,0,0.02);
             cursor: pointer;
         }
-        .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 30px -12px rgba(0,0,0,0.1);
-            border-color: #CFE3D4;
-        }
-        .product-icon {
-            font-size: 2.8rem;
-            margin-bottom: 1rem;
-            color: #2C7A4D;
-        }
-        .product-card h3 {
-            font-size: 1.6rem;
-            font-weight: 600;
-            margin-bottom: 0.75rem;
-        }
-        .product-card p {
-            color: #4B5E5A;
-            margin-bottom: 1.2rem;
-        }
-        .click-hint {
-            font-style: italic;
-            font-size: 0.8rem;
-            color: #7A8E86;
-            margin-top: 0.5rem;
-            display: block;
-        }
-        .price {
-            font-weight: 700;
-            font-size: 1.5rem;
-            color: #1C5C3A;
-        }
-        .old-price {
-            text-decoration: line-through;
-            font-size: 0.9rem;
-            color: #8A9A92;
-            margin-left: 0.5rem;
-        }
-        /* ТАБЛИЦА СРАВНЕНИЯ (исправлена ширина) */
-        .comparison-wrapper {
-            width: 100%;
-            overflow-x: auto;
-            margin-top: 2rem;
-            border-radius: 24px;
-            background: #FFFFFF;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.03), 0 8px 24px rgba(0,0,0,0.05);
-            -webkit-overflow-scrolling: touch;
-        }
-        .comparison-table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 700px;
-        }
-        .comparison-table th, .comparison-table td {
-            padding: 0.9rem 0.8rem;
-            text-align: left;
-            border-bottom: 1px solid #EDF2ED;
-            font-size: 0.9rem;
-        }
-        .comparison-table th {
-            background: #F4F8F4;
-            font-weight: 600;
-            color: #1F3D32;
-        }
-        .comparison-table td:first-child {
-            font-weight: 500;
-            background-color: #FCFDFC;
-        }
-        .check-true {
-            color: #2C7A4D;
-            font-weight: 600;
-        }
-        .check-false {
-            color: #C1CFC7;
-        }
-        .badge-pro {
-            background: #EAD94C;
-            color: #2C3E2F;
-            font-weight: 600;
-            padding: 0.2rem 0.6rem;
-            border-radius: 30px;
-            font-size: 0.7rem;
-            display: inline-block;
-            margin-left: 6px;
-        }
-        /* Остальные секции */
-        .about-card {
-            background: #F9FBF9;
-            border-radius: 32px;
-            padding: 1.8rem;
-            box-shadow: 0 12px 30px rgba(0,0,0,0.03);
-            border: 1px solid #ECF0EC;
-        }
-        .launcher-wrapper {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 2rem;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .launcher-desc {
-            flex: 1;
-        }
-        .launcher-img {
-            flex: 1;
-            text-align: center;
-        }
-        .launcher-img img {
-            max-width: 100%;
-            border-radius: 28px;
-            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.2);
-            border: 1px solid #E0E7E0;
-        }
+        .product-card:hover { transform: translateY(-5px); box-shadow: 0 20px 30px -12px rgba(0,0,0,0.1); border-color: #CFE3D4; }
+        .product-icon { font-size: 2.8rem; margin-bottom: 1rem; color: #2C7A4D; }
+        .product-card h3 { font-size: 1.6rem; font-weight: 600; margin-bottom: 0.75rem; }
+        .product-card p { color: #4B5E5A; margin-bottom: 1.2rem; }
+        .click-hint { font-style: italic; font-size: 0.8rem; color: #7A8E86; margin-top: 0.5rem; display: block; }
+        .price { font-weight: 700; font-size: 1.5rem; color: #1C5C3A; }
+        .old-price { text-decoration: line-through; font-size: 0.9rem; color: #8A9A92; margin-left: 0.5rem; }
+
+        .comparison-wrapper { width: 100%; overflow-x: auto; margin-top: 2rem; border-radius: 24px; background: #FFFFFF; box-shadow: 0 1px 2px rgba(0,0,0,0.03), 0 8px 24px rgba(0,0,0,0.05); -webkit-overflow-scrolling: touch; }
+        .comparison-table { width: 100%; border-collapse: collapse; min-width: 700px; }
+        .comparison-table th, .comparison-table td { padding: 0.9rem 0.8rem; text-align: left; border-bottom: 1px solid #EDF2ED; font-size: 0.9rem; }
+        .comparison-table th { background: #F4F8F4; font-weight: 600; color: #1F3D32; }
+        .comparison-table td:first-child { font-weight: 500; background-color: #FCFDFC; }
+        .check-true { color: #2C7A4D; font-weight: 600; }
+        .check-false { color: #C1CFC7; }
+        .badge-pro { background: #EAD94C; color: #2C3E2F; font-weight: 600; padding: 0.2rem 0.6rem; border-radius: 30px; font-size: 0.7rem; display: inline-block; margin-left: 6px; }
+
+        .about-card { background: #F9FBF9; border-radius: 32px; padding: 1.8rem; box-shadow: 0 12px 30px rgba(0,0,0,0.03); border: 1px solid #ECF0EC; }
+        .launcher-wrapper { display: flex; flex-wrap: wrap; gap: 2rem; align-items: center; justify-content: space-between; }
+        .launcher-desc { flex: 1; }
+        .launcher-img { flex: 1; text-align: center; }
+        .launcher-img img { max-width: 100%; border-radius: 28px; box-shadow: 0 20px 35px -12px rgba(0,0,0,0.2); border: 1px solid #E0E7E0; }
         .download-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: #2C7A4D;
-            color: white;
-            padding: 0.9rem 2rem;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 1rem;
-            text-decoration: none;
-            margin-top: 1.5rem;
-            transition: background 0.2s;
-            border: none;
-            cursor: pointer;
+            display: inline-flex; align-items: center; gap: 0.5rem; background: #2C7A4D; color: white;
+            padding: 0.9rem 2rem; border-radius: 50px; font-weight: 600; font-size: 1rem;
+            text-decoration: none; margin-top: 1.5rem; transition: background 0.2s; border: none; cursor: pointer;
         }
-        .download-btn:hover {
-            background: #1D5E3A;
-            transform: scale(0.98);
-        }
-        .faq-list {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-            margin-top: 1.5rem;
-        }
-        .faq-category {
-            background: #F9FCF9;
-            border-radius: 24px;
-            padding: 1.2rem;
-            border: 1px solid #E0EAE0;
-        }
-        .faq-category h3 {
-            font-size: 1.3rem;
-            margin-bottom: 0.8rem;
-            color: #1F3D32;
-        }
-        .faq-item {
-            margin: 0.7rem 0;
-            padding-left: 1rem;
-            border-left: 3px solid #A6C8B1;
-        }
-        .faq-item a {
-            text-decoration: none;
-            color: #1F5E42;
-            font-weight: 500;
-            cursor: pointer;
-        }
-        .purchase-card {
-            background: #F9FBF9;
-            border-radius: 32px;
-            padding: 2rem;
-            box-shadow: 0 12px 30px rgba(0,0,0,0.03);
-            border: 1px solid #ECF0EC;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        .purchase-card label {
-            display: block;
-            font-weight: 500;
-            margin-top: 1rem;
-            margin-bottom: 0.3rem;
-        }
-        .purchase-card input, .purchase-card select {
-            width: 100%;
-            padding: 0.8rem;
-            border-radius: 16px;
-            border: 1px solid #CFDFD4;
-            font-family: inherit;
-            font-size: 1rem;
-        }
-        .checkbox {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin: 1rem 0;
-        }
-        .checkbox input {
-            width: auto;
-        }
-        .total-price {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #1C5C3A;
-            margin-top: 1rem;
-        }
-        .help-text {
-            font-size: 0.85rem;
-            color: #5F7A6E;
-            margin-top: 0.5rem;
-        }
-        .donation-message {
-            background: #F0F5F0;
-            padding: 1rem;
-            border-radius: 16px;
-            font-family: monospace;
-            word-break: break-all;
-            margin: 1rem 0;
-        }
-        .btn-pay {
-            background: #2C7A4D;
-            color: white;
-            padding: 1rem;
-            width: 100%;
-            border: none;
-            border-radius: 50px;
-            font-weight: bold;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: background 0.2s;
-            margin-top: 1rem;
-        }
-        .requirements-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 2rem;
-            background: #FFFFFF;
-            border-radius: 24px;
-            overflow: hidden;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.03), 0 8px 24px rgba(0,0,0,0.05);
-        }
-        .requirements-table th, .requirements-table td {
-            padding: 0.9rem 0.8rem;
-            border-bottom: 1px solid #EDF2ED;
-            text-align: left;
-        }
-        .requirements-table th {
-            background: #F4F8F4;
-        }
-        .footer {
-            background: #F8FBF8;
-            padding: 2rem 1rem;
-            text-align: center;
-            font-size: 0.85rem;
-            border-top: 1px solid #E2EAE2;
-        }
-        .social-links {
-            margin-top: 1rem;
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-        }
-        .social-links a {
-            color: #2C6B4A;
-            font-size: 1.5rem;
-        }
-        /* Модалки */
+        .download-btn:hover { background: #1D5E3A; transform: scale(0.98); }
+        .faq-list { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 1.5rem; }
+        .faq-category { background: #F9FCF9; border-radius: 24px; padding: 1.2rem; border: 1px solid #E0EAE0; }
+        .faq-category h3 { font-size: 1.3rem; margin-bottom: 0.8rem; color: #1F3D32; }
+        .faq-item { margin: 0.7rem 0; padding-left: 1rem; border-left: 3px solid #A6C8B1; }
+        .faq-item a { text-decoration: none; color: #1F5E42; font-weight: 500; cursor: pointer; }
+        .purchase-card { background: #F9FBF9; border-radius: 32px; padding: 2rem; box-shadow: 0 12px 30px rgba(0,0,0,0.03); border: 1px solid #ECF0EC; max-width: 600px; margin: 0 auto; width: 100%; }
+        .purchase-card label { display: block; font-weight: 500; margin-top: 1rem; margin-bottom: 0.3rem; }
+        .purchase-card input, .purchase-card select { width: 100%; padding: 0.8rem; border-radius: 16px; border: 1px solid #CFDFD4; font-family: inherit; font-size: 1rem; }
+        .checkbox { display: flex; align-items: center; gap: 0.5rem; margin: 1rem 0; }
+        .checkbox input { width: auto; }
+        .total-price { font-size: 1.8rem; font-weight: 700; color: #1C5C3A; margin-top: 1rem; }
+        .help-text { font-size: 0.85rem; color: #5F7A6E; margin-top: 0.5rem; }
+        .donation-message { background: #F0F5F0; padding: 1rem; border-radius: 16px; font-family: monospace; word-break: break-all; margin: 1rem 0; }
+        .btn-pay { background: #2C7A4D; color: white; padding: 1rem; width: 100%; border: none; border-radius: 50px; font-weight: bold; font-size: 1.2rem; cursor: pointer; transition: background 0.2s; margin-top: 1rem; }
+        .requirements-table { width: 100%; border-collapse: collapse; margin-top: 2rem; background: #FFFFFF; border-radius: 24px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.03), 0 8px 24px rgba(0,0,0,0.05); }
+        .requirements-table th, .requirements-table td { padding: 0.9rem 0.8rem; border-bottom: 1px solid #EDF2ED; text-align: left; }
+        .requirements-table th { background: #F4F8F4; }
+        .footer { background: #F8FBF8; padding: 2rem 1rem; text-align: center; font-size: 0.85rem; border-top: 1px solid #E2EAE2; width: 100%; }
+        .social-links { margin-top: 1rem; display: flex; justify-content: center; gap: 1.5rem; }
+        .social-links a { color: #2C6B4A; font-size: 1.5rem; }
+
+        /* стили для раскрывающихся продуктов */
+        .product-list { margin-top: 2rem; }
+        .product-item { background: #F9FCF9; border-radius: 24px; padding: 1rem 1.2rem; margin-bottom: 1rem; border: 1px solid #E0EAE0; transition: all 0.2s; }
+        .product-title { font-size: 1.2rem; font-weight: 600; color: #1F3D32; cursor: pointer; user-select: none; display: flex; align-items: center; justify-content: space-between; }
+        .product-title i { font-size: 1.4rem; color: #2C7A4D; margin-right: 10px; }
+        .product-desc { margin-top: 0.8rem; padding-left: 2rem; color: #4B5E5A; display: none; line-height: 1.6; }
+        .product-desc p { margin-bottom: 0.5rem; }
+        .product-desc a { color: #1F5E42; font-weight: 500; }
+
+        /* Модальные окна */
         .modal {
-            display: none;
-            position: fixed;
-            z-index: 2000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.8);
-            backdrop-filter: blur(5px);
-            align-items: center;
-            justify-content: center;
+            display: none; position: fixed; z-index: 2000; left: 0; top: 0;
+            width: 100%; height: 100%; background-color: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px); align-items: center; justify-content: center;
         }
         .modal-content {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 24px;
-            max-width: 90%;
-            max-height: 90%;
-            overflow-y: auto;
-            position: relative;
+            background: white; padding: 1.5rem; border-radius: 24px;
+            max-width: 90%; max-height: 90%; overflow-y: auto; position: relative;
         }
         .close-modal {
-            position: absolute;
-            top: 10px;
-            right: 20px;
-            font-size: 2rem;
-            cursor: pointer;
-            color: #333;
-            background: rgba(255,255,255,0.8);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            position: absolute; top: 10px; right: 20px; font-size: 2rem;
+            cursor: pointer; color: #333; background: rgba(255,255,255,0.8);
+            width: 40px; height: 40px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
         }
-        /* Адаптивность */
+
+        /* адаптивность */
         @media (max-width: 820px) {
-            .nav-container {
-                flex-direction: row;
-                justify-content: space-between;
-            }
-            .menu-toggle {
-                display: block;
-            }
-            .nav-links {
-                display: none;
-                flex-direction: column;
-                width: 100%;
-                background: white;
-                padding: 1rem 0;
-                gap: 0.8rem;
-                text-align: center;
-                position: absolute;
-                top: 60px;
-                left: 0;
-                box-shadow: 0 15px 20px rgba(0,0,0,0.05);
-                border-radius: 0 0 20px 20px;
-            }
-            .nav-links.active {
-                display: flex;
-            }
-            .nav-links li {
-                width: 100%;
-            }
-            .nav-links a {
-                display: block;
-                padding: 0.75rem;
-            }
-            .products-grid {
-                flex-direction: column;
-            }
-            .launcher-wrapper {
-                flex-direction: column;
-            }
-            section {
-                padding: 2rem 1rem;
-            }
-            .section-title {
-                font-size: 1.8rem;
-            }
-            .product-card {
-                min-width: auto;
-            }
-            .fundraising-card {
-                padding: 1.5rem;
-                margin: 1rem;
-            }
-            .goals-grid {
-                grid-template-columns: 1fr;
-            }
-            .goal-item {
-                padding: 0.7rem 1rem;
-            }
-            .goal-item i {
-                font-size: 1.3rem;
-            }
-            .goal-item span {
-                font-size: 0.9rem;
-            }
+            .nav-container { flex-direction: row; justify-content: space-between; }
+            .menu-toggle { display: block; }
+            .nav-links { display: none; flex-direction: column; width: 100%; background: white; padding: 1rem 0; gap: 0.8rem; text-align: center; position: absolute; top: 60px; left: 0; box-shadow: 0 15px 20px rgba(0,0,0,0.05); border-radius: 0 0 20px 20px; }
+            .nav-links.active { display: flex; }
+            .nav-links li { width: 100%; }
+            .nav-links a { display: block; padding: 0.75rem; }
+            .products-grid { flex-direction: column; }
+            .product-card { width: 100%; }
+            .launcher-wrapper { flex-direction: column; }
+            .launcher-desc { width: 100%; }
+            section { padding: 2rem 1rem; }
+            .section-title { font-size: 1.8rem; }
+            .product-card { min-width: auto; }
+            .fundraising-card { padding: 1.5rem; margin: 1rem; }
+            .goals-grid { grid-template-columns: 1fr; }
+            .goal-item { padding: 0.7rem 1rem; }
+            .goal-item i { font-size: 1.3rem; }
+            .goal-item span { font-size: 0.9rem; }
+            .comparison-wrapper { width: 100%; }
+            .comparison-table { min-width: 0; width: 100%; }
         }
         @media (max-width: 600px) {
-            .comparison-wrapper {
-                margin: 1rem -0.5rem;
-                border-radius: 16px;
-            }
-            .comparison-table th, .comparison-table td {
-                padding: 0.7rem 0.5rem;
-                font-size: 0.75rem;
-            }
-            .download-btn {
-                padding: 0.8rem 1.5rem;
-                font-size: 0.9rem;
-                width: 100%;
-                justify-content: center;
-            }
-            .faq-category h3 {
-                font-size: 1.1rem;
-            }
-            .progress-fill {
-                font-size: 0.7rem;
-                padding-right: 6px;
-            }
-            .product-card h3 {
-                font-size: 1.4rem;
-            }
-            .price {
-                font-size: 1.3rem;
-            }
+            .comparison-wrapper { margin: 1rem -0.5rem; border-radius: 16px; }
+            .comparison-table th, .comparison-table td { padding: 0.7rem 0.5rem; font-size: 0.75rem; }
+            .download-btn { padding: 0.8rem 1.5rem; font-size: 0.9rem; width: 100%; justify-content: center; }
+            .faq-category h3 { font-size: 1.1rem; }
+            .progress-fill { font-size: 0.7rem; padding-right: 6px; }
+            .product-card h3 { font-size: 1.4rem; }
+            .price { font-size: 1.3rem; }
+            .section-title { font-size: 1.5rem; }
         }
     </style>
 </head>
@@ -617,7 +201,7 @@
             <li><a href="#about">О нас</a></li>
             <li><a href="#products">Продукты</a></li>
             <li><a href="#purchase">Купить</a></li>
-            <li><a href="#launcher">Скачать лаунчер</a></li>
+            <li><a href="#download">Скачать</a></li>
             <li><a href="./for_dev">Для разработчиков</a></li>
             <li><a href="#faq">Техподдержка</a></li>
         </ul>
@@ -630,10 +214,53 @@
             <p style="font-size: 1.1rem; line-height: 1.5; margin-bottom: 1rem;"><strong>Gradus Team</strong> — команда энтузиастов и профессионалов в области информационной безопасности. Наша цель — создавать доступные, мощные и прозрачные антивирусные решения. Мы верим, что каждый пользователь заслуживает надёжную защиту без скрытых подписок.</p>
             <p>Разрабатываем продукты с 2024 года, постоянно совершенствуем движки и добавляем инновационные методы обнаружения угроз.</p>
         </div>
+
+        <!-- Блок "Коротко о наших продуктах" -->
+        <h2 class="section-title" style="margin-top: 2rem;">Коротко о наших продуктах</h2>
+        <div class="product-list">
+            <div class="product-item">
+                <div class="product-title" onclick="toggleProduct(this)">
+                    <span><i class="fas fa-desktop"></i> Gradus AV (для Windows)</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="product-desc">
+                    <p><strong>Многоуровневый антивирус для Windows.</strong> Версии Free, Standard и Pro. Включает сигнатурный сканер, поведенческий анализ, эмуляцию мини-фильтра (JNA), AMSI-защиту, песочницу, облачную проверку (VirusTotal, MalwareBazaar), YARA, брандмауэр, родительский контроль и многое другое. Pro-версия обладает максимальным набором функций.</p>
+                </div>
+            </div>
+            <div class="product-item">
+                <div class="product-title" onclick="toggleProduct(this)">
+                    <span><i class="fab fa-android"></i> Gradus Mobile (Android)</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="product-desc">
+                    <p><strong>Антивирус для Android на базе Corona SDK (Lua).</strong> Проверяет установленные APK и файлы в выбранных папках. Сигнатурный анализ вредоносных разрешений, рут-доступа, эксплойтов. Поддерживает быструю и пользовательскую проверку, белый список, журнал сканирования и авто-мониторинг.</p>
+                </div>
+            </div>
+            <div class="product-item">
+                <div class="product-title" onclick="toggleProduct(this)">
+                    <span><i class="fas fa-code"></i> GradusCore (ядро)</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="product-desc">
+                    <p><strong>Легковесное антивирусное ядро на Java, Python и JavaScript.</strong> Встраивается в любые приложения, ботов, серверы. Выполняет сигнатурный анализ файлов и опционально проверяет SHA-256 через MalwareBazaar. Все сигнатуры хранятся прямо в коде, внешние файлы не требуются. Возвращает процент угрозы (0–100).</p>
+                    <p><a href="./for_dev" target="_blank">Подробнее на странице для разработчиков →</a></p>
+                </div>
+            </div>
+            <div class="product-item">
+                <div class="product-title" onclick="toggleProduct(this)">
+                    <span><i class="fas fa-globe"></i> Static.JS (фреймворк)</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="product-desc">
+                    <p><strong>Микро-фреймворк для создания динамических сайтов на статических хостингах.</strong> Работает с плейсхолдерами <code>{функция:аргументы}</code>, которые заменяются данными из кэша, локальной БД, API, SecretStorage и т.д. Включает защиту от XSS, детект DevTools, шифрование AES-GCM. Идеально подходит для GitHub Pages, Netlify и обычных серверов без PHP/Python.</p>
+                    <p><a href="https://github.com/gradus-team/static.js" target="_blank">Документация Static.JS →</a></p>
+                </div>
+            </div>
+        </div>
     </section>
 
-    <!-- НОВЫЙ КРАСИВЫЙ БЛОК СБОРА СРЕДСТВ -->
-    <div style="max-width: 1280px; margin: 0 auto; padding: 0 1rem;">
+    <!-- Сбор средств -->
+    <div style="max-width: 1280px; margin: 0 auto; padding: 0 1rem; width: 100%;">
         <div class="fundraising-card">
             <div class="fundraising-header">
                 <h3><i class="fas fa-hand-holding-heart"></i> Сбор средств на улучшения</h3>
@@ -685,7 +312,6 @@
             </div>
         </div>
 
-        <!-- СИСТЕМНЫЕ ТРЕБОВАНИЯ (ОБНОВЛЕННЫЕ) -->
         <h2 class="section-title" style="margin-top: 2rem;">Системные требования</h2>
         <table class="requirements-table">
             <thead><tr><th>Компонент</th><th>Минимальные</th><th>Рекомендуемые</th></tr></thead>
@@ -699,7 +325,6 @@
             </tbody>
         </table>
 
-        <!-- ТАБЛИЦА СРАВНЕНИЯ (ОБНОВЛЕННАЯ) -->
         <div class="comparison-wrapper">
             <table class="comparison-table">
                 <thead><tr><th>Функция / Версия</th><th>Free</th><th>Standard</th><th>Pro</th></tr></thead>
@@ -773,21 +398,27 @@
         </div>
     </section>
 
-    <section id="launcher">
-        <h2 class="section-title">Скачать лаунчер</h2>
+    <section id="download">
+        <h2 class="section-title">Скачать</h2>
         <div class="launcher-wrapper">
+            <!-- Windows -->
             <div class="launcher-desc">
-                <p style="font-size: 1.1rem; margin-bottom: 1rem;">Удобный инсталлятор Gradus AV установит выбранную версию антивируса, проверит лицензионный ключ (для Standard/Pro) и распакует все файлы.</p>
-                <ul style="margin-bottom: 1.2rem; padding-left: 1.5rem;">
-                    <li>Автоматическая загрузка актуальной версии</li>
-                    <li>Поддержка ключей активации и деактивация после установки</li>
-                    <li>Выбор папки установки, прогресс-бар</li>
-                </ul>
-                <a href="files/GradusAVInstaller.jar" class="download-btn" download><i class="fas fa-download"></i> Скачать лаунчер (Windows 10/11 .jar)</a>
+                <div class="product-icon"><i class="fab fa-windows"></i></div>
+                <h3>Gradus AV Launcher</h3>
+                <p>Удобный инсталлятор для Windows 10/11. Автоматически загружает актуальную версию, проверяет лицензию и устанавливает антивирус.</p>
+                <a href="files/GradusAVInstaller.jar" class="download-btn" download>
+                    <i class="fas fa-download"></i> Скачать лаунчер (.jar)
+                </a>
             </div>
-            <div class="launcher-img">
-                <img src="img/launcher-screenshot.png" alt="Интерфейс лаунчера" onerror="this.src='https://placehold.co/500x300?text=Gradus+Launcher'">
-                <p style="margin-top: 8px; font-size: 0.8rem;">Пример интерфейса установщика</p>
+            <!-- Android -->
+            <div class="launcher-desc">
+                <div class="product-icon"><i class="fab fa-android"></i></div>
+                <h3>Gradus Mobile</h3>
+                <p>Антивирус для Android. Проверка установленных приложений и файлов, защита от вредоносных APK, белый список и журнал сканирования.</p>
+                <a href="files/GradusMobile.apk" class="download-btn" download>
+                    <i class="fas fa-download"></i> Скачать APK
+                </a>
+                <p class="click-hint" style="margin-top: 10px;">После скачивания разрешите установку из неизвестных источников</p>
             </div>
         </div>
     </section>
@@ -844,9 +475,22 @@
 <div id="licenseModal" class="modal"><div class="modal-content"><span class="close-modal" id="closeLicenseModal">&times;</span><div id="licenseText"><h3>Лицензионное соглашение и правила оплаты (оферта)</h3><p><strong>Настоящий документ является публичной офертой.</strong> Используя форму оплаты, вы соглашаетесь со всеми условиями.</p><ol><li>Платёж производится строго в сумме, вычисленной на сайте, и сопровождается уникальным сообщением, сгенерированным системой. Отсутствие этого сообщения или неверная сумма приравниваются к нецелевому платежу.</li><li>Если полученная сумма меньше 100% стоимости, но больше 0%, лицензии выдаются пропорционально оплаченной доле с округлением вниз. Частичный возврат не предусмотрен.</li><li>Если сумма составляет менее 50% от стоимости заказа, ключи не выдаются и деньги не возвращаются — это добровольное пожертвование.</li><li>Ключи высылаются на указанную почту в течение 72 часов после зачисления средств (обычно 24 часа).</li><li>Передача ключей третьим лицам запрещена, блокировка лицензии без возврата средств.</li><li>Возврат только если ключи не высланы в течение 10 рабочих дней с момента оплаты.</li><li>Проект не возвращает деньги, если пользователь передумал пользоваться антивирусом.</li><li>Применяется право РФ.</li></ol><p><strong>Нажимая «Принимаю», вы подтверждаете ознакомление и согласие.</strong></p></div></div></div>
 
 <script>
+    // раскрытие/скрытие описаний продуктов
+    function toggleProduct(titleElement) {
+        const desc = titleElement.nextElementSibling;
+        const icon = titleElement.querySelector('.fa-chevron-down, .fa-chevron-up');
+        if (desc.style.display === 'block') {
+            desc.style.display = 'none';
+            if (icon) { icon.classList.remove('fa-chevron-up'); icon.classList.add('fa-chevron-down'); }
+        } else {
+            desc.style.display = 'block';
+            if (icon) { icon.classList.remove('fa-chevron-down'); icon.classList.add('fa-chevron-up'); }
+        }
+    }
+
     // --- FAQ контент ---
     const faqContent = {
-        "1.1": "<b>Как установить антивирус?</b><br>Скачайте лаунчер (раздел «Скачать лаунчер»), запустите .jar, следуйте инструкциям.",
+        "1.1": "<b>Как установить антивирус?</b><br>Скачайте лаунчер (раздел «Скачать»), запустите .jar, следуйте инструкциям.",
         "1.2": "<b>Ошибка JRE / Java не найдена</b><br>Установите Java Runtime Environment 21 или новее с официального сайта.",
         "1.3": "<b>На сервере не найден файл</b><br>Проверьте интернет. Если повторяется – используйте VPN или напишите в поддержку.",
         "2.1": "<b>Как оплатить лицензию?</b><br>Заполните форму, сгенерируйте сообщение и переведите сумму на Donation Alerts с точным текстом.",
@@ -866,7 +510,6 @@
         standard: { img: 'img/screenshot_standard.png', caption: 'Gradus Standard – расширенные настройки' },
         pro: { img: 'img/screenshot_pro.png', caption: 'Gradus Pro – облачная проверка' }
     };
-    // Модальные окна
     const modal = document.getElementById('screenshotModal');
     const modalImg = document.getElementById('modalImage');
     const modalCaption = document.getElementById('modalCaption');
