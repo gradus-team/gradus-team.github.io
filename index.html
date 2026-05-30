@@ -300,14 +300,14 @@
                 <div class="product-icon"><i class="fas fa-chart-line"></i></div>
                 <h3>Gradus Standard</h3>
                 <p>Расширенная защита: авто-сканер, резервное копирование, антифишинг 2‑го уровня.</p>
-                <div class="price">490 ₽ <span class="old-price">990 ₽</span></div>
+                <div class="price">79 ₽ <span class="old-price">490 ₽</span></div>
                 <span class="click-hint">(Нажми для скриншота)</span>
             </div>
             <div class="product-card" data-product="pro">
                 <div class="product-icon"><i class="fas fa-crown"></i></div>
                 <h3>Gradus Pro</h3>
                 <p>Максимальная безопасность: VirusTotal, авто-удаление, приоритетная помощь.</p>
-                <div class="price">990 ₽ <span class="old-price">1 990 ₽</span></div>
+                <div class="price">149 ₽ <span class="old-price">990 ₽</span></div>
                 <span class="click-hint">(Нажми для скриншота)</span>
             </div>
         </div>
@@ -373,8 +373,8 @@
                 <input type="text" id="alternative" required placeholder="@username или номер">
                 <label>Версия антивируса:</label>
                 <select id="version">
-                    <option value="standard">Gradus Standard — 490 ₽</option>
-                    <option value="pro">Gradus Pro — 990 ₽</option>
+                    <option value="standard">Gradus Standard — 79 ₽</option>
+                    <option value="pro">Gradus Pro — 149 ₽</option>
                 </select>
                 <label>Количество ключей:</label>
                 <input type="number" id="quantity" value="1" min="1" max="10" step="1">
@@ -576,7 +576,7 @@
     function updatePrice() {
         let version = versionSelect.value;
         let quantity = parseInt(quantityInput.value) || 1;
-        let price = version === 'standard' ? 490 : 990;
+        let price = version === 'standard' ? 79 : 149;
         let total = price * quantity;
         if (quantity > 2) total = total * 0.75;
         if (quantity >= 10) total = total * 0.6;
