@@ -1,19 +1,16 @@
 /**
  * Gradus Web — Утилиты для статических сайтов (JavaScript)
- * Версия 1.1 — расширенное кодирование по таблице Gradus
+ * Версия 2.2.0 — усиленный анти‑DevTools + SecretStorage (AES‑GCM).
  * Включает: Gradus Cache, Gradus Encoder, Gradus Captcha,
- *           Gradus DDoS-Protection, Gradus Notify, генераторы
- * Использование: <script src="gradus-web.js"></script>
- *                и вызывайте GradusWeb.метод(...)
+ *           Gradus DDoS-Protection, Gradus Notify, генераторы,
+ *           Gradus SecretStorage, Gradus Security.
  */
 (function (window) {
     'use strict';
 
-    // Основной объект
     const GradusWeb = {
-        version: '1.1.0',
+        version: '2.2.0',
 
-        // Служебный логгер
         _log(type, msg) {
             const prefix = '[GRADUS-WEB]';
             if (type === 'error') console.error(prefix, msg);
@@ -101,7 +98,6 @@
             }
         },
 
-        // Кодировать строку по таблице
         encode(text) {
             if (!text && text !== '') return '';
             this._buildDecodeMap();
@@ -111,21 +107,18 @@
                 if (this._charMap.hasOwnProperty(ch)) {
                     result += this._charMap[ch];
                 } else {
-                    // Символы, которых нет в таблице, оставляем как есть
                     result += ch;
                 }
             }
             return result;
         },
 
-        // Декодировать строку из кодов _xxx обратно в символы
         decode(encoded) {
             if (!encoded && encoded !== '') return '';
             this._buildDecodeMap();
             let result = '';
             let i = 0;
             while (i < encoded.length) {
-                // Ищем подстроку вида _xxx (4 символа, начинается с '_')
                 if (encoded[i] === '_' && i + 3 < encoded.length) {
                     const code = encoded.substr(i, 4);
                     if (this._decodeMap.hasOwnProperty(code)) {
@@ -134,7 +127,6 @@
                         continue;
                     }
                 }
-                // Иначе просто добавляем символ
                 result += encoded[i];
                 i++;
             }
@@ -183,7 +175,7 @@
             }
         },
 
-        // ========== 4. DDoS PROTECTION (rate limiter) ==========
+        // ========== 4. DDoS PROTECTION ==========
         ddos: {
             _store: {},
             isAllowed(id, maxRequests = 5, intervalSeconds = 10) {
@@ -275,7 +267,189 @@
             warning(msg, d) { this.show(msg, 'warning', d); }
         },
 
-        // ========== 7. ИНИЦИАЛИЗАЦИЯ ==========
+        // ========== 7. SECRET STORAGE (AES‑GCM) ==========
+        secretStorage: {
+            _prefix: 'gs_sec_v2_',
+
+            // Стабильный идентификатор браузера
+            _getFingerprint() {
+                const nav = window.navigator, screen = window.screen;
+                const str = [nav.userAgent, nav.language, nav.hardwareConcurrency || 0,
+                             screen.width, screen.height, screen.colorDepth,
+                             new Date().getTimezoneOffset()].join('|');
+                // Используем синхронный хеш (SHA‑256), если доступен, иначе простой хеш
+                return this._hashSync(str);
+            },
+
+            // Синхронный SHA‑256 через SubtleCrypto в синхронном режиме (обёртка)
+            _hashSync(str) {
+                // Поскольку SubtleCrypto асинхронный, используем простой DJB2 как fallback,
+                // чтобы не зависеть от асинхронности на этапе получения fingerprint.
+                let h = 5381;
+                for (let i = 0; i < str.length; i++) h = (h * 33) ^ str.charCodeAt(i);
+                return (h >>> 0).toString(16);
+            },
+
+            // Асинхронное получение ключа на основе fingerprint
+            async _getKey() {
+                const fp = this._getFingerprint();
+                const enc = new TextEncoder();
+                const keyMaterial = await crypto.subtle.importKey(
+                    'raw',
+                    enc.encode(fp),
+                    { name: 'PBKDF2' },
+                    false,
+                    ['deriveBits', 'deriveKey']
+                );
+                const salt = enc.encode('GradusSalt2025!X#');
+                return crypto.subtle.deriveKey(
+                    {
+                        name: 'PBKDF2',
+                        salt: salt,
+                        iterations: 100000,
+                        hash: 'SHA-256'
+                    },
+                    keyMaterial,
+                    { name: 'AES-GCM', length: 256 },
+                    false,
+                    ['encrypt', 'decrypt']
+                );
+            },
+
+            // Шифрование (AES‑GCM)
+            async _encrypt(plaintext, key) {
+                const iv = crypto.getRandomValues(new Uint8Array(12));
+                const enc = new TextEncoder();
+                const encoded = enc.encode(plaintext);
+                const ciphertext = await crypto.subtle.encrypt(
+                    { name: 'AES-GCM', iv: iv },
+                    key,
+                    encoded
+                );
+                const combined = new Uint8Array(iv.byteLength + ciphertext.byteLength);
+                combined.set(iv, 0);
+                combined.set(new Uint8Array(ciphertext), iv.byteLength);
+                return btoa(String.fromCharCode(...combined));
+            },
+
+            // Расшифрование (AES‑GCM)
+            async _decrypt(cipherB64, key) {
+                const combined = new Uint8Array(
+                    atob(cipherB64).split('').map(c => c.charCodeAt(0))
+                );
+                const iv = combined.slice(0, 12);
+                const data = combined.slice(12);
+                const decrypted = await crypto.subtle.decrypt(
+                    { name: 'AES-GCM', iv: iv },
+                    key,
+                    data
+                );
+                return new TextDecoder().decode(decrypted);
+            },
+
+            // Публичные методы
+            async set(name, value) {
+                try {
+                    const key = await this._getKey();
+                    const encrypted = await this._encrypt(value, key);
+                    localStorage.setItem(this._prefix + name, encrypted);
+                    return true;
+                } catch (e) {
+                    GradusWeb._log('error', 'SecretStorage set: ' + e);
+                    return false;
+                }
+            },
+
+            async get(name) {
+                try {
+                    const encrypted = localStorage.getItem(this._prefix + name);
+                    if (!encrypted) return null;
+                    const key = await this._getKey();
+                    return await this._decrypt(encrypted, key);
+                } catch (e) {
+                    GradusWeb._log('error', 'SecretStorage get: ' + e);
+                    return null;
+                }
+            },
+
+            async remove(name) {
+                localStorage.removeItem(this._prefix + name);
+            }
+        },
+
+        // ========== 8. УСИЛЕННАЯ ЗАЩИТА ОТ DEVTOOLS ==========
+        security: {
+            _interval: null,
+            _onDetected: null,
+
+            enableDevToolsProtection(onDetectedCallback) {
+                this._onDetected = onDetectedCallback;
+
+                // Метод 1: зацикленный debugger
+                const debuggerLoop = () => {
+                    const start = performance.now();
+                    debugger;
+                    if (performance.now() - start > 100) {
+                        this._trigger('debugger');
+                    }
+                };
+
+                // Метод 2: постоянная очистка консоли и проверка времени выполнения
+                const consoleCheck = () => {
+                    const before = Date.now();
+                    console.clear();
+                    console.log('%c ', 'font-size:0;'); // невидимая запись
+                    if (Date.now() - before > 5) this._trigger('console');
+                };
+
+                this._interval = setInterval(() => {
+                    debuggerLoop();
+                    consoleCheck();
+                }, 200);
+
+                // Блокировка горячих клавиш
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'F12' ||
+                        (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) ||
+                        (e.ctrlKey && e.key === 'U')) {
+                        e.preventDefault();
+                        return false;
+                    }
+                });
+
+                // Блокировка правого клика
+                document.addEventListener('contextmenu', e => e.preventDefault());
+
+                // Защита от встраивания в iframe
+                if (window.self !== window.top) {
+                    this._trigger('iframe');
+                }
+
+                // Подозрительный User-Agent (мобильный с большим экраном)
+                if (/Android.*Mobile/.test(navigator.userAgent) && window.outerWidth > 500) {
+                    this._trigger('ua');
+                }
+            },
+
+            _trigger(method) {
+                if (this._onDetected) this._onDetected();
+            },
+
+            disableDevToolsProtection() {
+                if (this._interval) { clearInterval(this._interval); this._interval = null; }
+            },
+
+            sanitizeHTML(str) {
+                const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;', '/': '&#x2F;' };
+                return String(str).replace(/[&<>"'\/]/g, ch => map[ch]);
+            },
+
+            sanitizeScript(input) {
+                return input.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
+            }
+        },
+
+        // ========== ИНИЦИАЛИЗАЦИЯ ==========
         init() {
             this._log('info', 'Gradus Web v' + this.version + ' загружен');
         }
