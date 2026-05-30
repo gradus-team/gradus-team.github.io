@@ -55,6 +55,12 @@
             padding: 0.8rem 1rem;
             margin: 1.5rem 0;
         }
+        .warning {
+            background: #ffebee;
+            border-left: 4px solid #f44336;
+            padding: 0.8rem 1rem;
+            margin: 1.5rem 0;
+        }
         a { color: #1976d2; text-decoration: none; }
         a:hover { text-decoration: underline; }
         hr { margin: 2.5rem 0; border: 0; border-top: 1px solid #ddd; }
@@ -68,12 +74,22 @@
     </style>
 </head>
 <body>
-    <h1>🌐 Gradus Web — Утилиты для сайтов</h1>
+    <h1>🌐 Gradus Web — Утилиты для сайтов (v2.2.0)</h1>
     <p>
         Единый JavaScript‑модуль для статических сайтов. Включает: кэширование, кастомное кодирование,
-        капчу, защиту от DDoS (rate‑limiter), генераторы случайных данных и красивые всплывающие уведомления.
+        капчу, защиту от DDoS (rate‑limiter), генераторы случайных данных, красивые всплывающие уведомления,
+        <strong>шифрованное хранилище SecretStorage</strong> и <strong>модуль безопасности</strong> (защита от F12, XSS и инъекций).
         <br>Подключение: <code>&lt;script src="gradus-web.js"&gt;&lt;/script&gt;</code>
     </p>
+
+    <div class="note">
+        <strong>🔄 Что нового в версии 2.2:</strong>
+        <ul>
+            <li><code>SecretStorage</code> — шифрованное хранилище (AES‑GCM) для API‑ключей, токенов, паролей.</li>
+            <li><code>security.enableDevToolsProtection()</code> — усиленная защита от открытия консоли (F12), блокировка горячих клавиш и контекстного меню.</li>
+            <li><code>security.sanitizeHTML()</code> — автоматическая очистка строк от XSS‑векторов.</li>
+        </ul>
+    </div>
 
     <h2>✨ Возможности</h2>
     <ul>
@@ -83,6 +99,8 @@
         <li><strong>Клиентский DDoS‑протектор</strong> (ограничение частоты действий)</li>
         <li><strong>Генераторы</strong>: UUID v4, криптостойкий пароль, случайное целое</li>
         <li><strong>Тосты‑уведомления</strong> (success, error, info, warning) с автоскрытием</li>
+        <li><strong>SecretStorage</strong> — шифрованное хранение конфиденциальных данных (AES‑GCM)</li>
+        <li><strong>Модуль безопасности</strong>: защита от F12, XSS‑санитизация, блокировка клавиш и контекстного меню</li>
     </ul>
 
     <hr>
@@ -177,6 +195,57 @@ GradusWeb.notify.error('Ошибка соединения');
 GradusWeb.notify.info('Идёт загрузка...');
 GradusWeb.notify.warning('Время сессии истекает');</pre>
     <p>Появляются в правом верхнем углу и автоматически исчезают через 3 секунды (можно передать свою длительность).</p>
+
+    <hr>
+
+    <h2>7. 🔒 SecretStorage (шифрованное хранилище)</h2>
+    <p>
+        Хранит данные в <code>localStorage</code> в зашифрованном виде (AES‑GCM). Ключ шифрования привязан к отпечатку браузера
+        (User‑Agent, язык, разрешение экрана и т.д.), поэтому расшифровать данные на другом устройстве или вручную крайне сложно.
+        <strong>Не является абсолютной защитой</strong>, но сильно усложняет кражу токенов.
+    </p>
+    <pre>// Сохранить (асинхронно)
+await GradusWeb.secretStorage.set('api_key', 'sk_live_1234567890');
+
+// Прочитать
+const key = await GradusWeb.secretStorage.get('api_key');
+
+// Удалить
+await GradusWeb.secretStorage.remove('api_key');</pre>
+    <div class="warning">
+        <strong>⚠️ Важно:</strong> SecretStorage доступен только из кода. Нельзя напрямую записать значение через плейсхолдеры (только через вызов методов в <code>site.js</code> или обработчиках).
+        При открытых DevTools злоумышленник всё равно может прочитать исходный код и попытаться расшифровать данные. Для критичных секретов используйте серверный прокси.
+    </div>
+    <table>
+        <tr><th>Метод</th><th>Описание</th></tr>
+        <tr><td><code>set(name, value)</code></td><td>Асинхронно сохраняет значение в зашифрованном виде</td></tr>
+        <tr><td><code>get(name)</code></td><td>Асинхронно возвращает расшифрованное значение (или <code>null</code>)</td></tr>
+        <tr><td><code>remove(name)</code></td><td>Удаляет запись</td></tr>
+    </table>
+
+    <hr>
+
+    <h2>8. 🛡️ Модуль безопасности (GradusWeb.security)</h2>
+
+    <h3>Защита от DevTools (F12)</h3>
+    <p>Включает несколько методов детекта открытой консоли: проверка размера окна, зацикленный <code>debugger</code>, очистка консоли. При обнаружении вызывает пользовательский callback.</p>
+    <pre>GradusWeb.security.enableDevToolsProtection(() => {
+    alert('DevTools открыты!');
+    // удаляем секреты, очищаем кэш, перезагружаем страницу...
+});</pre>
+    <p>Также автоматически блокируются клавиши <kbd>F12</kbd>, <kbd>Ctrl+Shift+I</kbd>, <kbd>Ctrl+U</kbd> и контекстное меню (правый клик).</p>
+
+    <h3>Защита от XSS и инъекций</h3>
+    <pre>const safe = GradusWeb.security.sanitizeHTML('<script>alert("xss")</script>');
+// safe = "&lt;script&gt;alert("xss")&lt;/script&gt;"
+const clean = GradusWeb.security.sanitizeScript(unsafeString);</pre>
+    <table>
+        <tr><th>Метод</th><th>Описание</th></tr>
+        <tr><td><code>enableDevToolsProtection(callback)</code></td><td>Включает слежение за DevTools, при обнаружении вызывает callback</td></tr>
+        <tr><td><code>disableDevToolsProtection()</code></td><td>Отключает слежение</td></tr>
+        <tr><td><code>sanitizeHTML(str)</code></td><td>Возвращает строку, безопасную для вставки в HTML</td></tr>
+        <tr><td><code>sanitizeScript(str)</code></td><td>Удаляет теги <code>&lt;script&gt;</code></td></tr>
+    </table>
 
     <hr>
 
