@@ -3,96 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gradus Static.JS — Полная документация</title>
+    <title>Gradus Static.JS — Полная документация (июнь 2026)</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            background: #f8fafc;
-            color: #1e293b;
-            line-height: 1.6;
-            padding: 2rem 1rem;
-        }
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            padding: 2.5rem 2rem;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.05);
-        }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f8fafc; color: #1e293b; line-height: 1.6; padding: 2rem 1rem; }
+        .container { max-width: 1000px; margin: 0 auto; background: white; border-radius: 20px; padding: 2.5rem 2rem; box-shadow: 0 8px 30px rgba(0,0,0,0.05); }
         h1 { font-size: 2.4rem; border-bottom: 4px solid #ff9800; padding-bottom: 0.4rem; margin-bottom: 2rem; }
         h2 { font-size: 1.8rem; margin-top: 2.5rem; color: #e65100; border-left: 5px solid #ff9800; padding-left: 1rem; }
         h3 { font-size: 1.4rem; margin-top: 2rem; color: #ef6c00; }
         h4 { font-size: 1.2rem; margin-top: 1.5rem; color: #f57c00; }
         p { margin: 1rem 0; }
-        code {
-            background: #e2e8f0;
-            padding: 0.2em 0.5em;
-            border-radius: 5px;
-            font-family: 'Cascadia Code', 'Fira Code', monospace;
-            font-size: 0.9em;
-        }
-        pre {
-            background: #1e293b;
-            color: #f1f5f9;
-            padding: 1.2rem;
-            border-radius: 12px;
-            overflow-x: auto;
-            font-family: 'Cascadia Code', 'Fira Code', monospace;
-            font-size: 0.9em;
-            line-height: 1.5;
-            margin: 1.2rem 0;
-        }
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            margin: 1.5rem 0;
-            display: block;
-            overflow-x: auto;
-        }
-        th, td {
-            border: 1px solid #cbd5e1;
-            padding: 0.8rem 1rem;
-            text-align: left;
-        }
-        th {
-            background: #ffcc80;
-            color: #1e293b;
-            font-weight: 600;
-        }
-        .note {
-            background: #fff3e0;
-            border-left: 5px solid #ff9800;
-            padding: 1rem 1.2rem;
-            margin: 1.5rem 0;
-            border-radius: 6px;
-        }
-        .warning {
-            background: #ffebee;
-            border-left: 5px solid #f44336;
-            padding: 1rem 1.2rem;
-            margin: 1.5rem 0;
-            border-radius: 6px;
-            color: #b71c1c;
-        }
+        code { background: #e2e8f0; padding: 0.2em 0.5em; border-radius: 5px; font-family: 'Cascadia Code', 'Fira Code', monospace; font-size: 0.9em; }
+        pre { background: #1e293b; color: #f1f5f9; padding: 1.2rem; border-radius: 12px; overflow-x: auto; font-family: 'Cascadia Code', 'Fira Code', monospace; font-size: 0.9em; line-height: 1.5; margin: 1.2rem 0; }
+        table { border-collapse: collapse; width: 100%; margin: 1.5rem 0; display: block; overflow-x: auto; }
+        th, td { border: 1px solid #cbd5e1; padding: 0.8rem 1rem; text-align: left; }
+        th { background: #ffcc80; color: #1e293b; font-weight: 600; }
+        .note { background: #fff3e0; border-left: 5px solid #ff9800; padding: 1rem 1.2rem; margin: 1.5rem 0; border-radius: 6px; }
+        .warning { background: #ffebee; border-left: 5px solid #f44336; padding: 1rem 1.2rem; margin: 1.5rem 0; border-radius: 6px; color: #b71c1c; }
         a { color: #1976d2; text-decoration: none; }
         a:hover { text-decoration: underline; }
         ul, ol { margin: 1rem 0 1rem 2rem; }
         li { margin-bottom: 0.3rem; }
-
-        @media (max-width: 600px) {
-            .container { padding: 1.5rem 1rem; }
-            h1 { font-size: 1.8rem; }
-            h2 { font-size: 1.4rem; }
-            pre { font-size: 0.8rem; padding: 0.8rem; }
-        }
+        @media (max-width: 600px) { .container { padding: 1.5rem 1rem; } h1 { font-size: 1.8rem; } h2 { font-size: 1.4rem; } pre { font-size: 0.8rem; padding: 0.8rem; } }
     </style>
 </head>
 <body>
 <div class="container">
 
-    <h1>📘 Gradus Static.JS — Полная документация</h1>
+    <h1>📘 Gradus Static.JS — Полная документация (июнь 2026)</h1>
     <p>
         <strong>Gradus Static.JS</strong> — это микро‑фреймворк для создания динамических сайтов на статических хостингах (GitHub Pages, Netlify, обычный сервер без PHP/Python).<br>
         Он позволяет вставлять в HTML специальные метки <code>{функция:аргументы}</code>, которые при загрузке страницы заменяются на реальные данные: из кэша, локальной базы, API, генераторов и т.д.
@@ -102,14 +40,24 @@
     </p>
 
     <div class="note">
-        <strong>🔄 Что нового в мае 2026:</strong>
+        <strong>🔄 Что нового в июне 2026:</strong>
         <ul>
-            <li><strong>SecretStorage</strong> — шифрованное хранение API‑ключей, токенов, паролей (AES‑GCM). Новые плейсхолдеры: <code>secret_read</code>, <code>secret_write</code>, <code>secret_delete</code>.</li>
-            <li><strong>Автоматическая защита от XSS</strong> — все подстановки проходят санитизацию.</li>
-            <li><strong>Усиленная защита от F12</strong> — детект DevTools, очистка секретов при попытке анализа.</li>
-            <li><strong>Встроенный обработчик <code>get_api_key_preview</code></strong> для демонстрации.</li>
+            <li><strong>Gradus Web v2.3</strong> – скрытая соль, очистка всех секретов, удаление скриптов при F12, пропуск мобильных устройств.</li>
+            <li><strong>Встроенный античит</strong> – теперь можно создавать экземпляры через <code>GradusWeb.antiCheat.createInstance()</code>.</li>
+            <li><strong>Core 2.3</strong> – ожидание DOM перед инициализацией, гарантированное включение защиты при <code>debug: false</code>.</li>
+            <li><strong>Server.js 1.2</strong> – разделение PUT (точная замена) и POST (генерация ключей), улучшенная обработка ошибок.</li>
+            <li>Исправлены уязвимости <strong>GSF-2026-29052026-1</strong>, <strong>GSF-2026-29052026-2</strong>, <strong>GSF-2026-31052026-1</strong>, <strong>GSF-2026-01062026-1</strong>.</li>
         </ul>
     </div>
+
+    <h2>🛡️ Исправленные уязвимости (GSF)</h2>
+    <table>
+        <tr><th>Идентификатор</th><th>Дата обнаружения</th><th>Описание</th><th>Исправлено в</th></tr>
+        <tr><td><code>GSF-2026-29052026-1</code></td><td>29.05.2026</td><td>Недостаточная обфускация SecretStorage – соль была доступна через отладчик</td><td>Gradus Web 2.3</td></tr>
+        <tr><td><code>GSF-2026-29052026-2</code></td><td>29.05.2026</td><td>Ложное срабатывание защиты от F12 на мобильных устройствах</td><td>Gradus Web 2.3</td></tr>
+        <tr><td><code>GSF-2026-31052026-1</code></td><td>31.05.2026</td><td>Отсутствие метода очистки всех секретов при обнаружении DevTools</td><td>Gradus Web 2.3</td></tr>
+        <tr><td><code>GSF-2026-01062026-1</code></td><td>01.06.2026</td><td>Защита от F12 не включалась из-за преждевременной инициализации в Core</td><td>Core 2.3</td></tr>
+    </table>
 
     <h2>🚀 Как это работает (для совсем новичков)</h2>
     <ol>
@@ -126,7 +74,7 @@
     <h2>📁 Структура файлов</h2>
     <pre>
 мой-сайт/
-├── gradus-web.js        ← утилиты (кэш, кодирование, капча, SecretStorage и др.) — НЕ ТРОГАЙТЕ
+├── gradus-web.js        ← утилиты (кэш, кодирование, капча, SecretStorage, античит) — НЕ ТРОГАЙТЕ
 ├── database.js          ← локальная база данных (JSON + localStorage) — НЕ ТРОГАЙТЕ
 ├── server.js            ← запросы к API и Firebase — НЕ ТРОГАЙТЕ
 ├── client.js            ← движок плейсхолдеров {} — НЕ ТРОГАЙТЕ
@@ -137,7 +85,7 @@
 </pre>
 
     <div class="warning">
-        <strong>🛑 Никогда не изменяйте файлы:</strong> <code>gradus-web.js</code>, <code>database.js</code>, <code>server.js</code>, <code>client.js</code>, <code>core.js</code>. Они составляют ядро фреймворка. Все ваши дополнения и настройки должны быть только в <code>site.js</code> и ваших HTML-файлах. Это правило придумано, чтобы вы могли легко обновлять фреймворк, не теряя свои изменения.
+        <strong>🛑 Никогда не изменяйте файлы:</strong> <code>gradus-web.js</code>, <code>database.js</code>, <code>server.js</code>, <code>client.js</code>, <code>core.js</code>. Они составляют ядро фреймворка. Все ваши дополнения и настройки должны быть только в <code>site.js</code> и ваших HTML-файлах.
     </div>
 
     <h2>📄 Назначение каждого файла</h2>
@@ -153,6 +101,7 @@
         <li><code>notify</code> — красивые всплывающие уведомления на странице.</li>
         <li><code>secretStorage</code> — шифрованное хранилище для конфиденциальных данных (AES‑GCM).</li>
         <li><code>security</code> — защита от DevTools, санитизация HTML/скриптов.</li>
+        <li><code>antiCheat</code> — встроенный античит для защиты переменных.</li>
     </ul>
     <p>Вы можете использовать эти утилиты в своём коде (<code>site.js</code>) напрямую: <code>GradusWeb.cache.set(...)</code>, <code>GradusWeb.secretStorage.set(...)</code>, <code>GradusWeb.notify.success(...)</code> и т.д. Но не редактируйте сам файл.</p>
 
@@ -164,7 +113,7 @@
     </ol>
     <p>Методы: <code>get(key)</code> — асинхронное чтение, <code>set(key, value)</code> — запись (сразу в localStorage), <code>delete(key)</code> — удаление. Данные хранятся в localStorage в открытом виде.</p>
     <div class="warning">
-        <strong>⚠️ Не храните в <code>db.json</code> или через <code>GradusDB.set()</code> пароли, токены Firebase, личные ключи!</strong> Эти данные доступны любому, кто откроет инструменты разработчика в браузере. <code>db.json</code> — только для общедоступных начальных настроек. Для секретов используйте <strong>SecretStorage</strong> или серверную часть.
+        <strong>⚠️ Не храните в <code>db.json</code> или через <code>GradusDB.set()</code> пароли, токены Firebase, личные ключи!</strong> Для секретов используйте <strong>SecretStorage</strong> или серверную часть.
     </div>
 
     <h3>3. server.js (запросы наружу)</h3>
@@ -172,8 +121,10 @@
     <ul>
         <li><code>get(url)</code> — GET-запрос, возвращает текст ответа.</li>
         <li><code>post(url, body)</code> — POST-запрос с JSON-телом.</li>
+        <li><code>put(url, body)</code> — PUT-запрос (для точной замены).</li>
         <li><code>firebaseGet(path)</code> — обёртка для GET к Firebase REST API (полный URL с <code>.json</code>).</li>
-        <li><code>firebaseSet(path, data)</code> — запись данных в Firebase через PUT.</li>
+        <li><code>firebaseSet(path, data)</code> — запись данных в Firebase через PUT (точная замена).</li>
+        <li><code>firebasePush(path, data)</code> — добавление данных со случайным ключом (POST).</li>
     </ul>
     <p>Используйте их в своих обработчиках для получения данных с любых публичных API.</p>
 
@@ -181,7 +132,7 @@
     <p>Это сердце фреймворка. После загрузки страницы он проходит по всем элементам и текстовым узлам, ищет конструкции вида <code>{функция:аргументы}</code> и заменяет их на результат выполнения функции. Поддерживает вложенные вызовы и автоматически санитизирует результат (защита от XSS).</p>
 
     <h3>5. core.js (инициализатор)</h3>
-    <p>Объект <code>GradusStatic</code> запускает фреймворк: загружает БД, вызывает вашу функцию <code>initSite()</code> (если она объявлена в <code>site.js</code>), затем запускает рендеринг страницы.</p>
+    <p>Объект <code>GradusStatic</code> запускает фреймворк: загружает БД, вызывает вашу функцию <code>initSite()</code> (если она объявлена в <code>site.js</code>), затем запускает рендеринг страницы. Теперь гарантированно ожидает загрузку DOM.</p>
 
     <h2>⚙️ Файл site.js — ваша главная песочница</h2>
     <p><code>site.js</code> — единственное место, куда вы пишете свой код. В нём можно:</p>
@@ -190,23 +141,23 @@
         <li>Зарегистрировать собственные функции для плейсхолдеров.</li>
         <li>Включить защиту от DevTools и другие настройки безопасности.</li>
         <li>Выполнить любую подготовительную логику (например, положить что-то в кэш или SecretStorage).</li>
+        <li>Создать экземпляр античита и отслеживать взломы.</li>
         <li>Полностью удалить примеры — оставить только настройки и запуск.</li>
     </ul>
     <p>Обязательная структура <code>site.js</code>:</p>
     <pre>// 1. Ваши настройки
 const siteConfig = {
-    debug: true,            // показывать логи в консоли
-    dbFile: '/db.json'      // путь к файлу начальных данных (можно убрать, если не нужен)
+    debug: false,          // если true, защита от F12 отключается
+    dbFile: '/db.json'     // путь к файлу начальных данных (можно убрать)
 };
 
 // 2. (Необязательно) Функция инициализации
 async function initSite() {
-    // Включаем защиту от DevTools (опционально)
-    GradusWeb.security.enableDevToolsProtection(() => {
-        alert('Обнаружены DevTools!');
-        GradusWeb.secretStorage.remove('api_key');
-        GradusWeb.cache.clear();
+    // Создаём античит (пример)
+    const ac = GradusWeb.antiCheat.createInstance((name, val, reason) => {
+        console.warn('Взлом!', name, reason);
     });
+    ac.startMonitoring();
 
     // Здесь можно регистрировать свои обработчики, писать в кэш, SecretStorage и т.д.
     GradusWeb.cache.set('username', 'Гость');
@@ -257,7 +208,6 @@ window.addEventListener('load', () => {
     </table>
 
     <h2>👨‍💻 Создание своих функций</h2>
-    <p>Вы можете добавить любую логику, зарегистрировав обработчик в <code>initSite()</code>. Функция может быть синхронной или асинхронной, принимать несколько аргументов.</p>
     <pre>async function initSite() {
     GradusStatic.registerHandler('hello', (name) => `Привет, ${name}!`);
 
@@ -275,11 +225,9 @@ window.addEventListener('load', () => {
     <p>Несколько аргументов разделяются запятыми:</p>
     <pre>{concat:Hello, ,World!}               → "Hello World!"
 {currency_rate:USD,RUB}              → вызовет функцию currency_rate("USD", "RUB")</pre>
-    <p>Если внутри аргумента нет двоеточия, он считается простой строкой. Если есть — рекурсивно обрабатывается.</p>
 
     <h2>📦 Использование database.js и db.json</h2>
     <p>По умолчанию при запуске фреймворк пытается загрузить <code>/db.json</code>. Вы можете изменить путь в настройках <code>dbFile: '/data/initial.json'</code> или убрать вовсе (<code>dbFile: ''</code>).</p>
-    <p>Пример <code>db.json</code>:</p>
     <pre>{
   "site_title": "Мой блог",
   "theme": "light",
@@ -297,13 +245,16 @@ window.addEventListener('load', () => {
     </p>
     <pre>// В site.js
 await GradusWeb.secretStorage.set('token', 'sk_abc123');
-const token = await GradusWeb.secretStorage.get('token');</pre>
+const token = await GradusWeb.secretStorage.get('token');
+await GradusWeb.secretStorage.clear(); // очистить всё</pre>
     <p>Для включения защиты от открытия консоли (F12) добавьте в <code>initSite()</code>:</p>
     <pre>GradusWeb.security.enableDevToolsProtection(() => {
-    // удалить секреты, очистить кэш...
-});</pre>
+    GradusWeb.secretStorage.clear();
+    GradusWeb.cache.clear();
+    location.reload();
+}, { removeScripts: true, skipMobile: true });</pre>
     <div class="warning">
-        <strong>⚠️ Важно:</strong> Абсолютной защиты на клиенте не существует. Злоумышленник с доступом к DevTools может попытаться расшифровать данные. Для критичных секретов используйте серверный прокси.
+        <strong>⚠️ Важно:</strong> Абсолютной защиты на клиенте не существует. Для критичных секретов используйте серверный прокси.
     </div>
 
     <h2>🚫 Ограничения и безопасность</h2>
@@ -340,44 +291,6 @@ const token = await GradusWeb.secretStorage.get('token');</pre>
     &lt;script src="site.js"&gt;&lt;/script&gt;
 &lt;/body&gt;
 &lt;/html&gt;</pre>
-
-    <h2>📚 Пример полного site.js с комментариями</h2>
-    <pre>// site.js — ваш файл управления
-
-const siteConfig = {
-    debug: true,
-    dbFile: '/db.json'
-};
-
-async function initSite() {
-    // Защита от F12
-    GradusWeb.security.enableDevToolsProtection(() => {
-        alert('DevTools открыты!');
-        GradusWeb.secretStorage.remove('api_key');
-        GradusWeb.cache.clear();
-    });
-
-    // Инициализация API‑ключа в SecretStorage
-    const existing = await GradusWeb.secretStorage.get('api_key');
-    if (!existing) {
-        await GradusWeb.secretStorage.set('api_key', 'sk_live_1234567890secret');
-    }
-
-    // Данные в кэш
-    GradusWeb.cache.set('username', 'Гость');
-    GradusWeb.cache.set('greeting', 'Привет, Мир!');
-
-    // Кастомные обработчики
-    GradusStatic.registerHandler('hello', (name) => `Привет, ${name}!`);
-    GradusStatic.registerHandler('currency_rate', async (from, to) => {
-        const resp = await GradusServer.get(`https://api.exchangerate-api.com/v4/latest/${from}`);
-        const data = JSON.parse(resp);
-        return data.rates[to].toFixed(2);
-    });
-}
-
-window.addEventListener('load', () => GradusStatic.init(siteConfig));
-</pre>
 
     <h2>🔄 Что можно менять, а что нельзя</h2>
     <ul>
