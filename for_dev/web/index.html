@@ -6,90 +6,53 @@
     <title>Gradus Web — Документация</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            max-width: 960px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-            line-height: 1.6;
-            color: #1e1e1e;
-            background: #fafafa;
-        }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; max-width: 960px; margin: 2rem auto; padding: 0 1rem; line-height: 1.6; color: #1e1e1e; background: #fafafa; }
         h1 { font-size: 2.2rem; border-bottom: 3px solid #ff9800; padding-bottom: 0.3rem; margin-bottom: 1.5rem; }
         h2 { font-size: 1.6rem; margin-top: 2.5rem; color: #e65100; }
         h3 { font-size: 1.2rem; margin-top: 2rem; color: #ef6c00; }
-        code {
-            background: #e8e8e8;
-            padding: 0.2em 0.4em;
-            border-radius: 4px;
-            font-family: 'Cascadia Code', 'Fira Code', monospace;
-            font-size: 0.9em;
-        }
-        pre {
-            background: #263238;
-            color: #eeffff;
-            padding: 1.2rem;
-            border-radius: 8px;
-            overflow-x: auto;
-            font-family: 'Cascadia Code', 'Fira Code', monospace;
-            font-size: 0.9em;
-            line-height: 1.5;
-            margin: 1rem 0;
-        }
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            margin: 1.5rem 0;
-            display: block;
-            overflow-x: auto;
-        }
-        th, td {
-            border: 1px solid #ccc;
-            padding: 0.6rem 0.8rem;
-            text-align: left;
-        }
+        code { background: #e8e8e8; padding: 0.2em 0.4em; border-radius: 4px; font-family: 'Cascadia Code', 'Fira Code', monospace; font-size: 0.9em; }
+        pre { background: #263238; color: #eeffff; padding: 1.2rem; border-radius: 8px; overflow-x: auto; font-family: 'Cascadia Code', 'Fira Code', monospace; font-size: 0.9em; line-height: 1.5; margin: 1rem 0; }
+        table { border-collapse: collapse; width: 100%; margin: 1.5rem 0; display: block; overflow-x: auto; }
+        th, td { border: 1px solid #ccc; padding: 0.6rem 0.8rem; text-align: left; }
         th { background: #e0e0e0; }
-        .note {
-            background: #fff3e0;
-            border-left: 4px solid #ff9800;
-            padding: 0.8rem 1rem;
-            margin: 1.5rem 0;
-        }
-        .warning {
-            background: #ffebee;
-            border-left: 4px solid #f44336;
-            padding: 0.8rem 1rem;
-            margin: 1.5rem 0;
-        }
+        .note { background: #fff3e0; border-left: 4px solid #ff9800; padding: 0.8rem 1rem; margin: 1.5rem 0; }
+        .warning { background: #ffebee; border-left: 4px solid #f44336; padding: 0.8rem 1rem; margin: 1.5rem 0; }
         a { color: #1976d2; text-decoration: none; }
         a:hover { text-decoration: underline; }
         hr { margin: 2.5rem 0; border: 0; border-top: 1px solid #ddd; }
-
-        @media (max-width: 600px) {
-            body { padding: 0 0.5rem; margin: 1rem auto; }
-            h1 { font-size: 1.8rem; }
-            h2 { font-size: 1.3rem; }
-            pre { padding: 0.8rem; font-size: 0.8em; }
-        }
+        @media (max-width: 600px) { body { padding: 0 0.5rem; margin: 1rem auto; } h1 { font-size: 1.8rem; } h2 { font-size: 1.3rem; } pre { padding: 0.8rem; font-size: 0.8em; } }
     </style>
 </head>
 <body>
-    <h1>🌐 Gradus Web — Утилиты для сайтов (v2.2.0)</h1>
+    <h1>🌐 Gradus Web — Утилиты для сайтов (v2.3.0)</h1>
     <p>
         Единый JavaScript‑модуль для статических сайтов. Включает: кэширование, кастомное кодирование,
         капчу, защиту от DDoS (rate‑limiter), генераторы случайных данных, красивые всплывающие уведомления,
-        <strong>шифрованное хранилище SecretStorage</strong> и <strong>модуль безопасности</strong> (защита от F12, XSS и инъекций).
+        <strong>шифрованное хранилище SecretStorage</strong>, <strong>модуль безопасности</strong> (защита от F12, XSS и инъекций),
+        <strong>встроенный античит</strong> с пользовательскими обработчиками.
         <br>Подключение: <code>&lt;script src="gradus-web.js"&gt;&lt;/script&gt;</code>
     </p>
 
     <div class="note">
-        <strong>🔄 Что нового в версии 2.2:</strong>
+        <strong>🆕 Что нового в версии 2.3 (июнь 2026):</strong>
         <ul>
-            <li><code>SecretStorage</code> — шифрованное хранилище (AES‑GCM) для API‑ключей, токенов, паролей.</li>
-            <li><code>security.enableDevToolsProtection()</code> — усиленная защита от открытия консоли (F12), блокировка горячих клавиш и контекстного меню.</li>
-            <li><code>security.sanitizeHTML()</code> — автоматическая очистка строк от XSS‑векторов.</li>
+            <li><strong>SecretStorage.clear()</strong> – полная очистка всех секретов.</li>
+            <li><strong>Скрытая соль и ключи</strong> – алгоритм шифрования и соль теперь недоступны из глобальной области.</li>
+            <li><strong>Удаление скриптов при обнаружении F12</strong> – опция <code>removeScripts: true</code> в <code>enableDevToolsProtection</code>.</li>
+            <li><strong>Пропуск мобильных устройств</strong> – защита не срабатывает ложно на телефонах.</li>
+            <li><strong>Встроенный античит (<code>GradusWeb.antiCheat</code>)</strong> – защита переменных от читов, событие <code>onHack</code>.</li>
+            <li>Исправлены уязвимости (см. таблицу ниже).</li>
         </ul>
     </div>
+
+    <h2>🛡️ Исправленные уязвимости (GSF)</h2>
+    <table>
+        <tr><th>Идентификатор</th><th>Дата обнаружения</th><th>Описание</th><th>Версия исправления</th></tr>
+        <tr><td><code>GSF-2026-29052026-1</code></td><td>29.05.2026</td><td>Недостаточная обфускация SecretStorage – соль была доступна через отладчик</td><td>2.3</td></tr>
+        <tr><td><code>GSF-2026-29052026-2</code></td><td>29.05.2026</td><td>Ложное срабатывание защиты от F12 на мобильных устройствах</td><td>2.3</td></tr>
+        <tr><td><code>GSF-2026-31052026-1</code></td><td>31.05.2026</td><td>Отсутствие метода очистки всех секретов при обнаружении DevTools</td><td>2.3</td></tr>
+        <tr><td><code>GSF-2026-01062026-1</code></td><td>01.06.2026</td><td>Защита от F12 не включалась из-за преждевременной инициализации в Core</td><td>Core 2.3</td></tr>
+    </table>
 
     <h2>✨ Возможности</h2>
     <ul>
@@ -101,6 +64,7 @@
         <li><strong>Тосты‑уведомления</strong> (success, error, info, warning) с автоскрытием</li>
         <li><strong>SecretStorage</strong> — шифрованное хранение конфиденциальных данных (AES‑GCM)</li>
         <li><strong>Модуль безопасности</strong>: защита от F12, XSS‑санитизация, блокировка клавиш и контекстного меню</li>
+        <li><strong>Встроенный античит</strong> — защита переменных, событие onHack</li>
     </ul>
 
     <hr>
@@ -202,7 +166,7 @@ GradusWeb.notify.warning('Время сессии истекает');</pre>
     <p>
         Хранит данные в <code>localStorage</code> в зашифрованном виде (AES‑GCM). Ключ шифрования привязан к отпечатку браузера
         (User‑Agent, язык, разрешение экрана и т.д.), поэтому расшифровать данные на другом устройстве или вручную крайне сложно.
-        <strong>Не является абсолютной защитой</strong>, но сильно усложняет кражу токенов.
+        <strong>Соль и алгоритм теперь скрыты внутри замыкания</strong>, что делает невозможным их извлечение из глобальной области.
     </p>
     <pre>// Сохранить (асинхронно)
 await GradusWeb.secretStorage.set('api_key', 'sk_live_1234567890');
@@ -211,16 +175,20 @@ await GradusWeb.secretStorage.set('api_key', 'sk_live_1234567890');
 const key = await GradusWeb.secretStorage.get('api_key');
 
 // Удалить
-await GradusWeb.secretStorage.remove('api_key');</pre>
+await GradusWeb.secretStorage.remove('api_key');
+
+// Полностью очистить все секреты (удобно при обнаружении F12)
+await GradusWeb.secretStorage.clear();</pre>
     <div class="warning">
-        <strong>⚠️ Важно:</strong> SecretStorage доступен только из кода. Нельзя напрямую записать значение через плейсхолдеры (только через вызов методов в <code>site.js</code> или обработчиках).
-        При открытых DevTools злоумышленник всё равно может прочитать исходный код и попытаться расшифровать данные. Для критичных секретов используйте серверный прокси.
+        <strong>⚠️ Важно:</strong> SecretStorage доступен только из кода. Нельзя напрямую записать значение через плейсхолдеры.
+        При открытых DevTools злоумышленник всё равно может попытаться расшифровать данные. Для критичных секретов используйте серверный прокси.
     </div>
     <table>
         <tr><th>Метод</th><th>Описание</th></tr>
         <tr><td><code>set(name, value)</code></td><td>Асинхронно сохраняет значение в зашифрованном виде</td></tr>
         <tr><td><code>get(name)</code></td><td>Асинхронно возвращает расшифрованное значение (или <code>null</code>)</td></tr>
         <tr><td><code>remove(name)</code></td><td>Удаляет запись</td></tr>
+        <tr><td><code>clear()</code></td><td>Удаляет все секреты (новое в v2.3)</td></tr>
     </table>
 
     <hr>
@@ -228,11 +196,13 @@ await GradusWeb.secretStorage.remove('api_key');</pre>
     <h2>8. 🛡️ Модуль безопасности (GradusWeb.security)</h2>
 
     <h3>Защита от DevTools (F12)</h3>
-    <p>Включает несколько методов детекта открытой консоли: проверка размера окна, зацикленный <code>debugger</code>, очистка консоли. При обнаружении вызывает пользовательский callback.</p>
+    <p>Включает несколько методов детекта открытой консоли: проверка размера окна, зацикленный <code>debugger</code>, очистка консоли.
+       При обнаружении вызывает пользовательский callback. Теперь можно указать <code>removeScripts: true</code> для удаления всех
+       тегов <code>&lt;script&gt;</code> со страницы, а также <code>skipMobile: true</code> для пропуска мобильных устройств.</p>
     <pre>GradusWeb.security.enableDevToolsProtection(() => {
     alert('DevTools открыты!');
     // удаляем секреты, очищаем кэш, перезагружаем страницу...
-});</pre>
+}, { removeScripts: true, skipMobile: true });</pre>
     <p>Также автоматически блокируются клавиши <kbd>F12</kbd>, <kbd>Ctrl+Shift+I</kbd>, <kbd>Ctrl+U</kbd> и контекстное меню (правый клик).</p>
 
     <h3>Защита от XSS и инъекций</h3>
@@ -241,10 +211,44 @@ await GradusWeb.secretStorage.remove('api_key');</pre>
 const clean = GradusWeb.security.sanitizeScript(unsafeString);</pre>
     <table>
         <tr><th>Метод</th><th>Описание</th></tr>
-        <tr><td><code>enableDevToolsProtection(callback)</code></td><td>Включает слежение за DevTools, при обнаружении вызывает callback</td></tr>
+        <tr><td><code>enableDevToolsProtection(callback, options?)</code></td><td>Включает слежение за DevTools с дополнительными настройками</td></tr>
         <tr><td><code>disableDevToolsProtection()</code></td><td>Отключает слежение</td></tr>
         <tr><td><code>sanitizeHTML(str)</code></td><td>Возвращает строку, безопасную для вставки в HTML</td></tr>
         <tr><td><code>sanitizeScript(str)</code></td><td>Удаляет теги <code>&lt;script&gt;</code></td></tr>
+    </table>
+
+    <hr>
+
+    <h2>9. 🎮 Встроенный античит (GradusWeb.antiCheat)</h2>
+    <p>
+        Защищает переменные от изменений через Cheat Engine и подобные утилиты. Можно зарегистрировать пользовательский обработчик,
+        который срабатывает при обнаружении взлома.
+    </p>
+    <pre>// Создание экземпляра с обработчиком
+const ac = GradusWeb.antiCheat.createInstance((name, value, reason) => {
+    console.warn(`Обнаружен взлом переменной "${name}"! Причина: ${reason}`);
+    // Здесь можно отправить лог на сервер, заблокировать аккаунт и т.д.
+});
+ac.startMonitoring();
+
+// Добавление защищённой переменной
+const healthId = ac.addVariable('health', 100);
+
+// Проверка в игровом цикле
+setInterval(() => {
+    if (ac.isHacked(healthId, 100)) {
+        GradusWeb.notify.error('Обнаружена попытка взлома здоровья!');
+    }
+}, 5000);</pre>
+    <table>
+        <tr><th>Метод</th><th>Описание</th></tr>
+        <tr><td><code>createInstance(onHackCallback?)</code></td><td>Создаёт экземпляр античита с коллбэком взлома</td></tr>
+        <tr><td><code>startMonitoring()</code></td><td>Включает проверку</td></tr>
+        <tr><td><code>stopMonitoring()</code></td><td>Останавливает проверку</td></tr>
+        <tr><td><code>addVariable(name, value)</code></td><td>Добавляет защищённую переменную (возвращает её имя)</td></tr>
+        <tr><td><code>getVariable(name)</code></td><td>Возвращает оригинальное значение (расшифрованное)</td></tr>
+        <tr><td><code>isHacked(name, expectedValue)</code></td><td>Проверяет, не подменено ли значение (возвращает <code>true</code> при взломе)</td></tr>
+        <tr><td><code>onHack(callback)</code></td><td>Регистрирует обработчик взлома (если не был передан в <code>createInstance</code>)</td></tr>
     </table>
 
     <hr>
