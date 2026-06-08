@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gradus Web — Документация</title>
+    <title>Gradus Web — Документация (v2.4, июнь 2026)</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Segoe UI', system-ui, sans-serif; max-width: 960px; margin: 2rem auto; padding: 0 1rem; line-height: 1.6; color: #1e1e1e; background: #fafafa; }
@@ -24,24 +24,23 @@
     </style>
 </head>
 <body>
-    <h1>🌐 Gradus Web — Утилиты для сайтов (v2.3.0)</h1>
+    <h1>🌐 Gradus Web — Утилиты для сайтов (v2.4.0, июнь 2026)</h1>
     <p>
         Единый JavaScript‑модуль для статических сайтов. Включает: кэширование, кастомное кодирование,
         капчу, защиту от DDoS (rate‑limiter), генераторы случайных данных, красивые всплывающие уведомления,
-        <strong>шифрованное хранилище SecretStorage</strong>, <strong>модуль безопасности</strong> (защита от F12, XSS и инъекций),
-        <strong>встроенный античит</strong> с пользовательскими обработчиками.
+        <strong>шифрованное хранилище SecretStorage (ключ только в памяти)</strong>, <strong>модуль безопасности</strong> (защита от F12, XSS и инъекций),
+        <strong>встроенный античит</strong> с пользовательскими обработчиками, а также новые утилиты: <strong>Base64</strong> и <strong>throttle</strong>.
         <br>Подключение: <code>&lt;script src="gradus-web.js"&gt;&lt;/script&gt;</code>
     </p>
 
     <div class="note">
-        <strong>🆕 Что нового в версии 2.3 (июнь 2026):</strong>
+        <strong>🆕 Что нового в версии 2.4 (июнь 2026):</strong>
         <ul>
-            <li><strong>SecretStorage.clear()</strong> – полная очистка всех секретов.</li>
-            <li><strong>Скрытая соль и ключи</strong> – алгоритм шифрования и соль теперь недоступны из глобальной области.</li>
-            <li><strong>Удаление скриптов при обнаружении F12</strong> – опция <code>removeScripts: true</code> в <code>enableDevToolsProtection</code>.</li>
-            <li><strong>Пропуск мобильных устройств</strong> – защита не срабатывает ложно на телефонах.</li>
-            <li><strong>Встроенный античит (<code>GradusWeb.antiCheat</code>)</strong> – защита переменных от читов, событие <code>onHack</code>.</li>
-            <li>Исправлены уязвимости (см. таблицу ниже).</li>
+            <li><strong>SecretStorage:</strong> ключ шифрования больше не хранится в localStorage, а вычисляется заново при каждой загрузке (привязка к браузеру).</li>
+            <li><strong>Base64:</strong> добавлены методы <code>GradusWeb.toBase64</code> и <code>GradusWeb.fromBase64</code>.</li>
+            <li><strong>Throttle:</strong> функция <code>GradusWeb.throttle(fn, delay)</code> для ограничения частоты вызовов.</li>
+            <li><strong>Античит:</strong> улучшена обработка пользовательских коллбэков.</li>
+            <li>Исправлены уязвимости GSF‑2026‑0606‑2, GSF‑2026‑0607‑1 (см. таблицу).</li>
         </ul>
     </div>
 
@@ -52,19 +51,23 @@
         <tr><td><code>GSF-2026-29052026-2</code></td><td>29.05.2026</td><td>Ложное срабатывание защиты от F12 на мобильных устройствах</td><td>2.3</td></tr>
         <tr><td><code>GSF-2026-31052026-1</code></td><td>31.05.2026</td><td>Отсутствие метода очистки всех секретов при обнаружении DevTools</td><td>2.3</td></tr>
         <tr><td><code>GSF-2026-01062026-1</code></td><td>01.06.2026</td><td>Защита от F12 не включалась из-за преждевременной инициализации в Core</td><td>Core 2.3</td></tr>
+        <tr><td><code>GSF-2026-0606-2</code></td><td>06.06.2026</td><td>Утечка API‑ключей через DevTools (секреты оставались в памяти)</td><td>2.4</td></tr>
+        <tr><td><code>GSF-2026-0607-1</code></td><td>07.06.2026</td><td>Ключ шифрования SecretStorage хранился в localStorage</td><td>2.4</td></tr>
     </table>
 
     <h2>✨ Возможности</h2>
     <ul>
         <li><strong>Кэш</strong> в localStorage с TTL (время жизни)</li>
         <li><strong>Кодирование/декодирование</strong> по расширенной таблице символов (кириллица, латиница, спецсимволы)</li>
+        <li><strong>Base64</strong> кодирование/декодирование (новое в 2.4)</li>
         <li><strong>Простая математическая капча</strong> (вставка в HTML и проверка)</li>
         <li><strong>Клиентский DDoS‑протектор</strong> (ограничение частоты действий)</li>
         <li><strong>Генераторы</strong>: UUID v4, криптостойкий пароль, случайное целое</li>
         <li><strong>Тосты‑уведомления</strong> (success, error, info, warning) с автоскрытием</li>
-        <li><strong>SecretStorage</strong> — шифрованное хранение конфиденциальных данных (AES‑GCM)</li>
+        <li><strong>SecretStorage</strong> — шифрованное хранение конфиденциальных данных (AES‑GCM, ключ в памяти)</li>
         <li><strong>Модуль безопасности</strong>: защита от F12, XSS‑санитизация, блокировка клавиш и контекстного меню</li>
         <li><strong>Встроенный античит</strong> — защита переменных, событие onHack</li>
+        <li><strong>Throttle</strong> — ограничение частоты вызова функций (новое в 2.4)</li>
     </ul>
 
     <hr>
@@ -96,6 +99,10 @@ const decoded = GradusWeb.decode(encoded);
         пробел, знаки препинания, скобки, кавычки, решётку, обратную косую черту и даже символы перевода строки (<code>\n</code>, <code>\r</code>).
         Отсутствующие в таблице символы остаются без изменений.
     </div>
+
+    <h3>2.1 Base64 (новое в v2.4)</h3>
+    <pre>const b64 = GradusWeb.toBase64('Привет!');   // "UHJp0LLQtdGC0YHQtdC80YHRgtCy0L4="
+const original = GradusWeb.fromBase64(b64); // "Привет!"</pre>
 
     <hr>
 
@@ -162,11 +169,9 @@ GradusWeb.notify.warning('Время сессии истекает');</pre>
 
     <hr>
 
-    <h2>7. 🔒 SecretStorage (шифрованное хранилище)</h2>
+    <h2>7. 🔒 SecretStorage (шифрованное хранилище, v2.4)</h2>
     <p>
-        Хранит данные в <code>localStorage</code> в зашифрованном виде (AES‑GCM). Ключ шифрования привязан к отпечатку браузера
-        (User‑Agent, язык, разрешение экрана и т.д.), поэтому расшифровать данные на другом устройстве или вручную крайне сложно.
-        <strong>Соль и алгоритм теперь скрыты внутри замыкания</strong>, что делает невозможным их извлечение из глобальной области.
+        Хранит данные в <code>localStorage</code> в зашифрованном виде (AES‑GCM). <strong>Ключ шифрования теперь только в памяти</strong> — он не сохраняется нигде, а вычисляется заново при каждой загрузке страницы на основе отпечатка браузера (User‑Agent, язык, разрешение экрана и т.д.). Расшифровать данные можно только в том же браузере.
     </p>
     <pre>// Сохранить (асинхронно)
 await GradusWeb.secretStorage.set('api_key', 'sk_live_1234567890');
@@ -179,16 +184,18 @@ await GradusWeb.secretStorage.remove('api_key');
 
 // Полностью очистить все секреты (удобно при обнаружении F12)
 await GradusWeb.secretStorage.clear();</pre>
+    <p>
+        <strong>Где хранить секреты?</strong> Вы можете использовать только локальное шифрование (данные в localStorage), либо получать секреты с защищённого сервера через прокси (например, <code>{server_get:https://your-proxy.com/secret}</code>). Рекомендуется комбинировать оба подхода для максимальной безопасности.
+    </p>
     <div class="warning">
-        <strong>⚠️ Важно:</strong> SecretStorage доступен только из кода. Нельзя напрямую записать значение через плейсхолдеры.
-        При открытых DevTools злоумышленник всё равно может попытаться расшифровать данные. Для критичных секретов используйте серверный прокси.
+        <strong>⚠️ Важно:</strong> Абсолютной защиты на клиенте не существует. Для критичных секретов всегда предпочитайте серверный прокси.
     </div>
     <table>
         <tr><th>Метод</th><th>Описание</th></tr>
         <tr><td><code>set(name, value)</code></td><td>Асинхронно сохраняет значение в зашифрованном виде</td></tr>
         <tr><td><code>get(name)</code></td><td>Асинхронно возвращает расшифрованное значение (или <code>null</code>)</td></tr>
         <tr><td><code>remove(name)</code></td><td>Удаляет запись</td></tr>
-        <tr><td><code>clear()</code></td><td>Удаляет все секреты (новое в v2.3)</td></tr>
+        <tr><td><code>clear()</code></td><td>Удаляет все секреты</td></tr>
     </table>
 
     <hr>
@@ -197,7 +204,7 @@ await GradusWeb.secretStorage.clear();</pre>
 
     <h3>Защита от DevTools (F12)</h3>
     <p>Включает несколько методов детекта открытой консоли: проверка размера окна, зацикленный <code>debugger</code>, очистка консоли.
-       При обнаружении вызывает пользовательский callback. Теперь можно указать <code>removeScripts: true</code> для удаления всех
+       При обнаружении вызывает пользовательский callback. Можно указать <code>removeScripts: true</code> для удаления всех
        тегов <code>&lt;script&gt;</code> со страницы, а также <code>skipMobile: true</code> для пропуска мобильных устройств.</p>
     <pre>GradusWeb.security.enableDevToolsProtection(() => {
     alert('DevTools открыты!');
@@ -250,6 +257,15 @@ setInterval(() => {
         <tr><td><code>isHacked(name, expectedValue)</code></td><td>Проверяет, не подменено ли значение (возвращает <code>true</code> при взломе)</td></tr>
         <tr><td><code>onHack(callback)</code></td><td>Регистрирует обработчик взлома (если не был передан в <code>createInstance</code>)</td></tr>
     </table>
+
+    <hr>
+
+    <h2>10. ⏱️ Throttle (новое в v2.4)</h2>
+    <p>Ограничивает частоту вызова функции: она будет выполняться не чаще, чем раз в указанный интервал.</p>
+    <pre>// Обработчик прокрутки, который срабатывает не чаще раза в 200 мс
+window.addEventListener('scroll', GradusWeb.throttle(() => {
+    console.log('Прокрутка!');
+}, 200));</pre>
 
     <hr>
 
