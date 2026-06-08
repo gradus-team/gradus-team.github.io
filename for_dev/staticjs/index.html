@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gradus Static.JS — Полная документация (июнь 2026)</title>
+    <title>Gradus Static.JS — Полная документация (июнь 2026, v2.4)</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f8fafc; color: #1e293b; line-height: 1.6; padding: 2rem 1rem; }
@@ -30,7 +30,7 @@
 <body>
 <div class="container">
 
-    <h1>📘 Gradus Static.JS — Полная документация (июнь 2026)</h1>
+    <h1>📘 Gradus Static.JS — Полная документация (июнь 2026, v2.4)</h1>
     <p>
         <strong>Gradus Static.JS</strong> — это микро‑фреймворк для создания динамических сайтов на статических хостингах (GitHub Pages, Netlify, обычный сервер без PHP/Python).<br>
         Он позволяет вставлять в HTML специальные метки <code>{функция:аргументы}</code>, которые при загрузке страницы заменяются на реальные данные: из кэша, локальной базы, API, генераторов и т.д.
@@ -40,23 +40,27 @@
     </p>
 
     <div class="note">
-        <strong>🔄 Что нового в июне 2026:</strong>
+        <strong>🔄 Что нового в июне 2026 (v2.4):</strong>
         <ul>
-            <li><strong>Gradus Web v2.3</strong> – скрытая соль, очистка всех секретов, удаление скриптов при F12, пропуск мобильных устройств.</li>
-            <li><strong>Встроенный античит</strong> – теперь можно создавать экземпляры через <code>GradusWeb.antiCheat.createInstance()</code>.</li>
-            <li><strong>Core 2.3</strong> – ожидание DOM перед инициализацией, гарантированное включение защиты при <code>debug: false</code>.</li>
-            <li><strong>Server.js 1.2</strong> – разделение PUT (точная замена) и POST (генерация ключей), улучшенная обработка ошибок.</li>
-            <li>Исправлены уязвимости <strong>GSF-2026-29052026-1</strong>, <strong>GSF-2026-29052026-2</strong>, <strong>GSF-2026-31052026-1</strong>, <strong>GSF-2026-01062026-1</strong>.</li>
+            <li><strong>Gradus Web v2.4</strong> – ключ SecretStorage теперь только в памяти, добавлены base64, throttle.</li>
+            <li><strong>Client.js v2.4</strong> – новые плейсхолдеры: <code>base64_encode</code>, <code>url_encode</code>, <code>escape_html</code>, <code>nl2br</code>, <code>random_hex_color</code>, <code>clipboard_copy</code>, <code>countdown</code>.</li>
+            <li><strong>Встроенный CORS-прокси</strong> – запросы через <code>{server_get}</code> автоматически используют прокси, если прямой запрос блокируется. Можно настроить свой прокси через <code>GradusServer.setCorsProxy()</code>.</li>
+            <li><strong>Защита от переопределения встроенных обработчиков</strong> – попытка зарегистрировать обработчик с именем встроенной функции выбрасывает ошибку.</li>
+            <li>Исправлены уязвимости <strong>GSF-2026-0606-1</strong>, <strong>GSF-2026-0606-2</strong>, <strong>GSF-2026-0606-3</strong>, <strong>GSF-2026-0607-1</strong>, <strong>GSF-2026-0607-2</strong>, <strong>GSF-2026-0608-1</strong>, <strong>GSF-2026-0608-2</strong>, <strong>GSF-2026-0608-3</strong>.</li>
         </ul>
     </div>
 
-    <h2>🛡️ Исправленные уязвимости (GSF)</h2>
+    <h2>🛡️ Исправленные уязвимости (GSF) — актуальный список</h2>
     <table>
         <tr><th>Идентификатор</th><th>Дата обнаружения</th><th>Описание</th><th>Исправлено в</th></tr>
-        <tr><td><code>GSF-2026-29052026-1</code></td><td>29.05.2026</td><td>Недостаточная обфускация SecretStorage – соль была доступна через отладчик</td><td>Gradus Web 2.3</td></tr>
-        <tr><td><code>GSF-2026-29052026-2</code></td><td>29.05.2026</td><td>Ложное срабатывание защиты от F12 на мобильных устройствах</td><td>Gradus Web 2.3</td></tr>
-        <tr><td><code>GSF-2026-31052026-1</code></td><td>31.05.2026</td><td>Отсутствие метода очистки всех секретов при обнаружении DevTools</td><td>Gradus Web 2.3</td></tr>
-        <tr><td><code>GSF-2026-01062026-1</code></td><td>01.06.2026</td><td>Защита от F12 не включалась из-за преждевременной инициализации в Core</td><td>Core 2.3</td></tr>
+        <tr><td><code>GSF-2026-0606-1</code></td><td>06.06.2026</td><td>Отсутствие проверки целостности db.json — MITM или подмена файла</td><td>Static.JS 2.4 (документировано)</td></tr>
+        <tr><td><code>GSF-2026-0606-2</code></td><td>06.06.2026</td><td>Утечка API‑ключей через DevTools (секреты оставались в памяти)</td><td>Gradus Web 2.4</td></tr>
+        <tr><td><code>GSF-2026-0606-3</code></td><td>06.06.2026</td><td>Конфликт имён пользовательских и встроенных обработчиков</td><td>Client.js 2.4</td></tr>
+        <tr><td><code>GSF-2026-0607-1</code></td><td>07.06.2026</td><td>Ключ шифрования SecretStorage хранился в localStorage</td><td>Gradus Web 2.4</td></tr>
+        <tr><td><code>GSF-2026-0607-2</code></td><td>07.06.2026</td><td>Отсутствие ограничения частоты запросов к API (лавина запросов)</td><td>Server.js 2.4</td></tr>
+        <tr><td><code>GSF-2026-0608-1</code></td><td>08.06.2026</td><td>XSS через плейсхолдеры при отключённой санитизации</td><td>Client.js 2.4</td></tr>
+        <tr><td><code>GSF-2026-0608-2</code></td><td>08.06.2026</td><td>Некорректная обработка отсутствующего пути к db.json</td><td>Database.js 2.4</td></tr>
+        <tr><td><code>GSF-2026-0608-3</code></td><td>08.06.2026</td><td>Необходимость серверного прокси для внешних API — добавлен встроенный CORS-прокси</td><td>Server.js 2.4</td></tr>
     </table>
 
     <h2>🚀 Как это работает (для совсем новичков)</h2>
@@ -76,7 +80,7 @@
 мой-сайт/
 ├── gradus-web.js        ← утилиты (кэш, кодирование, капча, SecretStorage, античит) — НЕ ТРОГАЙТЕ
 ├── database.js          ← локальная база данных (JSON + localStorage) — НЕ ТРОГАЙТЕ
-├── server.js            ← запросы к API и Firebase — НЕ ТРОГАЙТЕ
+├── server.js            ← запросы к API и Firebase (со встроенным CORS-прокси) — НЕ ТРОГАЙТЕ
 ├── client.js            ← движок плейсхолдеров {} — НЕ ТРОГАЙТЕ
 ├── core.js              ← сборка и запуск фреймворка — НЕ ТРОГАЙТЕ
 ├── site.js              ← ВАШ КОД: настройки, свои функции, инициализация
@@ -90,18 +94,20 @@
 
     <h2>📄 Назначение каждого файла</h2>
 
-    <h3>1. gradus-web.js (утилиты)</h3>
+    <h3>1. gradus-web.js (утилиты) — v2.4</h3>
     <p>Содержит глобальный объект <code>GradusWeb</code> с модулями:</p>
     <ul>
         <li><code>cache</code> — хранение данных в localStorage с временем жизни (TTL).</li>
         <li><code>encode / decode</code> — кастомное кодирование строк по большой таблице символов.</li>
+        <li><code>toBase64 / fromBase64</code> — кодирование/декодирование в Base64.</li>
         <li><code>captcha</code> — математическая капча (генерация + проверка).</li>
         <li><code>ddos</code> — защита от слишком частых действий (rate limiter).</li>
         <li><code>generate</code> — генерация UUID, паролей, случайных чисел.</li>
         <li><code>notify</code> — красивые всплывающие уведомления на странице.</li>
-        <li><code>secretStorage</code> — шифрованное хранилище для конфиденциальных данных (AES‑GCM).</li>
+        <li><code>secretStorage</code> — шифрованное хранилище для конфиденциальных данных (AES‑GCM). <strong>Ключ теперь только в памяти, не сохраняется в localStorage.</strong></li>
         <li><code>security</code> — защита от DevTools, санитизация HTML/скриптов.</li>
         <li><code>antiCheat</code> — встроенный античит для защиты переменных.</li>
+        <li><code>throttle</code> — ограничение частоты вызова функций.</li>
     </ul>
     <p>Вы можете использовать эти утилиты в своём коде (<code>site.js</code>) напрямую: <code>GradusWeb.cache.set(...)</code>, <code>GradusWeb.secretStorage.set(...)</code>, <code>GradusWeb.notify.success(...)</code> и т.д. Но не редактируйте сам файл.</p>
 
@@ -116,23 +122,29 @@
         <strong>⚠️ Не храните в <code>db.json</code> или через <code>GradusDB.set()</code> пароли, токены Firebase, личные ключи!</strong> Для секретов используйте <strong>SecretStorage</strong> или серверную часть.
     </div>
 
-    <h3>3. server.js (запросы наружу)</h3>
-    <p>Объект <code>GradusServer</code> даёт методы для HTTP-запросов:</p>
+    <h3>3. server.js (запросы наружу) — v2.4</h3>
+    <p>Объект <code>GradusServer</code> даёт методы для HTTP-запросов. <strong>Теперь со встроенным CORS-прокси!</strong> Если прямой запрос блокируется политикой CORS, библиотека автоматически перенаправит его через публичный прокси‑сервер.</p>
     <ul>
-        <li><code>get(url)</code> — GET-запрос, возвращает текст ответа.</li>
+        <li><code>get(url)</code> — GET-запрос (с авто‑прокси при ошибке CORS).</li>
         <li><code>post(url, body)</code> — POST-запрос с JSON-телом.</li>
         <li><code>put(url, body)</code> — PUT-запрос (для точной замены).</li>
         <li><code>firebaseGet(path)</code> — обёртка для GET к Firebase REST API (полный URL с <code>.json</code>).</li>
         <li><code>firebaseSet(path, data)</code> — запись данных в Firebase через PUT (точная замена).</li>
         <li><code>firebasePush(path, data)</code> — добавление данных со случайным ключом (POST).</li>
+        <li><code>setCorsProxy(url)</code> — задать свой прокси (по умолчанию <code>https://corsproxy.io/?url=</code>).</li>
     </ul>
-    <p>Используйте их в своих обработчиках для получения данных с любых публичных API.</p>
+    <p>Бесплатные CORS-прокси, которые можно использовать:</p>
+    <ul>
+        <li><a href="https://corsproxy.io" target="_blank">corsproxy.io</a> – просто добавьте <code>https://corsproxy.io/?url=</code> к вашему URL.</li>
+        <li><a href="https://allorigins.win" target="_blank">AllOrigins</a> – <code>https://api.allorigins.win/raw?url=</code>.</li>
+        <li>Собственный прокси на сервере – например, однострочный на Node.js или Cloudflare Worker.</li>
+    </ul>
 
-    <h3>4. client.js (парсер шаблонов)</h3>
-    <p>Это сердце фреймворка. После загрузки страницы он проходит по всем элементам и текстовым узлам, ищет конструкции вида <code>{функция:аргументы}</code> и заменяет их на результат выполнения функции. Поддерживает вложенные вызовы и автоматически санитизирует результат (защита от XSS).</p>
+    <h3>4. client.js (парсер шаблонов) — v2.4</h3>
+    <p>Это сердце фреймворка. После загрузки страницы он проходит по всем элементам и текстовым узлам, ищет конструкции вида <code>{функция:аргументы}</code> и заменяет их на результат выполнения функции. Поддерживает вложенные вызовы и автоматически санитизирует результат (защита от XSS). Теперь также защищает от переопределения встроенных обработчиков пользовательскими.</p>
 
     <h3>5. core.js (инициализатор)</h3>
-    <p>Объект <code>GradusStatic</code> запускает фреймворк: загружает БД, вызывает вашу функцию <code>initSite()</code> (если она объявлена в <code>site.js</code>), затем запускает рендеринг страницы. Теперь гарантированно ожидает загрузку DOM.</p>
+    <p>Объект <code>GradusStatic</code> запускает фреймворк: загружает БД, вызывает вашу функцию <code>initSite()</code> (если она объявлена в <code>site.js</code>), затем запускает рендеринг страницы. Гарантирует ожидание загрузки DOM.</p>
 
     <h2>⚙️ Файл site.js — ваша главная песочница</h2>
     <p><code>site.js</code> — единственное место, куда вы пишете свой код. В нём можно:</p>
@@ -142,6 +154,7 @@
         <li>Включить защиту от DevTools и другие настройки безопасности.</li>
         <li>Выполнить любую подготовительную логику (например, положить что-то в кэш или SecretStorage).</li>
         <li>Создать экземпляр античита и отслеживать взломы.</li>
+        <li>Настроить свой CORS-прокси через <code>GradusServer.setCorsProxy(...)</code>.</li>
         <li>Полностью удалить примеры — оставить только настройки и запуск.</li>
     </ul>
     <p>Обязательная структура <code>site.js</code>:</p>
@@ -172,7 +185,7 @@ window.addEventListener('load', () => {
 </pre>
     <p>Если вы не определите <code>initSite</code>, ничего страшного — фреймворк просто запустит рендеринг без дополнительных действий.</p>
 
-    <h2>🧩 Все встроенные функции для {}</h2>
+    <h2>🧩 Все встроенные функции для {} (v2.4)</h2>
     <p>Ниже перечислены все функции, которые можно использовать прямо в HTML внутри фигурных скобок. Регистр важен!</p>
     <table>
         <tr><th>Функция</th><th>Аргументы</th><th>Описание</th><th>Пример</th></tr>
@@ -185,15 +198,22 @@ window.addEventListener('load', () => {
         <tr><td><code>secret_read</code></td><td>ключ</td><td>Читает и расшифровывает из SecretStorage</td><td><code>{secret_read:api_key}</code></td></tr>
         <tr><td><code>secret_write</code></td><td>ключ, значение</td><td>Сохраняет в SecretStorage (шифрует)</td><td><code>{secret_write:token,val}</code></td></tr>
         <tr><td><code>secret_delete</code></td><td>ключ</td><td>Удаляет из SecretStorage</td><td><code>{secret_delete:token}</code></td></tr>
-        <tr><td><code>server_get</code></td><td>URL</td><td>Делает GET-запрос и вставляет ответ</td><td><code>{server_get:https://api.example.com/news}</code></td></tr>
+        <tr><td><code>server_get</code></td><td>URL</td><td>Делает GET-запрос (с авто‑прокси) и вставляет ответ</td><td><code>{server_get:https://api.example.com/news}</code></td></tr>
         <tr><td><code>server_post</code></td><td>URL, тело (JSON)</td><td>POST-запрос. Возвращает ответ сервера</td><td><code>{server_post:https://api.example.com/save,{"x":1}}</code></td></tr>
         <tr><td><code>firebase_get</code></td><td>полный URL (с .json)</td><td>Читает данные из Firebase Realtime Database</td><td><code>{firebase_get:https://myapp.firebaseio.com/users/1.json}</code></td></tr>
         <tr><td><code>firebase_set</code></td><td>URL, данные</td><td>Записывает данные в Firebase (PUT)</td><td><code>{firebase_set:https://.../users/1.json,{"name":"Ivan"}}</code></td></tr>
         <tr><td><code>encode</code></td><td>строка</td><td>Кодирует строку по таблице Gradus Web</td><td><code>{encode:{cache_read:greeting}}</code></td></tr>
         <tr><td><code>decode</code></td><td>закодированная строка</td><td>Декодирует обратно</td><td><code>{decode:_050_018_...}</code></td></tr>
+        <tr><td><code>base64_encode</code></td><td>строка</td><td>Кодирует в Base64</td><td><code>{base64_encode:Hello}</code></td></tr>
+        <tr><td><code>base64_decode</code></td><td>строка</td><td>Декодирует из Base64</td><td><code>{base64_decode:SGVsbG8=}</code></td></tr>
+        <tr><td><code>url_encode</code></td><td>строка</td><td>Кодирует для передачи в URL</td><td><code>{url_encode:привет мир}</code></td></tr>
+        <tr><td><code>url_decode</code></td><td>строка</td><td>Декодирует из URL-формата</td><td><code>{url_decode:%D0%BF%D1%80%D0%B8%D0%B2%D0%B5%D1%82}</code></td></tr>
+        <tr><td><code>escape_html</code></td><td>строка</td><td>Экранирует HTML-символы</td><td><code>{escape_html:&lt;script&gt;}</code></td></tr>
+        <tr><td><code>nl2br</code></td><td>строка</td><td>Заменяет переносы строк на &lt;br&gt;</td><td><code>{nl2br:строка\nс переносом}</code></td></tr>
         <tr><td><code>random_uuid</code></td><td>нет</td><td>Генерирует UUID v4</td><td><code>{random_uuid}</code></td></tr>
         <tr><td><code>random_password</code></td><td>длина (по умолч. 12)</td><td>Создаёт криптостойкий пароль</td><td><code>{random_password:16}</code></td></tr>
         <tr><td><code>random_int</code></td><td>диапазон (min-max или одно число)</td><td>Случайное целое число</td><td><code>{random_int:10-50}</code></td></tr>
+        <tr><td><code>random_hex_color</code></td><td>нет</td><td>Случайный цвет в HEX</td><td><code>{random_hex_color}</code></td></tr>
         <tr><td><code>date</code></td><td>локаль (например ru-RU)</td><td>Текущая дата в читаемом формате</td><td><code>{date:ru-RU}</code></td></tr>
         <tr><td><code>time</code></td><td>локаль</td><td>Текущее время</td><td><code>{time:ru-RU}</code></td></tr>
         <tr><td><code>timestamp</code></td><td>нет</td><td>Unix timestamp в миллисекундах</td><td><code>{timestamp}</code></td></tr>
@@ -204,6 +224,8 @@ window.addEventListener('load', () => {
         <tr><td><code>substring</code></td><td>строка, начало, конец (необяз.)</td><td>Вырезает подстроку</td><td><code>{substring:Hello,1,3}</code> → "el"</td></tr>
         <tr><td><code>config</code></td><td>название параметра</td><td>Показывает значение настройки из siteConfig</td><td><code>{config:debug}</code></td></tr>
         <tr><td><code>notify</code></td><td>текст, тип, длительность</td><td>Показывает всплывающее уведомление</td><td><code>{notify:Привет!,success,3000}</code></td></tr>
+        <tr><td><code>clipboard_copy</code></td><td>строка</td><td>Копирует текст в буфер обмена</td><td><code>{clipboard_copy:secret123}</code></td></tr>
+        <tr><td><code>countdown</code></td><td>дата окончания</td><td>Обратный отсчёт до указанной даты</td><td><code>{countdown:2026-12-31T23:59:59}</code></td></tr>
         <tr><td><code>get_api_key_preview</code></td><td>—</td><td>Демо: первые 4 символа API‑ключа из SecretStorage</td><td><code>{get_api_key_preview}</code></td></tr>
     </table>
 
@@ -240,22 +262,13 @@ window.addEventListener('load', () => {
 
     <h2>🔒 SecretStorage и безопасность</h2>
     <p>
-        <code>GradusWeb.secretStorage</code> позволяет хранить конфиденциальные данные (токены, пароли) в зашифрованном виде (AES‑GCM). Ключ привязан к отпечатку браузера.
-        Используйте плейсхолдеры <code>{secret_read:...}</code> или прямые вызовы в <code>site.js</code>.
+        <code>GradusWeb.secretStorage</code> позволяет хранить конфиденциальные данные (токены, пароли) в зашифрованном виде (AES‑GCM). Ключ теперь <strong>не сохраняется в localStorage</strong>, а вычисляется заново при каждой загрузке страницы на основе отпечатка браузера. Данные в localStorage хранятся зашифрованными, и расшифровать их можно только в том же браузере.
     </p>
     <pre>// В site.js
 await GradusWeb.secretStorage.set('token', 'sk_abc123');
 const token = await GradusWeb.secretStorage.get('token');
 await GradusWeb.secretStorage.clear(); // очистить всё</pre>
-    <p>Для включения защиты от открытия консоли (F12) добавьте в <code>initSite()</code>:</p>
-    <pre>GradusWeb.security.enableDevToolsProtection(() => {
-    GradusWeb.secretStorage.clear();
-    GradusWeb.cache.clear();
-    location.reload();
-}, { removeScripts: true, skipMobile: true });</pre>
-    <div class="warning">
-        <strong>⚠️ Важно:</strong> Абсолютной защиты на клиенте не существует. Для критичных секретов используйте серверный прокси.
-    </div>
+    <p>Вы также можете хранить секреты на внешнем сервере и получать их через прокси (например, <code>{server_get:https://your-proxy.com/secret}</code>). Для максимальной безопасности рекомендуется комбинировать локальное шифрование и серверный прокси.</p>
 
     <h2>🚫 Ограничения и безопасность</h2>
     <ul>
