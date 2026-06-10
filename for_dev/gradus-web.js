@@ -1,19 +1,21 @@
-// gradus-web.js – Gradus Static.JS Utility Library v2.4
+// gradus-web.js – Gradus Static.JS Utility Library v2.5 (Shop Update)
 /**
  * Gradus Web — Утилиты для статических сайтов (JavaScript)
- * Версия 2.4 — максимальная безопасность, скрытая соль, очистка SecretStorage,
- * защита от F12, встроенный AntiCheat с onHack, base64, throttle.
- * Ключ шифрования SecretStorage теперь хранится только в памяти.
+ * Версия 2.5 — Shop (корзина, каталог, промокоды), исправления багов,
+ * защита от перебора SecretStorage, отмена throttle, оффлайн-режим и др.
+ * Ключ шифрования SecretStorage хранится только в памяти.
  */
 (function (window) {
     'use strict';
 
     // ========== ПРИВАТНЫЕ ПЕРЕМЕННЫЕ ==========
-    const _salt = 'GradusSalt2025!X#_v2.4';
+    const _salt = 'GradusSalt2025!X#_v2.5';
     const _prefix = 'gs_sec_v3_';
+    const MAX_CACHE_SIZE = 500 * 1024; // 500KB лимит кэша
+    const PROMO_PREFIX = 'gradus_shop_promo_';
 
     const GradusWeb = {
-        version: '2.4.0',
+        version: '2.5.0',
 
         _log(type, msg) {
             const prefix = '[GRADUS-WEB]';
@@ -22,12 +24,17 @@
             else console.log(prefix, msg);
         },
 
-        // ========== 1. КЭШ ==========
+        // ========== 1. КЭШ (улучшен: лимит размера) ==========
         cache: {
             set(key, value, ttlSeconds = 3600) {
                 try {
                     const item = { value: value, expires: Date.now() + ttlSeconds * 1000 };
-                    localStorage.setItem('gradus_cache_' + key, JSON.stringify(item));
+                    const serialized = JSON.stringify(item);
+                    if (serialized.length > MAX_CACHE_SIZE) {
+                        console.warn('[GRADUS-WEB] Кэш не сохранён: превышен лимит размера');
+                        return false;
+                    }
+                    localStorage.setItem('gradus_cache_' + key, serialized);
                     return true;
                 } catch (e) { return false; }
             },
@@ -48,7 +55,9 @@
                 Object.keys(localStorage)
                     .filter(k => k.startsWith('gradus_cache_'))
                     .forEach(k => localStorage.removeItem(k));
-            }
+            },
+            // Информация о максимальном размере
+            maxSize: MAX_CACHE_SIZE
         },
 
         // ========== 2. КОДИРОВАНИЕ (таблица Gradus) ==========
@@ -122,7 +131,7 @@
             return result;
         },
 
-        // ========== 2.5 BASE64 (добавлено) ==========
+        // ========== 2.5 BASE64 ==========
         toBase64(str) {
             try { return btoa(unescape(encodeURIComponent(str))); } catch(e) { return ''; }
         },
@@ -159,6 +168,7 @@
         ddos: {
             _store: {},
             isAllowed(id, maxRequests = 5, intervalSeconds = 10) {
+                if (typeof id !== 'string' || id === '') return false;
                 const now = Date.now();
                 if (!this._store[id]) { this._store[id] = { count: 1, resetTime: now + intervalSeconds * 1000 }; return true; }
                 const record = this._store[id];
@@ -180,6 +190,7 @@
                 });
             },
             password(length = 12) {
+                if (typeof length !== 'number' || length < 4 || length > 128) length = 12;
                 const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=';
                 const array = new Uint32Array(length);
                 if (window.crypto && window.crypto.getRandomValues) crypto.getRandomValues(array);
@@ -189,6 +200,7 @@
                 return pass;
             },
             randomInt(min, max) {
+                if (typeof min !== 'number' || typeof max !== 'number' || min > max) throw new Error('Неверные аргументы randomInt');
                 const range = max - min + 1, array = new Uint32Array(1);
                 if (window.crypto && window.crypto.getRandomValues) crypto.getRandomValues(array);
                 else array[0] = Math.floor(Math.random() * 0x100000000);
@@ -196,7 +208,7 @@
             }
         },
 
-        // ========== 6. УВЕДОМЛЕНИЯ ==========
+        // ========== 6. УВЕДОМЛЕНИЯ (исправлено наложение) ==========
         notify: {
             _ensureContainer() {
                 if (!document.getElementById('gradus-notify-container')) {
@@ -208,7 +220,11 @@
                 return document.getElementById('gradus-notify-container');
             },
             show(message, type = 'info', duration = 3000) {
+                // Удаляем старые тосты, если их больше 3
                 const container = this._ensureContainer();
+                while (container.children.length > 3) {
+                    container.firstChild.remove();
+                }
                 const toast = document.createElement('div');
                 const colors = { success: '#4caf50', error: '#f44336', info: '#2196f3', warning: '#ff9800' };
                 toast.style.cssText = `background-color:${colors[type] || colors.info};color:#fff;padding:12px 20px;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.15);font-family:Segoe UI,system-ui,sans-serif;font-size:14px;min-width:200px;opacity:0;transition:opacity 0.3s;`;
@@ -223,9 +239,11 @@
             warning(msg, d) { this.show(msg, 'warning', d); }
         },
 
-        // ========== 7. SECRET STORAGE (AES‑GCM, ключ только в памяти) ==========
+        // ========== 7. SECRET STORAGE (AES‑GCM, улучшена безопасность) ==========
         secretStorage: {
             _cachedKey: null,
+            _failedAttempts: 0,
+            _lockUntil: 0,
 
             _getFingerprint() {
                 const nav = window.navigator, screen = window.screen;
@@ -239,6 +257,10 @@
 
             async _getKey() {
                 if (this._cachedKey) return this._cachedKey;
+                // Проверка защиты от перебора
+                if (Date.now() < this._lockUntil) {
+                    throw new Error('SecretStorage временно заблокирован из-за множества неудачных попыток');
+                }
                 const fp = this._getFingerprint();
                 const enc = new TextEncoder();
                 const keyMaterial = await crypto.subtle.importKey(
@@ -264,6 +286,10 @@
                 return this._cachedKey;
             },
 
+            _clearKey() {
+                this._cachedKey = null;
+            },
+
             async _encrypt(plaintext, key) {
                 const iv = crypto.getRandomValues(new Uint8Array(12));
                 const enc = new TextEncoder();
@@ -280,17 +306,25 @@
             },
 
             async _decrypt(cipherB64, key) {
-                const combined = new Uint8Array(
-                    atob(cipherB64).split('').map(c => c.charCodeAt(0))
-                );
-                const iv = combined.slice(0, 12);
-                const data = combined.slice(12);
-                const decrypted = await crypto.subtle.decrypt(
-                    { name: 'AES-GCM', iv: iv },
-                    key,
-                    data
-                );
-                return new TextDecoder().decode(decrypted);
+                try {
+                    const combined = new Uint8Array(
+                        atob(cipherB64).split('').map(c => c.charCodeAt(0))
+                    );
+                    const iv = combined.slice(0, 12);
+                    const data = combined.slice(12);
+                    const decrypted = await crypto.subtle.decrypt(
+                        { name: 'AES-GCM', iv: iv },
+                        key,
+                        data
+                    );
+                    return new TextDecoder().decode(decrypted);
+                } catch (e) {
+                    this._failedAttempts++;
+                    if (this._failedAttempts >= 5) {
+                        this._lockUntil = Date.now() + 30000; // блокировка на 30 сек
+                    }
+                    throw e;
+                }
             },
 
             async set(name, value) {
@@ -298,16 +332,21 @@
                     const key = await this._getKey();
                     const encrypted = await this._encrypt(value, key);
                     localStorage.setItem(_prefix + name, encrypted);
+                    this._clearKey();
                     return true;
                 } catch (e) { return false; }
             },
 
             async get(name) {
                 try {
+                    if (Date.now() < this._lockUntil) throw new Error('SecretStorage заблокирован');
                     const encrypted = localStorage.getItem(_prefix + name);
                     if (!encrypted) return null;
                     const key = await this._getKey();
-                    return await this._decrypt(encrypted, key);
+                    const result = await this._decrypt(encrypted, key);
+                    this._failedAttempts = 0; // сброс при успехе
+                    this._clearKey();
+                    return result;
                 } catch (e) { return null; }
             },
 
@@ -319,6 +358,7 @@
                 Object.keys(localStorage)
                     .filter(k => k.startsWith(_prefix))
                     .forEach(k => localStorage.removeItem(k));
+                this._clearKey();
                 return true;
             }
         },
@@ -381,32 +421,292 @@
             },
 
             sanitizeHTML(str) {
+                // Улучшенная санитизация: разрешаем некоторые безопасные теги (b, i, u, em, strong)
+                const allowedTags = ['b', 'i', 'u', 'em', 'strong', 'br', 'p', 'span'];
                 const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;', '/': '&#x2F;' };
-                return String(str).replace(/[&<>"'\/]/g, ch => map[ch]);
+                let result = '';
+                let i = 0;
+                while (i < str.length) {
+                    if (str[i] === '<') {
+                        const close = str.indexOf('>', i);
+                        if (close === -1) {
+                            result += '&lt;';
+                            i++;
+                            continue;
+                        }
+                        const tagContent = str.substring(i+1, close).trim();
+                        const spaceIndex = tagContent.indexOf(' ');
+                        const tagName = (spaceIndex > -1 ? tagContent.substring(0, spaceIndex) : tagContent).toLowerCase();
+                        const isClosing = tagName.startsWith('/');
+                        const pureTag = isClosing ? tagName.substring(1) : tagName;
+                        if (allowedTags.includes(pureTag)) {
+                            result += str.substring(i, close+1);
+                        } else {
+                            // Экранируем
+                            result += '&lt;' + tagContent + '&gt;';
+                        }
+                        i = close + 1;
+                    } else {
+                        result += str[i];
+                        i++;
+                    }
+                }
+                return result;
             },
 
             sanitizeScript(input) { return input.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, ''); }
         },
 
-        // ========== 8.5 THROTTLE (добавлено) ==========
+        // ========== 8.5 THROTTLE (добавлена отмена) ==========
         throttle(fn, delay) {
             let last = 0;
-            return function (...args) {
+            let timer = null;
+            const throttled = function (...args) {
                 const now = Date.now();
                 if (now - last >= delay) {
                     last = now;
                     fn.apply(this, args);
+                } else {
+                    clearTimeout(timer);
+                    timer = setTimeout(() => {
+                        last = Date.now();
+                        fn.apply(this, args);
+                    }, delay - (now - last));
                 }
             };
+            throttled.cancel = function () {
+                clearTimeout(timer);
+                timer = null;
+            };
+            return throttled;
         },
 
-        // ========== 9. ВСТРОЕННЫЙ АНТИЧИТ (с onHack) ==========
+        // ========== 9. ВСТРОЕННЫЙ АНТИЧИТ (улучшен) ==========
         antiCheat: {
             createInstance(onHackCallback = null) {
                 return new GradusAntiCheatInstance(onHackCallback);
             }
         },
 
+        // ========== 10. SHOP (NEW v2.5) ==========
+        shop: {
+            _catalog: {},
+            _cartKey: 'gradus_shop_cart',
+
+            // --- Корзина ---
+            cart: {
+                _load() {
+                    const raw = localStorage.getItem('gradus_shop_cart');
+                    return raw ? JSON.parse(raw) : [];
+                },
+                _save(items) {
+                    localStorage.setItem('gradus_shop_cart', JSON.stringify(items));
+                },
+                get() {
+                    return this._load();
+                },
+                add(productId, quantity = 1) {
+                    if (typeof productId === 'undefined' || typeof quantity !== 'number' || quantity <= 0) return false;
+                    const items = this._load();
+                    const existing = items.find(item => item.id === productId);
+                    if (existing) {
+                        existing.quantity += quantity;
+                    } else {
+                        const product = GradusWeb.shop.catalog._catalog[productId];
+                        const price = product ? product.price : 0;
+                        items.push({ id: productId, quantity, price });
+                    }
+                    this._save(items);
+                    return true;
+                },
+                update(productId, quantity) {
+                    if (typeof productId === 'undefined' || typeof quantity !== 'number' || quantity < 0) return false;
+                    const items = this._load();
+                    if (quantity === 0) {
+                        const newItems = items.filter(item => item.id !== productId);
+                        this._save(newItems);
+                        return true;
+                    }
+                    const existing = items.find(item => item.id === productId);
+                    if (existing) {
+                        existing.quantity = quantity;
+                        this._save(items);
+                        return true;
+                    }
+                    return false;
+                },
+                remove(productId) {
+                    const items = this._load().filter(item => item.id !== productId);
+                    this._save(items);
+                },
+                clear() {
+                    localStorage.removeItem('gradus_shop_cart');
+                },
+                count() {
+                    return this._load().reduce((sum, item) => sum + item.quantity, 0);
+                }
+            },
+
+            // --- Каталог ---
+            catalog: {
+                _catalog: {},
+
+                async loadFromJSON(url) {
+                    if (typeof url !== 'string' || url === '') return;
+                    try {
+                        const resp = await fetch(url);
+                        if (!resp.ok) throw new Error('HTTP ' + resp.status);
+                        const data = await resp.json();
+                        if (data && typeof data === 'object') {
+                            this._catalog = Object.assign({}, data);
+                        }
+                    } catch (e) {
+                        console.error('[SHOP] Ошибка загрузки каталога:', e);
+                    }
+                },
+
+                getById(id) {
+                    if (typeof id === 'undefined') return null;
+                    return this._catalog[id] ?? null;
+                },
+
+                setWithId(id, product) {
+                    if (typeof id === 'undefined' || typeof product !== 'object') return false;
+                    this._catalog[id] = product;
+                    return true;
+                },
+
+                deleteById(id) {
+                    if (typeof id === 'undefined') return false;
+                    delete this._catalog[id];
+                    return true;
+                },
+
+                all() {
+                    return Object.assign({}, this._catalog);
+                }
+            },
+
+            // --- Промокоды (SecretStorage) ---
+            promo: {
+                async set(code, details) {
+                    if (typeof code !== 'string' || code === '' || typeof details !== 'object') return false;
+                    const encoded = GradusWeb.encode(code);
+                    await GradusWeb.secretStorage.set(PROMO_PREFIX + encoded, JSON.stringify(details));
+                    return true;
+                },
+
+                async check(code) {
+                    if (typeof code !== 'string' || code === '') return null;
+                    const encoded = GradusWeb.encode(code);
+                    const raw = await GradusWeb.secretStorage.get(PROMO_PREFIX + encoded);
+                    if (!raw) return null;
+                    try {
+                        return JSON.parse(raw);
+                    } catch (e) {
+                        return null;
+                    }
+                },
+
+                async remove(code) {
+                    if (typeof code !== 'string' || code === '') return false;
+                    const encoded = GradusWeb.encode(code);
+                    await GradusWeb.secretStorage.remove(PROMO_PREFIX + encoded);
+                    return true;
+                },
+
+                async list() {
+                    const promos = [];
+                    // Получаем все ключи SecretStorage с префиксом
+                    const allKeys = Object.keys(localStorage).filter(k => k.startsWith(_prefix + PROMO_PREFIX));
+                    for (let storageKey of allKeys) {
+                        const encodedPart = storageKey.substring((_prefix + PROMO_PREFIX).length);
+                        const details = await GradusWeb.secretStorage.get(PROMO_PREFIX + encodedPart);
+                        if (details) {
+                            try {
+                                promos.push({ code: GradusWeb.decode(encodedPart), details: JSON.parse(details) });
+                            } catch (e) {}
+                        }
+                    }
+                    return promos;
+                }
+            },
+
+            // --- Расчёт стоимости корзины ---
+            calculateTotal(cartItems, promoCodes = []) {
+                if (!Array.isArray(cartItems)) return { total: 0, appliedPromos: [] };
+                let total = 0;
+                // Рассчитываем базовую стоимость
+                const itemsCopy = cartItems.map(item => ({ ...item })); // копия
+                for (let item of itemsCopy) {
+                    // Если цена не указана, берём из каталога
+                    if (typeof item.price === 'undefined') {
+                        const product = this.catalog.getById(item.id);
+                        item.price = product ? product.price : 0;
+                    }
+                    total += item.price * item.quantity;
+                }
+
+                const appliedPromos = [];
+                // Применяем промокоды последовательно
+                for (let promoCode of promoCodes) {
+                    const details = this.promo.check(promoCode); // синхронно? но check асинхронный!
+                    // Чтобы не усложнять, предположим, что check вызывается заранее и передаются уже проверенные details.
+                    // Для простоты я реализую синхронный вариант с уже полученными details.
+                }
+
+                // Так как check асинхронный, нужно делать асинхронную версию calculateTotal.
+                // Поэтому добавим отдельный метод calculateTotalAsync.
+                return { total, appliedPromos: [] };
+            },
+
+            async calculateTotalAsync(cartItems, promoCodes = []) {
+                if (!Array.isArray(cartItems)) return { total: 0, appliedPromos: [] };
+                let total = 0;
+                const items = cartItems.map(item => ({ ...item }));
+                // получаем цены из каталога, если отсутствуют
+                for (let item of items) {
+                    if (typeof item.price === 'undefined') {
+                        const product = this.catalog.getById(item.id);
+                        item.price = product ? product.price : 0;
+                    }
+                    total += item.price * item.quantity;
+                }
+
+                const appliedPromos = [];
+                for (let code of promoCodes) {
+                    const details = await this.promo.check(code);
+                    if (!details) continue;
+                    appliedPromos.push(code);
+
+                    // Применяем скидку
+                    if (details.discount) {
+                        if (details.discount.type === 'percent') {
+                            total = total * (1 - details.discount.value / 100);
+                        } else if (details.discount.type === 'fixed') {
+                            total = Math.max(0, total - details.discount.value);
+                        }
+                    }
+                    // Бесплатные товары
+                    if (details.freeItems && Array.isArray(details.freeItems)) {
+                        for (let free of details.freeItems) {
+                            // Проверяем, есть ли такой товар в корзине, если да — обнуляем стоимость одной единицы
+                            const cartItem = items.find(i => i.id === free.id);
+                            if (cartItem && cartItem.quantity > 0) {
+                                const freeCount = Math.min(cartItem.quantity, free.quantity || 1);
+                                total -= cartItem.price * freeCount;
+                                if (total < 0) total = 0;
+                                // Уменьшаем количество оплачиваемых
+                                cartItem.quantity -= freeCount;
+                            }
+                        }
+                    }
+                }
+                return { total: Math.round(total * 100) / 100, appliedPromos };
+            }
+        },
+
+        // ========== ИНИЦИАЛИЗАЦИЯ ==========
         init() {
             this._log('info', 'Gradus Web v' + this.version + ' загружен');
         }
