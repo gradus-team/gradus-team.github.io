@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gradus Web — Документация (v2.4, июнь 2026)</title>
+    <title>Gradus Web — Документация (v2.5.1, июнь 2026)</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Segoe UI', system-ui, sans-serif; max-width: 960px; margin: 2rem auto; padding: 0 1rem; line-height: 1.6; color: #1e1e1e; background: #fafafa; }
@@ -24,51 +24,68 @@
     </style>
 </head>
 <body>
-    <h1>🌐 Gradus Web — Утилиты для сайтов (v2.4.0, июнь 2026)</h1>
-    <h2>(Ждите, до 15.06.2026 выйдет обновление 2.5 под онлайн-магазины (Shop-Update))</h2>
+    <h1>🌐 Gradus Web — Утилиты для сайтов (v2.5.1, июнь 2026)</h1>
     <p>
         Единый JavaScript‑модуль для статических сайтов. Включает: кэширование, кастомное кодирование,
         капчу, защиту от DDoS (rate‑limiter), генераторы случайных данных, красивые всплывающие уведомления,
         <strong>шифрованное хранилище SecretStorage (ключ только в памяти)</strong>, <strong>модуль безопасности</strong> (защита от F12, XSS и инъекций),
-        <strong>встроенный античит</strong> с пользовательскими обработчиками, а также новые утилиты: <strong>Base64</strong> и <strong>throttle</strong>.
-        <br>Подключение: <code>&lt;script src="gradus-web.js"&gt;&lt;/script&gt;</code>
+        <strong>встроенный античит</strong>, а также <strong>Shop</strong> (корзина, каталог, промокоды) – новое в 2.5.
+        Подключение: <code>&lt;script src="gradus-web.js"&gt;&lt;/script&gt;</code>
     </p>
 
     <div class="note">
-        <strong>🆕 Что нового в версии 2.4 (июнь 2026):</strong>
+        <strong>🆕 Что нового в версии 2.5 (июнь 2026) — Shop Update:</strong>
         <ul>
-            <li><strong>SecretStorage:</strong> ключ шифрования больше не хранится в localStorage, а вычисляется заново при каждой загрузке (привязка к браузеру).</li>
-            <li><strong>Base64:</strong> добавлены методы <code>GradusWeb.toBase64</code> и <code>GradusWeb.fromBase64</code>.</li>
-            <li><strong>Throttle:</strong> функция <code>GradusWeb.throttle(fn, delay)</code> для ограничения частоты вызовов.</li>
-            <li><strong>Античит:</strong> улучшена обработка пользовательских коллбэков.</li>
-            <li>Исправлены уязвимости GSF‑2026‑0606‑2, GSF‑2026‑0607‑1 (см. таблицу).</li>
+            <li><strong>Shop:</strong> модуль <code>GradusWeb.shop</code> с корзиной (локальная, переживает перезагрузку), каталогом (JSON или ручное добавление), промокодами (защищены в SecretStorage), расчётом стоимости с учётом скидок и бесплатных товаров.</li>
+            <li><strong>SecretStorage:</strong> улучшена защита от перебора, очистка ключа из памяти после использования, блокировка при множественных неудачных попытках.</li>
+            <li><strong>Уведомления:</strong> исправлено наложение тостов (ограничение максимум 3 одновременно).</li>
+            <li><strong>Кэш:</strong> добавлен лимит размера (500 КБ), защита от переполнения.</li>
+            <li><strong>Безопасность:</strong> санитизация теперь не вырезает разрешённые безопасные теги (b, i, u, em, strong).</li>
+            <li><strong>Throttle:</strong> добавлен метод <code>.cancel()</code> для отмены отложенного вызова.</li>
+            <li><strong>Генераторы:</strong> валидация аргументов в <code>randomInt</code> и <code>password</code>.</li>
+            <li>Десятки мелких исправлений (см. таблицу известных проблем).</li>
         </ul>
     </div>
 
-    <h2>🛡️ Исправленные уязвимости (GSF)</h2>
+    <h2>🛡️ Исправленные уязвимости и известные проблемы (GSF)</h2>
     <table>
-        <tr><th>Идентификатор</th><th>Дата обнаружения</th><th>Описание</th><th>Версия исправления</th></tr>
-        <tr><td><code>GSF-2026-29052026-1</code></td><td>29.05.2026</td><td>Недостаточная обфускация SecretStorage – соль была доступна через отладчик</td><td>2.3</td></tr>
-        <tr><td><code>GSF-2026-29052026-2</code></td><td>29.05.2026</td><td>Ложное срабатывание защиты от F12 на мобильных устройствах</td><td>2.3</td></tr>
-        <tr><td><code>GSF-2026-31052026-1</code></td><td>31.05.2026</td><td>Отсутствие метода очистки всех секретов при обнаружении DevTools</td><td>2.3</td></tr>
-        <tr><td><code>GSF-2026-01062026-1</code></td><td>01.06.2026</td><td>Защита от F12 не включалась из-за преждевременной инициализации в Core</td><td>Core 2.3</td></tr>
-        <tr><td><code>GSF-2026-0606-2</code></td><td>06.06.2026</td><td>Утечка API‑ключей через DevTools (секреты оставались в памяти)</td><td>2.4</td></tr>
-        <tr><td><code>GSF-2026-0607-1</code></td><td>07.06.2026</td><td>Ключ шифрования SecretStorage хранился в localStorage</td><td>2.4</td></tr>
+        <tr><th>Идентификатор</th><th>Дата</th><th>Категория</th><th>Описание</th></tr>
+        <tr><td><code>GSF‑2026‑0106‑1</code></td><td>01.06.2026</td><td>Функциональность</td><td>Нет валидации URL в server_get</td></tr>
+        <tr><td><code>GSF‑2026‑0106‑2</code></td><td>01.06.2026</td><td>Функциональность</td><td>Кэш БД не очищается при удалении ключа</td></tr>
+        <tr><td><code>GSF‑2026‑0206‑1</code></td><td>02.06.2026</td><td>Защита от взлома</td><td>Нет защиты от перебора в SecretStorage</td></tr>
+        <tr><td><code>GSF‑2026‑0306‑1</code></td><td>03.06.2026</td><td>Документация</td><td>Нет информации о максимальном размере кэша</td></tr>
+        <tr><td><code>GSF‑2026‑0306‑2</code></td><td>03.06.2026</td><td>Улучшение</td><td>Нет плейсхолдера для QR‑кодов</td></tr>
+        <tr><td><code>GSF‑2026‑0406‑1</code></td><td>04.06.2026</td><td>Безопасность</td><td>Переполнение кэша server_get</td></tr>
+        <tr><td><code>GSF‑2026‑0406‑2</code></td><td>04.06.2026</td><td>Функциональность</td><td>Нет повторных попыток при сбое прокси</td></tr>
+        <tr><td><code>GSF‑2026‑0506‑1</code></td><td>05.06.2026</td><td>Улучшение</td><td>Нет плейсхолдера для проверки орфографии</td></tr>
+        <tr><td><code>GSF‑2026‑0606‑1</code></td><td>06.06.2026</td><td>Отображение</td><td>Toast‑уведомления накладываются</td></tr>
+        <tr><td><code>GSF‑2026‑0606‑2</code></td><td>06.06.2026</td><td>Отображение</td><td>Санитизация удаляет разрешённые теги</td></tr>
+        <tr><td><code>GSF‑2026‑0706‑1</code></td><td>07.06.2026</td><td>Безопасность</td><td>Утечка мастер-ключа SecretStorage</td></tr>
+        <tr><td><code>GSF‑2026‑0706‑2</code></td><td>07.06.2026</td><td>Функциональность</td><td>Неполная обработка вложенных плейсхолдеров</td></tr>
+        <tr><td><code>GSF‑2026‑0806‑1</code></td><td>08.06.2026</td><td>Защита от взлома</td><td>Античит не защищает после загрузки</td></tr>
+        <tr><td><code>GSF‑2026‑0806‑2</code></td><td>08.06.2026</td><td>Защита от взлома</td><td>Обход защиты через console.clear</td></tr>
+        <tr><td><code>GSF‑2026‑0906‑1</code></td><td>09.06.2026</td><td>Функциональность</td><td>throttle без отмены</td></tr>
+        <tr><td><code>GSF‑2026‑0906‑2</code></td><td>09.06.2026</td><td>Функциональность</td><td>Нет обработки ошибок пользовательских обработчиков</td></tr>
+        <tr><td><code>GSF‑2026‑1006‑1</code></td><td>10.06.2026</td><td>Функциональность</td><td>Нет поддержки offline‑режима</td></tr>
+        <tr><td><code>GSF‑2026‑1006‑2</code></td><td>10.06.2026</td><td>Функциональность</td><td>Нет валидации аргументов во всех функциях</td></tr>
+        <tr><td><code>GSF‑2026‑1106‑1</code></td><td>11.06.2026</td><td>Функциональность</td><td>Ошибка при пустом dbFile в конфигурации (null/undefined/{})</td></tr>
+        <tr><td><code>GSF‑2026‑1106‑2</code></td><td>11.06.2026</td><td>Функциональность</td><td>Фреймворк не запускается без явного вызова init в site.js</td></tr>
     </table>
 
     <h2>✨ Возможности</h2>
     <ul>
-        <li><strong>Кэш</strong> в localStorage с TTL (время жизни)</li>
-        <li><strong>Кодирование/декодирование</strong> по расширенной таблице символов (кириллица, латиница, спецсимволы)</li>
-        <li><strong>Base64</strong> кодирование/декодирование (новое в 2.4)</li>
-        <li><strong>Простая математическая капча</strong> (вставка в HTML и проверка)</li>
-        <li><strong>Клиентский DDoS‑протектор</strong> (ограничение частоты действий)</li>
-        <li><strong>Генераторы</strong>: UUID v4, криптостойкий пароль, случайное целое</li>
-        <li><strong>Тосты‑уведомления</strong> (success, error, info, warning) с автоскрытием</li>
-        <li><strong>SecretStorage</strong> — шифрованное хранение конфиденциальных данных (AES‑GCM, ключ в памяти)</li>
-        <li><strong>Модуль безопасности</strong>: защита от F12, XSS‑санитизация, блокировка клавиш и контекстного меню</li>
-        <li><strong>Встроенный античит</strong> — защита переменных, событие onHack</li>
-        <li><strong>Throttle</strong> — ограничение частоты вызова функций (новое в 2.4)</li>
+        <li><strong>Кэш</strong> в localStorage с TTL (время жизни) и лимитом размера.</li>
+        <li><strong>Кодирование/декодирование</strong> по расширенной таблице символов.</li>
+        <li><strong>Base64</strong> кодирование/декодирование.</li>
+        <li><strong>Простая математическая капча</strong> (вставка в HTML и проверка).</li>
+        <li><strong>Клиентский DDoS‑протектор</strong> (ограничение частоты действий).</li>
+        <li><strong>Генераторы</strong>: UUID v4, криптостойкий пароль, случайное целое.</li>
+        <li><strong>Тосты‑уведомления</strong> (success, error, info, warning) с автоскрытием и ограничением количества.</li>
+        <li><strong>SecretStorage</strong> — шифрованное хранение конфиденциальных данных (AES‑GCM, ключ в памяти, защита от перебора).</li>
+        <li><strong>Модуль безопасности</strong>: защита от F12, XSS‑санитизация (с сохранением безопасных тегов), блокировка клавиш и контекстного меню.</li>
+        <li><strong>Встроенный античит</strong> — защита переменных, событие onHack.</li>
+        <li><strong>Throttle</strong> — ограничение частоты вызова функций с возможностью отмены.</li>
+        <li><strong>Shop (новое!)</strong> — корзина, каталог, промокоды, расчёт стоимости.</li>
     </ul>
 
     <hr>
@@ -77,13 +94,15 @@
     <pre>GradusWeb.cache.set('user', { name: 'Иван' }, 600); // на 10 минут
 const user = GradusWeb.cache.get('user');           // { name: 'Иван' }
 GradusWeb.cache.remove('user');
-GradusWeb.cache.clear(); // очищает весь кэш Gradus</pre>
+GradusWeb.cache.clear(); // очищает весь кэш Gradus
+// Максимальный размер записи: 500 КБ (GradusWeb.cache.maxSize)</pre>
     <table>
         <tr><th>Метод</th><th>Описание</th></tr>
-        <tr><td><code>set(key, value, ttlSeconds)</code></td><td>Сохраняет значение с временем жизни (по умолчанию 3600 сек)</td></tr>
+        <tr><td><code>set(key, value, ttlSeconds)</code></td><td>Сохраняет значение с временем жизни (по умолчанию 3600 сек). Защита от превышения лимита размера.</td></tr>
         <tr><td><code>get(key)</code></td><td>Возвращает значение или <code>null</code>, если просрочено / отсутствует</td></tr>
         <tr><td><code>remove(key)</code></td><td>Удаляет запись</td></tr>
         <tr><td><code>clear()</code></td><td>Удаляет все записи с префиксом <code>gradus_cache_</code></td></tr>
+        <tr><td><code>maxSize</code></td><td>Свойство (500 КБ) — максимальный размер одной записи в байтах</td></tr>
     </table>
 
     <hr>
@@ -101,7 +120,7 @@ const decoded = GradusWeb.decode(encoded);
         Отсутствующие в таблице символы остаются без изменений.
     </div>
 
-    <h3>2.1 Base64 (новое в v2.4)</h3>
+    <h3>2.1 Base64</h3>
     <pre>const b64 = GradusWeb.toBase64('Привет!');   // "UHJp0LLQtdGC0YHQtdC80YHRgtCy0L4="
 const original = GradusWeb.fromBase64(b64); // "Привет!"</pre>
 
@@ -109,15 +128,10 @@ const original = GradusWeb.fromBase64(b64); // "Привет!"</pre>
 
     <h2>3. 🤖 Капча (GradusWeb.captcha)</h2>
     <p>Математическая капча: случайный пример (сложение, вычитание, умножение).</p>
-
     <h3>Программное использование</h3>
     <pre>const cap = GradusWeb.captcha.generate();
 console.log(cap.question); // "3 + 5 = ?"
-// позже проверяем ответ пользователя
-if (GradusWeb.captcha.check(cap, userInput)) {
-    // верно
-}</pre>
-
+if (GradusWeb.captcha.check(cap, userInput)) { /* верно */ }</pre>
     <h3>Готовый HTML‑виджет</h3>
     <pre>&lt;div id="captcha-box"&gt;&lt;/div&gt;
 &lt;button onclick="checkCaptcha()"&gt;Проверить&lt;/button&gt;
@@ -137,8 +151,7 @@ function checkCaptcha() {
 
     <h2>4. 🛡️ DDoS Protection (GradusWeb.ddos)</h2>
     <p>Клиентский ограничитель частоты действий (rate limiter).</p>
-    <pre>// Разрешить не более 3 кликов за 10 секунд для действия 'submit_btn'
-document.getElementById('btn').addEventListener('click', () => {
+    <pre>document.getElementById('btn').addEventListener('click', () => {
     if (GradusWeb.ddos.isAllowed('submit_btn', 3, 10)) {
         // выполнить действие
     } else {
@@ -147,7 +160,7 @@ document.getElementById('btn').addEventListener('click', () => {
 });</pre>
     <table>
         <tr><th>Метод</th><th>Описание</th></tr>
-        <tr><td><code>isAllowed(id, maxRequests, intervalSeconds)</code></td><td>Возвращает <code>true</code>, если действие разрешено</td></tr>
+        <tr><td><code>isAllowed(id, maxRequests, intervalSeconds)</code></td><td>Возвращает <code>true</code>, если действие разрешено. ID должен быть непустой строкой.</td></tr>
         <tr><td><code>reset(id)</code></td><td>Сбрасывает счётчик для указанного ID</td></tr>
         <tr><td><code>clear()</code></td><td>Сбрасывает все ограничения</td></tr>
     </table>
@@ -156,8 +169,9 @@ document.getElementById('btn').addEventListener('click', () => {
 
     <h2>5. 🎲 Генераторы (GradusWeb.generate)</h2>
     <pre>const id = GradusWeb.generate.uuid();          // "550e8400-e29b-41d4-a716-446655440000"
-const pass = GradusWeb.generate.password(16);   // "aB3$xK9!pL2@qW7#"
+const pass = GradusWeb.generate.password(16);   // "aB3$xK9!pL2@qW7#" (длина 4-128)
 const num = GradusWeb.generate.randomInt(1, 100); // случайное целое от 1 до 100</pre>
+    <p>Все генераторы теперь проверяют корректность аргументов (будут ошибки в консоли при неверных значениях).</p>
 
     <hr>
 
@@ -166,13 +180,13 @@ const num = GradusWeb.generate.randomInt(1, 100); // случайное цело
 GradusWeb.notify.error('Ошибка соединения');
 GradusWeb.notify.info('Идёт загрузка...');
 GradusWeb.notify.warning('Время сессии истекает');</pre>
-    <p>Появляются в правом верхнем углу и автоматически исчезают через 3 секунды (можно передать свою длительность).</p>
+    <p>Появляются в правом верхнем углу и автоматически исчезают. Одновременно отображается не более 3 тостов, чтобы не перекрывать друг друга.</p>
 
     <hr>
 
-    <h2>7. 🔒 SecretStorage (шифрованное хранилище, v2.4)</h2>
+    <h2>7. 🔒 SecretStorage (шифрованное хранилище, улучшен)</h2>
     <p>
-        Хранит данные в <code>localStorage</code> в зашифрованном виде (AES‑GCM). <strong>Ключ шифрования теперь только в памяти</strong> — он не сохраняется нигде, а вычисляется заново при каждой загрузке страницы на основе отпечатка браузера (User‑Agent, язык, разрешение экрана и т.д.). Расшифровать данные можно только в том же браузере.
+        Хранит данные в <code>localStorage</code> в зашифрованном виде (AES‑GCM). <strong>Ключ шифрования теперь только в памяти</strong> — он не сохраняется нигде, а вычисляется заново при каждой загрузке страницы на основе отпечатка браузера. После использования ключ удаляется из памяти. Защита от перебора: после 5 неудачных попыток расшифровки хранилище блокируется на 30 секунд.
     </p>
     <pre>// Сохранить (асинхронно)
 await GradusWeb.secretStorage.set('api_key', 'sk_live_1234567890');
@@ -183,10 +197,10 @@ const key = await GradusWeb.secretStorage.get('api_key');
 // Удалить
 await GradusWeb.secretStorage.remove('api_key');
 
-// Полностью очистить все секреты (удобно при обнаружении F12)
+// Полностью очистить все секреты
 await GradusWeb.secretStorage.clear();</pre>
     <p>
-        <strong>Где хранить секреты?</strong> Вы можете использовать только локальное шифрование (данные в localStorage), либо получать секреты с защищённого сервера через прокси (например, <code>{server_get:https://your-proxy.com/secret}</code>). Рекомендуется комбинировать оба подхода для максимальной безопасности.
+        <strong>Где хранить секреты?</strong> Вы можете использовать только локальное шифрование (данные в localStorage), либо получать секреты с защищённого сервера через прокси. Рекомендуется комбинировать оба подхода для максимальной безопасности.
     </p>
     <div class="warning">
         <strong>⚠️ Важно:</strong> Абсолютной защиты на клиенте не существует. Для критичных секретов всегда предпочитайте серверный прокси.
@@ -202,47 +216,32 @@ await GradusWeb.secretStorage.clear();</pre>
     <hr>
 
     <h2>8. 🛡️ Модуль безопасности (GradusWeb.security)</h2>
-
     <h3>Защита от DevTools (F12)</h3>
-    <p>Включает несколько методов детекта открытой консоли: проверка размера окна, зацикленный <code>debugger</code>, очистка консоли.
-       При обнаружении вызывает пользовательский callback. Можно указать <code>removeScripts: true</code> для удаления всех
-       тегов <code>&lt;script&gt;</code> со страницы, а также <code>skipMobile: true</code> для пропуска мобильных устройств.</p>
     <pre>GradusWeb.security.enableDevToolsProtection(() => {
     alert('DevTools открыты!');
     // удаляем секреты, очищаем кэш, перезагружаем страницу...
 }, { removeScripts: true, skipMobile: true });</pre>
-    <p>Также автоматически блокируются клавиши <kbd>F12</kbd>, <kbd>Ctrl+Shift+I</kbd>, <kbd>Ctrl+U</kbd> и контекстное меню (правый клик).</p>
-
+    <p>Автоматически блокируются клавиши <kbd>F12</kbd>, <kbd>Ctrl+Shift+I</kbd>, <kbd>Ctrl+U</kbd> и контекстное меню (правый клик).</p>
     <h3>Защита от XSS и инъекций</h3>
-    <pre>const safe = GradusWeb.security.sanitizeHTML('<script>alert("xss")</script>');
-// safe = "&lt;script&gt;alert("xss")&lt;/script&gt;"
-const clean = GradusWeb.security.sanitizeScript(unsafeString);</pre>
+    <pre>const safe = GradusWeb.security.sanitizeHTML('<b>текст</b><script>alert("xss")</script>');
+// safe = "<b>текст</b>&lt;script&gt;alert("xss")&lt;/script&gt;"</pre>
+    <p>Теперь разрешены безопасные теги: <code>&lt;b&gt;</code>, <code>&lt;i&gt;</code>, <code>&lt;u&gt;</code>, <code>&lt;em&gt;</code>, <code>&lt;strong&gt;</code>, <code>&lt;br&gt;</code>, <code>&lt;p&gt;</code>, <code>&lt;span&gt;</code>.</p>
     <table>
         <tr><th>Метод</th><th>Описание</th></tr>
         <tr><td><code>enableDevToolsProtection(callback, options?)</code></td><td>Включает слежение за DevTools с дополнительными настройками</td></tr>
         <tr><td><code>disableDevToolsProtection()</code></td><td>Отключает слежение</td></tr>
-        <tr><td><code>sanitizeHTML(str)</code></td><td>Возвращает строку, безопасную для вставки в HTML</td></tr>
+        <tr><td><code>sanitizeHTML(str)</code></td><td>Возвращает строку, безопасную для вставки в HTML (сохраняет безопасные теги)</td></tr>
         <tr><td><code>sanitizeScript(str)</code></td><td>Удаляет теги <code>&lt;script&gt;</code></td></tr>
     </table>
 
     <hr>
 
     <h2>9. 🎮 Встроенный античит (GradusWeb.antiCheat)</h2>
-    <p>
-        Защищает переменные от изменений через Cheat Engine и подобные утилиты. Можно зарегистрировать пользовательский обработчик,
-        который срабатывает при обнаружении взлома.
-    </p>
-    <pre>// Создание экземпляра с обработчиком
-const ac = GradusWeb.antiCheat.createInstance((name, value, reason) => {
+    <pre>const ac = GradusWeb.antiCheat.createInstance((name, value, reason) => {
     console.warn(`Обнаружен взлом переменной "${name}"! Причина: ${reason}`);
-    // Здесь можно отправить лог на сервер, заблокировать аккаунт и т.д.
 });
 ac.startMonitoring();
-
-// Добавление защищённой переменной
 const healthId = ac.addVariable('health', 100);
-
-// Проверка в игровом цикле
 setInterval(() => {
     if (ac.isHacked(healthId, 100)) {
         GradusWeb.notify.error('Обнаружена попытка взлома здоровья!');
@@ -256,17 +255,87 @@ setInterval(() => {
         <tr><td><code>addVariable(name, value)</code></td><td>Добавляет защищённую переменную (возвращает её имя)</td></tr>
         <tr><td><code>getVariable(name)</code></td><td>Возвращает оригинальное значение (расшифрованное)</td></tr>
         <tr><td><code>isHacked(name, expectedValue)</code></td><td>Проверяет, не подменено ли значение (возвращает <code>true</code> при взломе)</td></tr>
-        <tr><td><code>onHack(callback)</code></td><td>Регистрирует обработчик взлома (если не был передан в <code>createInstance</code>)</td></tr>
+        <tr><td><code>onHack(callback)</code></td><td>Регистрирует обработчик взлома</td></tr>
     </table>
 
     <hr>
 
-    <h2>10. ⏱️ Throttle (новое в v2.4)</h2>
-    <p>Ограничивает частоту вызова функции: она будет выполняться не чаще, чем раз в указанный интервал.</p>
-    <pre>// Обработчик прокрутки, который срабатывает не чаще раза в 200 мс
-window.addEventListener('scroll', GradusWeb.throttle(() => {
+    <h2>10. ⏱️ Throttle (с отменой)</h2>
+    <pre>const handler = GradusWeb.throttle(() => {
     console.log('Прокрутка!');
-}, 200));</pre>
+}, 200);
+window.addEventListener('scroll', handler);
+// Позже можно отменить отложенный вызов:
+handler.cancel();</pre>
+
+    <hr>
+
+    <h2>11. 🛒 Shop (новое в v2.5) — GradusWeb.shop</h2>
+    <p>Модуль для создания простого интернет-магазина без сервера. Все данные хранятся локально, корзина переживает перезагрузку страницы.</p>
+
+    <h3>11.1 Каталог (<code>GradusWeb.shop.catalog</code>)</h3>
+    <p>Можно загрузить товары из JSON-файла или добавлять/удалять программно.</p>
+    <pre>// Загрузить каталог из products.json
+await GradusWeb.shop.catalog.loadFromJSON('/products.json');
+
+// Получить товар по ID
+const product = GradusWeb.shop.catalog.getById('item1'); // { name: "Ручка", price: 150 }
+
+// Добавить или обновить товар вручную
+GradusWeb.shop.catalog.setWithId('item2', { name: 'Тетрадь', price: 80, description: '48 листов' });
+
+// Удалить товар
+GradusWeb.shop.catalog.deleteById('item2');
+
+// Получить копию всего каталога
+const all = GradusWeb.shop.catalog.all();</pre>
+
+    <h3>11.2 Корзина (<code>GradusWeb.shop.cart</code>)</h3>
+    <p>Корзина сохраняется в localStorage. Методы:</p>
+    <pre>// Добавить товар (ID из каталога, количество)
+GradusWeb.shop.cart.add('item1', 2);
+
+// Обновить количество (0 — удалить)
+GradusWeb.shop.cart.update('item1', 5);
+
+// Удалить товар
+GradusWeb.shop.cart.remove('item1');
+
+// Получить всю корзину (массив объектов {id, quantity, price})
+const items = GradusWeb.shop.cart.get();
+
+// Количество товаров в корзине
+const totalItems = GradusWeb.shop.cart.count();</pre>
+
+    <h3>11.3 Промокоды (<code>GradusWeb.shop.promo</code>)</h3>
+    <p>Промокоды хранятся в SecretStorage (зашифрованы). Код промокода кодируется перед сохранением, что исключает его раскрытие в открытом виде.</p>
+    <pre>// Сохранить промокод (только из JavaScript!)
+await GradusWeb.shop.promo.set('SALE20', {
+    discount: { type: 'percent', value: 20 },
+    freeItems: [{ id: 'item3', quantity: 1 }],
+    description: 'Скидка 20% и бесплатная ручка'
+});
+
+// Проверить промокод (возвращает объект или null)
+const promo = await GradusWeb.shop.promo.check('SALE20');
+
+// Удалить промокод
+await GradusWeb.shop.promo.remove('SALE20');
+
+// Получить список всех активных промокодов
+const allPromos = await GradusWeb.shop.promo.list();</pre>
+
+    <h3>11.4 Расчёт стоимости с учётом скидок</h3>
+    <pre>// Асинхронный расчёт (рекомендуется)
+const cart = GradusWeb.shop.cart.get();
+const promoCodes = ['SALE20'];
+const result = await GradusWeb.shop.calculateTotalAsync(cart, promoCodes);
+console.log(result.total);         // итоговая сумма
+console.log(result.appliedPromos); // массив применённых кодов</pre>
+    <p>Поддерживаются скидки: <code>percent</code> (процент) и <code>fixed</code> (фиксированная сумма). Бесплатные товары (<code>freeItems</code>) вычитаются из стоимости корзины.</p>
+
+    <h3>11.5 Интеграция с Gradus Static.JS</h3>
+    <p>В HTML можно использовать плейсхолдеры <code>{product_name:id}</code>, <code>{product_price:id}</code>, <code>{product_desc:id}</code>, <code>{cart_count}</code>, <code>{cart_total}</code>. Подробнее см. документацию Static.JS.</p>
 
     <hr>
 
