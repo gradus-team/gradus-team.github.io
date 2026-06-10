@@ -1,7 +1,7 @@
-// gradus-web.js – Gradus Static.JS Utility Library v2.5 (Shop Update)
+// gradus-web.js – Gradus Static.JS Utility Library v2.5.1 (Shop Update, исправления)
 /**
  * Gradus Web — Утилиты для статических сайтов (JavaScript)
- * Версия 2.5 — Shop (корзина, каталог, промокоды), исправления багов,
+ * Версия 2.5.1 — Shop (корзина, каталог, промокоды), исправления багов,
  * защита от перебора SecretStorage, отмена throttle, оффлайн-режим и др.
  * Ключ шифрования SecretStorage хранится только в памяти.
  */
@@ -15,7 +15,7 @@
     const PROMO_PREFIX = 'gradus_shop_promo_';
 
     const GradusWeb = {
-        version: '2.5.0',
+        version: '2.5.1',
 
         _log(type, msg) {
             const prefix = '[GRADUS-WEB]';
@@ -220,7 +220,6 @@
                 return document.getElementById('gradus-notify-container');
             },
             show(message, type = 'info', duration = 3000) {
-                // Удаляем старые тосты, если их больше 3
                 const container = this._ensureContainer();
                 while (container.children.length > 3) {
                     container.firstChild.remove();
@@ -257,7 +256,6 @@
 
             async _getKey() {
                 if (this._cachedKey) return this._cachedKey;
-                // Проверка защиты от перебора
                 if (Date.now() < this._lockUntil) {
                     throw new Error('SecretStorage временно заблокирован из-за множества неудачных попыток');
                 }
@@ -321,7 +319,7 @@
                 } catch (e) {
                     this._failedAttempts++;
                     if (this._failedAttempts >= 5) {
-                        this._lockUntil = Date.now() + 30000; // блокировка на 30 сек
+                        this._lockUntil = Date.now() + 30000;
                     }
                     throw e;
                 }
@@ -344,7 +342,7 @@
                     if (!encrypted) return null;
                     const key = await this._getKey();
                     const result = await this._decrypt(encrypted, key);
-                    this._failedAttempts = 0; // сброс при успехе
+                    this._failedAttempts = 0;
                     this._clearKey();
                     return result;
                 } catch (e) { return null; }
@@ -421,29 +419,40 @@
             },
 
             sanitizeHTML(str) {
-                // Улучшенная санитизация: разрешаем некоторые безопасные теги (b, i, u, em, strong)
-                const allowedTags = ['b', 'i', 'u', 'em', 'strong', 'br', 'p', 'span'];
-                const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;', '/': '&#x2F;' };
+                if (typeof str !== 'string') return '';
+                const allowedTags = ['b', 'i', 'u', 'em', 'strong', 'br', 'p', 'span', 'img'];
+                const allowedAttrs = { img: ['src', 'alt', 'width', 'height'] };
                 let result = '';
                 let i = 0;
                 while (i < str.length) {
                     if (str[i] === '<') {
                         const close = str.indexOf('>', i);
-                        if (close === -1) {
-                            result += '&lt;';
-                            i++;
-                            continue;
-                        }
-                        const tagContent = str.substring(i+1, close).trim();
-                        const spaceIndex = tagContent.indexOf(' ');
-                        const tagName = (spaceIndex > -1 ? tagContent.substring(0, spaceIndex) : tagContent).toLowerCase();
+                        if (close === -1) { result += '&lt;'; i++; continue; }
+                        const inner = str.substring(i+1, close).trim();
+                        const spaceIdx = inner.indexOf(' ');
+                        const tagName = (spaceIdx > -1 ? inner.substring(0, spaceIdx) : inner).toLowerCase();
                         const isClosing = tagName.startsWith('/');
                         const pureTag = isClosing ? tagName.substring(1) : tagName;
                         if (allowedTags.includes(pureTag)) {
-                            result += str.substring(i, close+1);
+                            if (isClosing) {
+                                result += `</${pureTag}>`;
+                            } else {
+                                let safeAttrs = '';
+                                if (spaceIdx > -1) {
+                                    const attrStr = inner.substring(spaceIdx + 1);
+                                    const attrRegex = /([a-zA-Z][a-zA-Z0-9_-]*)\s*=\s*("[^"]*"|'[^']*'|\S+)/g;
+                                    let match;
+                                    while ((match = attrRegex.exec(attrStr)) !== null) {
+                                        const attrName = match[1].toLowerCase();
+                                        if ((allowedAttrs[pureTag] || []).includes(attrName)) {
+                                            safeAttrs += ` ${match[0]}`;
+                                        }
+                                    }
+                                }
+                                result += `<${pureTag}${safeAttrs}>`;
+                            }
                         } else {
-                            // Экранируем
-                            result += '&lt;' + tagContent + '&gt;';
+                            result += '&lt;' + inner + '&gt;';
                         }
                         i = close + 1;
                     } else {
@@ -493,7 +502,6 @@
             _catalog: {},
             _cartKey: 'gradus_shop_cart',
 
-            // --- Корзина ---
             cart: {
                 _load() {
                     const raw = localStorage.getItem('gradus_shop_cart');
@@ -547,7 +555,6 @@
                 }
             },
 
-            // --- Каталог ---
             catalog: {
                 _catalog: {},
 
@@ -587,7 +594,6 @@
                 }
             },
 
-            // --- Промокоды (SecretStorage) ---
             promo: {
                 async set(code, details) {
                     if (typeof code !== 'string' || code === '' || typeof details !== 'object') return false;
@@ -617,7 +623,6 @@
 
                 async list() {
                     const promos = [];
-                    // Получаем все ключи SecretStorage с префиксом
                     const allKeys = Object.keys(localStorage).filter(k => k.startsWith(_prefix + PROMO_PREFIX));
                     for (let storageKey of allKeys) {
                         const encodedPart = storageKey.substring((_prefix + PROMO_PREFIX).length);
@@ -632,39 +637,10 @@
                 }
             },
 
-            // --- Расчёт стоимости корзины ---
-            calculateTotal(cartItems, promoCodes = []) {
-                if (!Array.isArray(cartItems)) return { total: 0, appliedPromos: [] };
-                let total = 0;
-                // Рассчитываем базовую стоимость
-                const itemsCopy = cartItems.map(item => ({ ...item })); // копия
-                for (let item of itemsCopy) {
-                    // Если цена не указана, берём из каталога
-                    if (typeof item.price === 'undefined') {
-                        const product = this.catalog.getById(item.id);
-                        item.price = product ? product.price : 0;
-                    }
-                    total += item.price * item.quantity;
-                }
-
-                const appliedPromos = [];
-                // Применяем промокоды последовательно
-                for (let promoCode of promoCodes) {
-                    const details = this.promo.check(promoCode); // синхронно? но check асинхронный!
-                    // Чтобы не усложнять, предположим, что check вызывается заранее и передаются уже проверенные details.
-                    // Для простоты я реализую синхронный вариант с уже полученными details.
-                }
-
-                // Так как check асинхронный, нужно делать асинхронную версию calculateTotal.
-                // Поэтому добавим отдельный метод calculateTotalAsync.
-                return { total, appliedPromos: [] };
-            },
-
             async calculateTotalAsync(cartItems, promoCodes = []) {
                 if (!Array.isArray(cartItems)) return { total: 0, appliedPromos: [] };
                 let total = 0;
                 const items = cartItems.map(item => ({ ...item }));
-                // получаем цены из каталога, если отсутствуют
                 for (let item of items) {
                     if (typeof item.price === 'undefined') {
                         const product = this.catalog.getById(item.id);
@@ -679,7 +655,6 @@
                     if (!details) continue;
                     appliedPromos.push(code);
 
-                    // Применяем скидку
                     if (details.discount) {
                         if (details.discount.type === 'percent') {
                             total = total * (1 - details.discount.value / 100);
@@ -687,16 +662,13 @@
                             total = Math.max(0, total - details.discount.value);
                         }
                     }
-                    // Бесплатные товары
                     if (details.freeItems && Array.isArray(details.freeItems)) {
                         for (let free of details.freeItems) {
-                            // Проверяем, есть ли такой товар в корзине, если да — обнуляем стоимость одной единицы
                             const cartItem = items.find(i => i.id === free.id);
                             if (cartItem && cartItem.quantity > 0) {
                                 const freeCount = Math.min(cartItem.quantity, free.quantity || 1);
                                 total -= cartItem.price * freeCount;
                                 if (total < 0) total = 0;
-                                // Уменьшаем количество оплачиваемых
                                 cartItem.quantity -= freeCount;
                             }
                         }
@@ -706,7 +678,6 @@
             }
         },
 
-        // ========== ИНИЦИАЛИЗАЦИЯ ==========
         init() {
             this._log('info', 'Gradus Web v' + this.version + ' загружен');
         }
