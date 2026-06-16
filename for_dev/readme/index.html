@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GradusCore — Документация</title>
+    <title>GradusCore v2 — Документация</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
@@ -55,11 +55,16 @@
             padding: 0.8rem 1rem;
             margin: 1.5rem 0;
         }
+        .warning {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 0.8rem 1rem;
+            margin: 1.5rem 0;
+        }
         a { color: #1976d2; text-decoration: none; }
         a:hover { text-decoration: underline; }
         hr { margin: 2.5rem 0; border: 0; border-top: 1px solid #ddd; }
 
-        /* адаптивность для мобильных */
         @media (max-width: 600px) {
             body { padding: 0 0.5rem; margin: 1rem auto; }
             h1 { font-size: 1.8rem; }
@@ -70,176 +75,286 @@
     </style>
 </head>
 <body>
-    <h1>🛡️ GradusCore — Антивирусное ядро</h1>
-    <p>Лёгкое сигнатурное ядро для сканирования файлов и папок, написанное на <strong>Java</strong>, <strong>Python</strong> и <strong>JavaScript (Node.js)</strong>.<br>
-    Не требует внешних файлов — все сигнатуры встроены в код.<br>
-    Подходит для встраивания в приложения, ботов, системы автоматической проверки.</p>
+    <h1>🛡️ GradusCore v2 — Антивирусное ядро</h1>
+    <p>
+        Кроссплатформенное лёгкое ядро для сканирования файлов, проверки URL, изолированного анализа (песочница),
+        обнаружения руткитов и скрытого запуска. Реализовано на <strong>Java</strong>, <strong>Python</strong> и
+        <strong>JavaScript (Node.js)</strong>.<br>
+        Все сигнатуры встроены, внешние файлы не требуются. Идеально для телеграм‑ботов, веб‑приложений, систем
+        автоматической проверки.
+    </p>
 
-    <h2>✨ Возможности</h2>
+    <h2>🚀 Новые возможности v2</h2>
     <ul>
-        <li>Сигнатурный анализ (bat, js, exe, url, py, rootkits и др.)</li>
-        <li>Опциональная проверка через <strong>MalwareBazaar</strong> по SHA‑256</li>
-        <li>Сканирование файлов, папок, буферов в памяти и текста</li>
-        <li>Возвращает максимальный процент угрозы (0–100)</li>
-        <li>Никаких внешних зависимостей (кроме стандартной библиотеки)</li>
+        <li><strong>Кроссплатформенность</strong> — Windows, Linux, macOS. Автоопределение ОС для специфичных проверок.</li>
+        <li><strong>Песочница</strong> — статический анализ любых файлов + динамический запуск с таймаутом (Windows) и опциональный <code>strace</code>‑анализ (Linux).</li>
+        <li><strong>Проверка URL</strong> — бесплатная онлайн‑проверка на фишинг через <a href="https://openphish.com" target="_blank">OpenPhish</a>.</li>
+        <li><strong>Поиск руткитов</strong> — Windows (<code>tasklist</code>, <code>sc query</code>), Linux (скрытые процессы, модули ядра), macOS (<code>kextstat</code>).</li>
+        <li><strong>Обнаружение скрытого запуска</strong> с правами администратора/root из подозрительных папок.</li>
+        <li><strong>Кастомное сканирование</strong> — выборочное включение нужных методов (сигнатуры, песочница, руткиты, скрытый запуск).</li>
+        <li><strong>Сканирование текста/буфера</strong> — для интеграции в ботов (Telegram, Discord).</li>
+        <li><strong>Автоматическое создание временных папок</strong> — не требует ручной настройки, очищается при завершении.</li>
     </ul>
 
     <hr>
 
-    <h2>☕ Java (GradusCore.java)</h2>
-    <h3>Командная строка</h3>
-    <pre>java -jar GradusCore.jar &lt;путь к файлу или папке&gt;
-java -jar GradusCore.jar docs</pre>
+    <h2>📦 Поддерживаемые команды (CLI)</h2>
+    <pre>
+# Java
+java -jar GradusCore.jar scan &lt;путь&gt;
+java -jar GradusCore.jar url-scan &lt;url&gt;
+java -jar GradusCore.jar sandbox-scan &lt;файл&gt;
+java -jar GradusCore.jar rootkit
+java -jar GradusCore.jar stealth
+java -jar GradusCore.jar custom-scan [--signatures] [--sandbox] [--rootkit] [--stealth] &lt;путь&gt;
+java -jar GradusCore.jar docs
 
-    <h3>Как библиотека</h3>
-    <pre>import graduscore.GradusCore;
-import graduscore.GradusCore.Settings;
+# Python / Node.js — аналогично
+python graduscore.py scan &lt;путь&gt;
+node graduscore.js url-scan &lt;url&gt;
+    </pre>
 
-Settings settings = new Settings();
-settings.useSignatures = true;      // по умолчанию true
-settings.useMalwareBazaar = false;  // по умолчанию false
+    <div class="note">
+        <strong>ℹ️ Примечание:</strong> Команды <code>rootkit</code>, <code>stealth</code> и динамическая часть
+        песочницы требуют соответствующих привилегий (администратор/root) и могут работать не во всех окружениях
+        (например, на хостингах без доступа к системным вызовам). Статический анализ, сигнатуры и проверка URL
+        работают всегда.
+    </div>
 
-GradusCore core = new GradusCore(settings);
-int threat = core.scan(new File("C:/test"));
-System.out.println("Угроза: " + threat + "%");</pre>
-
-    <h3>⚙️ Настройки (Settings)</h3>
+    <h2>⚙️ Настройки (Settings)</h2>
     <table>
-        <tr><th>Параметр</th><th>Тип</th><th>По умолчанию</th><th>Описание</th></tr>
-        <tr><td><code>notifications</code></td><td>boolean</td><td>false</td><td>Выводить ли прогресс в консоль</td></tr>
-        <tr><td><code>useSignatures</code></td><td>boolean</td><td>true</td><td>Использовать сигнатуры</td></tr>
-        <tr><td><code>useMalwareBazaar</code></td><td>boolean</td><td>false</td><td>Проверять хэш через API MalwareBazaar</td></tr>
+        <tr>
+            <th>Параметр</th>
+            <th>Тип</th>
+            <th>По умолчанию</th>
+            <th>Описание</th>
+        </tr>
+        <tr>
+            <td><code>notifications</code></td>
+            <td>boolean</td>
+            <td>false</td>
+            <td>Вывод логов в консоль</td>
+        </tr>
+        <tr>
+            <td><code>useSignatures</code></td>
+            <td>boolean</td>
+            <td>true</td>
+            <td>Сигнатурный анализ</td>
+        </tr>
+        <tr>
+            <td><code>useMalwareBazaar</code></td>
+            <td>boolean</td>
+            <td>false</td>
+            <td>Проверка SHA‑256 через MalwareBazaar</td>
+        </tr>
+        <tr>
+            <td><code>useSandbox</code></td>
+            <td>boolean</td>
+            <td>false</td>
+            <td>Анализ в песочнице (статический + динамический при возможности)</td>
+        </tr>
+        <tr>
+            <td><code>checkRootkits</code></td>
+            <td>boolean</td>
+            <td>false</td>
+            <td>Поиск скрытых процессов/драйверов</td>
+        </tr>
+        <tr>
+            <td><code>checkStealth</code></td>
+            <td>boolean</td>
+            <td>false</td>
+            <td>Проверка скрытого запуска с правами администратора</td>
+        </tr>
+        <tr>
+            <td><code>useAdvancedSandbox</code></td>
+            <td>boolean</td>
+            <td>false</td>
+            <td>На Linux включает strace‑анализ (требуется установленный strace)</td>
+        </tr>
     </table>
 
     <hr>
 
-    <h2>🐍 Python (graduscore_py.py)</h2>
-    <p>Установка не требуется. Достаточно скопировать файл <code>graduscore_py.py</code> в проект или бот.</p>
+    <h2>☕ Java</h2>
+    <h3>Использование как библиотека</h3>
+    <pre>
+import graduscore.GradusCore;
+import graduscore.GradusCore.Settings;
 
-    <h3>Командная строка</h3>
-    <pre>python graduscore_py.py &lt;путь к файлу или папке&gt;
-python graduscore_py.py docs</pre>
+Settings s = new Settings();
+s.notifications = true;
+s.useSignatures = true;
+s.useSandbox = true;          // песочница
+s.checkRootkits = true;       // поиск руткитов
 
-    <h3>Как библиотека</h3>
-    <pre>from graduscore_py import GradusCore, Settings
+GradusCore core = new GradusCore(s);
 
-settings = Settings()
-settings.use_signatures = True
-settings.use_malwarebazaar = False
+// Сканирование файла/папки
+int threat = core.scan(new File("путь"));
+System.out.println("Угроза: " + threat + "%");
 
+// Проверка URL
+String result = core.scanURL("http://example.com");
+System.out.println(result);   // SAFE / PHISHING / SUSPICIOUS
+
+// Песочница для файла
+int sandboxThreat = core.sandboxScan(new File("test.exe"));
+
+// Системные проверки
+boolean rootkitFound = core.rootkitScan();
+boolean stealth = core.stealthLaunchDetected();
+
+// Кастомный скан
+Settings custom = new Settings();
+custom.useSignatures = true;
+custom.useSandbox = true;
+custom.checkRootkits = true;
+int res = core.customScan(new File("папка"), custom);
+// res == -1 означает системную угрозу (руткит/скрытый запуск)
+    </pre>
+
+    <h3>🤖 Интеграция в Telegram‑бота (Java, псевдокод)</h3>
+    <pre>
+GradusCore core = new GradusCore(new Settings());
+
+void onDocument(Document doc) {
+    File downloaded = download(doc.getFileId());
+    int threat = core.scan(downloaded);
+    sendMessage(doc.getChatId(), "Угроза: " + threat + "%");
+}
+    </pre>
+
+    <hr>
+
+    <h2>🐍 Python</h2>
+    <h3>Использование как библиотека</h3>
+    <pre>
+from graduscore import GradusCore, Settings
+from pathlib import Path
+
+settings = Settings(
+    notifications=True,
+    use_signatures=True,
+    use_sandbox=True
+)
 core = GradusCore(settings)
 
-# Сканирование по пути
-threat = core.scan("/путь/к/файлу.exe")
+# Сканирование файла/папки
+threat = core.scan(Path("путь"))
 
-# Сканирование байтов (например, из Telegram-бота)
-file_bytes = ...  # получили от пользователя
-threat = core.scan_bytes(file_bytes, "file.exe")
+# Сканирование байтов (например, из Telegram)
+threat = core.scan_bytes(b"file content", "file.exe")
 
-# Сканирование текста (без сохранения файла)
-text = core.get_text_from_file("script.bat")
-threat = core.scan_text(text, "script.bat")</pre>
+# Сканирование текста
+threat = core.scan_text(code_text, "script.bat")
 
-    <div class="note">
-        <strong>🤖 Интеграция в Telegram-бота (aiogram 2.x)</strong><br>
-        Ниже показано, как принимать файлы и текстовые сообщения от пользователей.
-    </div>
+# Проверка URL
+result = core.scan_url("http://example.com")
 
-    <pre>from aiogram import Bot, Dispatcher, types
-from graduscore_py import GradusCore, Settings
+# Песочница
+sandbox_threat = core.sandbox_scan(Path("test.exe"))
 
-bot = Bot(token="YOUR_TOKEN")
+# Системные проверки
+rootkit_found = core.rootkit_scan()
+stealth_detected = core.stealth_launch_detected()
+
+# Кастомный скан
+custom = Settings(use_signatures=True, use_sandbox=True, check_rootkits=True)
+res = core.custom_scan(Path("путь"), custom)  # -1 = системная угроза
+    </pre>
+
+    <h3>🤖 Пример для aiogram (Telegram)</h3>
+    <pre>
+from aiogram import Bot, Dispatcher, types
+from graduscore import GradusCore, Settings
+import io
+
+bot = Bot(token="TOKEN")
 dp = Dispatcher(bot)
-core = GradusCore(Settings())
-core.settings.notifications = False
+core = GradusCore(Settings(notifications=False))
 
 @dp.message_handler(content_types=types.ContentType.DOCUMENT)
 async def handle_document(message: types.Message):
-    document = message.document
-    file = await bot.get_file(document.file_id)
-    file_bytes = await file.download_as_bytes()
-    threat = core.scan_bytes(file_bytes, document.file_name)
+    file = io.BytesIO()
+    await message.document.download(destination_file=file)
+    threat = core.scan_bytes(file.getvalue(), message.document.file_name)
     await message.reply(f"Уровень угрозы: {threat}%")
-
-@dp.message_handler(content_types=types.ContentType.TEXT)
-async def handle_text(message: types.Message):
-    text = message.text
-    threat = core.scan_text(text, "script.bat")
-    await message.reply(f"Уровень угрозы: {threat}%")</pre>
-
-    <h3>⚙️ Настройки</h3>
-    <table>
-        <tr><th>Параметр</th><th>Тип</th><th>По умолчанию</th><th>Описание</th></tr>
-        <tr><td><code>notifications</code></td><td>bool</td><td>False</td><td>Выводить ли прогресс в консоль</td></tr>
-        <tr><td><code>use_signatures</code></td><td>bool</td><td>True</td><td>Использовать сигнатуры</td></tr>
-        <tr><td><code>use_malwarebazaar</code></td><td>bool</td><td>False</td><td>Проверять хэш через API MalwareBazaar</td></tr>
-    </table>
+    </pre>
 
     <hr>
 
-    <h2>🟩 JavaScript / Node.js (graduscore_js.js)</h2>
-    <p>Установка не требуется. Подключается как обычный модуль.</p>
+    <h2>🟩 JavaScript / Node.js</h2>
+    <h3>Использование как библиотека</h3>
+    <pre>
+const { GradusCore, Settings } = require('./graduscore.js');
+const fs = require('fs');
 
-    <h3>Командная строка</h3>
-    <pre>node graduscore_js.js &lt;путь к файлу или папке&gt;
-node graduscore_js.js docs</pre>
-
-    <h3>Как библиотека</h3>
-    <pre>const { GradusCore, Settings } = require('./graduscore_js.js');
-
-const settings = new Settings();
-settings.useSignatures = true;
-settings.useMalwareBazaar = false;
-
+const settings = new Settings({
+    notifications: true,
+    useSignatures: true,
+    useSandbox: true
+});
 const core = new GradusCore(settings);
 
-// Синхронное сканирование (без MalwareBazaar)
-const threat = core.scan('/путь/к/файлу.exe');
+// Синхронное сканирование файла/папки (без MalwareBazaar)
+const threat = core.scan('/путь/к/файлу');
 
-// Сканирование буфера (например, из бота)
+// Сканирование буфера
 const buffer = fs.readFileSync('file.exe');
 const threat = core.scanBuffer(buffer, 'file.exe');
 
-// Асинхронное с проверкой MalwareBazaar
-(async () => {
-    const threat = await core.scanBufferAsync(buffer, 'file.exe');
-    console.log(`Угроза: ${threat}%`);
-})();
+// Проверка URL (асинхронно)
+core.scanURL('http://example.com').then(result => console.log(result));
 
-// Сканирование текста
-const threat = core.scanText('some malicious code', 'script.bat');</pre>
+// Песочница
+const sandThreat = core.sandboxScan('test.exe');
+
+// Системные проверки
+const rootkit = core.rootkitScan();
+const stealth = core.stealthLaunchDetected();
+
+// Кастомный скан
+const custom = new Settings({ useSignatures: true, useSandbox: true });
+const res = core.customScan('/папка', custom);  // -1 = системная угроза
+    </pre>
 
     <h3>🤖 Пример для node-telegram-bot-api</h3>
-    <pre>const TelegramBot = require('node-telegram-bot-api');
-const { GradusCore, Settings } = require('./graduscore_js.js');
+    <pre>
+const TelegramBot = require('node-telegram-bot-api');
+const { GradusCore, Settings } = require('./graduscore.js');
 
-const bot = new TelegramBot('YOUR_TOKEN', { polling: true });
+const bot = new TelegramBot('TOKEN', { polling: true });
 const core = new GradusCore(new Settings());
 
 bot.on('document', async (msg) => {
     const fileId = msg.document.file_id;
     const file = await bot.getFile(fileId);
-    const buffer = await bot.downloadFile(file.file_path, './');
+    const buffer = await bot.downloadFile(file.file_id);
     const threat = core.scanBuffer(buffer, msg.document.file_name);
-    bot.sendMessage(msg.chat.id, `Уровень угрозы: ${threat}%`);
-});</pre>
-
-    <h3>⚙️ Настройки</h3>
-    <table>
-        <tr><th>Параметр</th><th>Тип</th><th>По умолчанию</th><th>Описание</th></tr>
-        <tr><td><code>notifications</code></td><td>boolean</td><td>false</td><td>Выводить ли прогресс в консоль</td></tr>
-        <tr><td><code>useSignatures</code></td><td>boolean</td><td>true</td><td>Использовать сигнатуры</td></tr>
-        <tr><td><code>useMalwareBazaar</code></td><td>boolean</td><td>false</td><td>Проверять хэш через API MalwareBazaar</td></tr>
-    </table>
+    bot.sendMessage(msg.chat.id, `Угроза: ${threat}%`);
+});
+    </pre>
 
     <hr>
 
     <h2>🔍 Принцип работы</h2>
-    <p>Ядро содержит встроенные наборы сигнатур для различных типов файлов. При сканировании определяется расширение файла и применяются соответствующие регулярные выражения. Для исполняемых файлов (PE) дополнительно ищутся подозрительные строки в бинарном коде. При включённой опции <code>useMalwareBazaar</code> вычисляется SHA‑256 и отправляется запрос к публичному API.</p>
+    <p>
+        Ядро содержит встроенные сигнатуры для разных типов файлов. При сканировании определяется расширение и
+        применяются соответствующие регулярные выражения. Для исполняемых файлов (PE) дополнительно ищутся подозрительные
+        строки в бинарном коде. При включённой опции <code>useMalwareBazaar</code> вычисляется SHA‑256 и отправляется
+        запрос к публичному API.
+    </p>
+    <p>
+        Песочница выполняет статический анализ (поиск опасных паттернов в байтах), а на Windows ещё и запускает файл
+        с ограничением по времени и блокировкой сети. На Linux можно включить <code>strace</code>‑анализ.
+        Системные проверки используют команды ОС и файлы в <code>/proc</code> (на Linux).
+    </p>
 
     <hr>
 
     <h2>📄 Лицензия</h2>
-    <p>Проект распространяется под лицензией <strong>MIT</strong>. Используйте на свой страх и риск.</p>
+    <p>
+        Проект распространяется под лицензией <strong>MIT</strong>. Используйте на свой страх и риск.
+    </p>
 </body>
 </html>
