@@ -90,6 +90,7 @@
         <tr><td><code>GSF‑2026‑1506‑1</code></td><td>15.06.2026</td><td>Функциональность</td><td>Отсутствуют плейсхолдеры для чтения полей формы (добавлено <code>read_form</code>)</td></tr>
         <tr><td><code>GSF‑2026‑1506‑2</code></td><td>15.06.2026</td><td>Функциональность</td><td>Ограничения <code>random_int</code> и невозможность настройки генераторов пароля/UUID (запланировано)</td></tr>
         <tr><td><code>GSF‑2026‑1506‑3</code></td><td>15.06.2026</td><td>Функциональность</td><td>Добавить <code>random_float</code>, <code>clipboard_read</code>, <code>preview</code>, <code>email_preview</code> (реализовано)</td></tr>
+        <tr><td><code>GSF‑2026‑1706‑1</code></td><td>17.06.2026</td><td>Функциональность</td><td>Не хватало генерации стандартных данных <code>random_id</code>, <code>default_password</code>, при этом <code>random_uuid</code> и <code>random_password</code> остались прежними</td></tr>
     </table>
 
     <h2>🚀 Как это работает (для совсем новичков)</h2>
@@ -371,13 +372,21 @@ GradusStatic.init(siteConfig);
 
     <h3>Генераторы случайных данных</h3>
 
+    <h4>random_id</h4>
+    <p>Генерирует случайный числовой идентификатор из 12 цифр (без дефисов). Удобно для создания коротких ID в интерфейсе.</p>
+    <p><strong>Пример:</strong> <code>{random_id}</code> → "319052905759"</p>
+
     <h4>random_uuid</h4>
-    <p>Генерирует UUID v4.</p>
+    <p>Возвращает UUID версии 4 (стандартный формат с дефисами).</p>
     <p><strong>Пример:</strong> <code>{random_uuid}</code> → "550e8400-e29b-41d4-a716-446655440000"</p>
 
     <h4>random_password</h4>
     <p>Создаёт криптостойкий пароль указанной длины (от 4 до 128, по умолчанию 12).</p>
     <p><strong>Пример:</strong> <code>{random_password:16}</code> → "aB3$xK9!pL2@qW7#"</p>
+
+    <h4>default_password</h4>
+    <p>Генерирует пароль, совместимый с большинством сайтов и игр: только латинские буквы (большие и маленькие), цифры и спецсимволы <code>!$_</code>. Длина по умолчанию 12 символов.</p>
+    <p><strong>Пример:</strong> <code>{default_password:16}</code> → "04e41qq$6_u$23wq"</p>
 
     <h4>random_int</h4>
     <p>Возвращает случайное целое число в заданном диапазоне (min‑max).</p>
