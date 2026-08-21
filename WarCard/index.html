@@ -2,9 +2,10 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>WarCards</title>
     <style>
+        /* Стили такие же, как в прошлом ответе, но с увеличенными клетками */
         * { box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
@@ -81,7 +82,7 @@
             margin: 0 auto 10px;
             max-width: 500px;
             width: 100%;
-            height: 520px; /* увеличиваем высоту */
+            height: 600px;
         }
         .cell {
             background: #2a2a4a;
@@ -106,13 +107,13 @@
             align-items: center;
             width: 100%;
             height: 100%;
-            font-size: 0.6rem;
+            font-size: 0.65rem;
             line-height: 1.3;
             position: relative;
             justify-content: flex-start;
         }
         .cell .card-sprite {
-            width: 55%;
+            width: 50%;
             max-width: 44px;
             height: auto;
             aspect-ratio: 1/1;
@@ -121,7 +122,7 @@
         }
         .cell .card-name {
             font-weight: bold;
-            font-size: 0.7rem;
+            font-size: 0.8rem;
             margin-top: 1px;
             white-space: nowrap;
             overflow: hidden;
@@ -129,21 +130,21 @@
             max-width: 95%;
         }
         .cell .card-stars {
-            font-size: 0.55rem;
+            font-size: 0.65rem;
             color: gold;
             letter-spacing: 0.5px;
         }
         .cell .card-stats {
-            font-size: 0.65rem;
+            font-size: 0.8rem;
             display: flex;
-            gap: 6px;
+            gap: 8px;
             font-weight: bold;
-            margin-top: 1px;
+            margin-top: 2px;
         }
         .cell .card-hp {
-            font-size: 0.65rem;
+            font-size: 0.8rem;
             font-weight: bold;
-            margin-top: 1px;
+            margin-top: 2px;
         }
         .cell .category-bar {
             width: 100%;
@@ -238,6 +239,8 @@
         .btn-log:hover:not(:disabled) { background: #303f9f; }
         .btn-profile { background: #4caf50; }
         .btn-profile:hover:not(:disabled) { background: #388e3c; }
+        .btn-shop { background: #9c27b0; }
+        .btn-shop:hover:not(:disabled) { background: #7b1fa2; }
 
         #log-container {
             margin-top: 10px;
@@ -255,18 +258,20 @@
         .modal {
             display: none;
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 2000;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
             background: rgba(0,0,0,0.8);
-            justify-content: center;
+            backdrop-filter: blur(5px);
             align-items: center;
-            z-index: 1000;
+            justify-content: center;
         }
         .modal.active { display: flex; }
         .modal-content {
             background: #1a1a3a;
             padding: 20px;
             border-radius: 16px;
-            max-width: 500px;
+            max-width: 450px;
             width: 90%;
             max-height: 80vh;
             overflow-y: auto;
@@ -274,8 +279,20 @@
             box-shadow: 0 0 40px rgba(0,0,0,0.9);
         }
         .modal-content h2 { text-align: center; margin-top: 0; }
-        .stat-block { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #333; }
-        .medal { font-size: 1.6rem; margin: 4px; }
+        .shop-option {
+            background: #2d2d5a;
+            border-radius: 12px;
+            padding: 12px;
+            margin: 10px 0;
+            cursor: pointer;
+            transition: 0.2s;
+            border: 1px solid #666;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .shop-option:hover { background: #3d3d7a; transform: scale(1.02); }
+        .shop-option .cost { color: #ffd700; font-weight: bold; }
         .close-modal {
             background: #e94560;
             border: none;
@@ -285,6 +302,8 @@
             cursor: pointer;
             margin-top: 12px;
         }
+        .stat-block { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #333; }
+        .medal { font-size: 1.6rem; margin: 4px; }
 
         #confetti-container {
             position: fixed;
@@ -304,27 +323,29 @@
             100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
         }
 
-        @media (max-width: 600px) {
-            #field { height: 340px; max-width: 100%; padding: 5px; gap: 4px; }
-            .cell .card-sprite { max-width: 32px; }
-            .cell .card-stats { font-size: 0.55rem; gap: 4px; }
-            .cell .card-hp { font-size: 0.55rem; }
+        @media (max-width: 700px) {
+            #field { height: 480px; }
+            .cell .card-stats { font-size: 0.7rem; }
+            .cell .card-hp { font-size: 0.7rem; }
+            .cell .card-name { font-size: 0.7rem; }
+        }
+        @media (max-width: 500px) {
+            #field { height: 400px; }
+            .cell .card-stats { font-size: 0.6rem; }
+            .cell .card-hp { font-size: 0.6rem; }
             .cell .card-name { font-size: 0.6rem; }
             .hand-card { width: 65px; }
             .hand-card .hand-sprite { width: 28px; height: 28px; }
-            .resource { font-size: 0.7rem; }
             button { font-size: 0.75rem; padding: 5px 12px; }
-            #top-panel { gap: 5px; padding: 6px 10px; }
         }
         @media (max-width: 400px) {
-            #field { height: 280px; gap: 3px; }
-            .cell .card-sprite { max-width: 26px; }
-            .cell .card-name { font-size: 0.5rem; }
-            .cell .card-stats { font-size: 0.45rem; gap: 3px; }
-            .cell .card-hp { font-size: 0.45rem; }
+            #field { height: 330px; }
+            .cell .card-stats { font-size: 0.55rem; }
+            .cell .card-hp { font-size: 0.55rem; }
+            .cell .card-name { font-size: 0.55rem; }
             .hand-card { width: 55px; }
             .hand-card .hand-sprite { width: 24px; height: 24px; }
-            button { font-size: 0.65rem; padding: 4px 10px; }
+            button { font-size: 0.7rem; padding: 4px 10px; }
         }
     </style>
 </head>
@@ -337,6 +358,7 @@
         <div class="resource">❤️ База бота: <span id="bot-base">{game:bot_base_hp}</span></div>
         <div class="resource">📦 В руке: <span id="hand-count">{game:hand_count}</span></div>
         <div class="resource">⏳ Ход: <span id="turn-counter">{game:turn}</span></div>
+        <div class="resource">💎 Кристаллы: <span id="crystal-counter">{game:crystals}</span></div>
         <div style="width:100%; text-align:center; margin-top:6px;">
             <span style="font-size:0.9rem;">Сложность:</span>
             <div id="difficulty-selector">
@@ -365,6 +387,7 @@
         <button id="btn-start-turn">▶️ Начать ход</button>
         <button id="btn-end-turn" disabled>⚔️ Завершить размещение</button>
         <button id="btn-support" class="btn-support" disabled>🎯 Атаковать базу (поддержкой)</button>
+        <button id="btn-shop" class="btn-shop" disabled>🛒 Магазин (💎<span id="shop-crystals">0</span>)</button>
         <button id="btn-reset">🔄 Новая игра</button>
         <button id="btn-log-toggle" class="btn-log">📜 Скрыть логи</button>
         <button id="btn-profile" class="btn-profile">👤 Профиль</button>
@@ -375,6 +398,37 @@
     </div>
 </div>
 
+<!-- Модал магазина -->
+<div id="shopModal" class="modal">
+    <div class="modal-content">
+        <h2>🛒 Магазин</h2>
+        <p>💎 Кристаллов: <span id="shop-crystals-modal">0</span></p>
+        <div class="shop-option" data-shop="random">
+            <span>🎲 Случайная карта (любой тип, любой ранг)</span>
+            <span class="cost">3 💎</span>
+        </div>
+        <div class="shop-option" data-shop="rank2-3">
+            <span>⭐ Карта рейтинга 2-3 (выберите тип)</span>
+            <span class="cost">5 💎</span>
+        </div>
+        <div class="shop-option" data-shop="rank5">
+            <span>👑 Карта рейтинга 5 (бесплатная установка)</span>
+            <span class="cost">10 💎</span>
+        </div>
+        <div style="margin-top: 15px;">
+            <label>Выберите тип для опций 2 и 3:</label>
+            <select id="shop-type-select">
+                <option value="attack">⚔️ Атака</option>
+                <option value="defense">🛡️ Защита</option>
+                <option value="support">🚀 Поддержка</option>
+                <option value="economy">🏦 Экономика</option>
+            </select>
+        </div>
+        <button class="close-modal" id="closeShopModal">Закрыть</button>
+    </div>
+</div>
+
+<!-- Модал профиля -->
 <div id="profile-modal" class="modal">
     <div class="modal-content">
         <h2>📊 Статистика</h2>
