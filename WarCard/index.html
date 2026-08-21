@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WarCards</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #0a0a1a;
+            color: #eee;
+            margin: 0;
+            padding: 15px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+        #game-container {
+            max-width: 750px;
+            width: 100%;
+            margin: 0 auto;
+            background: #12122a;
+            padding: 15px;
+            border-radius: 16px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.8);
+        }
+        #top-panel {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            background: #1a1a3a;
+            padding: 8px 14px;
+            border-radius: 12px;
+            justify-content: center;
+            margin-bottom: 12px;
+            align-items: center;
+        }
+        .resource {
+            font-size: 0.85rem;
+            background: #0d0d2a;
+            padding: 3px 10px;
+            border-radius: 20px;
+            white-space: nowrap;
+        }
+        #difficulty-selector {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 4px 0;
+        }
+        .diff-btn {
+            background: #2d2d5a;
+            border: none;
+            color: #aaa;
+            padding: 3px 10px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.7rem;
+            transition: 0.2s;
+        }
+        .diff-btn.active {
+            background: #e94560;
+            color: white;
+            box-shadow: 0 0 12px #e94560;
+        }
+        .diff-btn:hover {
+            background: #3d3d7a;
+            color: white;
+        }
+        #field {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-template-rows: repeat(6, 1fr);
+            gap: 5px;
+            background: #0d0d1a;
+            padding: 8px;
+            border-radius: 14px;
+            margin: 0 auto 10px;
+            max-width: 500px;
+            width: 100%;
+            height: 520px; /* увеличиваем высоту */
+        }
+        .cell {
+            background: #2a2a4a;
+            border-radius: 6px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            cursor: pointer;
+            transition: 0.2s;
+            border: 2px solid transparent;
+            position: relative;
+            padding: 3px 2px;
+            overflow: hidden;
+            min-height: 0;
+        }
+        .cell.player { border-color: #4caf50; }
+        .cell.bot { border-color: #f44336; }
+        .cell .card-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            font-size: 0.6rem;
+            line-height: 1.3;
+            position: relative;
+            justify-content: flex-start;
+        }
+        .cell .card-sprite {
+            width: 55%;
+            max-width: 44px;
+            height: auto;
+            aspect-ratio: 1/1;
+            object-fit: contain;
+            margin-bottom: 1px;
+        }
+        .cell .card-name {
+            font-weight: bold;
+            font-size: 0.7rem;
+            margin-top: 1px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 95%;
+        }
+        .cell .card-stars {
+            font-size: 0.55rem;
+            color: gold;
+            letter-spacing: 0.5px;
+        }
+        .cell .card-stats {
+            font-size: 0.65rem;
+            display: flex;
+            gap: 6px;
+            font-weight: bold;
+            margin-top: 1px;
+        }
+        .cell .card-hp {
+            font-size: 0.65rem;
+            font-weight: bold;
+            margin-top: 1px;
+        }
+        .cell .category-bar {
+            width: 100%;
+            height: 4px;
+            border-radius: 0 0 4px 4px;
+            margin-top: auto;
+            flex-shrink: 0;
+        }
+        .cat-attack { background: #e53935; }
+        .cat-defense { background: #1e88e5; }
+        .cat-support { background: #8e24aa; }
+        .cat-economy { background: #fdd835; }
+
+        #hand-panel {
+            margin-top: 12px;
+            background: #1a1a3a;
+            padding: 10px;
+            border-radius: 12px;
+        }
+        #hand {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            min-height: 70px;
+        }
+        .hand-card {
+            background: #2d2d5a;
+            padding: 5px 6px;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 2px solid #666;
+            transition: 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 80px;
+            position: relative;
+        }
+        .hand-card:hover { transform: scale(1.05); background: #3d3d7a; }
+        .hand-card.selected { border-color: #ffd700; background: #4a4a8a; box-shadow: 0 0 15px gold; }
+        .hand-card .hand-sprite { width: 36px; height: 36px; object-fit: contain; }
+        .hand-card .hand-stars { font-size: 0.5rem; color: gold; }
+        .hand-card .hand-stats { font-size: 0.55rem; display: flex; gap: 4px; }
+        .hand-card .hand-cost { font-size: 0.6rem; font-weight: bold; color: #ffd700; }
+        .hand-card .category-bar {
+            width: 100%;
+            height: 4px;
+            border-radius: 0 0 6px 6px;
+            margin-top: auto;
+        }
+        .type-tabs {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .tab {
+            padding: 3px 12px;
+            background: #2d2d5a;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: 0.2s;
+        }
+        .tab.active { background: #e94560; }
+
+        #controls {
+            margin-top: 12px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        button {
+            background: #e94560;
+            border: none;
+            color: white;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: 0.2s;
+            font-weight: bold;
+        }
+        button:hover:not(:disabled) { background: #c73652; transform: scale(1.03); }
+        button:disabled { opacity: 0.4; cursor: not-allowed; }
+        .btn-support { background: #ff9800; }
+        .btn-support:hover:not(:disabled) { background: #e68900; }
+        .btn-log { background: #3f51b5; }
+        .btn-log:hover:not(:disabled) { background: #303f9f; }
+        .btn-profile { background: #4caf50; }
+        .btn-profile:hover:not(:disabled) { background: #388e3c; }
+
+        #log-container {
+            margin-top: 10px;
+            background: #0d0d2a;
+            border-radius: 8px;
+            border: 1px solid #333;
+            padding: 6px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .log-turn { margin-bottom: 8px; border-bottom: 1px solid #444; }
+        .log-turn-header { font-weight: bold; color: #ffd700; padding: 3px 0; }
+        .log-msg { padding: 2px 0 2px 10px; font-size: 0.75rem; color: #ccc; }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal.active { display: flex; }
+        .modal-content {
+            background: #1a1a3a;
+            padding: 20px;
+            border-radius: 16px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            color: #eee;
+            box-shadow: 0 0 40px rgba(0,0,0,0.9);
+        }
+        .modal-content h2 { text-align: center; margin-top: 0; }
+        .stat-block { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #333; }
+        .medal { font-size: 1.6rem; margin: 4px; }
+        .close-modal {
+            background: #e94560;
+            border: none;
+            color: white;
+            padding: 6px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 12px;
+        }
+
+        #confetti-container {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            overflow: hidden;
+        }
+        .confetti-piece {
+            position: absolute;
+            width: 8px; height: 8px;
+            top: -10px;
+            animation: confetti-fall linear forwards;
+        }
+        @keyframes confetti-fall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+
+        @media (max-width: 600px) {
+            #field { height: 340px; max-width: 100%; padding: 5px; gap: 4px; }
+            .cell .card-sprite { max-width: 32px; }
+            .cell .card-stats { font-size: 0.55rem; gap: 4px; }
+            .cell .card-hp { font-size: 0.55rem; }
+            .cell .card-name { font-size: 0.6rem; }
+            .hand-card { width: 65px; }
+            .hand-card .hand-sprite { width: 28px; height: 28px; }
+            .resource { font-size: 0.7rem; }
+            button { font-size: 0.75rem; padding: 5px 12px; }
+            #top-panel { gap: 5px; padding: 6px 10px; }
+        }
+        @media (max-width: 400px) {
+            #field { height: 280px; gap: 3px; }
+            .cell .card-sprite { max-width: 26px; }
+            .cell .card-name { font-size: 0.5rem; }
+            .cell .card-stats { font-size: 0.45rem; gap: 3px; }
+            .cell .card-hp { font-size: 0.45rem; }
+            .hand-card { width: 55px; }
+            .hand-card .hand-sprite { width: 24px; height: 24px; }
+            button { font-size: 0.65rem; padding: 4px 10px; }
+        }
+    </style>
+</head>
+<body>
+<div id="game-container">
+    <div id="top-panel">
+        <div class="resource">🪙 Игрок: <span id="player-coins">{game:player_coins}</span></div>
+        <div class="resource">🪙 Бот: <span id="bot-coins">{game:bot_coins}</span></div>
+        <div class="resource">❤️ База игрока: <span id="player-base">{game:player_base_hp}</span></div>
+        <div class="resource">❤️ База бота: <span id="bot-base">{game:bot_base_hp}</span></div>
+        <div class="resource">📦 В руке: <span id="hand-count">{game:hand_count}</span></div>
+        <div class="resource">⏳ Ход: <span id="turn-counter">{game:turn}</span></div>
+        <div style="width:100%; text-align:center; margin-top:6px;">
+            <span style="font-size:0.9rem;">Сложность:</span>
+            <div id="difficulty-selector">
+                <button class="diff-btn" data-diff="easy">Лёгкая</button>
+                <button class="diff-btn active" data-diff="medium">Средняя</button>
+                <button class="diff-btn" data-diff="hard">Любитель</button>
+                <button class="diff-btn" data-diff="extreme">Экстрим</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="field"></div>
+
+    <div id="hand-panel">
+        <div class="type-tabs">
+            <span class="tab active" data-type="all">Все</span>
+            <span class="tab" data-type="attack">⚔️ Атака</span>
+            <span class="tab" data-type="defense">🛡️ Защита</span>
+            <span class="tab" data-type="support">🚀 Поддержка</span>
+            <span class="tab" data-type="economy">🏦 Экономика</span>
+        </div>
+        <div id="hand"></div>
+    </div>
+
+    <div id="controls">
+        <button id="btn-start-turn">▶️ Начать ход</button>
+        <button id="btn-end-turn" disabled>⚔️ Завершить размещение</button>
+        <button id="btn-support" class="btn-support" disabled>🎯 Атаковать базу (поддержкой)</button>
+        <button id="btn-reset">🔄 Новая игра</button>
+        <button id="btn-log-toggle" class="btn-log">📜 Скрыть логи</button>
+        <button id="btn-profile" class="btn-profile">👤 Профиль</button>
+    </div>
+
+    <div id="log-container">
+        <div id="log-content"></div>
+    </div>
+</div>
+
+<div id="profile-modal" class="modal">
+    <div class="modal-content">
+        <h2>📊 Статистика</h2>
+        <div id="stats-display"></div>
+        <h3>🏅 Медали</h3>
+        <div id="medals-display"></div>
+        <button class="close-modal" onclick="document.getElementById('profile-modal').classList.remove('active')">Закрыть</button>
+    </div>
+</div>
+
+<div id="confetti-container"></div>
+
+<script src="gradus-web.js"></script>
+<script src="database.js"></script>
+<script src="server.js"></script>
+<script src="client.js"></script>
+<script src="core.js"></script>
+<script src="site.js"></script>
+</body>
+</html>
