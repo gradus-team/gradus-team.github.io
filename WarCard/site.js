@@ -1212,6 +1212,7 @@ class WarCardsGame {
     }
 
     checkGameOver() {
+        if (this.gameOver) return; // защита от повторных вызовов
         if (this.player.baseHp <= 0) {
             this.gameOver = true;
             this.win = false;
