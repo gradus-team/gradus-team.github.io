@@ -1,0 +1,12 @@
+{
+  "settings": {
+    "field_width": 5,
+    "field_height": 10,
+    "max_cards_per_type": 4
+  },
+  "stats": {
+    "wins": 0,
+    "losses": 0,
+    "total_games": 0
+  }
+}
