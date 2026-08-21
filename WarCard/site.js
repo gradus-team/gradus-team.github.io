@@ -240,30 +240,51 @@ class WarCardsGame {
     // ---------- ЗАГРУЗКА / СОХРАНЕНИЕ ПРОГРЕССА ----------
     async loadProgress() {
         try {
-            const data = await GradusDB.get('warcards_progress') || {
-                xp: 0,
-                rankIndex: 0,
-                stats: {
+            // Пытаемся загрузить зашифрованные данные из localStorage
+            const encrypted = localStorage.getItem('warcards_progress_encrypted');
+            if (encrypted) {
+                const json = GradusWeb.decode(encrypted);
+                const data = JSON.parse(json);
+                this.xp = data.xp || 0;
+                this.rankIndex = data.rankIndex || 0;
+                this.stats = data.stats || {
                     easy: { wins: 0, losses: 0 },
                     medium: { wins: 0, losses: 0 },
                     hard: { wins: 0, losses: 0 },
                     extreme: { wins: 0, losses: 0 },
                     total: { wins: 0, losses: 0 }
+                };
+            } else {
+                // Если нет зашифрованных данных – пробуем загрузить из GradusDB (старый формат)
+                const data = await GradusDB.get('warcards_progress');
+                if (data) {
+                    this.xp = data.xp || 0;
+                    this.rankIndex = data.rankIndex || 0;
+                    this.stats = data.stats || {
+                        easy: { wins: 0, losses: 0 },
+                        medium: { wins: 0, losses: 0 },
+                        hard: { wins: 0, losses: 0 },
+                        extreme: { wins: 0, losses: 0 },
+                        total: { wins: 0, losses: 0 }
+                    };
+                    // Сохраняем в новый формат (шифрованный)
+                    this.saveProgress();
+                } else {
+                    // Значения по умолчанию
+                    this.xp = 0;
+                    this.rankIndex = 0;
+                    this.stats = {
+                        easy: { wins: 0, losses: 0 },
+                        medium: { wins: 0, losses: 0 },
+                        hard: { wins: 0, losses: 0 },
+                        extreme: { wins: 0, losses: 0 },
+                        total: { wins: 0, losses: 0 }
+                    };
                 }
-            };
-            this.xp = data.xp || 0;
-            this.rankIndex = data.rankIndex || 0;
-            this.stats = data.stats || {
-                easy: { wins: 0, losses: 0 },
-                medium: { wins: 0, losses: 0 },
-                hard: { wins: 0, losses: 0 },
-                extreme: { wins: 0, losses: 0 },
-                total: { wins: 0, losses: 0 }
-            };
-            // Обновляем ранг, если он изменился
-            this.updateRank();
+            }
         } catch(e) {
-            console.warn('Не удалось загрузить прогресс:', e);
+            console.warn('Ошибка загрузки прогресса:', e);
+            // Восстанавливаем значения по умолчанию
             this.xp = 0;
             this.rankIndex = 0;
             this.stats = {
@@ -274,6 +295,7 @@ class WarCardsGame {
                 total: { wins: 0, losses: 0 }
             };
         }
+        this.updateRank();
         this.updateProfileModal();
         this.updateRankDisplay();
     }
@@ -285,6 +307,10 @@ class WarCardsGame {
                 rankIndex: this.rankIndex,
                 stats: this.stats,
             };
+            const json = JSON.stringify(data);
+            const encrypted = GradusWeb.encode(json);
+            localStorage.setItem('warcards_progress_encrypted', encrypted);
+            // Для обратной совместимости также сохраняем в GradusDB (но это не обязательно)
             await GradusDB.set('warcards_progress', data);
         } catch(e) {
             console.warn('Не удалось сохранить прогресс:', e);
