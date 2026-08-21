@@ -1,5 +1,5 @@
-// ========== WAR CARDS v7 ==========
-// Полная версия с исправленной поддержкой, экстримом и прямоугольными клетками
+// ========== WAR CARDS v9 ==========
+// Полная версия с рангами, бонусами бота, магазином, кристаллами и улучшенным ИИ
 
 const CONFIG = {
     FIELD_W: 5,
@@ -14,9 +14,55 @@ const CONFIG = {
     PLAYER_ROWS: [3,4,5],
     BOT_ROWS: [0,1,2],
     SPRITE_PATH: 'sprites/',
+    // Кристаллы
+    CRYSTALS_PER_KILL_BASE: 1,
+    CRYSTALS_PER_10_DMG: 5,
+    SHOP_COST_RANDOM: 3,
+    SHOP_COST_RANK_2_3: 5,
+    SHOP_COST_RANK_5: 10,
+    // Штрафы и бонусы
+    PENALTY_HARD: 0.05,
+    PENALTY_EXTREME: 0.15,
+    BONUS_TURN_25_COINS: 10,
+    BONUS_TURN_25_CARDS: 2,
+    // Опыт за победы/поражения
+    XP_WIN_EASY: 50,
+    XP_WIN_MEDIUM: 150,
+    XP_WIN_HARD: 300,
+    XP_WIN_EXTREME: 700,
+    XP_LOSS_PENALTY: 0.5, // 50% от опыта за победу
 };
 
-// ---------- ГЕНЕРАЦИЯ КАРТ СО СПРАЙТАМИ ----------
+// ---------- СИСТЕМА РАНГОВ ----------
+const RANK_SYSTEM = [
+    { name: 'Bronze 1', emoji: '🥉', xpRequired: 0 },
+    { name: 'Bronze 2', emoji: '🥉', xpRequired: 50 },
+    { name: 'Bronze 3', emoji: '🥉', xpRequired: 150 },
+    { name: 'Bronze 4', emoji: '🥉', xpRequired: 300 },
+    { name: 'Bronze 5', emoji: '🥉', xpRequired: 500 },
+    { name: 'Silver 1', emoji: '🥈', xpRequired: 1000 },
+    { name: 'Silver 2', emoji: '🥈', xpRequired: 1500 },
+    { name: 'Silver 3', emoji: '🥈', xpRequired: 2100 },
+    { name: 'Silver 4', emoji: '🥈', xpRequired: 2800 },
+    { name: 'Silver 5', emoji: '🥈', xpRequired: 3600 },
+    { name: 'Gold 1', emoji: '🥇', xpRequired: 4500 },
+    { name: 'Gold 2', emoji: '🥇', xpRequired: 5500 },
+    { name: 'Gold 3', emoji: '🥇', xpRequired: 6600 },
+    { name: 'Gold 4', emoji: '🥇', xpRequired: 7800 },
+    { name: 'Gold 5', emoji: '🥇', xpRequired: 9100 },
+    { name: 'Platinum 1', emoji: '💠', xpRequired: 10500 },
+    { name: 'Platinum 2', emoji: '💠', xpRequired: 12000 },
+    { name: 'Platinum 3', emoji: '💠', xpRequired: 13600 },
+    { name: 'Platinum 4', emoji: '💠', xpRequired: 15300 },
+    { name: 'Diamond 1', emoji: '💎', xpRequired: 17100 },
+    { name: 'Diamond 2', emoji: '💎', xpRequired: 19000 },
+    { name: 'Diamond 3', emoji: '💎', xpRequired: 21000 },
+    { name: 'Champion 1', emoji: '🏆', xpRequired: 30000 },
+    { name: 'Champion 2', emoji: '🏆', xpRequired: 50000 },
+    { name: 'The Legend', emoji: '🌍', xpRequired: 100000 },
+];
+
+// ---------- ГЕНЕРАЦИЯ КАРТ ----------
 function generateCardPool() {
     const pool = [];
     const spriteMap = {
@@ -115,8 +161,21 @@ class WarCardsGame {
         this.logsPerTurn = {};
         this.difficulty = 'medium';
         this.win = false;
+
+        // Кристаллы и магазин
+        this.crystals = 0;
+        this.damageToBotBase = 0;
+
+        // Бонусные карты для бота
+        this.botKillCounter = 0;
+        this.botPendingBonusCard = null;
+
+        // Ранги и опыт
+        this.xp = 0;
+        this.rankIndex = 0; // индекс в RANK_SYSTEM
+
         this.initField();
-        this.loadStats();
+        this.loadProgress();
     }
 
     initField() {
@@ -130,6 +189,7 @@ class WarCardsGame {
         return field;
     }
 
+    // ---------- ВСПОМОГАТЕЛЬНЫЕ ----------
     getRandomInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
     shuffleArray(arr) { for (let i = arr.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [arr[i], arr[j]] = [arr[j], arr[i]]; } return arr; }
 
@@ -177,23 +237,152 @@ class WarCardsGame {
         return cards;
     }
 
-    async loadStats() {
+    // ---------- ЗАГРУЗКА / СОХРАНЕНИЕ ПРОГРЕССА ----------
+    async loadProgress() {
         try {
-            const stats = await GradusDB.get('stats') || {
+            const data = await GradusDB.get('warcards_progress') || {
+                xp: 0,
+                rankIndex: 0,
+                stats: {
+                    easy: { wins: 0, losses: 0 },
+                    medium: { wins: 0, losses: 0 },
+                    hard: { wins: 0, losses: 0 },
+                    extreme: { wins: 0, losses: 0 },
+                    total: { wins: 0, losses: 0 }
+                }
+            };
+            this.xp = data.xp || 0;
+            this.rankIndex = data.rankIndex || 0;
+            this.stats = data.stats || {
                 easy: { wins: 0, losses: 0 },
                 medium: { wins: 0, losses: 0 },
                 hard: { wins: 0, losses: 0 },
                 extreme: { wins: 0, losses: 0 },
                 total: { wins: 0, losses: 0 }
             };
-            this.stats = stats;
-        } catch(e) { this.stats = { easy:{wins:0,losses:0}, medium:{wins:0,losses:0}, hard:{wins:0,losses:0}, extreme:{wins:0,losses:0}, total:{wins:0,losses:0} }; }
+            // Обновляем ранг, если он изменился
+            this.updateRank();
+        } catch(e) {
+            console.warn('Не удалось загрузить прогресс:', e);
+            this.xp = 0;
+            this.rankIndex = 0;
+            this.stats = {
+                easy: { wins: 0, losses: 0 },
+                medium: { wins: 0, losses: 0 },
+                hard: { wins: 0, losses: 0 },
+                extreme: { wins: 0, losses: 0 },
+                total: { wins: 0, losses: 0 }
+            };
+        }
+        this.updateProfileModal();
+        this.updateRankDisplay();
     }
 
-    async saveStats() {
+    async saveProgress() {
         try {
-            await GradusDB.set('stats', this.stats);
-        } catch(e) {}
+            const data = {
+                xp: this.xp,
+                rankIndex: this.rankIndex,
+                stats: this.stats,
+            };
+            await GradusDB.set('warcards_progress', data);
+        } catch(e) {
+            console.warn('Не удалось сохранить прогресс:', e);
+        }
+    }
+
+    // ---------- СИСТЕМА РАНГОВ ----------
+    getCurrentRank() {
+        return RANK_SYSTEM[this.rankIndex] || RANK_SYSTEM[0];
+    }
+
+    updateRank() {
+        let newIndex = 0;
+        for (let i = RANK_SYSTEM.length - 1; i >= 0; i--) {
+            if (this.xp >= RANK_SYSTEM[i].xpRequired) {
+                newIndex = i;
+                break;
+            }
+        }
+        if (newIndex !== this.rankIndex) {
+            const oldRank = this.getCurrentRank();
+            this.rankIndex = newIndex;
+            const newRank = this.getCurrentRank();
+            if (newRank.xpRequired > oldRank.xpRequired) {
+                GradusWeb.notify.success(`🏆 Повышение ранга! ${newRank.emoji} ${newRank.name}`, 4000);
+                this.addLog(`🏆 Повышение ранга: ${oldRank.name} → ${newRank.name}`, this.turn);
+            }
+            this.saveProgress();
+        }
+        this.updateRankDisplay();
+    }
+
+    updateRankDisplay() {
+        const rank = this.getCurrentRank();
+        const span = document.getElementById('rank-display');
+        if (span) span.textContent = `${rank.emoji} ${rank.name}`;
+        const xpSpan = document.getElementById('xp-display');
+        if (xpSpan) xpSpan.textContent = `${this.xp} XP`;
+        // XP прогресс
+        const nextRank = RANK_SYSTEM[Math.min(this.rankIndex + 1, RANK_SYSTEM.length - 1)];
+        const currentReq = RANK_SYSTEM[this.rankIndex].xpRequired;
+        const nextReq = nextRank.xpRequired;
+        const progress = nextReq > currentReq ? (this.xp - currentReq) / (nextReq - currentReq) : 1;
+        const bar = document.getElementById('xp-progress-bar');
+        if (bar) {
+            bar.style.width = Math.min(100, Math.round(progress * 100)) + '%';
+        }
+        const label = document.getElementById('xp-progress-label');
+        if (label) {
+            label.textContent = `${this.xp} / ${nextReq} XP`;
+        }
+    }
+
+    addXP(amount) {
+        this.xp = Math.max(0, this.xp + amount);
+        this.updateRank();
+        this.saveProgress();
+        this.updateRankDisplay();
+        this.updateProfileModal();
+    }
+
+    // ---------- СТАТИСТИКА (обновлена для работы с рангами) ----------
+    async updateStats(won) {
+        const diff = this.difficulty;
+        if (!this.stats[diff]) this.stats[diff] = { wins: 0, losses: 0 };
+        if (won) {
+            this.stats[diff].wins++;
+            this.stats.total.wins++;
+            // Начисляем опыт за победу
+            let xpEarned = 0;
+            switch (diff) {
+                case 'easy': xpEarned = CONFIG.XP_WIN_EASY; break;
+                case 'medium': xpEarned = CONFIG.XP_WIN_MEDIUM; break;
+                case 'hard': xpEarned = CONFIG.XP_WIN_HARD; break;
+                case 'extreme': xpEarned = CONFIG.XP_WIN_EXTREME; break;
+                default: xpEarned = 0;
+            }
+            this.addXP(xpEarned);
+            GradusWeb.notify.success(`✨ +${xpEarned} опыта!`, 2000);
+        } else {
+            this.stats[diff].losses++;
+            this.stats.total.losses++;
+            // Штраф за поражение (50% от опыта за победу на этой сложности)
+            let xpLost = 0;
+            switch (diff) {
+                case 'easy': xpLost = Math.floor(CONFIG.XP_WIN_EASY * CONFIG.XP_LOSS_PENALTY); break;
+                case 'medium': xpLost = Math.floor(CONFIG.XP_WIN_MEDIUM * CONFIG.XP_LOSS_PENALTY); break;
+                case 'hard': xpLost = Math.floor(CONFIG.XP_WIN_HARD * CONFIG.XP_LOSS_PENALTY); break;
+                case 'extreme': xpLost = Math.floor(CONFIG.XP_WIN_EXTREME * CONFIG.XP_LOSS_PENALTY); break;
+                default: xpLost = 0;
+            }
+            if (xpLost > 0) {
+                this.addXP(-xpLost);
+                GradusWeb.notify.warning(`💔 -${xpLost} опыта за поражение`, 2000);
+            }
+        }
+        await this.saveProgress();
+        this.updateProfileModal();
     }
 
     // ---------- НАЧАЛО ХОДА ----------
@@ -203,25 +392,44 @@ class WarCardsGame {
         this.phase = 'placement';
         this.selectedCardId = null;
 
-        const pCoins = this.getRandomInt(CONFIG.COINS_MIN, CONFIG.COINS_MAX);
-        this.player.coins += pCoins;
-        const pCards = this.drawRandomCards(this.getRandomInt(CONFIG.CARDS_PER_TURN_MIN, CONFIG.CARDS_PER_TURN_MAX));
-        this.addCardsToPlayer(this.player, pCards);
+        if (this.turn === 1) {
+            this.addLog(`--- Ход ${this.turn} (стартовый) ---`, this.turn);
+            this.addLog('Стартовый ход: ресурсы не выдаются.', this.turn);
+        } else {
+            let pCoins = this.getRandomInt(CONFIG.COINS_MIN, CONFIG.COINS_MAX);
+            let bCoins = this.getRandomInt(CONFIG.COINS_MIN, CONFIG.COINS_MAX);
 
-        let bCoins = this.getRandomInt(CONFIG.COINS_MIN, CONFIG.COINS_MAX);
-        if (this.difficulty === 'easy') {
-            bCoins = Math.floor(bCoins * 0.75);
-        } else if (this.difficulty === 'extreme') {
-            bCoins += 5;
+            if (this.difficulty === 'hard') {
+                pCoins = Math.floor(pCoins * (1 - CONFIG.PENALTY_HARD));
+                bCoins = Math.floor(bCoins * (1 - CONFIG.PENALTY_HARD));
+            } else if (this.difficulty === 'extreme') {
+                pCoins = Math.floor(pCoins * (1 - CONFIG.PENALTY_EXTREME));
+                bCoins = Math.floor(bCoins * (1 - CONFIG.PENALTY_EXTREME));
+            }
+
+            this.player.coins += pCoins;
+            const pCards = this.drawRandomCards(this.getRandomInt(CONFIG.CARDS_PER_TURN_MIN, CONFIG.CARDS_PER_TURN_MAX));
+            this.addCardsToPlayer(this.player, pCards);
+
+            this.bot.coins += bCoins;
+            const bCards = this.drawRandomCards(this.getRandomInt(CONFIG.CARDS_PER_TURN_MIN, CONFIG.CARDS_PER_TURN_MAX));
+            this.addCardsToPlayer(this.bot, bCards);
+
+            this.addLog(`--- Ход ${this.turn} ---`, this.turn);
+            this.addLog(`Игрок: +${pCoins} монет, +${pCards.length} карт`, this.turn);
+            this.addLog(`Бот: +${bCoins} монет, +${bCards.length} карт`, this.turn);
+
+            if (this.turn === 25) {
+                this.player.coins += CONFIG.BONUS_TURN_25_COINS;
+                this.bot.coins += CONFIG.BONUS_TURN_25_COINS;
+                const bonusCards = this.drawRandomCards(CONFIG.BONUS_TURN_25_CARDS);
+                this.addCardsToPlayer(this.player, bonusCards);
+                const bonusBotCards = this.drawRandomCards(CONFIG.BONUS_TURN_25_CARDS);
+                this.addCardsToPlayer(this.bot, bonusBotCards);
+                this.addLog(`🎁 Бонус 25-го хода! +${CONFIG.BONUS_TURN_25_COINS} монет и +${CONFIG.BONUS_TURN_25_CARDS} карт каждому.`, this.turn);
+                GradusWeb.notify.success('🎁 Бонусный ход 25!', 3000);
+            }
         }
-        this.bot.coins += bCoins;
-        const bCards = this.drawRandomCards(this.getRandomInt(CONFIG.CARDS_PER_TURN_MIN, CONFIG.CARDS_PER_TURN_MAX));
-        this.addCardsToPlayer(this.bot, bCards);
-
-        GradusWeb.notify.info(`Ход ${this.turn} начат!`, 2500);
-        this.addLog(`--- Ход ${this.turn} ---`, this.turn);
-        this.addLog(`Игрок: +${pCoins} монет, +${pCards.length} карт`, this.turn);
-        this.addLog(`Бот: +${bCoins} монет, +${bCards.length} карт`, this.turn);
 
         this.botTurn();
 
@@ -230,22 +438,133 @@ class WarCardsGame {
         document.getElementById('btn-end-turn').disabled = false;
         document.getElementById('btn-end-turn').textContent = '⚔️ Завершить размещение';
         document.getElementById('btn-support').disabled = false;
+        document.getElementById('btn-shop').disabled = false;
+        this.updateShopCrystals();
         GradusWeb.notify.info('Бот сделал ход. Ваш ход!', 2500);
     }
 
-    // ---------- ХОД БОТА ----------
+    // ---------- ХОД БОТА (с бонусными картами) ----------
     botTurn() {
         if (this.difficulty === 'easy' && Math.random() < 0.2) {
             this.addLog('Бот пропускает ход (лёгкая сложность)', this.turn);
             return;
         }
+        if (this.difficulty === 'hard' || this.difficulty === 'extreme') {
+            this.botReplaceWeakCards();
+        }
         this.botPlaceCards();
         if (this.difficulty !== 'easy') {
             this.botUseSupport();
         }
+        // Проверяем, есть ли отложенная бонусная карта
+        this.checkPendingBonusCard();
     }
 
-    // ---------- БОТ РАЗМЕЩАЕТ КАРТЫ ----------
+    // ---------- БОНУСНЫЕ КАРТЫ ДЛЯ БОТА ----------
+    checkBotBonusCard() {
+        if (this.gameOver) return;
+        const difficulty = this.difficulty;
+        let threshold = Infinity;
+        if (difficulty === 'easy') threshold = 999;
+        else if (difficulty === 'medium') threshold = 5;
+        else if (difficulty === 'hard') threshold = 3;
+        else if (difficulty === 'extreme') threshold = 2;
+
+        if (this.botKillCounter >= threshold) {
+            this.botKillCounter = this.botKillCounter % threshold;
+            this.giveBotBonusCard();
+        }
+    }
+
+    giveBotBonusCard() {
+        const pool = this.cardPool.filter(c => c.rank === 5 && c.type !== 'support');
+        if (pool.length === 0) return;
+        const card = { ...pool[this.getRandomInt(0, pool.length-1)] };
+        card.hp = card.maxHp;
+        card.owner = 'bot';
+
+        const freeCells = [];
+        for (const r of CONFIG.BOT_ROWS) {
+            for (let c=0; c<CONFIG.FIELD_W; c++) {
+                if (this.field[r][c] === null) freeCells.push({row:r, col:c});
+            }
+        }
+        if (freeCells.length === 0) {
+            this.botPendingBonusCard = card;
+            this.addLog('Бот получил бонусную карту, но нет места – она будет размещена позже.', this.turn);
+            return;
+        }
+
+        const cell = freeCells[this.getRandomInt(0, freeCells.length-1)];
+        card.row = cell.row;
+        card.col = cell.col;
+        this.field[cell.row][cell.col] = card;
+        this.bot.placedCards.push(card);
+        GradusWeb.notify.error(`💀 Бот получил усиление: ${card.name} (⭐5)!`, 3000);
+        this.addLog(`Бот разместил бонусную карту ${card.name} на (${cell.row},${cell.col})`, this.turn);
+        this.render();
+    }
+
+    checkPendingBonusCard() {
+        if (!this.botPendingBonusCard) return;
+        const free = [];
+        for (const r of CONFIG.BOT_ROWS) {
+            for (let c=0; c<CONFIG.FIELD_W; c++) {
+                if (this.field[r][c] === null) free.push({row:r, col:c});
+            }
+        }
+        if (free.length > 0) {
+            const cell = free[this.getRandomInt(0, free.length-1)];
+            const card = this.botPendingBonusCard;
+            card.row = cell.row;
+            card.col = cell.col;
+            this.field[cell.row][cell.col] = card;
+            this.bot.placedCards.push(card);
+            this.botPendingBonusCard = null;
+            this.addLog(`Бот разместил отложенную бонусную карту ${card.name}`, this.turn);
+            this.render();
+        }
+    }
+
+    // ---------- ЗАМЕНА СЛАБЫХ КАРТ (hard/extreme) ----------
+    botReplaceWeakCards() {
+        const botCards = this.field.flat().filter(c => c && c.owner === 'bot' && c.hp > 0);
+        if (botCards.length < 4) return;
+
+        const sortedBot = [...botCards].sort((a,b) => (a.attack + a.defense + a.hp) - (b.attack + b.defense + b.hp));
+        const weakest = sortedBot[0];
+        const handCards = this.bot.hand.filter(c => c.type !== 'support');
+        if (handCards.length === 0) return;
+        const bestInHand = handCards.reduce((a,b) => (a.attack + a.defense + a.hp) > (b.attack + b.defense + b.hp) ? a : b);
+        const weakPower = weakest.attack + weakest.defense + weakest.hp;
+        const bestPower = bestInHand.attack + bestInHand.defense + bestInHand.hp;
+        if (bestPower - weakPower >= 3) {
+            const refund = Math.floor(weakest.cost * 0.5);
+            this.bot.coins += refund;
+            this.removeCardFromField(weakest);
+            const idx = this.bot.hand.indexOf(weakest);
+            if (idx !== -1) this.bot.hand.splice(idx, 1);
+            const newCard = { ...bestInHand, owner: 'bot', row: weakest.row, col: weakest.col };
+            this.field[weakest.row][weakest.col] = newCard;
+            this.bot.placedCards.push(newCard);
+            const handIdx = this.bot.hand.indexOf(bestInHand);
+            if (handIdx !== -1) this.bot.hand.splice(handIdx, 1);
+            if (this.bot.coins < newCard.cost) {
+                this.field[weakest.row][weakest.col] = weakest;
+                this.bot.placedCards.pop();
+                this.bot.coins -= refund;
+                const idx2 = this.bot.hand.indexOf(newCard);
+                if (idx2 !== -1) this.bot.hand.splice(idx2, 1);
+                this.bot.hand.push(bestInHand);
+                return;
+            }
+            this.bot.coins -= newCard.cost;
+            this.addLog(`Бот заменил ${weakest.name} на ${newCard.name} (улучшение)`, this.turn);
+            this.render();
+        }
+    }
+
+    // ---------- БОТ РАЗМЕЩАЕТ КАРТЫ (с умным выбором рядов) ----------
     botPlaceCards() {
         const botRows = CONFIG.BOT_ROWS;
         let availableCards = this.bot.hand.filter(c => c.type !== 'support');
@@ -266,6 +585,12 @@ class WarCardsGame {
             return;
         }
 
+        const getPreferredRow = (card) => {
+            if (card.type === 'economy') return 0;
+            if (card.type === 'support') return 1;
+            return 2;
+        };
+
         if (this.difficulty === 'extreme') {
             for (const card of availableCards) {
                 if (this.bot.coins < card.cost) continue;
@@ -276,8 +601,10 @@ class WarCardsGame {
                     }
                 }
                 if (free.length === 0) break;
-                free.sort((a,b) => b.row - a.row || Math.abs(a.col - 2) - Math.abs(b.col - 2));
-                const cell = free[0];
+                const preferred = getPreferredRow(card);
+                let candidates = free.filter(f => f.row === preferred);
+                if (candidates.length === 0) candidates = free;
+                const cell = candidates[this.getRandomInt(0, candidates.length-1)];
                 this.bot.coins -= card.cost;
                 const placed = { ...card, owner: 'bot', row: cell.row, col: cell.col };
                 this.field[cell.row][cell.col] = placed;
@@ -302,12 +629,18 @@ class WarCardsGame {
                     }
                 }
                 if (free.length === 0) break;
+                const preferred = getPreferredRow(card);
+                let candidates = free.filter(f => f.row === preferred);
+                if (candidates.length === 0) candidates = free;
                 let cell;
                 if (this.difficulty === 'hard') {
-                    free.sort((a,b) => b.row - a.row);
-                    cell = Math.random() < 0.7 ? free[0] : free[this.getRandomInt(0, free.length-1)];
+                    if (Math.random() < 0.6 && candidates.length > 0) {
+                        cell = candidates[this.getRandomInt(0, candidates.length-1)];
+                    } else {
+                        cell = free[this.getRandomInt(0, free.length-1)];
+                    }
                 } else {
-                    cell = free[this.getRandomInt(0, free.length-1)];
+                    cell = candidates[this.getRandomInt(0, candidates.length-1)] || free[this.getRandomInt(0, free.length-1)];
                 }
                 this.bot.coins -= card.cost;
                 const placed = { ...card, owner: 'bot', row: cell.row, col: cell.col };
@@ -320,17 +653,21 @@ class WarCardsGame {
             }
         }
         this.render();
+        // Проверяем отложенную бонусную карту после размещения
+        this.checkPendingBonusCard();
     }
 
-    // ---------- БОТ ИСПОЛЬЗУЕТ ПОДДЕРЖКУ ----------
+    // ---------- БОТ ИСПОЛЬЗУЕТ ПОДДЕРЖКУ (с учётом ПВО) ----------
     botUseSupport() {
         const supportCards = this.bot.hand.filter(c => c.type === 'support');
         if (supportCards.length === 0) return;
 
         let useChance = 1.0;
-        if (this.difficulty === 'medium') useChance = 0.85;
+        if (this.difficulty === 'easy') return;
+        else if (this.difficulty === 'medium') useChance = 0.85;
         else if (this.difficulty === 'hard') useChance = 0.95;
         else if (this.difficulty === 'extreme') useChance = 1.0;
+
         if (Math.random() > useChance) {
             this.addLog('Бот решил не использовать поддержку', this.turn);
             return;
@@ -341,9 +678,25 @@ class WarCardsGame {
 
         const playerCards = this.field.flat().filter(c => c && c.owner === 'player' && c.hp > 0);
         let target = null;
+        const hasPlayerAA = this.hasAAOnField('player');
 
         if (this.difficulty === 'extreme') {
-            if (!this.hasAAOnField('player')) {
+            if (hasPlayerAA) {
+                if (playerCards.length > 0) {
+                    const sorted = [...playerCards].sort((a,b) => a.hp - b.hp);
+                    target = sorted[0];
+                }
+            } else {
+                this.botUseSupportOnBase(card);
+                return;
+            }
+        } else if (this.difficulty === 'hard') {
+            if (hasPlayerAA && Math.random() < 0.6) {
+                if (playerCards.length > 0) {
+                    const sorted = [...playerCards].sort((a,b) => a.hp - b.hp);
+                    target = sorted[0];
+                }
+            } else if (!hasPlayerAA) {
                 this.botUseSupportOnBase(card);
                 return;
             } else {
@@ -352,18 +705,10 @@ class WarCardsGame {
                     target = sorted[0];
                 }
             }
-        } else if (this.difficulty === 'hard') {
-            if (!this.hasAAOnField('player')) {
-                this.botUseSupportOnBase(card);
-                return;
-            } else if (playerCards.length > 0) {
-                const sorted = [...playerCards].sort((a,b) => a.hp - b.hp);
-                target = sorted[0];
-            }
         } else {
             if (playerCards.length > 0 && Math.random() < 0.6) {
                 target = playerCards[this.getRandomInt(0, playerCards.length-1)];
-            } else if (!this.hasAAOnField('player')) {
+            } else if (!hasPlayerAA) {
                 this.botUseSupportOnBase(card);
                 return;
             }
@@ -371,7 +716,7 @@ class WarCardsGame {
 
         if (target) {
             let dmg = Math.max(1, card.attack);
-            if (this.hasAAOnField('player')) {
+            if (hasPlayerAA) {
                 dmg = Math.ceil(dmg * 0.25);
                 this.addLog(`ПВО игрока уменьшило урон поддержки до ${dmg}`, this.turn);
             }
@@ -382,6 +727,10 @@ class WarCardsGame {
             this.addLog(`Бот: поддержка ${card.name} атакует ${target.name}, урон ${actualDmg}`, this.turn);
             if (target.hp <= 0) {
                 this.removeCardFromField(target);
+                // Увеличиваем счётчик убийств бота
+                this.botKillCounter++;
+                this.addLog(`Бот убил ${target.name} (всего убийств: ${this.botKillCounter})`, this.turn);
+                this.checkBotBonusCard();
                 GradusWeb.notify.error(`${target.name} уничтожена ботом!`, 1500);
             }
             const idx = this.bot.hand.indexOf(card);
@@ -389,6 +738,8 @@ class WarCardsGame {
             this.bot.coins -= card.cost;
             this.render();
             this.checkGameOver();
+        } else {
+            this.addLog('Бот не нашёл цель для поддержки', this.turn);
         }
     }
 
@@ -433,11 +784,16 @@ class WarCardsGame {
         const cardIndex = this.player.hand.findIndex(c => c.id === cardId);
         if (cardIndex === -1) return false;
         const card = this.player.hand[cardIndex];
-        if (this.player.coins < card.cost) {
+        let isFree = false;
+        if (card._free) {
+            isFree = true;
+            delete card._free;
+        }
+        if (!isFree && this.player.coins < card.cost) {
             GradusWeb.notify.warning('Недостаточно монет!', 2000);
             return false;
         }
-        this.player.coins -= card.cost;
+        if (!isFree) this.player.coins -= card.cost;
         this.player.hand.splice(cardIndex, 1);
         const placed = { ...card, owner: 'player', row, col };
         this.field[row][col] = placed;
@@ -474,6 +830,7 @@ class WarCardsGame {
             }
             const dmg = Math.max(1, card.attack);
             this.bot.baseHp = Math.max(0, this.bot.baseHp - dmg);
+            this.addDamageToBotBase(dmg);
             GradusWeb.notify.error(`Поддержка ${card.name} нанесла ${dmg} урона базе бота!`, 2500);
             this.addLog(`Поддержка ${card.name} атакует базу бота, урон ${dmg}`, this.turn);
             this.player.hand.splice(cardIndex, 1);
@@ -502,12 +859,117 @@ class WarCardsGame {
         if (targetCard.hp <= 0) {
             GradusWeb.notify.error(`${targetCard.name} уничтожена!`, 2000);
             this.removeCardFromField(targetCard);
+            this.addCrystalsForKill(targetCard);
         }
         this.player.hand.splice(cardIndex, 1);
         this.player.coins -= card.cost;
         this.render();
         this.checkGameOver();
         return true;
+    }
+
+    // ---------- КРИСТАЛЛЫ ----------
+    addCrystalsForKill(card) {
+        const crystals = card.rank + CONFIG.CRYSTALS_PER_KILL_BASE;
+        this.crystals += crystals;
+        GradusWeb.notify.success(`💎 +${crystals} кристаллов за уничтожение ${card.name}`, 2000);
+        this.addLog(`💎 +${crystals} кристаллов (убийство ${card.name})`, this.turn);
+        this.updateShopCrystals();
+    }
+
+    addDamageToBotBase(dmg) {
+        this.damageToBotBase += dmg;
+        if (this.damageToBotBase >= 10) {
+            const bonus = Math.floor(this.damageToBotBase / 10) * CONFIG.CRYSTALS_PER_10_DMG;
+            const actualBonus = Math.min(bonus, 50);
+            this.crystals += actualBonus;
+            this.damageToBotBase = this.damageToBotBase % 10;
+            GradusWeb.notify.success(`💎 +${actualBonus} кристаллов за урон по базе!`, 2000);
+            this.addLog(`💎 +${actualBonus} кристаллов (урон по базе)`, this.turn);
+            this.updateShopCrystals();
+        }
+    }
+
+    updateShopCrystals() {
+        const span = document.getElementById('shop-crystals');
+        if (span) span.textContent = this.crystals;
+        const modalSpan = document.getElementById('shop-crystals-modal');
+        if (modalSpan) modalSpan.textContent = this.crystals;
+        const counter = document.getElementById('crystal-counter');
+        if (counter) counter.textContent = this.crystals;
+    }
+
+    // ---------- МАГАЗИН ----------
+    openShop() {
+        if (this.phase !== 'placement') {
+            GradusWeb.notify.warning('Магазин доступен только в фазе размещения!', 2000);
+            return;
+        }
+        document.getElementById('shopModal').classList.add('active');
+        this.updateShopCrystals();
+    }
+
+    closeShop() {
+        document.getElementById('shopModal').classList.remove('active');
+    }
+
+    buyCard(option) {
+        if (this.phase !== 'placement') return;
+        let cost = 0;
+        let type = document.getElementById('shop-type-select').value;
+        let rankMin = 0, rankMax = 5;
+        let isFree = false;
+
+        switch (option) {
+            case 'random':
+                cost = CONFIG.SHOP_COST_RANDOM;
+                break;
+            case 'rank2-3':
+                cost = CONFIG.SHOP_COST_RANK_2_3;
+                rankMin = 2; rankMax = 3;
+                break;
+            case 'rank5':
+                cost = CONFIG.SHOP_COST_RANK_5;
+                rankMin = 5; rankMax = 5;
+                isFree = true;
+                break;
+            default: return;
+        }
+
+        if (this.crystals < cost) {
+            GradusWeb.notify.warning('Недостаточно кристаллов!', 2000);
+            return;
+        }
+
+        let card;
+        if (option === 'random') {
+            const types = ['attack', 'defense', 'support', 'economy'];
+            const randType = types[this.getRandomInt(0, 3)];
+            const randRank = this.getRandomInt(0, 5);
+            const pool = this.cardPool.filter(c => c.type === randType && c.rank === randRank);
+            if (pool.length === 0) { GradusWeb.notify.warning('Нет подходящих карт', 2000); return; }
+            card = { ...pool[this.getRandomInt(0, pool.length-1)] };
+        } else {
+            const pool = this.cardPool.filter(c => c.type === type && c.rank >= rankMin && c.rank <= rankMax);
+            if (pool.length === 0) { GradusWeb.notify.warning('Нет подходящих карт', 2000); return; }
+            card = { ...pool[this.getRandomInt(0, pool.length-1)] };
+        }
+
+        card.hp = card.maxHp;
+        if (isFree) {
+            card._free = true;
+            card.cost = 0;
+        }
+        if (this.canAddCardToHand(this.player, card.type)) {
+            this.player.hand.push(card);
+            this.crystals -= cost;
+            GradusWeb.notify.success(`🛒 Куплена карта ${card.name}!`, 2000);
+            this.addLog(`Магазин: куплена ${card.name} (⭐${card.rank}) за ${cost} кристаллов`, this.turn);
+            this.render();
+            this.updateShopCrystals();
+        } else {
+            GradusWeb.notify.warning('У вас слишком много карт этого типа!', 2000);
+        }
     }
 
     // ---------- ОТЗЫВ ЮНИТА ----------
@@ -552,6 +1014,7 @@ class WarCardsGame {
         document.getElementById('btn-end-turn').disabled = true;
         document.getElementById('btn-end-turn').textContent = '⏳ Битва...';
         document.getElementById('btn-support').disabled = true;
+        document.getElementById('btn-shop').disabled = true;
         this.addLog('=== ⚔️ БИТВА ===', this.turn);
         GradusWeb.notify.info('Битва начинается!', 2000);
 
@@ -570,6 +1033,7 @@ class WarCardsGame {
         }
         this.updateControls();
         this.renderLogs();
+        this.updateShopCrystals();
     }
 
     async runBattle() {
@@ -614,6 +1078,7 @@ class WarCardsGame {
                     return;
                 }
                 this.bot.baseHp = Math.max(0, this.bot.baseHp - dmg);
+                this.addDamageToBotBase(dmg);
                 GradusWeb.notify.error(`${attacker.name} атакует базу бота на ${dmg} урона!`, 2000);
                 this.addLog(`${attacker.name} атакует базу бота, урон ${dmg}`, this.turn);
             } else {
@@ -655,6 +1120,14 @@ class WarCardsGame {
 
         if (target.hp <= 0) {
             GradusWeb.notify.error(`${target.name} уничтожена!`, 1500);
+            if (attacker.owner === 'player') {
+                this.addCrystalsForKill(target);
+            } else {
+                // Бот убил карту игрока
+                this.botKillCounter++;
+                this.addLog(`Бот убил ${target.name} (всего убийств: ${this.botKillCounter})`, this.turn);
+                this.checkBotBonusCard();
+            }
             this.removeCardFromField(target);
             this.clearHighlights();
             await this.sleep(300);
@@ -668,6 +1141,12 @@ class WarCardsGame {
                 if (attacker.hp <= 0) {
                     GradusWeb.notify.error(`${attacker.name} уничтожена!`, 1500);
                     this.removeCardFromField(attacker);
+                    // Если бот убил карту игрока (контратакой защиты)
+                    if (attacker.owner === 'player') {
+                        this.botKillCounter++;
+                        this.addLog(`Бот убил ${attacker.name} (всего убийств: ${this.botKillCounter})`, this.turn);
+                        this.checkBotBonusCard();
+                    }
                 }
             }
         }
@@ -753,22 +1232,9 @@ class WarCardsGame {
             document.getElementById('btn-start-turn').disabled = true;
             document.getElementById('btn-end-turn').disabled = true;
             document.getElementById('btn-support').disabled = true;
+            document.getElementById('btn-shop').disabled = true;
             document.getElementById('btn-reset').textContent = '🔄 Сыграть ещё';
         }
-    }
-
-    async updateStats(won) {
-        const diff = this.difficulty;
-        if (!this.stats[diff]) this.stats[diff] = { wins: 0, losses: 0 };
-        if (won) {
-            this.stats[diff].wins++;
-            this.stats.total.wins++;
-        } else {
-            this.stats[diff].losses++;
-            this.stats.total.losses++;
-        }
-        await this.saveStats();
-        this.updateProfileModal();
     }
 
     showCelebration(won) {
@@ -819,11 +1285,14 @@ class WarCardsGame {
         logDiv.parentElement.scrollTop = logDiv.parentElement.scrollHeight;
     }
 
-    // ---------- ПРОФИЛЬ ----------
+    // ---------- ПРОФИЛЬ (с рангами и медалями) ----------
     updateProfileModal() {
         const stats = this.stats;
         const diffNames = { easy: 'Лёгкая', medium: 'Средняя', hard: 'Любитель', extreme: 'Экстрим' };
-        let html = `<div class="stat-block"><span>Всего побед:</span><span>${stats.total.wins}</span></div>
+        const rank = this.getCurrentRank();
+        let html = `<div class="stat-block"><span>🏆 Ранг:</span><span>${rank.emoji} ${rank.name}</span></div>
+                    <div class="stat-block"><span>✨ Опыт:</span><span>${this.xp} XP</span></div>
+                    <div class="stat-block"><span>Всего побед:</span><span>${stats.total.wins}</span></div>
                     <div class="stat-block"><span>Всего поражений:</span><span>${stats.total.losses}</span></div>`;
         for (const d of ['easy','medium','hard','extreme']) {
             const s = stats[d] || { wins:0, losses:0 };
@@ -863,6 +1332,8 @@ class WarCardsGame {
         this.renderLogs();
         this.updateControls();
         this.updateProfileModal();
+        this.updateShopCrystals();
+        this.updateRankDisplay();
     }
 
     renderField() {
@@ -892,7 +1363,6 @@ class WarCardsGame {
                         </div>
                     `;
                     cell.style.background = card.owner === 'player' ? '#1a3a1a' : '#3a1a1a';
-                    // Клик для отзыва (свои карты) или для поддержки (вражеские)
                     if (card.owner === 'player' && this.phase === 'placement') {
                         cell.style.cursor = 'pointer';
                         cell.addEventListener('click', (e) => {
@@ -902,7 +1372,6 @@ class WarCardsGame {
                             }
                         });
                     } else if (card.owner === 'bot' && this.phase === 'placement') {
-                        // Клик по вражеской карте – использовать поддержку, если выбрана
                         cell.style.cursor = 'pointer';
                         cell.addEventListener('click', (e) => {
                             e.stopPropagation();
@@ -921,7 +1390,6 @@ class WarCardsGame {
                 } else {
                     cell.textContent = '';
                     cell.style.background = '#2a2a4a';
-                    // Свободная клетка для размещения
                     if (CONFIG.PLAYER_ROWS.includes(r) && this.phase === 'placement') {
                         cell.addEventListener('click', () => this.onCellClick(r, c));
                     }
@@ -964,20 +1432,24 @@ class WarCardsGame {
         document.getElementById('bot-base').textContent = this.bot.baseHp;
         document.getElementById('hand-count').textContent = this.player.hand.length;
         document.getElementById('turn-counter').textContent = this.turn;
+        document.getElementById('crystal-counter').textContent = this.crystals;
     }
 
     updateControls() {
         const startBtn = document.getElementById('btn-start-turn');
         const endBtn = document.getElementById('btn-end-turn');
         const supportBtn = document.getElementById('btn-support');
+        const shopBtn = document.getElementById('btn-shop');
         if (this.gameOver) {
             startBtn.disabled = true;
             endBtn.disabled = true;
             supportBtn.disabled = true;
+            shopBtn.disabled = true;
         } else {
             startBtn.disabled = (this.phase !== 'idle' && this.phase !== 'ended');
             endBtn.disabled = (this.phase !== 'placement');
             supportBtn.disabled = (this.phase !== 'placement');
+            shopBtn.disabled = (this.phase !== 'placement');
         }
     }
 
@@ -1066,14 +1538,22 @@ class WarCardsGame {
         this.selectedCardId = null;
         this.isAnimating = false;
         this.win = false;
+        this.crystals = 0;
+        this.damageToBotBase = 0;
+        this.botKillCounter = 0;
+        this.botPendingBonusCard = null;
+
         this.addLog('🔄 Новая игра! Нажмите "Начать ход".', 0);
         GradusWeb.notify.info('Новая игра начата!', 3000);
         this.render();
         document.getElementById('btn-start-turn').disabled = false;
         document.getElementById('btn-end-turn').disabled = true;
         document.getElementById('btn-support').disabled = true;
+        document.getElementById('btn-shop').disabled = true;
         document.getElementById('btn-reset').textContent = '🔄 Новая игра';
         document.getElementById('confetti-container').innerHTML = '';
+        this.updateShopCrystals();
+        this.updateRankDisplay();
     }
 
     // ---------- СТАРТ ----------
@@ -1084,6 +1564,15 @@ class WarCardsGame {
         document.getElementById('btn-end-turn').addEventListener('click', () => this.endTurn());
         document.getElementById('btn-reset').addEventListener('click', () => this.resetGame());
         document.getElementById('btn-support').addEventListener('click', () => this.attackBaseWithSupport());
+
+        document.getElementById('btn-shop').addEventListener('click', () => this.openShop());
+        document.getElementById('closeShopModal').addEventListener('click', () => this.closeShop());
+        document.querySelectorAll('.shop-option').forEach(el => {
+            el.addEventListener('click', (e) => {
+                const option = el.dataset.shop;
+                if (option) this.buyCard(option);
+            });
+        });
 
         document.getElementById('btn-log-toggle').addEventListener('click', function() {
             const container = document.getElementById('log-container');
@@ -1100,7 +1589,7 @@ class WarCardsGame {
             document.getElementById('profile-modal').classList.add('active');
             this.updateProfileModal();
         });
-        document.querySelector('.close-modal').addEventListener('click', () => {
+        document.querySelector('.close-modal')?.addEventListener('click', () => {
             document.getElementById('profile-modal').classList.remove('active');
         });
         window.onclick = function(e) {
@@ -1133,6 +1622,8 @@ class WarCardsGame {
         this.render();
         this.addLog('Добро пожаловать в WarCards!', 0);
         GradusWeb.notify.info('Добро пожаловать в WarCards!', 3000);
+        this.updateShopCrystals();
+        this.updateRankDisplay();
     }
 }
 
@@ -1146,8 +1637,9 @@ async function initSite() {
     GradusStatic.registerHandler('game:bot_base_hp', () => game ? game.bot.baseHp : CONFIG.BASE_HP);
     GradusStatic.registerHandler('game:hand_count', () => game ? game.player.hand.length : 0);
     GradusStatic.registerHandler('game:turn', () => game ? game.turn : 0);
+    GradusStatic.registerHandler('game:crystals', () => game ? game.crystals : 0);
 
     game = new WarCardsGame();
-    await game.loadStats();
+    await game.loadProgress();
     game.start();
 }
