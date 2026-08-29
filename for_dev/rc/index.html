@@ -133,6 +133,7 @@
   <a href="#events">События</a> ·
   <a href="#sound">Звук</a> ·
   <a href="#overlay">Оверлеи</a> ·
+  <a href="#effects">Эффекты (EffectsManager)</a> ·
   <a href="#examples">Заготовки (Menu/Game)</a> ·
   <a href="#loading">Экран загрузки</a> ·
   <a href="#optimization">Оптимизация</a> ·
@@ -164,6 +165,7 @@
   <li><code>LightTracer</code> – управляет освещением.</li>
   <li><code>SpriteManager</code> – хранит и рисует билборды и модели-спрайты.</li>
   <li><code>SoundManager</code> – загружает и воспроизводит звуки.</li>
+  <li><code>EffectsManager</code> – полноэкранные пост‑эффекты (зернистость, помехи, глюки, VHS).</li>
   <li><code>MicroAPI</code> – тонкое управление объектами во время игры (доступен через <code>engine.api</code>).</li>
 </ul>
 
@@ -355,6 +357,9 @@ api.set_model_rotation_x(model_key, rot_deg)
 api.set_model_rotation_y(model_key, rot_deg)
 api.set_model_rotation_z(model_key, rot_deg)
 api.set_model_visible(model_key, visible)</code></pre>
+<h3>Эффекты (EffectsManager)</h3>
+<pre><code>api.set_effect(effect_type, alpha=255, intensity=0.5)   # включить эффект
+api.clear_effect()                                      # выключить</code></pre>
 
 <!-- ============================================ -->
 <h2 id="events">🧩 События (переопределение)</h2>
@@ -380,6 +385,43 @@ engine.sound_manager.stop_sound('scream')</code></pre>
 <pre><code>engine.set_overlay('scary.png', alpha=200)
 engine.clear_overlay()
 engine.show_message("Привет!", 2.0)</code></pre>
+
+<!-- ============================================ -->
+<h2 id="effects">✨ Полноэкранные эффекты (EffectsManager)</h2>
+<p>
+  Движок включает встроенный менеджер пост‑эффектов для создания атмосферы VHS, помех, зернистости и глюков.
+  Эффекты накладываются на весь экран после отрисовки сцены и могут быть включены/выключены в любой момент.
+</p>
+<h3>Доступные эффекты</h3>
+<ul>
+  <li><code>'noise'</code> – цветная зернистость по всему экрану.</li>
+  <li><code>'static'</code> – вертикальные полупрозрачные полосы (VHS‑помехи).</li>
+  <li><code>'glitch'</code> – тонкие горизонтальные цветные полосы (цветовые глюки).</li>
+  <li><code>'vhs'</code> – комбинация всех трёх эффектов сразу.</li>
+</ul>
+<h3>Управление эффектами</h3>
+<p>Включение через MicroAPI:</p>
+<pre><code>engine.api.set_effect('vhs', alpha=180, intensity=0.7)</code></pre>
+<p>Или напрямую через менеджер:</p>
+<pre><code>engine.effects_manager.set_effect('glitch', alpha=200, intensity=0.5)</code></pre>
+<p>Выключение:</p>
+<pre><code>engine.api.clear_effect()
+# или
+engine.effects_manager.clear_effect()</code></pre>
+<p>Параметры:</p>
+<ul>
+  <li><code>alpha</code> – общая прозрачность эффекта (0..255). По умолчанию 255.</li>
+  <li><code>intensity</code> – сила эффекта (0.0..1.0). По умолчанию 0.5. Чем выше, тем больше элементов (точек, полос и т.д.).</li>
+</ul>
+<p>Пример использования в скрипте:</p>
+<pre><code># Включить VHS на 3 секунды
+engine.api.set_effect('vhs', alpha=180, intensity=0.7)
+pygame.time.delay(3000)
+engine.api.clear_effect()</code></pre>
+<div class="note">
+  <strong>⚡ Производительность:</strong> слои эффектов обновляются с интервалом 0.3 секунды, чтобы не снижать FPS.
+  Вы можете изменить интервал в <code>EffectsManager._update_interval</code>.
+</div>
 
 <!-- ============================================ -->
 <h2 id="examples">🎮 Заготовки (Menu и Game) – подробная настройка</h2>
@@ -473,6 +515,7 @@ while running:
   <li><strong>Видео</strong> – используйте <code>mode="angle"</code> или уменьшайте размер.</li>
   <li><strong>Не используйте <code>alpha</code></strong> – это вызывает сильные лаги. Вместо этого применяйте <code>isvisible:0</code>.</li>
   <li><strong><code>height</code> для стен</strong> – при значениях &lt; 1.0 может снижать FPS. Используйте с осторожностью.</li>
+  <li><strong>Полноэкранные эффекты</strong> – обновляются раз в 0.3 сек, что не влияет на FPS. При необходимости можно увеличить интервал в <code>EffectsManager._update_interval</code>.</li>
 </ul>
 
 <!-- ============================================ -->
@@ -596,6 +639,7 @@ if __name__ == "__main__":
   <li><strong>Почему триггер срабатывает каждый кадр?</strong> – используйте <code>deactivate_trigger</code>.</li>
   <li><strong>Упал FPS при <code>height&lt;1</code>?</strong> – используйте <code>height</code> с осторожностью, это ресурсоёмко.</li>
   <li><strong>Как добавить свою текстуру?</strong> – положите изображение в папку <code>textures/</code> и укажите путь в теге <code>texture</code> или используйте <code>load_image</code> для спрайтов.</li>
+  <li><strong>Как включить полноэкранные эффекты?</strong> – используйте <code>engine.api.set_effect('vhs', alpha=180, intensity=0.7)</code>. Подробнее в разделе <a href="#effects">Эффекты</a>.</li>
 </ul>
 
 <!-- ============================================ -->
