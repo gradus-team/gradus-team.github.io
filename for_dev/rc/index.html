@@ -133,7 +133,7 @@
   <a href="#events">События</a> ·
   <a href="#sound">Звук</a> ·
   <a href="#overlay">Оверлеи</a> ·
-  <a href="#examples">Заготовки</a> ·
+  <a href="#examples">Заготовки (Menu/Game)</a> ·
   <a href="#loading">Экран загрузки</a> ·
   <a href="#optimization">Оптимизация</a> ·
   <a href="#full-example">Полный пример</a> ·
@@ -144,50 +144,27 @@
 <!-- ============================================ -->
 <h2 id="intro">📖 Введение</h2>
 <p>
-  <strong>Gradus RC</strong> — это библиотека для создания псевдо-3D игр с рейкастингом на Python с использованием Pygame.
-  Она предоставляет гибкий API для создания уровней, управления стенами, дверями, ключами, триггерами, порталами,
-  источниками света, билбордами (спрайтами) и 3D-моделями (формат .obj, конвертируемыми в спрайты).
-  Движок не содержит игрового цикла — вы пишете свой <code>main.py</code>, импортируете нужные модули и собираете игру.
+  <strong>Gradus RC</strong> — это библиотека для создания псевдо-3D игр с рейкастингом на Python + Pygame.
+  Она даёт вам полный контроль над уровнями, стенами, дверями, ключами, триггерами, порталами, светом,
+  спрайтами, 3D-моделями и звуком. Движок не навязывает игровой цикл — вы пишете свой <code>main.py</code>.
 </p>
-<p>
-  <strong>Ключевые возможности:</strong>
-</p>
-<ul>
-  <li>📐 Рейкастинг с настройкой FOV, количества лучей и коррекцией «рыбьего глаза».</li>
-  <li>🧱 Стены с материалами, текстурами и кастомной высотой (высота может снижать FPS).</li>
-  <li>🗝️ Система «ключ-дверь» (ID=7) с привязкой через <code>link</code>.</li>
-  <li>🎯 Триггеры (ID=8) для событий (скримеры, активации).</li>
-  <li>🌀 Порталы (ID=9) для перехода между уровнями.</li>
-  <li>📦 Загрузка 3D-моделей (.obj) с автоматической генерацией спрайтов (кэширование).</li>
-  <li>🔄 Анимация .obj через последовательную смену моделей.</li>
-  <li>💡 Освещение: ambient, статические источники, фонарик игрока.</li>
-  <li>🖼️ Билборды (спрайты) с управлением видимостью и позицией.</li>
-  <li>🎵 Звук и видео-оверлей (с хромакеем).</li>
-  <li>🔧 MicroAPI для тонкого управления объектами.</li>
-  <li>🧩 Наследование <code>Engine</code> для переопределения событий.</li>
-</ul>
 
 <!-- ============================================ -->
 <h2 id="install">📦 Установка</h2>
 <pre><code>pip install pygame trimesh numpy imageio imageio-ffmpeg</code></pre>
-<p>
-  Обязательные зависимости: <code>pygame</code>.<br>
-  Для 3D-моделей: <code>trimesh</code> и <code>numpy</code>.<br>
-  Для видео: <code>imageio</code> и <code>imageio-ffmpeg</code>.
-</p>
-<p>Скопируйте папку <code>gradus_rc/</code> в корень вашего проекта.</p>
+<p>Обязательные зависимости: <code>pygame</code>. Для .obj моделей нужны <code>trimesh</code> и <code>numpy</code>. Для видео — <code>imageio</code> и <code>imageio-ffmpeg</code>.</p>
+<p>Скопируйте папку <code>gradus_rc/</code> в корень проекта.</p>
 
 <!-- ============================================ -->
 <h2 id="arch">🧩 Архитектура</h2>
-<p>Основные классы движка:</p>
 <ul>
-  <li><code>Engine</code> – главный класс, связывает все подсистемы.</li>
-  <li><code>Player</code> – игрок (позиция, угол, скорость).</li>
-  <li><code>RayCaster</code> – выполняет рейкастинг и возвращает глубину и объекты.</li>
-  <li><code>LightTracer</code> – управляет освещением (источники, фонарик).</li>
-  <li><code>SpriteManager</code> – управляет билбордами и моделями-спрайтами.</li>
-  <li><code>SoundManager</code> – загрузка и воспроизведение звуков.</li>
-  <li><code>MicroAPI</code> – тонкое управление стенами, игроком, светом, спрайтами, моделями.</li>
+  <li><code>Engine</code> – главный класс. Создаётся один раз.</li>
+  <li><code>Player</code> – положение, угол поворота, скорость.</li>
+  <li><code>RayCaster</code> – выполняет рейкастинг.</li>
+  <li><code>LightTracer</code> – управляет освещением.</li>
+  <li><code>SpriteManager</code> – хранит и рисует билборды и модели-спрайты.</li>
+  <li><code>SoundManager</code> – загружает и воспроизводит звуки.</li>
+  <li><code>MicroAPI</code> – тонкое управление объектами во время игры (доступен через <code>engine.api</code>).</li>
 </ul>
 
 <!-- ============================================ -->
@@ -199,12 +176,13 @@
   <tr><td><code>[COLLISION]</code></td><td>Основная карта (стены, проходимость)</td><td><code>1 1 1<br>1 0 1</code></td></tr>
   <tr><td><code>[FLOOR_COLOR=RRGGBB]</code></td><td>Цвет пола (HEX без #)</td><td><code>FLOOR_COLOR=444444</code></td></tr>
   <tr><td><code>[CEILING_COLOR=RRGGBB]</code></td><td>Цвет потолка</td><td><code>CEILING_COLOR=888888</code></td></tr>
-  <tr><td><code>[SPAWN=x,y]</code></td><td>Координата спавна игрока (в клетках)</td><td><code>SPAWN=0.5,0.5</code></td></tr>
+  <tr><td><code>[SPAWN=x,y]</code></td><td>Спавн игрока (в клетках)</td><td><code>SPAWN=0.5,0.5</code></td></tr>
   <tr><td><code>[AMBIENT=0.0..1.0]</code></td><td>Базовая освещённость</td><td><code>AMBIENT=0.03</code></td></tr>
-  <tr><td><code>[USE_LT=0/1]</code></td><td>Применять освещение к полу/потолку</td><td><code>USE_LT=1</code></td></tr>
+  <tr><td><code>[USE_LT=0/1]</code></td><td>Освещение пола/потолка</td><td><code>USE_LT=1</code></td></tr>
   <tr><td><code>[LIGHTS=x,y,intensity,radius; ...]</code></td><td>Статические источники света</td><td><code>LIGHTS=2.5,2.5,0.4,200</code></td></tr>
   <tr><td><code>[BILBOARDS=x,y,key; ...]</code></td><td>Спрайты (из папки <code>textures/</code>)</td><td><code>BILBOARDS=3.5,2.5,tree</code></td></tr>
 </table>
+
 <p>Клетки в <code>[COLLISION]</code> разделяются пробелами. Каждая клетка может содержать теги в угловых скобках:</p>
 <pre><code>1&lt;material:brick,height:0.9,color:FFAA00,isvisible:0&gt;
 6&lt;path:models/cube.obj,roty:45,rotx:10,scale:2.0,color:FF0000,isvisible:1&gt;
@@ -224,14 +202,14 @@
   <tr><td><code>4</code></td><td>Дерево</td><td>material=wood</td><td>те же</td></tr>
   <tr><td><code>5</code></td><td>Металл</td><td>material=metal</td><td>те же</td></tr>
   <tr><td><code>6</code></td><td>3D-модель</td><td>Загружает .obj и рендерит в спрайты</td><td><code>path, rotx, roty, rotz, scale, color, anim, anim_speed, isvisible</code></td></tr>
-  <tr><td><code>7</code></td><td>Дверь/Ключ</td><td>Система ключ-дверь. Видимость спрайта управляется через <code>api.set_sprite_visible(key, visible)</code>.</td><td><code>type, id, link, texture, height, material</code></td></tr>
+  <tr><td><code>7</code></td><td>Дверь/Ключ</td><td>Система ключ-дверь. Видимость спрайта управляется через <code>api.set_sprite_visible(sprite_key, visible)</code>.</td><td><code>type, id, link, texture, height, material</code></td></tr>
   <tr><td><code>8</code></td><td>Триггер</td><td>Вызывает <code>on_trigger(cell)</code>. Всегда невидим.</td><td><code>id</code></td></tr>
   <tr><td><code>9</code></td><td>Портал</td><td>Переход на <code>level</code>. Всегда невидим (можно сделать видимым, изменив код).</td><td><code>level</code></td></tr>
 </table>
 </div>
 <p><strong>Важно:</strong></p>
 <ul>
-  <li><code>isvisible</code> работает для ID=1–6. Для ID=7 видимость управляется через API. ID=8 и 9 всегда невидимы.</li>
+  <li><code>isvisible</code> (или <code>isVisible</code>) работает для ID=1–6. Для ID=7 видимость управляется через API. ID=8 и 9 всегда невидимы.</li>
   <li><code>alpha</code> не поддерживается из-за высоких нагрузок на FPS. Используйте <code>isvisible:0</code> для скрытия.</li>
   <li><code>height</code> работает только для стен (ID 1–5) и может снижать FPS при значениях &lt; 1.0. Используйте с осторожностью.</li>
 </ul>
@@ -256,26 +234,35 @@
 <!-- ============================================ -->
 <h2 id="doors">🗝️ Двери и ключи (ID=7)</h2>
 <p>Клетка с ID=7 может быть либо <strong>дверью</strong> (<code>type:door</code>), либо <strong>ключом</strong> (<code>type:key</code>).</p>
-<p><strong>Дверь</strong> – непроходима, пока не открыта ключом. Визуально — спрайт двери (по умолчанию <code>door.png</code>).</p>
-<p><strong>Ключ</strong> – проходимый спрайт (по умолчанию <code>key.png</code>). При подборе автоматически открывает связанную дверь.</p>
+<ul>
+  <li><strong>Дверь</strong> – непроходима, пока не открыта ключом. Визуально — спрайт двери (по умолчанию <code>door.png</code>).</li>
+  <li><strong>Ключ</strong> – проходимый спрайт (по умолчанию <code>key.png</code>). При подборе автоматически открывает связанную дверь.</li>
+</ul>
 <p><strong>Связь:</strong> через тег <code>link</code> (указывается id двери у ключа и наоборот).</p>
 <pre><code>7&lt;type:door,id:door1,link:key1&gt;
 7&lt;type:key,id:key1,link:door1&gt;</code></pre>
-<p>Управление через MicroAPI: <code>api.open_door('door1')</code>, <code>api.close_door('door1')</code>, <code>api.collect_key('key1')</code>, <code>api.has_key('key1')</code>.</p>
+<p>Управление через MicroAPI:</p>
+<pre><code>api.open_door('door1')
+api.close_door('door1')
+api.collect_key('key1')
+api.has_key('key1')</code></pre>
 <p>Видимость спрайта двери/ключа управляется через <code>api.set_sprite_visible(sprite_key, True/False)</code>.</p>
 
 <!-- ============================================ -->
 <h2 id="triggers">🎯 Триггеры (ID=8)</h2>
-<p>При касании клетки с ID=8 вызывается метод <code>on_trigger(cell)</code>. Чтобы триггер сработал только один раз, используйте <code>self.deactivate_trigger(('id', trigger_id))</code>. Триггеры всегда невидимы.</p>
+<p>При касании клетки с ID=8 вызывается метод <code>on_trigger(cell)</code>. Чтобы триггер сработал только один раз, используйте:</p>
+<pre><code>self.deactivate_trigger(('id', trigger_id))</code></pre>
+<p>Триггеры всегда невидимы и не имеют коллизии.</p>
 
 <!-- ============================================ -->
 <h2 id="portals">🌀 Порталы (ID=9)</h2>
-<p>Клетка с ID=9 и тегом <code>level</code> мгновенно переносит игрока на указанный уровень (индекс в списке <code>levels</code>). Порталы всегда невидимы.</p>
+<p>Клетка с ID=9 и тегом <code>level</code> мгновенно переносит игрока на указанный уровень (индекс в списке <code>levels</code>).</p>
 <pre><code>9&lt;level:1&gt;</code></pre>
+<p>Порталы всегда невидимы и не имеют коллизии.</p>
 
 <!-- ============================================ -->
 <h2 id="models">📦 3D-модели (ID=6)</h2>
-<p>Поддерживаются параметры:</p>
+<p>Параметры:</p>
 <ul>
   <li><code>path</code> – путь к .obj (обязательно).</li>
   <li><code>rotx</code>, <code>roty</code>, <code>rotz</code> – повороты модели в градусах.</li>
@@ -395,27 +382,97 @@ engine.clear_overlay()
 engine.show_message("Привет!", 2.0)</code></pre>
 
 <!-- ============================================ -->
-<h2 id="examples">🎮 Заготовки (examples)</h2>
-<p>В папке <code>gradus_rc/examples/</code> есть готовые модули <code>menu.py</code> и <code>game.py</code> для быстрого старта.</p>
-<pre><code>from gradus_rc.examples import MenuExample, GameExample
-menu = MenuExample(engine, background_image='menu_bg.jpg')
+<h2 id="examples">🎮 Заготовки (Menu и Game) – подробная настройка</h2>
+
+<p>В папке <code>gradus_rc/examples/</code> есть два класса-заготовки: <code>MenuExample</code> и <code>GameExample</code>. Они помогут быстро создать меню и игровой цикл.</p>
+
+<h3>📋 MenuExample – настройка меню</h3>
+<p>Создайте экземпляр, передав движок и параметры:</p>
+<pre><code>from gradus_rc.examples import MenuExample
+
+menu = MenuExample(
+    engine,                          # ваш экземпляр Engine
+    background_image='menu_bg.jpg',  # фон (опционально)
+    button_color=(100,100,150),      # цвет кнопок (R,G,B)
+    text_color=(255,255,255),        # цвет текста
+    about_text="Текст об игре...",   # содержимое раздела "Об игре"
+    settings_file="settings.json"    # файл для сохранения настроек
+)
+engine.start_with_menu(menu)         # активировать меню</code></pre>
+
+<p><strong>Что можно настроить:</strong></p>
+<ul>
+  <li><code>background_image</code> – путь к фоновой картинке (полноэкранная).</li>
+  <li><code>button_color</code> – цвет кнопок.</li>
+  <li><code>text_color</code> – цвет текста на кнопках.</li>
+  <li><code>about_text</code> – многострочный текст в разделе "Об игре".</li>
+  <li><code>settings_file</code> – JSON-файл, куда сохраняются настройки FOV и графики.</li>
+</ul>
+<p>В меню автоматически создаются кнопки: <strong>Играть</strong>, <strong>Настройки</strong>, <strong>Об игре</strong>.</p>
+<p>В настройках можно менять FOV (30°, 60°, 90°) и уровень графики:</p>
+<ul>
+  <li><strong>Lite</strong> – 40 лучей, 8 спрайтов на объект</li>
+  <li><strong>Turbo</strong> – 80 лучей, 32 спрайта</li>
+  <li><strong>Medium</strong> – 160 лучей, 32 спрайта</li>
+  <li><strong>High</strong> – 240 лучей, 32 спрайта</li>
+  <li><strong>Ultra</strong> – 400 лучей, 64 спрайта</li>
+</ul>
+<p>При нажатии "Играть" меню закрывается и запускается <code>GameExample</code> (если он установлен).</p>
+
+<h3>🎮 GameExample – настройка игры</h3>
+<pre><code>from gradus_rc.examples import GameExample
+
+game = GameExample(
+    engine,                         # ваш экземпляр Engine
+    levels=[LEVEL1, LEVEL2],        # список карт (уровней)
+    current_level=0,                # начальный уровень
+    on_trigger_callback=lambda cell: print("Триггер активирован!")  # опционально
+)
+engine.set_game_example(game)       # установить игру</code></pre>
+
+<p><strong>Параметры:</strong></p>
+<ul>
+  <li><code>levels</code> – список строк-карт (каждая в формате, описанном выше).</li>
+  <li><code>current_level</code> – индекс уровня, с которого начинается игра.</li>
+  <li><code>on_trigger_callback</code> – функция, которая вызывается при активации триггера (ID=8). Если не указана, используется <code>engine.on_trigger</code>.</li>
+</ul>
+<p>Вы можете переопределить <code>on_trigger</code>, <code>on_key_pickup</code>, <code>on_door_blocked</code> в своём наследнике <code>Engine</code>, чтобы добавить свою логику.</p>
+
+<h3>🔁 Полный цикл с меню и игрой</h3>
+<pre><code># В main.py:
+engine = MyEngine(...)
+
+# Меню
+menu = MenuExample(engine, background_image='menu.jpg')
 engine.start_with_menu(menu)
-game = GameExample(engine, levels=LEVELS)
-engine.set_game_example(game)</code></pre>
+
+# Игра
+game = GameExample(engine, levels=[LEVEL1, LEVEL2])
+engine.set_game_example(game)
+
+# В игровом цикле:
+while running:
+    # ... обработка событий ...
+    if engine.use_example and engine.example_menu and engine.example_menu.running:
+        engine.example_menu.render(screen)   # рисуем меню
+    else:
+        engine.update(dt, keys)              # обновляем игру
+        engine.render(screen)                # рисуем игру</code></pre>
 
 <!-- ============================================ -->
 <h2 id="loading">⏳ Экран загрузки</h2>
 <p>При старте движок показывает водяной знак (из <code>material/images/watermark.png</code>) и прогресс кэширования моделей. Вызов <code>engine.prepare_models(screen)</code> автоматически показывает загрузку и держит экран минимум 3 секунды.</p>
+<p>Вы можете изменить водяной знак, заменив файл <code>gradus_rc/material/images/watermark.png</code>.</p>
 
 <!-- ============================================ -->
 <h2 id="optimization">⚡ Оптимизация</h2>
 <ul>
-  <li>Уменьшите <code>rays</code> до 80–120 для слабых устройств.</li>
-  <li>Используйте кэш моделей (включен по умолчанию).</li>
-  <li>Ограничьте количество билбордов и источников света.</li>
-  <li>Для видео используйте <code>mode="angle"</code> или уменьшайте размер.</li>
-  <li>Не используйте <code>alpha</code> – это вызывает сильные лаги.</li>
-  <li>Используйте <code>isvisible:0</code> для скрытия объектов вместо <code>alpha:0</code>.</li>
+  <li><strong>Уменьшите <code>rays</code></strong> – для слабых устройств достаточно 80–120 лучей.</li>
+  <li><strong>Кэш моделей</strong> – включен по умолчанию. При изменении параметров модели удалите папку <code>cache/</code>.</li>
+  <li><strong>Ограничьте число билбордов и источников света</strong> – каждый добавляет нагрузку.</li>
+  <li><strong>Видео</strong> – используйте <code>mode="angle"</code> или уменьшайте размер.</li>
+  <li><strong>Не используйте <code>alpha</code></strong> – это вызывает сильные лаги. Вместо этого применяйте <code>isvisible:0</code>.</li>
+  <li><strong><code>height</code> для стен</strong> – при значениях &lt; 1.0 может снижать FPS. Используйте с осторожностью.</li>
 </ul>
 
 <!-- ============================================ -->
@@ -528,16 +585,17 @@ if __name__ == "__main__":
     main()</code></pre>
 
 <!-- ============================================ -->
-<h2 id="faq">❓ Часто задаваемые вопросы</h2>
+<h2 id="faq">❓ Часто задаваемые вопросы (FAQ)</h2>
 <ul>
   <li><strong>Модель .obj не отображается?</strong> – установите <code>trimesh</code>, проверьте путь и масштаб. Удалите папку <code>cache/</code> для перегенерации спрайтов.</li>
   <li><strong>Повороты rotX/rotY/rotZ не работают?</strong> – используйте ключи в нижнем регистре: <code>rotx</code>, <code>roty</code>, <code>rotz</code>. После изменения параметров удалите кэш.</li>
   <li><strong>Видео не проигрывается?</strong> – установите <code>imageio-ffmpeg</code>, проверьте путь.</li>
-  <li><strong>Как сделать невидимую стену?</strong> – используйте <code>isvisible:0</code>.</li>
+  <li><strong>Как сделать невидимую стену?</strong> – используйте <code>isvisible:0</code> или ID=2 (если нужна невидимость без коллизии).</li>
   <li><strong>Почему <code>alpha</code> не работает?</strong> – альфа-канал вызывает сильные лаги, поэтому он отключён. Используйте <code>isvisible:0</code>.</li>
   <li><strong>Как сделать скример?</strong> – триггер (ID=8) + оверлей + звук.</li>
   <li><strong>Почему триггер срабатывает каждый кадр?</strong> – используйте <code>deactivate_trigger</code>.</li>
   <li><strong>Упал FPS при <code>height&lt;1</code>?</strong> – используйте <code>height</code> с осторожностью, это ресурсоёмко.</li>
+  <li><strong>Как добавить свою текстуру?</strong> – положите изображение в папку <code>textures/</code> и укажите путь в теге <code>texture</code> или используйте <code>load_image</code> для спрайтов.</li>
 </ul>
 
 <!-- ============================================ -->
