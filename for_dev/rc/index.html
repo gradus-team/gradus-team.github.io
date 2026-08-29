@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gradus RC – Полная документация для разработчиков</title>
+  <title>Gradus RC v1.0 — Полная документация</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -109,8 +109,8 @@
 <body>
 <div class="container">
 
-<h1>🧭 Gradus RC — полная документация для разработчиков</h1>
-<p style="font-size: 1.1em; color: #a8b8d0;">Версия 2.0 · Python 3.12+ · Pygame 2.6+</p>
+<h1>🧭 Gradus RC v1.0 — Полная документация для разработчиков</h1>
+<p style="font-size: 1.1em; color: #a8b8d0;">Python 3.12+ · Pygame 2.6+ · MIT License</p>
 
 <div class="toc">
   <strong>📑 Содержание:</strong><br>
@@ -154,7 +154,7 @@
 </p>
 <ul>
   <li>📐 Рейкастинг с настройкой FOV, количества лучей и коррекцией «рыбьего глаза».</li>
-  <li>🧱 Стены с материалами, текстурами, прозрачностью и кастомной высотой.</li>
+  <li>🧱 Стены с материалами, текстурами и кастомной высотой (высота может снижать FPS).</li>
   <li>🗝️ Система «ключ-дверь» (ID=7) с привязкой через <code>link</code>.</li>
   <li>🎯 Триггеры (ID=8) для событий (скримеры, активации).</li>
   <li>🌀 Порталы (ID=9) для перехода между уровнями.</li>
@@ -192,7 +192,7 @@
 
 <!-- ============================================ -->
 <h2 id="map">🗺️ Формат карты (уровня)</h2>
-<p>Карта — это многострочная строка с секциями. Все ключи регистронезависимы.</p>
+<p>Карта — это многострочная строка с секциями. Все ключи регистронезависимы (парсер приводит к нижнему регистру).</p>
 <h3>Секции</h3>
 <table>
   <tr><th>Секция</th><th>Описание</th><th>Пример</th></tr>
@@ -206,34 +206,42 @@
   <tr><td><code>[BILBOARDS=x,y,key; ...]</code></td><td>Спрайты (из папки <code>textures/</code>)</td><td><code>BILBOARDS=3.5,2.5,tree</code></td></tr>
 </table>
 <p>Клетки в <code>[COLLISION]</code> разделяются пробелами. Каждая клетка может содержать теги в угловых скобках:</p>
-<pre><code>1&lt;material:brick,height:0.9,color:FFAA00&gt;
-6&lt;path:models/cube.obj,rotY:45,scale:2.0,color:FF0000&gt;
+<pre><code>1&lt;material:brick,height:0.9,color:FFAA00,isvisible:0&gt;
+6&lt;path:models/cube.obj,roty:45,rotx:10,scale:2.0,color:FF0000,isvisible:1&gt;
 7&lt;type:door,id:door1,link:key1&gt;
 8&lt;id:1&gt;
 9&lt;level:1&gt;</code></pre>
 
 <!-- ============================================ -->
-<h2 id="ids">🧱 ID клеток</h2>
+<h2 id="ids">🧱 ID клеток (в [COLLISION])</h2>
+<div class="table-wrap">
 <table>
-  <tr><th>ID</th><th>Тип</th><th>Описание</th><th>Допустимые теги</th></tr>
+  <tr><th>ID</th><th>Тип</th><th>Описание</th><th>Допустимые теги (ключи в нижнем регистре)</th></tr>
   <tr><td><code>0</code></td><td>Пустота</td><td>Проходимо, ничего не отображается</td><td>—</td></tr>
-  <tr><td><code>1</code></td><td>Стена (бетон)</td><td>Обычная стена, материал по умолчанию concrete</td><td>material, color, height, texture, alpha, isVisible</td></tr>
-  <tr><td><code>2</code></td><td>Стекло</td><td>Материал glass, alpha=0.15</td><td>те же</td></tr>
+  <tr><td><code>1</code></td><td>Стена (бетон)</td><td>Обычная стена, материал по умолчанию concrete</td><td><code>material, color, height, texture, isvisible</code> (alpha не поддерживается)</td></tr>
+  <tr><td><code>2</code></td><td>Стена (стекло)</td><td>Визуально – стекло (прозрачность отключена для производительности). Используйте <code>isvisible:0</code> для невидимости.</td><td>те же, что у ID=1</td></tr>
   <tr><td><code>3</code></td><td>Кирпич</td><td>material=brick</td><td>те же</td></tr>
   <tr><td><code>4</code></td><td>Дерево</td><td>material=wood</td><td>те же</td></tr>
   <tr><td><code>5</code></td><td>Металл</td><td>material=metal</td><td>те же</td></tr>
-  <tr><td><code>6</code></td><td>3D-модель</td><td>Загружает .obj и рендерит в спрайты</td><td>path, rotX, rotY, rotZ, scale, color, anim, anim_speed</td></tr>
-  <tr><td><code>7</code></td><td>Дверь/Ключ</td><td>Система ключ-дверь</td><td>type, id, link, texture, height, material</td></tr>
-  <tr><td><code>8</code></td><td>Триггер</td><td>Вызывает <code>on_trigger(cell)</code></td><td>id</td></tr>
-  <tr><td><code>9</code></td><td>Портал</td><td>Переход на <code>level</code></td><td>level</td></tr>
+  <tr><td><code>6</code></td><td>3D-модель</td><td>Загружает .obj и рендерит в спрайты</td><td><code>path, rotx, roty, rotz, scale, color, anim, anim_speed, isvisible</code></td></tr>
+  <tr><td><code>7</code></td><td>Дверь/Ключ</td><td>Система ключ-дверь. Видимость спрайта управляется через <code>api.set_sprite_visible(key, visible)</code>.</td><td><code>type, id, link, texture, height, material</code></td></tr>
+  <tr><td><code>8</code></td><td>Триггер</td><td>Вызывает <code>on_trigger(cell)</code>. Всегда невидим.</td><td><code>id</code></td></tr>
+  <tr><td><code>9</code></td><td>Портал</td><td>Переход на <code>level</code>. Всегда невидим (можно сделать видимым, изменив код).</td><td><code>level</code></td></tr>
 </table>
+</div>
+<p><strong>Важно:</strong></p>
+<ul>
+  <li><code>isvisible</code> работает для ID=1–6. Для ID=7 видимость управляется через API. ID=8 и 9 всегда невидимы.</li>
+  <li><code>alpha</code> не поддерживается из-за высоких нагрузок на FPS. Используйте <code>isvisible:0</code> для скрытия.</li>
+  <li><code>height</code> работает только для стен (ID 1–5) и может снижать FPS при значениях &lt; 1.0. Используйте с осторожностью.</li>
+</ul>
 
 <!-- ============================================ -->
 <h2 id="materials">🧱 Доступные материалы (для тега <code>material</code>)</h2>
 <ul>
   <li><code>brick</code> – кирпич (красноватый)</li>
   <li><code>concrete</code> – бетон (серый)</li>
-  <li><code>glass</code> – стекло (прозрачное, alpha=0.15)</li>
+  <li><code>glass</code> – стекло (прозрачность отключена, но цвет голубоватый)</li>
   <li><code>wood</code> – дерево</li>
   <li><code>granite</code> – гранит</li>
   <li><code>earth</code> – земля</li>
@@ -254,14 +262,15 @@
 <pre><code>7&lt;type:door,id:door1,link:key1&gt;
 7&lt;type:key,id:key1,link:door1&gt;</code></pre>
 <p>Управление через MicroAPI: <code>api.open_door('door1')</code>, <code>api.close_door('door1')</code>, <code>api.collect_key('key1')</code>, <code>api.has_key('key1')</code>.</p>
+<p>Видимость спрайта двери/ключа управляется через <code>api.set_sprite_visible(sprite_key, True/False)</code>.</p>
 
 <!-- ============================================ -->
 <h2 id="triggers">🎯 Триггеры (ID=8)</h2>
-<p>При касании клетки с ID=8 вызывается метод <code>on_trigger(cell)</code>. Чтобы триггер сработал только один раз, используйте <code>self.deactivate_trigger(('id', trigger_id))</code>.</p>
+<p>При касании клетки с ID=8 вызывается метод <code>on_trigger(cell)</code>. Чтобы триггер сработал только один раз, используйте <code>self.deactivate_trigger(('id', trigger_id))</code>. Триггеры всегда невидимы.</p>
 
 <!-- ============================================ -->
 <h2 id="portals">🌀 Порталы (ID=9)</h2>
-<p>Клетка с ID=9 и тегом <code>level</code> мгновенно переносит игрока на указанный уровень (индекс в списке <code>levels</code>).</p>
+<p>Клетка с ID=9 и тегом <code>level</code> мгновенно переносит игрока на указанный уровень (индекс в списке <code>levels</code>). Порталы всегда невидимы.</p>
 <pre><code>9&lt;level:1&gt;</code></pre>
 
 <!-- ============================================ -->
@@ -269,14 +278,15 @@
 <p>Поддерживаются параметры:</p>
 <ul>
   <li><code>path</code> – путь к .obj (обязательно).</li>
-  <li><code>rotX</code>, <code>rotY</code>, <code>rotZ</code> – повороты модели в градусах. <code>rotX</code> – влево-вправо (горизонталь), <code>rotY</code> – вверх-вниз (вертикаль), <code>rotZ</code> – дополнительный.</li>
+  <li><code>rotx</code>, <code>roty</code>, <code>rotz</code> – повороты модели в градусах.</li>
   <li><code>scale</code> – масштаб (1.0 ≈ размер клетки).</li>
   <li><code>color</code> – цвет модели (HEX, например <code>FF0000</code>).</li>
   <li><code>anim</code> – список моделей для анимации (через запятую).</li>
   <li><code>anim_speed</code> – скорость смены кадров (секунд на кадр, по умолчанию 0.5).</li>
+  <li><code>isvisible</code> – 0/1 (по умолчанию 1).</li>
 </ul>
 <p>При первом запуске генерируются спрайты (64 кадра) и сохраняются в папку <code>cache/имя_модели/</code>. При изменении параметров поворота или масштаба кэш пересоздаётся (если реализована проверка хэша).</p>
-<pre><code>6&lt;path:models/cube.obj,rotY:45,scale:2.0,color:FF0000&gt;
+<pre><code>6&lt;path:models/cube.obj,roty:45,scale:2.0,color:FF0000,isvisible:1&gt;
 6&lt;path:models/box.obj,anim:models/box_open1.obj,models/box_open2.obj,anim_speed:0.3&gt;</code></pre>
 
 <!-- ============================================ -->
@@ -324,11 +334,11 @@ engine.stop_video()</code></pre>
 <h2 id="microapi">🔧 MicroAPI</h2>
 <p>Доступен через <code>engine.api</code>. Позволяет управлять объектами во время игры.</p>
 <h3>Стены и клетки</h3>
-<pre><code>api.get_cell(x, y)
-api.set_cell_property(x, y, key, value)
+<pre><code>api.get_cell(x, y)                # возвращает ячейку (словарь)
+api.set_cell_property(x, y, key, value)   # key в нижнем регистре
 api.set_cell_base_id(x, y, new_id)
-api.set_cell_visible(x, y, visible)
-api.set_cell_collision(x, y, collision)</code></pre>
+api.set_cell_visible(x, y, visible)       # isvisible
+api.set_cell_collision(x, y, collision)   # addcollision</code></pre>
 <h3>Игрок</h3>
 <pre><code>api.set_player_position(x, y)
 api.set_player_angle(angle)
@@ -352,7 +362,7 @@ api.is_door_open(door_id)
 api.collect_key(key_id)
 api.has_key(key_id)</code></pre>
 <h3>Модели (ID=6)</h3>
-<pre><code>api.get_model(model_key)
+<pre><code>api.get_model(model_key)                 # вернуть ModelSprite по ключу
 api.set_model_position(model_key, x, y)
 api.set_model_rotation_x(model_key, rot_deg)
 api.set_model_rotation_y(model_key, rot_deg)
@@ -404,7 +414,8 @@ engine.set_game_example(game)</code></pre>
   <li>Используйте кэш моделей (включен по умолчанию).</li>
   <li>Ограничьте количество билбордов и источников света.</li>
   <li>Для видео используйте <code>mode="angle"</code> или уменьшайте размер.</li>
-  <li>Выбирайте настройки графики в меню (Lite – 40 лучей, Ultra – 400).</li>
+  <li>Не используйте <code>alpha</code> – это вызывает сильные лаги.</li>
+  <li>Используйте <code>isvisible:0</code> для скрытия объектов вместо <code>alpha:0</code>.</li>
 </ul>
 
 <!-- ============================================ -->
@@ -418,7 +429,7 @@ LEVEL1 = \"\"\"
 1 1 1 1 1 1 1
 1 0 0 6&lt;path:models/man.obj,roty:150.0,scale:5.0,color:FFFFFF&gt; 1 9&lt;level:1&gt; 1
 1 0 0 0 1 7&lt;type:door,id:door1,link:key1&gt; 1
-1 0 0 0 0 0 1
+1 0 0 1&lt;isvisible:0&gt; 0 0 1
 1 0 0 7&lt;type:key,id:key1,link:door1&gt; 0 0 1
 1 1 1 1 1 1 1 1
 
@@ -432,11 +443,11 @@ LEVEL1 = \"\"\"
 LEVEL2 = \"\"\"
 [COLLISION]
 0 0 0 0 1 1 1 1 1 1 1 1 1
-0 6&lt;path:models/cube.obj,rotY:0,scale:5.0,color:FFFFFF&gt; 0 0 1 0 0 0 0 0 0 8&lt;repeatable:0,id:1&gt; 1
-0 0 0 0 1 1 1 0 1 0 1 0 1
-0 6&lt;path:models/remodel.obj,rotY:0,scale:5.0,color:FFFFFF&gt; 0 0 7&lt;type:door,id:door2,link:key2&gt; 0 1 0 1 0 1 7&lt;type:key,id:key2,link:door2&gt; 1
+0 6&lt;path:models/cube.obj,roty:0,scale:5.0,color:FFFFFF&gt; 0 0 1 0 0 0 0 0 0 8&lt;repeatable:0,id:1&gt; 1
+0 0 0 0 1 1 1 0 1 0 1 7&lt;type:key,id:key2,link:door2&gt; 1
+0 6&lt;path:models/remodel.obj,roty:0,scale:5.0,color:FFFFFF&gt; 0 0 7&lt;type:door,id:door2,link:key2&gt; 0 1 0 1 0 1 6&lt;path:models/man.obj,roty:240.0,scale:5.0,color:FFFFFF&gt; 1
 0 0 0 0 1 0 1 0 1 0 1 1 1
-0 6&lt;path:models/model.obj,rotY:0,scale:5.0,color:FFFFFF&gt; 0 0 1 0 0 0 1 0 0 0 1
+0 6&lt;path:models/model.obj,roty:0,scale:5.0,color:FFFFFF&gt; 0 0 1 0 0 0 1 0 0 0 1
 0 0 0 0 1 1 1 1 1 1 1 1 1
 
 [FLOOR_COLOR=999999]
@@ -520,12 +531,13 @@ if __name__ == "__main__":
 <h2 id="faq">❓ Часто задаваемые вопросы</h2>
 <ul>
   <li><strong>Модель .obj не отображается?</strong> – установите <code>trimesh</code>, проверьте путь и масштаб. Удалите папку <code>cache/</code> для перегенерации спрайтов.</li>
-  <li><strong>Повороты rotX/rotY/rotZ не работают?</strong> – убедитесь, что вы используете правильные имена <code>rotx</code>, <code>roty</code>, <code>rotz</code> в карте (регистр не важен, но парсер приводит к нижнему регистру). После изменения параметров удалите кэш.</li>
+  <li><strong>Повороты rotX/rotY/rotZ не работают?</strong> – используйте ключи в нижнем регистре: <code>rotx</code>, <code>roty</code>, <code>rotz</code>. После изменения параметров удалите кэш.</li>
   <li><strong>Видео не проигрывается?</strong> – установите <code>imageio-ffmpeg</code>, проверьте путь.</li>
-  <li><strong>Как сменить цвет пола?</strong> – через <code>[FLOOR_COLOR]</code>.</li>
+  <li><strong>Как сделать невидимую стену?</strong> – используйте <code>isvisible:0</code>.</li>
+  <li><strong>Почему <code>alpha</code> не работает?</strong> – альфа-канал вызывает сильные лаги, поэтому он отключён. Используйте <code>isvisible:0</code>.</li>
   <li><strong>Как сделать скример?</strong> – триггер (ID=8) + оверлей + звук.</li>
   <li><strong>Почему триггер срабатывает каждый кадр?</strong> – используйте <code>deactivate_trigger</code>.</li>
-  <li><strong>Упал FPS?</strong> – уменьшите <code>rays</code>, отключите ненужные источники света.</li>
+  <li><strong>Упал FPS при <code>height&lt;1</code>?</strong> – используйте <code>height</code> с осторожностью, это ресурсоёмко.</li>
 </ul>
 
 <!-- ============================================ -->
@@ -537,8 +549,8 @@ if __name__ == "__main__":
 </div>
 
 <div class="footer">
-  Gradus RC v1.0 · Документация для разработчиков · 🚀
-  📄 Лицензияя: MIT. Используйте в любых проектах.
+  Gradus RC v1.0 · Документация для разработчиков · 🚀<br>
+  Лицензия MIT · Свободно для любых проектов
 </div>
 
 </div>
