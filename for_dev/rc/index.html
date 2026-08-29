@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gradus RC – Полная документация для разработчиков</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: #0b0e14;
+      color: #e0e4ee;
+      padding: 30px 20px;
+      line-height: 1.7;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: #141a24;
+      padding: 40px 50px;
+      border-radius: 24px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+    }
+    h1, h2, h3 { color: #8ab4f8; font-weight: 400; margin-top: 1.8em; }
+    h1 { font-size: 2.8em; border-bottom: 2px solid #2a3a4e; padding-bottom: 16px; margin-top: 0; }
+    h2 { font-size: 2em; border-left: 4px solid #8ab4f8; padding-left: 18px; }
+    h3 { font-size: 1.4em; color: #b6c8e0; }
+    p { margin: 0.8em 0; }
+    a { color: #8ab4f8; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    ul, ol { padding-left: 26px; margin: 12px 0; }
+    li { margin: 6px 0; }
+    code {
+      background: #202a36;
+      padding: 2px 10px;
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9em;
+      color: #e6dbb5;
+    }
+    pre {
+      background: #0f1722;
+      padding: 18px 24px;
+      border-radius: 14px;
+      overflow-x: auto;
+      border: 1px solid #2a3a4e;
+      font-size: 0.9em;
+      line-height: 1.6;
+    }
+    pre code { background: transparent; padding: 0; color: #d4dcec; }
+    .badge {
+      display: inline-block;
+      background: #2a4a6a;
+      color: #b6d4f0;
+      padding: 2px 14px;
+      border-radius: 20px;
+      font-size: 0.8em;
+      margin-right: 6px;
+    }
+    .table-wrap { overflow-x: auto; margin: 20px 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #0f1722;
+      border-radius: 12px;
+    }
+    th, td {
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid #1e2a3a;
+    }
+    th { background: #1a2634; color: #8ab4f8; font-weight: 500; }
+    tr:hover { background: #1a2634; }
+    .note {
+      background: #1e2a3a;
+      border-left: 4px solid #f0b37a;
+      padding: 14px 20px;
+      border-radius: 10px;
+      margin: 16px 0;
+    }
+    .note strong { color: #f0b37a; }
+    .footer {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid #2a3a4e;
+      font-size: 0.95em;
+      color: #7a8aa0;
+      text-align: center;
+    }
+    .toc {
+      background: #0f1722;
+      padding: 20px 24px;
+      border-radius: 16px;
+      margin: 20px 0;
+      border: 1px solid #2a3a4e;
+    }
+    .toc a { display: inline-block; margin: 4px 12px 4px 0; }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin: 16px 0;
+    }
+    @media (max-width: 700px) { .grid-2 { grid-template-columns: 1fr; } }
+    .contact { margin-top: 30px; background: #1a2634; padding: 20px; border-radius: 16px; text-align: center; }
+    .contact a { font-size: 1.2em; }
+  </style>
+</head>
+<body>
+<div class="container">
+
+<h1>🧭 Gradus RC — полная документация для разработчиков</h1>
+<p style="font-size: 1.1em; color: #a8b8d0;">Версия 2.0 · Python 3.12+ · Pygame 2.6+</p>
+
+<div class="toc">
+  <strong>📑 Содержание:</strong><br>
+  <a href="#intro">Введение</a> ·
+  <a href="#install">Установка</a> ·
+  <a href="#arch">Архитектура</a> ·
+  <a href="#map">Карта</a> ·
+  <a href="#ids">ID клеток</a> ·
+  <a href="#materials">Материалы</a> ·
+  <a href="#doors">Двери и ключи</a> ·
+  <a href="#triggers">Триггеры</a> ·
+  <a href="#portals">Порталы</a> ·
+  <a href="#models">3D-модели</a> ·
+  <a href="#animations">Анимации .obj</a> ·
+  <a href="#lighting">Освещение</a> ·
+  <a href="#sprites">Билборды</a> ·
+  <a href="#video">Видео-оверлей</a> ·
+  <a href="#mouse">Управление мышью</a> ·
+  <a href="#microapi">MicroAPI</a> ·
+  <a href="#events">События</a> ·
+  <a href="#sound">Звук</a> ·
+  <a href="#overlay">Оверлеи</a> ·
+  <a href="#examples">Заготовки</a> ·
+  <a href="#loading">Экран загрузки</a> ·
+  <a href="#optimization">Оптимизация</a> ·
+  <a href="#full-example">Полный пример</a> ·
+  <a href="#faq">FAQ</a> ·
+  <a href="#contact">Контакты</a>
+</div>
+
+<!-- ============================================ -->
+<h2 id="intro">📖 Введение</h2>
+<p>
+  <strong>Gradus RC</strong> — это библиотека для создания псевдо-3D игр с рейкастингом на Python с использованием Pygame.
+  Она предоставляет гибкий API для создания уровней, управления стенами, дверями, ключами, триггерами, порталами,
+  источниками света, билбордами (спрайтами) и 3D-моделями (формат .obj, конвертируемыми в спрайты).
+  Движок не содержит игрового цикла — вы пишете свой <code>main.py</code>, импортируете нужные модули и собираете игру.
+</p>
+<p>
+  <strong>Ключевые возможности:</strong>
+</p>
+<ul>
+  <li>📐 Рейкастинг с настройкой FOV, количества лучей и коррекцией «рыбьего глаза».</li>
+  <li>🧱 Стены с материалами, текстурами, прозрачностью и кастомной высотой.</li>
+  <li>🗝️ Система «ключ-дверь» (ID=7) с привязкой через <code>link</code>.</li>
+  <li>🎯 Триггеры (ID=8) для событий (скримеры, активации).</li>
+  <li>🌀 Порталы (ID=9) для перехода между уровнями.</li>
+  <li>📦 Загрузка 3D-моделей (.obj) с автоматической генерацией спрайтов (кэширование).</li>
+  <li>🔄 Анимация .obj через последовательную смену моделей.</li>
+  <li>💡 Освещение: ambient, статические источники, фонарик игрока.</li>
+  <li>🖼️ Билборды (спрайты) с управлением видимостью и позицией.</li>
+  <li>🎵 Звук и видео-оверлей (с хромакеем).</li>
+  <li>🔧 MicroAPI для тонкого управления объектами.</li>
+  <li>🧩 Наследование <code>Engine</code> для переопределения событий.</li>
+</ul>
+
+<!-- ============================================ -->
+<h2 id="install">📦 Установка</h2>
+<pre><code>pip install pygame trimesh numpy imageio imageio-ffmpeg</code></pre>
+<p>
+  Обязательные зависимости: <code>pygame</code>.<br>
+  Для 3D-моделей: <code>trimesh</code> и <code>numpy</code>.<br>
+  Для видео: <code>imageio</code> и <code>imageio-ffmpeg</code>.
+</p>
+<p>Скопируйте папку <code>gradus_rc/</code> в корень вашего проекта.</p>
+
+<!-- ============================================ -->
+<h2 id="arch">🧩 Архитектура</h2>
+<p>Основные классы движка:</p>
+<ul>
+  <li><code>Engine</code> – главный класс, связывает все подсистемы.</li>
+  <li><code>Player</code> – игрок (позиция, угол, скорость).</li>
+  <li><code>RayCaster</code> – выполняет рейкастинг и возвращает глубину и объекты.</li>
+  <li><code>LightTracer</code> – управляет освещением (источники, фонарик).</li>
+  <li><code>SpriteManager</code> – управляет билбордами и моделями-спрайтами.</li>
+  <li><code>SoundManager</code> – загрузка и воспроизведение звуков.</li>
+  <li><code>MicroAPI</code> – тонкое управление стенами, игроком, светом, спрайтами, моделями.</li>
+</ul>
+
+<!-- ============================================ -->
+<h2 id="map">🗺️ Формат карты (уровня)</h2>
+<p>Карта — это многострочная строка с секциями. Все ключи регистронезависимы.</p>
+<h3>Секции</h3>
+<table>
+  <tr><th>Секция</th><th>Описание</th><th>Пример</th></tr>
+  <tr><td><code>[COLLISION]</code></td><td>Основная карта (стены, проходимость)</td><td><code>1 1 1<br>1 0 1</code></td></tr>
+  <tr><td><code>[FLOOR_COLOR=RRGGBB]</code></td><td>Цвет пола (HEX без #)</td><td><code>FLOOR_COLOR=444444</code></td></tr>
+  <tr><td><code>[CEILING_COLOR=RRGGBB]</code></td><td>Цвет потолка</td><td><code>CEILING_COLOR=888888</code></td></tr>
+  <tr><td><code>[SPAWN=x,y]</code></td><td>Координата спавна игрока (в клетках)</td><td><code>SPAWN=0.5,0.5</code></td></tr>
+  <tr><td><code>[AMBIENT=0.0..1.0]</code></td><td>Базовая освещённость</td><td><code>AMBIENT=0.03</code></td></tr>
+  <tr><td><code>[USE_LT=0/1]</code></td><td>Применять освещение к полу/потолку</td><td><code>USE_LT=1</code></td></tr>
+  <tr><td><code>[LIGHTS=x,y,intensity,radius; ...]</code></td><td>Статические источники света</td><td><code>LIGHTS=2.5,2.5,0.4,200</code></td></tr>
+  <tr><td><code>[BILBOARDS=x,y,key; ...]</code></td><td>Спрайты (из папки <code>textures/</code>)</td><td><code>BILBOARDS=3.5,2.5,tree</code></td></tr>
+</table>
+<p>Клетки в <code>[COLLISION]</code> разделяются пробелами. Каждая клетка может содержать теги в угловых скобках:</p>
+<pre><code>1&lt;material:brick,height:0.9,color:FFAA00&gt;
+6&lt;path:models/cube.obj,rotY:45,scale:2.0,color:FF0000&gt;
+7&lt;type:door,id:door1,link:key1&gt;
+8&lt;id:1&gt;
+9&lt;level:1&gt;</code></pre>
+
+<!-- ============================================ -->
+<h2 id="ids">🧱 ID клеток</h2>
+<table>
+  <tr><th>ID</th><th>Тип</th><th>Описание</th><th>Допустимые теги</th></tr>
+  <tr><td><code>0</code></td><td>Пустота</td><td>Проходимо, ничего не отображается</td><td>—</td></tr>
+  <tr><td><code>1</code></td><td>Стена (бетон)</td><td>Обычная стена, материал по умолчанию concrete</td><td>material, color, height, texture, alpha, isVisible</td></tr>
+  <tr><td><code>2</code></td><td>Стекло</td><td>Материал glass, alpha=0.15</td><td>те же</td></tr>
+  <tr><td><code>3</code></td><td>Кирпич</td><td>material=brick</td><td>те же</td></tr>
+  <tr><td><code>4</code></td><td>Дерево</td><td>material=wood</td><td>те же</td></tr>
+  <tr><td><code>5</code></td><td>Металл</td><td>material=metal</td><td>те же</td></tr>
+  <tr><td><code>6</code></td><td>3D-модель</td><td>Загружает .obj и рендерит в спрайты</td><td>path, rotX, rotY, rotZ, scale, color, anim, anim_speed</td></tr>
+  <tr><td><code>7</code></td><td>Дверь/Ключ</td><td>Система ключ-дверь</td><td>type, id, link, texture, height, material</td></tr>
+  <tr><td><code>8</code></td><td>Триггер</td><td>Вызывает <code>on_trigger(cell)</code></td><td>id</td></tr>
+  <tr><td><code>9</code></td><td>Портал</td><td>Переход на <code>level</code></td><td>level</td></tr>
+</table>
+
+<!-- ============================================ -->
+<h2 id="materials">🧱 Доступные материалы (для тега <code>material</code>)</h2>
+<ul>
+  <li><code>brick</code> – кирпич (красноватый)</li>
+  <li><code>concrete</code> – бетон (серый)</li>
+  <li><code>glass</code> – стекло (прозрачное, alpha=0.15)</li>
+  <li><code>wood</code> – дерево</li>
+  <li><code>granite</code> – гранит</li>
+  <li><code>earth</code> – земля</li>
+  <li><code>metal</code> – металл</li>
+  <li><code>plaster</code> – штукатурка</li>
+  <li><code>marble</code> – мрамор</li>
+  <li><code>obsidian</code> – обсидиан</li>
+  <li><code>gold</code>, <code>silver</code>, <code>copper</code></li>
+  <li><code>sand</code>, <code>snow</code>, <code>water</code>, <code>lava</code></li>
+</ul>
+
+<!-- ============================================ -->
+<h2 id="doors">🗝️ Двери и ключи (ID=7)</h2>
+<p>Клетка с ID=7 может быть либо <strong>дверью</strong> (<code>type:door</code>), либо <strong>ключом</strong> (<code>type:key</code>).</p>
+<p><strong>Дверь</strong> – непроходима, пока не открыта ключом. Визуально — спрайт двери (по умолчанию <code>door.png</code>).</p>
+<p><strong>Ключ</strong> – проходимый спрайт (по умолчанию <code>key.png</code>). При подборе автоматически открывает связанную дверь.</p>
+<p><strong>Связь:</strong> через тег <code>link</code> (указывается id двери у ключа и наоборот).</p>
+<pre><code>7&lt;type:door,id:door1,link:key1&gt;
+7&lt;type:key,id:key1,link:door1&gt;</code></pre>
+<p>Управление через MicroAPI: <code>api.open_door('door1')</code>, <code>api.close_door('door1')</code>, <code>api.collect_key('key1')</code>, <code>api.has_key('key1')</code>.</p>
+
+<!-- ============================================ -->
+<h2 id="triggers">🎯 Триггеры (ID=8)</h2>
+<p>При касании клетки с ID=8 вызывается метод <code>on_trigger(cell)</code>. Чтобы триггер сработал только один раз, используйте <code>self.deactivate_trigger(('id', trigger_id))</code>.</p>
+
+<!-- ============================================ -->
+<h2 id="portals">🌀 Порталы (ID=9)</h2>
+<p>Клетка с ID=9 и тегом <code>level</code> мгновенно переносит игрока на указанный уровень (индекс в списке <code>levels</code>).</p>
+<pre><code>9&lt;level:1&gt;</code></pre>
+
+<!-- ============================================ -->
+<h2 id="models">📦 3D-модели (ID=6)</h2>
+<p>Поддерживаются параметры:</p>
+<ul>
+  <li><code>path</code> – путь к .obj (обязательно).</li>
+  <li><code>rotX</code>, <code>rotY</code>, <code>rotZ</code> – повороты модели в градусах. <code>rotX</code> – влево-вправо (горизонталь), <code>rotY</code> – вверх-вниз (вертикаль), <code>rotZ</code> – дополнительный.</li>
+  <li><code>scale</code> – масштаб (1.0 ≈ размер клетки).</li>
+  <li><code>color</code> – цвет модели (HEX, например <code>FF0000</code>).</li>
+  <li><code>anim</code> – список моделей для анимации (через запятую).</li>
+  <li><code>anim_speed</code> – скорость смены кадров (секунд на кадр, по умолчанию 0.5).</li>
+</ul>
+<p>При первом запуске генерируются спрайты (64 кадра) и сохраняются в папку <code>cache/имя_модели/</code>. При изменении параметров поворота или масштаба кэш пересоздаётся (если реализована проверка хэша).</p>
+<pre><code>6&lt;path:models/cube.obj,rotY:45,scale:2.0,color:FF0000&gt;
+6&lt;path:models/box.obj,anim:models/box_open1.obj,models/box_open2.obj,anim_speed:0.3&gt;</code></pre>
+
+<!-- ============================================ -->
+<h2 id="animations">🔄 Анимация .obj</h2>
+<p>При указании <code>anim</code> генерируются спрайты для каждой модели в списке, и они последовательно сменяются с заданной скоростью.</p>
+
+<!-- ============================================ -->
+<h2 id="lighting">💡 Освещение</h2>
+<ul>
+  <li><code>[AMBIENT]</code> – базовая яркость (0..1).</li>
+  <li><code>[LIGHTS]</code> – статические источники (x,y,intensity,radius).</li>
+  <li>Фонарик игрока управляется через <code>engine.light_tracer.update_player_light(...)</code> или через <code>api.set_player_light(radius, intensity, color)</code>.</li>
+</ul>
+<p>Пример добавления источника через код:</p>
+<pre><code>from gradus_rc import LightSource
+engine.light_tracer.add_source(LightSource(300, 300, 250, 0.6, (255,200,100)))</code></pre>
+
+<!-- ============================================ -->
+<h2 id="sprites">🖼️ Билборды (спрайты)</h2>
+<p>Спрайты всегда повёрнуты к игроку. Создаются через класс <code>Sprite</code> и добавляются в <code>engine</code>.</p>
+<pre><code>tex = load_image('tree', 'textures/tree.png', size=(64,64))
+sprite = Sprite(x=200, y=300, texture=tex, key='tree')
+engine.add_sprite(sprite)
+engine.set_sprite_visible('tree', False)
+engine.set_sprite_position('tree', 100, 200)</code></pre>
+
+<!-- ============================================ -->
+<h2 id="video">🎬 Видео-оверлей</h2>
+<p>Воспроизведение видео на экране с помощью <code>engine.play_video()</code>.</p>
+<pre><code># Полноэкранное с циклом
+engine.play_video('intro.mp4', mode="full", loop=True)
+# В углу (25% экрана)
+engine.play_video('intro.mp4', mode="angle")
+# Произвольный размер и позиция
+engine.play_video('intro.mp4', mode="custom", x=100, y=100, width=400, height=300)
+# С удалением цветового ключа (хромакей) для прозрачности
+engine.play_video('intro.mp4', mode="full", alpha_chroma=True, chroma_color=(0,255,0))
+engine.stop_video()</code></pre>
+
+<!-- ============================================ -->
+<h2 id="mouse">🖱️ Управление мышью</h2>
+<p>Передайте <code>mouse_sensitivity</code> в конструктор <code>Engine</code> и вызывайте <code>engine.handle_mouse(event)</code> в цикле событий. Захват курсора – правая кнопка мыши.</p>
+
+<!-- ============================================ -->
+<h2 id="microapi">🔧 MicroAPI</h2>
+<p>Доступен через <code>engine.api</code>. Позволяет управлять объектами во время игры.</p>
+<h3>Стены и клетки</h3>
+<pre><code>api.get_cell(x, y)
+api.set_cell_property(x, y, key, value)
+api.set_cell_base_id(x, y, new_id)
+api.set_cell_visible(x, y, visible)
+api.set_cell_collision(x, y, collision)</code></pre>
+<h3>Игрок</h3>
+<pre><code>api.set_player_position(x, y)
+api.set_player_angle(angle)
+api.set_player_speed(speed)
+api.set_player_rot_speed(rot_speed)</code></pre>
+<h3>Свет</h3>
+<pre><code>api.get_light_sources()
+api.add_light(x, y, radius, intensity, color)
+api.remove_light(index)
+api.set_ambient(value)
+api.set_player_light(radius, intensity, color)</code></pre>
+<h3>Спрайты</h3>
+<pre><code>api.get_sprites()
+api.set_sprite_position(key, x, y)
+api.set_sprite_visible(key, visible)
+api.remove_sprite(key)</code></pre>
+<h3>Двери и ключи</h3>
+<pre><code>api.open_door(door_id)
+api.close_door(door_id)
+api.is_door_open(door_id)
+api.collect_key(key_id)
+api.has_key(key_id)</code></pre>
+<h3>Модели (ID=6)</h3>
+<pre><code>api.get_model(model_key)
+api.set_model_position(model_key, x, y)
+api.set_model_rotation_x(model_key, rot_deg)
+api.set_model_rotation_y(model_key, rot_deg)
+api.set_model_rotation_z(model_key, rot_deg)
+api.set_model_visible(model_key, visible)</code></pre>
+
+<!-- ============================================ -->
+<h2 id="events">🧩 События (переопределение)</h2>
+<pre><code>class MyEngine(Engine):
+    def on_trigger(self, cell):
+        # клетка с ID=8
+        pass
+    def on_key_pickup(self, key_id):
+        # ключ подобран
+        pass
+    def on_door_blocked(self, cell):
+        # попытка пройти в закрытую дверь
+        self.show_message("Нужен ключ!", 2.0)</code></pre>
+
+<!-- ============================================ -->
+<h2 id="sound">🔊 Звук</h2>
+<pre><code>engine.sound_manager.load_all({'scream':'sounds/scream.wav'})
+engine.play_sound('scream')
+engine.sound_manager.stop_sound('scream')</code></pre>
+
+<!-- ============================================ -->
+<h2 id="overlay">🖼️ Оверлеи и сообщения</h2>
+<pre><code>engine.set_overlay('scary.png', alpha=200)
+engine.clear_overlay()
+engine.show_message("Привет!", 2.0)</code></pre>
+
+<!-- ============================================ -->
+<h2 id="examples">🎮 Заготовки (examples)</h2>
+<p>В папке <code>gradus_rc/examples/</code> есть готовые модули <code>menu.py</code> и <code>game.py</code> для быстрого старта.</p>
+<pre><code>from gradus_rc.examples import MenuExample, GameExample
+menu = MenuExample(engine, background_image='menu_bg.jpg')
+engine.start_with_menu(menu)
+game = GameExample(engine, levels=LEVELS)
+engine.set_game_example(game)</code></pre>
+
+<!-- ============================================ -->
+<h2 id="loading">⏳ Экран загрузки</h2>
+<p>При старте движок показывает водяной знак (из <code>material/images/watermark.png</code>) и прогресс кэширования моделей. Вызов <code>engine.prepare_models(screen)</code> автоматически показывает загрузку и держит экран минимум 3 секунды.</p>
+
+<!-- ============================================ -->
+<h2 id="optimization">⚡ Оптимизация</h2>
+<ul>
+  <li>Уменьшите <code>rays</code> до 80–120 для слабых устройств.</li>
+  <li>Используйте кэш моделей (включен по умолчанию).</li>
+  <li>Ограничьте количество билбордов и источников света.</li>
+  <li>Для видео используйте <code>mode="angle"</code> или уменьшайте размер.</li>
+  <li>Выбирайте настройки графики в меню (Lite – 40 лучей, Ultra – 400).</li>
+</ul>
+
+<!-- ============================================ -->
+<h2 id="full-example">🎮 Полный пример игры</h2>
+<p>Ниже приведён комплексный <code>main.py</code> с двумя уровнями, дверями, ключами, триггерами, 3D-моделью человека, спрайтами и скримером.</p>
+<pre><code>import pygame
+from gradus_rc import Engine, LightSource, Sprite, load_image
+
+LEVEL1 = \"\"\"
+[COLLISION]
+1 1 1 1 1 1 1
+1 0 0 6&lt;path:models/man.obj,roty:150.0,scale:5.0,color:FFFFFF&gt; 1 9&lt;level:1&gt; 1
+1 0 0 0 1 7&lt;type:door,id:door1,link:key1&gt; 1
+1 0 0 0 0 0 1
+1 0 0 7&lt;type:key,id:key1,link:door1&gt; 0 0 1
+1 1 1 1 1 1 1 1
+
+[FLOOR_COLOR=999999]
+[CEILING_COLOR=441199]
+[SPAWN=0.5,0.5]
+[AMBIENT=0.03]
+[LIGHTS=2.5,2.5,0.4,200;4.5,3.5,0.6,220]
+\"\"\"
+
+LEVEL2 = \"\"\"
+[COLLISION]
+0 0 0 0 1 1 1 1 1 1 1 1 1
+0 6&lt;path:models/cube.obj,rotY:0,scale:5.0,color:FFFFFF&gt; 0 0 1 0 0 0 0 0 0 8&lt;repeatable:0,id:1&gt; 1
+0 0 0 0 1 1 1 0 1 0 1 0 1
+0 6&lt;path:models/remodel.obj,rotY:0,scale:5.0,color:FFFFFF&gt; 0 0 7&lt;type:door,id:door2,link:key2&gt; 0 1 0 1 0 1 7&lt;type:key,id:key2,link:door2&gt; 1
+0 0 0 0 1 0 1 0 1 0 1 1 1
+0 6&lt;path:models/model.obj,rotY:0,scale:5.0,color:FFFFFF&gt; 0 0 1 0 0 0 1 0 0 0 1
+0 0 0 0 1 1 1 1 1 1 1 1 1
+
+[FLOOR_COLOR=999999]
+[CEILING_COLOR=FF00FF]
+[SPAWN=5.0,0.5]
+[BILBOARDS=3.5,2.5,tree; 5.5,3.5,tree]
+[AMBIENT=0.05]
+[LIGHTS=5.5,3,1.0,400]
+\"\"\"
+
+class MyEngine(Engine):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.sound_manager.load_all({'scream': 'scream.wav'})
+        self.CLEAR_EVENT = pygame.USEREVENT + 10
+
+    def on_trigger(self, cell):
+        trigger_id = cell.get('properties', {}).get('id', 0)
+        if trigger_id == 1:
+            self.deactivate_trigger(('id', trigger_id))
+            self.set_overlay('scary_face.jfif', 200)
+            self.play_sound('scream')
+            pygame.time.set_timer(self.CLEAR_EVENT, 1000)
+
+    def handle_event(self, event):
+        if event.type == self.CLEAR_EVENT:
+            self.clear_overlay()
+            self.sound_manager.stop_sound('scream')
+            pygame.time.set_timer(self.CLEAR_EVENT, 0)
+
+def main():
+    pygame.init()
+    WIDTH, HEIGHT = 800, 600
+    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    pygame.display.set_caption("Gradus RC Final")
+    clock = pygame.time.Clock()
+
+    engine = MyEngine(
+        levels=[LEVEL1, LEVEL2],
+        current_level=0,
+        width=WIDTH,
+        height=HEIGHT,
+        fov=60,
+        rays=100,
+        tile_size=64,
+        max_depth=1000,
+        proj_coeff=20000,
+        player_speed=48.0,
+        player_rot_speed=3.0,
+        mouse_sensitivity=0.002
+    )
+
+    # Показываем загрузку и кэшируем модели
+    engine.prepare_models(screen)
+
+    # Добавляем спрайт дерева
+    tree_texture = load_image('tree', 'textures/tree.png', size=(64,64), default_color=(0,255,0))
+    tree = Sprite(x=3.5*64, y=2.5*64, texture=tree_texture)
+    engine.add_sprite(tree)
+
+    running = True
+    while running:
+        dt = clock.tick(60) / 1000.0
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            engine.handle_event(event)
+            engine.handle_mouse(event)
+
+        keys = pygame.key.get_pressed()
+        engine.update(dt, keys)
+        engine.render(screen)
+        pygame.display.flip()
+
+    pygame.quit()
+
+if __name__ == "__main__":
+    main()</code></pre>
+
+<!-- ============================================ -->
+<h2 id="faq">❓ Часто задаваемые вопросы</h2>
+<ul>
+  <li><strong>Модель .obj не отображается?</strong> – установите <code>trimesh</code>, проверьте путь и масштаб. Удалите папку <code>cache/</code> для перегенерации спрайтов.</li>
+  <li><strong>Повороты rotX/rotY/rotZ не работают?</strong> – убедитесь, что вы используете правильные имена <code>rotx</code>, <code>roty</code>, <code>rotz</code> в карте (регистр не важен, но парсер приводит к нижнему регистру). После изменения параметров удалите кэш.</li>
+  <li><strong>Видео не проигрывается?</strong> – установите <code>imageio-ffmpeg</code>, проверьте путь.</li>
+  <li><strong>Как сменить цвет пола?</strong> – через <code>[FLOOR_COLOR]</code>.</li>
+  <li><strong>Как сделать скример?</strong> – триггер (ID=8) + оверлей + звук.</li>
+  <li><strong>Почему триггер срабатывает каждый кадр?</strong> – используйте <code>deactivate_trigger</code>.</li>
+  <li><strong>Упал FPS?</strong> – уменьшите <code>rays</code>, отключите ненужные источники света.</li>
+</ul>
+
+<!-- ============================================ -->
+<h2 id="contact">📬 Контакты</h2>
+<div class="contact">
+  <p>По вопросам, багам и предложениям пишите на:</p>
+  <p><a href="mailto:gradus.support@gmail.com">gradus.support@gmail.com</a></p>
+  <p style="font-size: 0.9em; color: #7a8aa0;">Мы стараемся отвечать в течение 24 часов.</p>
+</div>
+
+<div class="footer">
+  Gradus RC v1.0 · Документация для разработчиков · 🚀
+  📄 Лицензияя: MIT. Используйте в любых проектах.
+</div>
+
+</div>
+</body>
+</html>
