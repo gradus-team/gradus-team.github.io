@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gradus RC v1.0 — Полная документация</title>
+  <title>Gradus RC v1.1 — Полная документация</title>
   <style>
     * {
         box-sizing: border-box;
@@ -18,7 +18,7 @@
         color: #e0e4ee;
         padding: 30px 20px;
         line-height: 1.7;
-        overflow-x: hidden; /* убираем горизонтальную прокрутку */
+        overflow-x: hidden;
     }
     .container {
         max-width: 1200px;
@@ -83,7 +83,7 @@
         border: 1px solid #2a3a4e;
         font-size: 0.9em;
         line-height: 1.6;
-        white-space: pre-wrap;       /* перенос строк */
+        white-space: pre-wrap;
         word-wrap: break-word;
     }
     pre code {
@@ -103,14 +103,14 @@
     .table-wrap {
         overflow-x: auto;
         margin: 20px 0;
-        -webkit-overflow-scrolling: touch; /* плавная прокрутка на iOS */
+        -webkit-overflow-scrolling: touch;
     }
     table {
         width: 100%;
         border-collapse: collapse;
         background: #0f1722;
         border-radius: 12px;
-        min-width: 600px; /* чтобы таблица не сжималась слишком сильно */
+        min-width: 600px;
     }
     th, td {
         padding: 12px 16px;
@@ -170,63 +170,44 @@
     .contact a {
         font-size: 1.2em;
     }
-
-    /* ---------- Адаптивность ---------- */
     @media (max-width: 900px) {
-        .container {
-            padding: 30px 25px;
-            border-radius: 16px;
-        }
+        .container { padding: 30px 25px; border-radius: 16px; }
         h1 { font-size: 2.2em; }
         h2 { font-size: 1.6em; }
         h3 { font-size: 1.2em; }
         pre { padding: 14px 16px; font-size: 0.85em; }
     }
-
     @media (max-width: 700px) {
-        body {
-            padding: 10px;
-        }
-        .container {
-            padding: 20px 15px;
-            border-radius: 12px;
-        }
+        body { padding: 10px; }
+        .container { padding: 20px 15px; border-radius: 12px; }
         h1 { font-size: 1.8em; }
         h2 { font-size: 1.4em; padding-left: 12px; }
         h3 { font-size: 1.1em; }
         p, li { font-size: 0.95em; }
         pre { font-size: 0.8em; }
-        .toc a {
-            display: block;
-            margin: 6px 0;
-        }
-        .grid-2 {
-            grid-template-columns: 1fr;
-        }
-        table {
-            min-width: 500px; /* можно оставить горизонтальную прокрутку */
-        }
-        th, td {
-            padding: 8px 10px;
-            font-size: 0.85em;
-        }
+        .toc a { display: block; margin: 6px 0; }
+        .grid-2 { grid-template-columns: 1fr; }
+        table { min-width: 500px; }
+        th, td { padding: 8px 10px; font-size: 0.85em; }
     }
-
     @media (max-width: 400px) {
-        .container {
-            padding: 15px 10px;
-        }
+        .container { padding: 15px 10px; }
         h1 { font-size: 1.5em; }
         h2 { font-size: 1.2em; }
         pre { padding: 10px 12px; }
     }
-</style>
+  </style>
 </head>
 <body>
 <div class="container">
 
-<h1>🧭 Gradus RC v1.0 — Полная документация для разработчиков</h1>
+<h1>🧭 Gradus RC v1.1 — Полная документация для разработчиков</h1>
 <p style="font-size: 1.1em; color: #a8b8d0;">Python 3.12+ · Pygame 2.6+ · MIT License</p>
+
+<div class="note" style="border-color: #8ab4f8;">
+  <strong>⚡ Оптимизация в 30.5 раз!</strong><br>
+  В версии 1.1 движок был радикально ускорен. Если раньше 400 лучей давали лишь 2 FPS, то теперь даже 800 лучей идут плавно (визуально ~40 FPS при реальных 20). Достигнуто благодаря кэшированию текстурных столбцов, предрасчёту углов, асинхронному рейкастингу и масштабированию рендера. Подробнее в разделе <a href="#optimization">Оптимизация</a>.
+</div>
 
 <div class="toc">
   <strong>📑 Содержание:</strong><br>
@@ -240,6 +221,7 @@
   <a href="#triggers">Триггеры</a> ·
   <a href="#portals">Порталы</a> ·
   <a href="#models">3D-модели</a> ·
+  <a href="#gbj">Формат .gbj</a> ·
   <a href="#animations">Анимации .obj</a> ·
   <a href="#lighting">Освещение</a> ·
   <a href="#sprites">Билборды</a> ·
@@ -247,7 +229,7 @@
   <a href="#mouse">Управление мышью</a> ·
   <a href="#microapi">MicroAPI</a> ·
   <a href="#events">События</a> ·
-  <a href="#sound">Звук</a> ·
+  <a href="#sound">Звук и Sound3D</a> ·
   <a href="#overlay">Оверлеи</a> ·
   <a href="#effects">Эффекты (EffectsManager)</a> ·
   <a href="#examples">Заготовки (Menu/Game)</a> ·
@@ -262,8 +244,8 @@
 <h2 id="intro">📖 Введение</h2>
 <p>
   <strong>Gradus RC</strong> — это библиотека для создания псевдо-3D игр с рейкастингом на Python + Pygame.
-  Она даёт вам полный контроль над уровнями, стенами, дверями, ключами, триггерами, порталами, светом,
-  спрайтами, 3D-моделями и звуком. Движок не навязывает игровой цикл — вы пишете свой <code>main.py</code>.
+  Версия 1.1 включает значительные оптимизации, объёмный звук, улучшенный конвертер OBJ, поддержку цветных граней через .gbj,
+  а также готовые заготовки меню и игры.
 </p>
 
 <!-- ============================================ -->
@@ -277,10 +259,11 @@
 <ul>
   <li><code>Engine</code> – главный класс. Создаётся один раз.</li>
   <li><code>Player</code> – положение, угол поворота, скорость.</li>
-  <li><code>RayCaster</code> – выполняет рейкастинг.</li>
-  <li><code>LightTracer</code> – управляет освещением.</li>
+  <li><code>RayCaster</code> – выполняет рейкастинг (оптимизирован: предрасчёт углов, асинхронный режим).</li>
+  <li><code>LightTracer</code> – управляет освещением (ускорен расчёт).</li>
   <li><code>SpriteManager</code> – хранит и рисует билборды и модели-спрайты.</li>
   <li><code>SoundManager</code> – загружает и воспроизводит звуки.</li>
+  <li><code>Sound3D</code> – объёмный звук с позиционированием.</li>
   <li><code>EffectsManager</code> – полноэкранные пост‑эффекты (зернистость, помехи, глюки, VHS).</li>
   <li><code>MicroAPI</code> – тонкое управление объектами во время игры (доступен через <code>engine.api</code>).</li>
 </ul>
@@ -319,7 +302,7 @@
   <tr><td><code>3</code></td><td>Кирпич</td><td>material=brick</td><td>те же</td></tr>
   <tr><td><code>4</code></td><td>Дерево</td><td>material=wood</td><td>те же</td></tr>
   <tr><td><code>5</code></td><td>Металл</td><td>material=metal</td><td>те же</td></tr>
-  <tr><td><code>6</code></td><td>3D-модель</td><td>Загружает .obj и рендерит в спрайты</td><td><code>path, rotx, roty, rotz, scale, color, anim, anim_speed, isvisible</code></td></tr>
+  <tr><td><code>6</code></td><td>3D-модель</td><td>Загружает .obj (или .gbj) и рендерит в спрайты</td><td><code>path, rotx, roty, rotz, scale, color, anim, anim_speed, isvisible</code></td></tr>
   <tr><td><code>7</code></td><td>Дверь/Ключ</td><td>Система ключ-дверь. Видимость спрайта управляется через <code>api.set_sprite_visible(sprite_key, visible)</code>.</td><td><code>type, id, link, texture, height, material</code></td></tr>
   <tr><td><code>8</code></td><td>Триггер</td><td>Вызывает <code>on_trigger(cell)</code>. Всегда невидим.</td><td><code>id</code></td></tr>
   <tr><td><code>9</code></td><td>Портал</td><td>Переход на <code>level</code>. Всегда невидим (можно сделать видимым, изменив код).</td><td><code>level</code></td></tr>
@@ -382,7 +365,7 @@ api.has_key('key1')</code></pre>
 <h2 id="models">📦 3D-модели (ID=6)</h2>
 <p>Параметры:</p>
 <ul>
-  <li><code>path</code> – путь к .obj (обязательно).</li>
+  <li><code>path</code> – путь к .obj или .gbj (обязательно).</li>
   <li><code>rotx</code>, <code>roty</code>, <code>rotz</code> – повороты модели в градусах.</li>
   <li><code>scale</code> – масштаб (1.0 ≈ размер клетки).</li>
   <li><code>color</code> – цвет модели (HEX, например <code>FF0000</code>).</li>
@@ -390,9 +373,21 @@ api.has_key('key1')</code></pre>
   <li><code>anim_speed</code> – скорость смены кадров (секунд на кадр, по умолчанию 0.5).</li>
   <li><code>isvisible</code> – 0/1 (по умолчанию 1).</li>
 </ul>
-<p>При первом запуске генерируются спрайты (64 кадра) и сохраняются в папку <code>cache/имя_модели/</code>. При изменении параметров поворота или масштаба кэш пересоздаётся (если реализована проверка хэша).</p>
+<p>При первом запуске генерируются спрайты (64 кадра) и сохраняются в папку <code>cache/</code>. Кэш учитывает все параметры, поэтому при изменении цвета или поворота спрайты будут пересозданы автоматически после удаления старой папки <code>cache</code>.</p>
 <pre><code>6&lt;path:models/cube.obj,roty:45,scale:2.0,color:FF0000,isvisible:1&gt;
 6&lt;path:models/box.obj,anim:models/box_open1.obj,models/box_open2.obj,anim_speed:0.3&gt;</code></pre>
+
+<!-- ============================================ -->
+<h2 id="gbj">🎨 Формат .gbj (цветные грани)</h2>
+<p>
+  Для поддержки цвета отдельных граней используется расширение <code>.gbj</code>. Это тот же OBJ, но в строках граней может быть указан цвет в HEX после индексов вершин.
+</p>
+<p>Пример строки грани с цветом:</p>
+<pre><code>f 1 2 3 FF8800</code></pre>
+<p>Если цвет не указан, используется общий <code>color</code> модели. При экспорте из вашего будущего мини-блендера вы сможете задавать цвета.</p>
+<p>Использование:</p>
+<pre><code>6&lt;path:models/colored_model.gbj,scale:1.0&gt;</code></pre>
+<p>Цвет граней автоматически подхватывается при рендеринге спрайтов.</p>
 
 <!-- ============================================ -->
 <h2 id="animations">🔄 Анимация .obj</h2>
@@ -476,6 +471,21 @@ api.set_model_visible(model_key, visible)</code></pre>
 <h3>Эффекты (EffectsManager)</h3>
 <pre><code>api.set_effect(effect_type, alpha=255, intensity=0.5)   # включить эффект
 api.clear_effect()                                      # выключить</code></pre>
+<h3>3D-звук (Sound3D)</h3>
+<pre><code># Воспроизвести звук в мировых координатах (пикселях)
+api.play_sound_3d_world('sound_key', x=300, y=200)
+
+# В тайловых координатах (умножается на tile_size)
+api.play_sound_3d_tile('sound_key', tile_x=5, tile_y=3)
+
+# Относительно игрока с учётом поворота камеры (offset_x – влево/вправо, offset_y – вперёд/назад)
+api.play_sound_3d_player_camera('sound_key', offset_x=-1.0, offset_y=0.5)
+
+# Относительно игрока без учёта поворота
+api.play_sound_3d_player('sound_key', offset_x=10, offset_y=0)
+
+# Все методы возвращают объект Sound3D для управления (stop, изменение громкости)
+</code></pre>
 
 <!-- ============================================ -->
 <h2 id="events">🧩 События (переопределение)</h2>
@@ -491,10 +501,33 @@ api.clear_effect()                                      # выключить</co
         self.show_message("Нужен ключ!", 2.0)</code></pre>
 
 <!-- ============================================ -->
-<h2 id="sound">🔊 Звук</h2>
+<h2 id="sound">🔊 Звук и Sound3D</h2>
+<p>Обычное воспроизведение:</p>
 <pre><code>engine.sound_manager.load_all({'scream':'sounds/scream.wav'})
 engine.play_sound('scream')
 engine.sound_manager.stop_sound('scream')</code></pre>
+
+<h3>Объёмный звук (Sound3D)</h3>
+<p>
+  Движок поддерживает позиционирование звука в 3D. Звук затухает с расстоянием, панорамируется в зависимости от направления камеры,
+  приглушается стенами. Для использования загрузите звук как обычно, затем вызовите один из методов <code>play_sound_3d_*</code>.
+</p>
+<p>Пример использования:</p>
+<pre><code># Загрузили звук
+engine.sound_manager.load_all({'music': 'music.wav'})
+
+# Воспроизводим звук, источник находится в мировых координатах (500, 300)
+snd = engine.play_sound_3d_world('music', world_x=500, world_y=300)
+
+# Чуть позже можно остановить
+snd.stop()
+</code></pre>
+<p>Параметры:</p>
+<ul>
+  <li><code>max_distance</code> – максимальная слышимость (в пикселях). По умолчанию 500.</li>
+  <li><code>doppler_factor</code> – коэффициент эффекта Доплера (пока минимальный).</li>
+</ul>
+<p>Все методы автоматически обновляют громкость и панораму каждый кадр, пока звук играет.</p>
 
 <!-- ============================================ -->
 <h2 id="overlay">🖼️ Оверлеи и сообщения</h2>
@@ -545,77 +578,108 @@ engine.api.clear_effect()</code></pre>
 <p>В папке <code>gradus_rc/examples/</code> есть два класса-заготовки: <code>MenuExample</code> и <code>GameExample</code>. Они помогут быстро создать меню и игровой цикл.</p>
 
 <h3>📋 MenuExample – настройка меню</h3>
-<p>Создайте экземпляр, передав движок и параметры:</p>
+<p>Теперь меню не требует движок при создании. Вы передаёте только размеры и опции.</p>
 <pre><code>from gradus_rc.examples import MenuExample
 
 menu = MenuExample(
-    engine,                          # ваш экземпляр Engine
-    background_image='menu_bg.jpg',  # фон (опционально)
-    button_color=(100,100,150),      # цвет кнопок (R,G,B)
-    text_color=(255,255,255),        # цвет текста
-    about_text="Текст об игре...",   # содержимое раздела "Об игре"
-    settings_file="settings.json"    # файл для сохранения настроек
+    width=800, height=600,
+    background_image='menu_bg.jpg',   # фон (опционально)
+    button_align='center'             # 'center', 'left', 'right'
 )
-engine.start_with_menu(menu)         # активировать меню</code></pre>
-
+</code></pre>
 <p><strong>Что можно настроить:</strong></p>
 <ul>
   <li><code>background_image</code> – путь к фоновой картинке (полноэкранная).</li>
-  <li><code>button_color</code> – цвет кнопок.</li>
-  <li><code>text_color</code> – цвет текста на кнопках.</li>
-  <li><code>about_text</code> – многострочный текст в разделе "Об игре".</li>
-  <li><code>settings_file</code> – JSON-файл, куда сохраняются настройки FOV и графики.</li>
+  <li><code>button_align</code> – выравнивание кнопок: <code>'center'</code>, <code>'left'</code>, <code>'right'</code>.</li>
+  <li><code>about_text</code> – текст для раздела "О игре" (если есть).</li>
 </ul>
-<p>В меню автоматически создаются кнопки: <strong>Играть</strong>, <strong>Настройки</strong>, <strong>Об игре</strong>.</p>
-<p>В настройках можно менять FOV (30°, 60°, 90°) и уровень графики:</p>
+<p>В меню автоматически создаются кнопки: <strong>Играть</strong>, <strong>Настройки</strong>, <strong>Выход</strong>.</p>
+<p>В настройках можно менять:</p>
 <ul>
-  <li><strong>Lite</strong> – 40 лучей, 8 спрайтов на объект</li>
-  <li><strong>Turbo</strong> – 80 лучей, 32 спрайта</li>
-  <li><strong>Medium</strong> – 160 лучей, 32 спрайта</li>
-  <li><strong>High</strong> – 240 лучей, 32 спрайта</li>
-  <li><strong>Ultra</strong> – 400 лучей, 64 спрайта</li>
+  <li><strong>Графику</strong>: Lite, Medium, High, Ultra (количество лучей).</li>
+  <li><strong>FOV</strong> (60, 75, 90).</li>
+  <li><strong>FPS</strong> (30, 60, 120).</li>
+  <li><strong>Render Scale</strong> (Off, 2x, 3x, 4x).</li>
+  <li><strong>MCFI</strong> – вкл/выкл (frame blending).</li>
+  <li><strong>Async Raycast</strong> – вкл/выкл.</li>
+  <li><strong>Sensitivity</strong> – чувствительность мыши (player_rot_speed) от 0.1 до 10.</li>
+  <li><strong>Show FPS</strong> – показывать счётчик FPS в углу.</li>
 </ul>
-<p>При нажатии "Играть" меню закрывается и запускается <code>GameExample</code> (если он установлен).</p>
+<p>При нажатии "Играть" меню возвращает словарь настроек, который можно передать в <code>GameExample</code>.</p>
 
 <h3>🎮 GameExample – настройка игры</h3>
+<p>Игровой цикл принимает класс движка (не экземпляр) и все параметры, включая настройки из меню.</p>
 <pre><code>from gradus_rc.examples import GameExample
+from gradus_rc import Engine
+
+class MyEngine(Engine):
+    def on_trigger(self, cell):
+        print("Триггер!")
 
 game = GameExample(
-    engine,                         # ваш экземпляр Engine
-    levels=[LEVEL1, LEVEL2],        # список карт (уровней)
-    current_level=0,                # начальный уровень
-    on_trigger_callback=lambda cell: print("Триггер активирован!")  # опционально
+    engine_class=MyEngine,       # ваш класс движка
+    levels=[LEVEL1, LEVEL2],
+    current_level=0,
+    width=800, height=600,
+    player_speed=48.0,           # скорость игрока задаётся в коде
+    **settings                   # все настройки из меню
 )
-engine.set_game_example(game)       # установить игру</code></pre>
-
-<p><strong>Параметры:</strong></p>
+game.run()
+</code></pre>
+<p>Параметры:</p>
 <ul>
-  <li><code>levels</code> – список строк-карт (каждая в формате, описанном выше).</li>
-  <li><code>current_level</code> – индекс уровня, с которого начинается игра.</li>
-  <li><code>on_trigger_callback</code> – функция, которая вызывается при активации триггера (ID=8). Если не указана, используется <code>engine.on_trigger</code>.</li>
+  <li><code>engine_class</code> – класс вашего движка (наследник Engine).</li>
+  <li><code>levels</code> – список строк-карт.</li>
+  <li><code>current_level</code> – стартовый уровень.</li>
+  <li><code>width</code>, <code>height</code> – размеры окна.</li>
+  <li><code>fullscreen</code> – True/False (по умолчанию False).</li>
+  <li><code>player_speed</code> – скорость передвижения игрока.</li>
+  <li>Остальные параметры (rays, fov, fps, render_scale, async_raycast, mcfi, show_fps, player_rot_speed) передаются через <code>**settings</code>.</li>
 </ul>
-<p>Вы можете переопределить <code>on_trigger</code>, <code>on_key_pickup</code>, <code>on_door_blocked</code> в своём наследнике <code>Engine</code>, чтобы добавить свою логику.</p>
+<p>Вы можете переопределить <code>on_trigger</code>, <code>on_key_pickup</code>, <code>on_door_blocked</code> в своём классе движка.</p>
 
 <h3>🔁 Полный цикл с меню и игрой</h3>
-<pre><code># В main.py:
-engine = MyEngine(...)
+<pre><code>import pygame
+from gradus_rc.examples import MenuExample, GameExample
+from gradus_rc import Engine
 
-# Меню
-menu = MenuExample(engine, background_image='menu.jpg')
-engine.start_with_menu(menu)
+class MyEngine(Engine):
+    pass
 
-# Игра
-game = GameExample(engine, levels=[LEVEL1, LEVEL2])
-engine.set_game_example(game)
+def main():
+    pygame.init()
+    WIDTH, HEIGHT = 800, 600
+    screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
-# В игровом цикле:
-while running:
-    # ... обработка событий ...
-    if engine.use_example and engine.example_menu and engine.example_menu.running:
-        engine.example_menu.render(screen)   # рисуем меню
-    else:
-        engine.update(dt, keys)              # обновляем игру
-        engine.render(screen)                # рисуем игру</code></pre>
+    menu = MenuExample(width=WIDTH, height=HEIGHT, button_align='left')
+    settings = None
+
+    while menu.running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                menu.running = False
+            res = menu.handle_event(event)
+            if isinstance(res, dict):
+                settings = res
+                break
+        menu.render(screen)
+        pygame.display.flip()
+
+    if settings:
+        game = GameExample(
+            engine_class=MyEngine,
+            levels=[LEVEL1, LEVEL2],
+            current_level=0,
+            width=WIDTH,
+            height=HEIGHT,
+            player_speed=48.0,
+            **settings
+        )
+        game.run()
+
+if __name__ == "__main__":
+    main()
+</code></pre>
 
 <!-- ============================================ -->
 <h2 id="loading">⏳ Экран загрузки</h2>
@@ -624,14 +688,21 @@ while running:
 
 <!-- ============================================ -->
 <h2 id="optimization">⚡ Оптимизация</h2>
+<p>Движок версии 1.1 включает несколько важных оптимизаций, которые в сумме дают прирост до 30 раз.</p>
 <ul>
-  <li><strong>Уменьшите <code>rays</code></strong> – для слабых устройств достаточно 80–120 лучей.</li>
-  <li><strong>Кэш моделей</strong> – включен по умолчанию. При изменении параметров модели удалите папку <code>cache/</code>.</li>
-  <li><strong>Ограничьте число билбордов и источников света</strong> – каждый добавляет нагрузку.</li>
-  <li><strong>Видео</strong> – используйте <code>mode="angle"</code> или уменьшайте размер.</li>
-  <li><strong>Не используйте <code>alpha</code></strong> – это вызывает сильные лаги. Вместо этого применяйте <code>isvisible:0</code>.</li>
-  <li><strong><code>height</code> для стен</strong> – при значениях &lt; 1.0 может снижать FPS. Используйте с осторожностью.</li>
-  <li><strong>Полноэкранные эффекты</strong> – обновляются раз в 0.3 сек, что не влияет на FPS. При необходимости можно увеличить интервал в <code>EffectsManager._update_interval</code>.</li>
+  <li><strong>Кэширование столбцов текстур</strong> – устраняет избыточные операции чтения пикселей для каждой стены.</li>
+  <li><strong>Предрасчёт углов рейкастинга</strong> – убирает вызовы тригонометрии из горячего цикла.</li>
+  <li><strong>Асинхронный рейкастинг</strong> – расчёт лучей в фоновом потоке, чтобы не блокировать отрисовку.</li>
+  <li><strong>Масштабирование рендера (Render Scale)</strong> – рендер в уменьшенном разрешении с последующим масштабированием, что резко снижает нагрузку.</li>
+  <li><strong>MCFI (Frame Blending)</strong> – визуальное сглаживание движения путём смешивания кадров (не повышает реальный FPS, но улучшает восприятие).</li>
+  <li><strong>Оптимизированное освещение</strong> – замена дорогих операций на квадраты расстояний.</li>
+</ul>
+<p>Дополнительные советы:</p>
+<ul>
+  <li>Уменьшите <code>rays</code> для слабых устройств (например, 200–300 лучей обычно достаточно).</li>
+  <li>Используйте <code>render_scale=2</code> или <code>3</code>, если нужно поднять FPS.</li>
+  <li>Избегайте <code>alpha</code> и частично прозрачных стен.</li>
+  <li>Для статичных сцен можно отключить обновление освещения.</li>
 </ul>
 
 <!-- ============================================ -->
@@ -707,7 +778,7 @@ def main():
         width=WIDTH,
         height=HEIGHT,
         fov=60,
-        rays=100,
+        rays=800,
         tile_size=64,
         max_depth=1000,
         proj_coeff=20000,
@@ -756,6 +827,8 @@ if __name__ == "__main__":
   <li><strong>Упал FPS при <code>height&lt;1</code>?</strong> – используйте <code>height</code> с осторожностью, это ресурсоёмко.</li>
   <li><strong>Как добавить свою текстуру?</strong> – положите изображение в папку <code>textures/</code> и укажите путь в теге <code>texture</code> или используйте <code>load_image</code> для спрайтов.</li>
   <li><strong>Как включить полноэкранные эффекты?</strong> – используйте <code>engine.api.set_effect('vhs', alpha=180, intensity=0.7)</code>. Подробнее в разделе <a href="#effects">Эффекты</a>.</li>
+  <li><strong>Как использовать 3D-звук?</strong> – см. раздел <a href="#sound">Звук и Sound3D</a>.</li>
+  <li><strong>Что такое .gbj?</strong> – OBJ с поддержкой цвета граней, см. <a href="#gbj">Формат .gbj</a>. Чтобы сделать модель такого формата вы можете использовать редактор объектов из архива gradus-rc.zip (redactor.py)</li>
 </ul>
 
 <!-- ============================================ -->
@@ -767,7 +840,7 @@ if __name__ == "__main__":
 </div>
 
 <div class="footer">
-  Gradus RC v1.0 · Документация для разработчиков · 🚀<br>
+  Gradus RC v1.1 · Документация для разработчиков · 🚀<br>
   Лицензия MIT · Свободно для любых проектов
 </div>
 
