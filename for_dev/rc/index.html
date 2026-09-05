@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gradus RC v1.1 — Полная документация</title>
+  <title>Gradus RC v1.1.5 — Полная документация</title>
   <style>
     * {
         box-sizing: border-box;
@@ -170,6 +170,7 @@
     .contact a {
         font-size: 1.2em;
     }
+
     @media (max-width: 900px) {
         .container { padding: 30px 25px; border-radius: 16px; }
         h1 { font-size: 2.2em; }
@@ -201,12 +202,12 @@
 <body>
 <div class="container">
 
-<h1>🧭 Gradus RC v1.1 — Полная документация для разработчиков</h1>
+<h1>🧭 Gradus RC v1.1.5 — Полная документация для разработчиков</h1>
 <p style="font-size: 1.1em; color: #a8b8d0;">Python 3.12+ · Pygame 2.6+ · MIT License</p>
 
 <div class="note" style="border-color: #8ab4f8;">
   <strong>⚡ Оптимизация в 30.5 раз!</strong><br>
-  В версии 1.1 движок был радикально ускорен. Если раньше 400 лучей давали лишь 2 FPS, то теперь даже 800 лучей идут плавно (визуально ~40 FPS при реальных 20). Достигнуто благодаря кэшированию текстурных столбцов, предрасчёту углов, асинхронному рейкастингу и масштабированию рендера. Подробнее в разделе <a href="#optimization">Оптимизация</a>.
+  Движок радикально ускорен: кэширование текстурных столбцов, предрасчёт углов, асинхронный рейкастинг и масштабирование рендера. Теперь даже 800 лучей идут плавно.
 </div>
 
 <div class="toc">
@@ -216,6 +217,7 @@
   <a href="#arch">Архитектура</a> ·
   <a href="#map">Карта</a> ·
   <a href="#ids">ID клеток</a> ·
+  <a href="#enemy-tag">Тег enemy</a> ·
   <a href="#materials">Материалы</a> ·
   <a href="#doors">Двери и ключи</a> ·
   <a href="#triggers">Триггеры</a> ·
@@ -225,6 +227,9 @@
   <a href="#animations">Анимации .obj</a> ·
   <a href="#lighting">Освещение</a> ·
   <a href="#sprites">Билборды</a> ·
+  <a href="#enemies">Враги (EnemyAI)</a> ·
+  <a href="#weapons">Оружие и пули</a> ·
+  <a href="#player">Игрок (здоровье, смерть)</a> ·
   <a href="#video">Видео-оверлей</a> ·
   <a href="#mouse">Управление мышью</a> ·
   <a href="#microapi">MicroAPI</a> ·
@@ -244,8 +249,8 @@
 <h2 id="intro">📖 Введение</h2>
 <p>
   <strong>Gradus RC</strong> — это библиотека для создания псевдо-3D игр с рейкастингом на Python + Pygame.
-  Версия 1.1 включает значительные оптимизации, объёмный звук, улучшенный конвертер OBJ, поддержку цветных граней через .gbj,
-  а также готовые заготовки меню и игры.
+  Версия 1.1.5 добавляет систему врагов (<code>EnemyAI</code>), оружие (<code>Gun</code>, <code>Bullet</code>), поддержку цветных граней через .gbj,
+  а также множество оптимизаций, делающих движок пригодным для создания динамичных шутеров и хорроров.
 </p>
 
 <!-- ============================================ -->
@@ -257,15 +262,16 @@
 <!-- ============================================ -->
 <h2 id="arch">🧩 Архитектура</h2>
 <ul>
-  <li><code>Engine</code> – главный класс. Создаётся один раз.</li>
-  <li><code>Player</code> – положение, угол поворота, скорость.</li>
-  <li><code>RayCaster</code> – выполняет рейкастинг (оптимизирован: предрасчёт углов, асинхронный режим).</li>
-  <li><code>LightTracer</code> – управляет освещением (ускорен расчёт).</li>
-  <li><code>SpriteManager</code> – хранит и рисует билборды и модели-спрайты.</li>
-  <li><code>SoundManager</code> – загружает и воспроизводит звуки.</li>
-  <li><code>Sound3D</code> – объёмный звук с позиционированием.</li>
-  <li><code>EffectsManager</code> – полноэкранные пост‑эффекты (зернистость, помехи, глюки, VHS).</li>
-  <li><code>MicroAPI</code> – тонкое управление объектами во время игры (доступен через <code>engine.api</code>).</li>
+  <li><code>Engine</code> – главный класс, управляет всем.</li>
+  <li><code>Player</code> – игрок с здоровьем (<code>hp</code>) и обработкой смерти.</li>
+  <li><code>RayCaster</code> – рейкастинг (оптимизирован, асинхронный).</li>
+  <li><code>LightTracer</code> – освещение.</li>
+  <li><code>SpriteManager</code> – спрайты и модели-спрайты.</li>
+  <li><code>EnemyAI</code> – враги с ИИ.</li>
+  <li><code>GunManager</code>, <code>Gun</code>, <code>Bullet</code> – система оружия.</li>
+  <li><code>SoundManager</code>, <code>Sound3D</code> – звук (обычный и объёмный).</li>
+  <li><code>EffectsManager</code> – пост‑эффекты.</li>
+  <li><code>MicroAPI</code> – программное управление.</li>
 </ul>
 
 <!-- ============================================ -->
@@ -289,14 +295,15 @@
 6&lt;path:models/cube.obj,roty:45,rotx:10,scale:2.0,color:FF0000,isvisible:1&gt;
 7&lt;type:door,id:door1,link:key1&gt;
 8&lt;id:1&gt;
-9&lt;level:1&gt;</code></pre>
+9&lt;level:1&gt;
+0&lt;enemy:type=chase,hp=50,aim=10,shoot_delay=1.0,attack_type=ranged&gt;</code></pre>
 
 <!-- ============================================ -->
 <h2 id="ids">🧱 ID клеток (в [COLLISION])</h2>
 <div class="table-wrap">
 <table>
   <tr><th>ID</th><th>Тип</th><th>Описание</th><th>Допустимые теги (ключи в нижнем регистре)</th></tr>
-  <tr><td><code>0</code></td><td>Пустота</td><td>Проходимо, ничего не отображается</td><td>—</td></tr>
+  <tr><td><code>0</code></td><td>Пустота</td><td>Проходимо, ничего не отображается</td><td><code>enemy</code> (только для ID&lt;6)</td></tr>
   <tr><td><code>1</code></td><td>Стена (бетон)</td><td>Обычная стена, материал по умолчанию concrete</td><td><code>material, color, height, texture, isvisible</code> (alpha не поддерживается)</td></tr>
   <tr><td><code>2</code></td><td>Стена (стекло)</td><td>Визуально – стекло (прозрачность отключена для производительности). Используйте <code>isvisible:0</code> для невидимости.</td><td>те же, что у ID=1</td></tr>
   <tr><td><code>3</code></td><td>Кирпич</td><td>material=brick</td><td>те же</td></tr>
@@ -313,10 +320,17 @@
   <li><code>isvisible</code> (или <code>isVisible</code>) работает для ID=1–6. Для ID=7 видимость управляется через API. ID=8 и 9 всегда невидимы.</li>
   <li><code>alpha</code> не поддерживается из-за высоких нагрузок на FPS. Используйте <code>isvisible:0</code> для скрытия.</li>
   <li><code>height</code> работает только для стен (ID 1–5) и может снижать FPS при значениях &lt; 1.0. Используйте с осторожностью.</li>
+  <li><code>enemy</code> тег можно использовать только в клетках с ID &lt; 6, чтобы избежать конфликтов.</li>
 </ul>
 
 <!-- ============================================ -->
-<h2 id="materials">🧱 Доступные материалы (для тега <code>material</code>)</h2>
+<h2 id="enemy-tag">👾 Тег <code>enemy</code> в карте</h2>
+<p>Враги могут быть размещены прямо в карте с помощью тега <code>enemy</code> в клетках с ID &lt; 6.</p>
+<pre><code>0&lt;enemy:type=chase,hp=80,aim=15,shoot_delay=0.8,shoot_intensity=30,attack_type=ranged,detect_radius=7,attack_radius=5,speed=70&gt;</code></pre>
+<p>Параметры тега соответствуют аргументам конструктора <code>EnemyAI</code> (см. раздел <a href="#enemies">Враги</a>).</p>
+
+<!-- ============================================ -->
+<h2 id="materials">🎨 Доступные материалы (для тега <code>material</code>)</h2>
 <ul>
   <li><code>brick</code> – кирпич (красноватый)</li>
   <li><code>concrete</code> – бетон (серый)</li>
@@ -384,10 +398,9 @@ api.has_key('key1')</code></pre>
 </p>
 <p>Пример строки грани с цветом:</p>
 <pre><code>f 1 2 3 FF8800</code></pre>
-<p>Если цвет не указан, используется общий <code>color</code> модели. При экспорте из вашего будущего мини-блендера вы сможете задавать цвета.</p>
+<p>Если цвет не указан, используется общий <code>color</code> модели. Для создания .gbj можно использовать встроенный редактор <code>redactor.py</code>.</p>
 <p>Использование:</p>
 <pre><code>6&lt;path:models/colored_model.gbj,scale:1.0&gt;</code></pre>
-<p>Цвет граней автоматически подхватывается при рендеринге спрайтов.</p>
 
 <!-- ============================================ -->
 <h2 id="animations">🔄 Анимация .obj</h2>
@@ -412,6 +425,66 @@ sprite = Sprite(x=200, y=300, texture=tex, key='tree')
 engine.add_sprite(sprite)
 engine.set_sprite_visible('tree', False)
 engine.set_sprite_position('tree', 100, 200)</code></pre>
+
+<!-- ============================================ -->
+<h2 id="enemies">👾 Враги (EnemyAI)</h2>
+<p>Враги создаются через тег <code>enemy</code> в карте или через MicroAPI.</p>
+<h3>Типы ИИ</h3>
+<ul>
+  <li><code>static</code> – стоит на месте, атакует при приближении.</li>
+  <li><code>chase</code> – преследует игрока, если тот в радиусе обнаружения.</li>
+  <li><code>patrol</code> – случайное патрулирование, атакует при контакте.</li>
+  <li><code>multiplayer</code> – полностью управляется кодом (позиция, поворот).</li>
+</ul>
+<h3>Параметры конструктора / тега</h3>
+<ul>
+  <li><code>hp</code> – здоровье</li>
+  <li><code>aim</code> – шанс промаха (0–100)</li>
+  <li><code>shoot_delay</code> – базовая задержка выстрела (сек)</li>
+  <li><code>shoot_intensity</code> – шанс дополнительной задержки (0–100)</li>
+  <li><code>intensity_mode</code> – <code>fast</code> (0.1–1с) или <code>long</code> (0.3–3с)</li>
+  <li><code>attack_type</code> – <code>ranged</code> или <code>melee</code></li>
+  <li><code>detect_radius</code>, <code>attack_radius</code> – радиусы в тайлах</li>
+  <li><code>speed</code> – скорость движения</li>
+  <li><code>sound_spawn</code>, <code>effect_spawn</code>, <code>effect_until_death</code> – звук/эффект при спавне</li>
+</ul>
+<p>Пример создания через API:</p>
+<pre><code>engine.api.spawn_enemy_by_tile(tile_x=5, tile_y=3, enemy_type='chase', hp=100, aim=15)</code></pre>
+
+<!-- ============================================ -->
+<h2 id="weapons">🔫 Оружие и пули</h2>
+<p>Класс <code>Gun</code> задаёт урон, темп стрельбы, боезапас и анимации.</p>
+<pre><code>gun = Gun(
+    name='shotgun',
+    damage=35,
+    fire_rate=0.8,
+    ammo=8,
+    magazine_size=8,
+    reserve_ammo=32,
+    reload_time=1.5,
+    texture=load_image('shotgun', 'assets/shotgun.png'),
+    animation_fire=[load_image('shotgun_fire', 'assets/shotgun_fire.png')],
+    key='shotgun'
+)
+engine.gun_manager.add_gun(gun)
+engine.gun_manager.switch_gun('shotgun')</code></pre>
+<p>Стрельба:</p>
+<pre><code>engine.api.fire_current_gun()</code></pre>
+<p>Пули (<code>Bullet</code>) автоматически проверяют столкновения со стенами и врагами.</p>
+
+<!-- ============================================ -->
+<h2 id="player">🧑 Игрок (здоровье, смерть)</h2>
+<p>Класс <code>Player</code> теперь имеет:</p>
+<ul>
+  <li><code>max_hp</code>, <code>hp</code> – здоровье</li>
+  <li><code>alive</code> – жив ли игрок</li>
+  <li><code>take_damage(damage)</code> – нанести урон</li>
+  <li><code>on_death</code> – функция-обработчик смерти</li>
+</ul>
+<pre><code>def on_death():
+    print("Игрок погиб")
+
+engine.player.on_death = on_death</code></pre>
 
 <!-- ============================================ -->
 <h2 id="video">🎬 Видео-оверлей</h2>
@@ -486,6 +559,12 @@ api.play_sound_3d_player('sound_key', offset_x=10, offset_y=0)
 
 # Все методы возвращают объект Sound3D для управления (stop, изменение громкости)
 </code></pre>
+<h3>Враги</h3>
+<pre><code>api.spawn_enemy(x, y, **kwargs)
+api.spawn_enemy_by_tile(tile_x, tile_y, **kwargs)</code></pre>
+<h3>Оружие</h3>
+<pre><code>api.give_gun(gun)
+api.fire_current_gun()</code></pre>
 
 <!-- ============================================ -->
 <h2 id="events">🧩 События (переопределение)</h2>
@@ -829,6 +908,8 @@ if __name__ == "__main__":
   <li><strong>Как включить полноэкранные эффекты?</strong> – используйте <code>engine.api.set_effect('vhs', alpha=180, intensity=0.7)</code>. Подробнее в разделе <a href="#effects">Эффекты</a>.</li>
   <li><strong>Как использовать 3D-звук?</strong> – см. раздел <a href="#sound">Звук и Sound3D</a>.</li>
   <li><strong>Что такое .gbj?</strong> – OBJ с поддержкой цвета граней, см. <a href="#gbj">Формат .gbj</a>. Чтобы сделать модель такого формата вы можете использовать редактор объектов из архива gradus-rc.zip (redactor.py)</li>
+  <li><strong>Как создать врага?</strong> – используйте тег <code>enemy</code> в карте или <code>api.spawn_enemy_by_tile()</code>. Подробнее в разделе <a href="#enemies">Враги</a>.</li>
+  <li><strong>Как добавить оружие?</strong> – создайте <code>Gun</code>, добавьте через <code>gun_manager</code> и стреляйте через <code>api.fire_current_gun()</code>. См. <a href="#weapons">Оружие</a>.</li>
 </ul>
 
 <!-- ============================================ -->
@@ -840,7 +921,7 @@ if __name__ == "__main__":
 </div>
 
 <div class="footer">
-  Gradus RC v1.1 · Документация для разработчиков · 🚀<br>
+  Gradus RC v1.1.5 · Документация для разработчиков · 🚀<br>
   Лицензия MIT · Свободно для любых проектов
 </div>
 
