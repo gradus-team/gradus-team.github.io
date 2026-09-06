@@ -446,28 +446,35 @@ engine.set_sprite_position('tree', 100, 200)</code></pre>
   <li><code>attack_type</code> – <code>ranged</code> или <code>melee</code></li>
   <li><code>detect_radius</code>, <code>attack_radius</code> – радиусы в тайлах</li>
   <li><code>speed</code> – скорость движения</li>
+  <li><code>sprite</code>, <code>texture</code> – спрайт врага, нужно указать полный путь относительно главного скрипта, теги одинаковые, используйте какой вам удобно</li>
   <li><code>sound_spawn</code>, <code>effect_spawn</code>, <code>effect_until_death</code> – звук/эффект при спавне</li>
 </ul>
 <p>Пример создания через API:</p>
-<pre><code>engine.api.spawn_enemy_by_tile(tile_x=5, tile_y=3, enemy_type='chase', hp=100, aim=15)</code></pre>
+<pre><code>engine.api.spawn_enemy_by_tile(tile_x=5, tile_y=3, enemy_type='chase', hp=100, aim=15, sprite='assets/enemy_demon.png')</code></pre>
 
 <!-- ============================================ -->
 <h2 id="weapons">🔫 Оружие и пули</h2>
+
 <p>Класс <code>Gun</code> задаёт урон, темп стрельбы, боезапас и анимации.</p>
+    (self, name='gun', damage=10, fire_rate=0.5, ammo=12,
+                 max_ammo=12, texture=None, key=None,
+                 animation_fire=None, animation_walk=None,
+                 walk_frame_delay=0.2, reload_speed=4.0):
 <pre><code>gun = Gun(
-    name='shotgun',
-    damage=35,
-    fire_rate=0.8,
-    ammo=8,
-    magazine_size=8,
-    reserve_ammo=32,
-    reload_time=1.5,
-    texture=load_image('shotgun', 'assets/shotgun.png'),
-    animation_fire=[load_image('shotgun_fire', 'assets/shotgun_fire.png')],
-    key='shotgun'
+    name='shotgun', # Кастомное имя, задавайте какое хотите
+    damage=35, # Урон наносимый объекту EnemyAI
+    fire_rate=0.8, # Задержка после выстрела в секундах
+    ammo=8, # Размер магазина
+    max_ammo=32, # Резерв патронов (сколько осталось)
+    reload_speed=1.5, # Скорость перезарядки в секундах
+    texture=load_image('shotgun', 'assets/shotgun.png'), # Путь относительно исполняемого скрипта
+    animation_fire=[load_image('shotgun_fire', 'assets/shotgun_fire.png')], # Картинка оружия при выстреле, или несколько картинок
+    key='shotgun', # Кастомный ключ, задавайте понятный чтобы потом использовать в коде
+    animation_fire=None, # Можно задать спрайты как для animation_fire но это "анимация" при ходьбе
+    walk_frame_delay=0.2 # Скорость смены картинок анимации ходьбы
 )
-engine.gun_manager.add_gun(gun)
-engine.gun_manager.switch_gun('shotgun')</code></pre>
+engine.gun_manager.add_gun(gun) # Добавить оружие в список
+engine.gun_manager.switch_gun('shotgun') # Выдать это оружие игроку</code></pre>
 <p>Стрельба:</p>
 <pre><code>engine.api.fire_current_gun()</code></pre>
 <p>Пули (<code>Bullet</code>) автоматически проверяют столкновения со стенами и врагами.</p>
