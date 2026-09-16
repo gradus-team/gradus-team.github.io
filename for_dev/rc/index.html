@@ -397,17 +397,116 @@ html, body { overflow-x: hidden; max-width: 100vw; }
 <h3>Краткая история версий</h3>
 <div class="table-wrap">
 <table>
-  <tr><th>Версия</th><th>Дата</th><th>Главное</th></tr>
-  <tr><td><strong>Alpha</strong></td><td>осень 2024</td><td>Первый raycasting. Простые стены, один враг без ИИ.</td></tr>
-  <tr><td><strong>Beta</strong></td><td>начало 2025</td><td>Спрайты, звук, HUD, мини-карта.</td></tr>
-  <tr><td><strong>1.0</strong></td><td>середина 2025</td><td>Разрушаемые стены, партиклы, декали, туман. MicroAPI.</td></tr>
-  <tr><td><strong>1.1</strong></td><td>октябрь 2025</td><td>3D-модели, EffectsManager, Sound3D, Menu/Game заготовки.</td></tr>
-  <tr><td><strong>1.1.5</strong></td><td>декабрь 2025</td><td>Первый GPU-рендерер, MCFI, Cython-версия рейкастера.</td></tr>
-  <tr><td><strong>1.2</strong></td><td>весна 2026</td><td>Вторая попытка GPU-рендерера. Alpha временно отключён.</td></tr>
-  <tr><td><strong>1.2.5</strong></td><td>16.09.2026</td><td>RTE, возврат alpha и height, интерактивные obj, взрывы, динамический свет, полностью переписанный GPU-рендерер.</td></tr>
-  <tr><td><strong style="color:#7ad37a;">1.2.5 API Update</strong></td><td><strong style="color:#7ad37a;">сегодня</strong></td><td><strong>+150 методов в MicroAPI, PhysicsAPI, ModAPI. Кастомные world renderers. Config/Storage/i18n. F1/F3 debug.</strong></td></tr>
+  <tr><th>Версия</th><th>Дата</th><th>Ключевое</th></tr>
+
+  <tr>
+    <td><strong>Alpha</strong></td>
+    <td>~17 июля 2026</td>
+    <td>Самый первый прототип. Модули <code>Engine</code>, <code>Camera</code> (будущий <code>Player</code>) и
+        <code>LightTracing</code> с честным, но крайне тяжёлым расчётом света. Умел только ходьбу и поворот камеры.
+        Стены — однотонные белые. Без текстур, без API, без врагов.</td>
+  </tr>
+
+  <tr>
+    <td><strong>Beta</strong></td>
+    <td>конец июля — начало августа 2026</td>
+    <td>Первые теги в картах, смена цвета стен. Попытка интеграции <code>.obj</code> через модуль
+        <code>polygon/converter.py</code> (должен был строить полигоны на «настоящем» 3D — не сработало, отложено).
+        Первый набросок <strong>MicroAPI</strong> — пока только телепорт игрока (именно с него началась идея ID=9,
+        потом ID=8 и ID=7, но всё это — в будущем). <code>Camera</code> переделан в <code>Player</code>:
+        теперь хранит позицию и угол, а не просто рисует экран. Появились теги <code>material</code> и <code>isvisible</code>.
+        Текстуризация почти не работала — 80 лучей на Ryzen 5 4600H давали 40 FPS.</td>
+  </tr>
+
+  <tr>
+    <td><strong>1.0</strong></td>
+    <td>~17 августа 2026</td>
+    <td>Расширенный MicroAPI. Билборды (спрайты, ещё без врагов). <code>obj_to_sprites</code> на <code>trimesh</code> —
+        генерировал 32 ракурса модели, медленно и грубо, но тогда казалось прорывом. Теги <code>height</code> и
+        <code>alpha</code> — вызывали ужасные лаги на неоптимизированном CPU. Триггеры (именно они заставили сделать
+        полноценный API, а не только телепорты). Улучшенные порталы (прототипы были уже в Beta). Оверлеи.
+        Нерабочая интеграция видео через <code>ffmpeg</code>. <code>sound/mixer</code> — обёртка над <code>pygame.mixer</code>.
+        MaterialManager научился грузить картинки (в Beta он был, но умел только цветные стены по ID).</td>
+  </tr>
+
+  <tr>
+    <td><strong>1.1</strong></td>
+    <td>22 августа 2026</td>
+    <td>Оптимизация ~50%: Light Tracing переписан, добавлен <strong>Async Raycast</strong> (120 лучей в те же 40 FPS).
+        Заложена основа <code>EnemyAI</code> и <code>GunManager</code>. Появился ID=7 (двери/ключи).
+        <code>height</code> и <code>alpha</code> временно удалены из-за лагов. Первый редактор объектов —
+        <code>.obj</code>-редактор (крайне сырой, вскоре заменён). Заготовки <code>GameExample</code>/<code>MenuExample</code>
+        существовали, но не работали.</td>
+  </tr>
+
+  <tr>
+    <td><strong>1.1.5</strong></td>
+    <td>конец августа — начало сентября 2026</td>
+    <td><strong>Прорыв в оптимизации: ускорение рейкастинга в 30.5 раз.</strong> Кэш текстурных столбцов,
+        предрасчёт углов, Render Scale (Off / 2x / 3x / 4x). Прототип <strong>MCFI</strong> (frame blending) —
+        визуально давал ощущение +30% FPS. Теперь стабильно шло <strong>1920 лучей в 10–30 FPS</strong>
+        или <strong>960 лучей в 60 FPS</strong>. Полноценный <code>EnemyAI</code> (static/chase/patrol/multiplayer),
+        <code>Gun</code>/<code>GunManager</code>/<code>Bullet</code>, <code>Player</code> с HP, смертью и <code>on_death</code>.
+        Формат <strong>.gbj</strong> (OBJ с HEX-цветами граней) и первый встроенный редактор <code>redactor.py</code>.
+        Заготовки Menu/Game доведены до рабочего состояния. <code>Sound3D</code>, <code>EffectsManager</code>,
+        видео-оверлей (full/angle/custom/chroma), экран загрузки с водяным знаком. Материалы: brick, concrete, glass,
+        wood, granite, earth, metal, plaster, marble, obsidian, gold, silver, copper, sand, snow, water, lava.</td>
+  </tr>
+
+  <tr>
+    <td><strong>1.2</strong></td>
+    <td>15 сентября 2026</td>
+    <td>Переписан расчёт лучей на <strong>Cython</strong>. <strong>GPU-рендеринг</strong> через <code>moderngl</code>
+        (OpenGL 3.3+). Мини-карта с 3 режимами (White-Black, Colorful, Custom). <strong>A*</strong> для врагов.
+        Система частиц с 4 уровнями (Off / Main / Optimal / All). Разрушаемые стены и интерактивные объекты.
+        HUD (HP, патроны, иконка оружия, опциональный показ над врагами). Тряска экрана. Туман и дымка.</td>
+  </tr>
+
+  <tr>
+    <td><strong style="color:#7ad37a;">1.2.5 API Update</strong></td>
+    <td><strong style="color:#7ad37a;">16 сентября 2026</strong></td>
+    <td><strong>RTE — Ray Tracing Emulator</strong> (мягкие тени, зеркала, отражения в воде, динамический свет
+        до 16 источников). Возврат <code>alpha</code> и <code>height</code> — теперь в шейдере, без потери
+        производительности. Интерактивные и толкаемые <code>.obj</code>. <strong>Взрывные патроны</strong>
+        (флаг <code>explosive=True</code>, RPG). Полностью переписанный GPU-рендерер.
+        <strong>+150 методов API</strong> в <code>MicroAPI</code>, <code>PhysicsAPI</code>, <code>ModAPI</code>.
+        Кастомные world renderers. Config/Storage/i18n для модов. F1/F3 отладочные оверлеи.</td>
+  </tr>
+
 </table>
 </div>
+
+<div class="note">
+  <strong>О датах.</strong> Указаны ориентировочные даты — движок развивался короткими спринтами по 3–5 дней.
+  Промежуточные билды (например, <code>1.0.1</code>, <code>1.1.2</code>) в таблице не перечислены, чтобы не путать.
+  Все версии — открытые, доступны в истории проекта.
+</div>
+
+<h3>Что появилось в 1.2.5</h3>
+<ul>
+  <li><strong>RTE</strong> — мягкие тени, зеркала, отражения в воде, динамический свет до 16 источников.</li>
+  <li><strong>Alpha-стены</strong> — возвращены, работают в шейдере, лучи проходят насквозь.</li>
+  <li><strong>Height-стены</strong> — тоже возвращены, растут от пола, над ними видно потолок.</li>
+  <li><strong>Интерактивные .obj</strong> — нажатие E вызывает callback (<code>on_press</code>).</li>
+  <li><strong>Толкаемые .obj</strong> — с массой, трением и упругостью. Игрок толкает объект, объект отскакивает от стен.</li>
+  <li><strong>Взрывы</strong> — урон по радиусу с затуханием, отталкивание врагов, разрушение стен, разлёт осколков, динамический свет.</li>
+  <li><strong>Взрывные патроны</strong> — флаг <code>explosive=True</code> в <code>Gun</code>. Основа для RPG-гранатомёта.</li>
+  <li><strong>HUD</strong> — полоски HP теперь масштабируются относительно <code>max_hp</code> врага, а не всегда относительно 100.</li>
+  <li><strong>Парсер тегов</strong> — принимает оба разделителя (<code>,</code> и <code>;</code>) и оба знака (<code>=</code> и <code>:</code>). Параметры врагов больше не теряются.</li>
+</ul>
+
+<h3>Что появилось в 1.2</h3>
+<ul>
+  <li><strong>Cython-рейкастер</strong> — ускорение CPU-пути в 2.5–5 раз.</li>
+  <li><strong>GPU-рендеринг</strong> — через <code>moderngl</code> (OpenGL 3.3+), единый fragment shader.</li>
+  <li><strong>Мини-карта</strong> — 3 режима: White-Black, Colorful, Custom.</li>
+  <li><strong>A* для врагов</strong> — умное обхождение препятствий.</li>
+  <li><strong>Система частиц</strong> — 4 уровня (Off / Main / Optimal / All).</li>
+  <li><strong>Разрушаемые стены</strong> — с осколками и декалями.</li>
+  <li><strong>HUD</strong> — HP, патроны, иконка оружия.</li>
+  <li><strong>Тряска экрана</strong> — выстрелы, попадания, взрывы.</li>
+  <li><strong>Туман и дымка</strong> — атмосфера и мягкая оптимизация дальней сцены.</li>
+</ul>
 
 <!-- ============================================ -->
 <h2 id="install">2. 📦 Установка</h2>
