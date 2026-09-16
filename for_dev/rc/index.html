@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gradus RC v1.2.5 — Полная документация</title>
+  <title>Gradus RC v1.2.5 API Update (1.3 Beta) — Полная документация</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-text-size-adjust: 100%; }
     body {
@@ -122,17 +122,24 @@
 <body>
 <div class="container">
 
-<h1>🧭 Gradus RC v1.2.5 — Полная документация для разработчиков</h1>
-<p style="font-size: 1.1em; color: #a8b8d0;">Python 3.12+ · Pygame 2.6+ · MIT License · релиз: <strong style="color: #8ab4f8;">16.09.2026</strong></p>
+<h1>🧭 Gradus RC v1.2.5 API Update (1.3 Beta)</h1>
+<p style="font-size: 1.1em; color: #a8b8d0;">
+  Python 3.12+ · Pygame 2.6+ · MIT License · релиз: <strong style="color: #8ab4f8;">16.09.2026</strong><br>
+  <span style="color: #7ad37a;">API Update — 150+ новых методов в MicroAPI, PhysicsAPI и ModAPI</span>
+</p>
 
 <div class="badge-row">
+  <span class="badge" style="background:#2a5a3a; color:#b8e8c8;">+150 методов API</span>
+  <span class="badge" style="background:#3a2a5a; color:#c8b8f8;">ModAPI + Mods</span>
+  <span class="badge" style="background:#5a3a2a; color:#f8c8b8;">PhysicsAPI 2.0</span>
+  <span class="badge" style="background:#2a4a5a; color:#b8d8f8;">Custom World Renderers</span>
   <span class="badge">RTE на GPU</span>
-  <span class="badge">Alpha-стены</span>
-  <span class="badge">Height-стены</span>
-  <span class="badge">Interactive obj</span>
-  <span class="badge">Pushable obj</span>
+  <span class="badge">Triggers &amp; Timers</span>
+  <span class="badge">Config &amp; Storage &amp; i18n</span>
+  <span class="badge">F1 / F3 Debug</span>
+  <span class="badge">Alpha &amp; Height стены</span>
+  <span class="badge">Интерактивные и толкаемые obj</span>
   <span class="badge">Взрывы + 3D-свет</span>
-  <span class="badge">Динамический свет</span>
 </div>
 
 <div class="note" style="border-color: #8ab4f8;">
@@ -140,13 +147,32 @@
   Возвращены <strong>прозрачные (alpha)</strong> и <strong>полувысотные (height)</strong> стены — теперь без потери производительности, потому что работают в шейдере на GPU. Появился <strong>RTE (Ray Tracing Emulator)</strong> — мягкие тени, зеркала, отражения в воде, динамический свет от взрывов. Полностью переписан GPU-рендерер на moderngl. Добавлены <strong>интерактивные</strong> и <strong>толкаемые</strong> .obj-объекты. Взрывы теперь наносят урон по радиусу, разлетаются 3D-разлётом осколков и подсвечивают сцену динамическим светом.
 </div>
 
+<div class="note" style="border-color: #7ad37a; background:#1a2e1a;">
+  <strong style="color:#7ad37a;">🚀 API Update — что появилось</strong><br>
+  Это обновление не про рендер и не про геймплей — оно про <strong>API</strong>. Мы добавили <strong>150+ новых методов</strong>
+  в три ключевых класса: <code>MicroAPI</code>, <code>PhysicsAPI</code> и <code>ModAPI</code>. Теперь из мода или игрового кода можно:
+  <ul style="margin-top:8px;">
+    <li>Пускать лучи по сетке (<code>raycast</code>), проверять видимость (<code>has_line_of_sight</code>), проецировать мир на экран (<code>project_world_to_screen</code>).</li>
+    <li>Полностью управлять игроком: телепорт, HP, регенерация, noclip, invulnerable, скорости.</li>
+    <li>Управлять врагами: freeze, set_state, knockback, set_target, get_by_type.</li>
+    <li>Спавнить что угодно: спрайты, модели, декали, взрывы, свет, триггер-зоны.</li>
+    <li>Менять карту на лету: <code>fill_rect</code>, <code>fill_circle</code>, <code>set_cell_water</code>, <code>set_cell_material</code>.</li>
+    <li>Планировать события: <code>after</code>, <code>every</code>, <code>schedule</code>, <code>time_scale</code>.</li>
+    <li>Полный физический контроль: силы, импульсы в точке, джойнты, слои, body-vs-body, триггеры, сериализация.</li>
+    <li>Писать по-настоящему модульные моды: <code>config.json</code>, <code>save.json</code>, <code>lang/ru.json</code>, <code>reload_self()</code>, <code>require_mod()</code>.</li>
+    <li>Рисовать свой рендер прямо в мире: мебель, декали, эффекты — через <code>register_world_renderer</code> (CPU) и <code>register_gpu_pass</code> (GPU).</li>
+  </ul>
+  Всё аддитивно: старый код продолжит работать без изменений.
+</div>
+
 <div class="tip" style="border-color: #7ad37a;">
   <strong>🚀 Дорожная карта</strong><br>
-  <strong>1.3 — Q4 2026.</strong> Мультиплеер (базовый + Firebase RTDB), chunk-based map streaming для больших уровней,
-  текстуры на гранях .obj (расширение формата .gbj + апгрейд <code>redactor.py</code>),
-  прокачка <code>obj_to_sprites</code>, улучшенная система сохранений и большая прокачка <code>MicroAPI</code> и PhysicsAPI.<br>
-  <strong>1.4 — Q1 2027.</strong> Самое крупное обновление в истории движка. Никаких спойлеров, но скажем одно:
-  рендер переезжает на <strong>Vulkan</strong>. Gradus RC станет единственным рейкастинг-движком на Vulkan в мире.
+  <strong>1.3 — Q4 2026.</strong> Мультиплеер (базовый + Firebase RTDB), chunk-based map streaming,
+  текстуры на гранях .obj (расширение .gbj + апгрейд <code>redactor.py</code>), прокачка <code>obj_to_sprites</code>,
+  улучшенная система сохранений, Achievements API (локальный).<br>
+  <strong>1.4 — Q1 2027.</strong> Самое крупное обновление в истории. Vulkan-рендер, граф-редактор (карта + скрипт),
+  обновлённый GBJ-редактор, Workshop-заготовка, полноценные 3D-частицы, ModsManager в релизном качестве,
+  AchievementsAPI с синхронизацией, реплеи, скриншоты.
 </div>
 
 <div class="toc">
@@ -173,16 +199,20 @@
   <a href="#minimap">20. Мини-карта</a>
   <a href="#sound">21. Звук и Sound3D</a>
   <a href="#effects">22. EffectsManager</a>
-  <a href="#microapi">23. MicroAPI</a>
-  <a href="#events">24. События</a>
-  <a href="#examples">25. Заготовки и полный пример</a>
-  <a href="#cython">26. Cython-сборка</a>
-  <a href="#gpu">27. GPU-рендерер (under the hood)</a>
-  <a href="#benchmarks">28. Бенчмарки</a>
-  <a href="#optimization">29. Оптимизация</a>
-  <a href="#limitations">30. Ограничения честно</a>
-  <a href="#glossary">31. Глоссарий</a>
-  <a href="#faq">32. FAQ</a>
+  <a href="#microapi"><strong style="color:#7ad37a;">23. MicroAPI — полное руководство (API Update)</strong></a>
+  <a href="#physicsapi"><strong style="color:#7ad37a;">24. PhysicsAPI — полное руководство (API Update)</strong></a>
+  <a href="#modapi"><strong style="color:#7ad37a;">25. ModAPI и система модов (API Update)</strong></a>
+  <a href="#world_renderers"><strong style="color:#7ad37a;">26. Кастомный рендер в мире</strong></a>
+  <a href="#debug_overlay"><strong style="color:#7ad37a;">27. F1 / F3 — отладочные оверлеи</strong></a>
+  <a href="#events">28. События (переопределение)</a>
+  <a href="#examples">29. Заготовки и полный пример</a>
+  <a href="#cython">30. Cython-сборка</a>
+  <a href="#gpu">31. GPU-рендерер (under the hood)</a>
+  <a href="#benchmarks">32. Бенчмарки</a>
+  <a href="#optimization">33. Оптимизация</a>
+  <a href="#limitations">34. Ограничения честно</a>
+  <a href="#glossary">35. Глоссарий</a>
+  <a href="#faq">36. FAQ</a>
 </div>
 
 <!-- ============================================ -->
@@ -197,36 +227,23 @@
   <li><strong>Простота — приоритет.</strong> Игру можно собрать в 2 строки (все настройки по умолчанию), в 20 строк (некоторые настройки свои), в 200 строк (полная гибкость) или в 2000 строк (переопределить всё). Каждый уровень погружения — твой выбор.</li>
   <li><strong>Никаких внешних зависимостей без нужды.</strong> Pygame — единственная обязательная. Остальное — по желанию.</li>
   <li><strong>Производительность через архитектуру, а не через оптимизации.</strong> Сначала правильная архитектура (GPU-шейдер), потом мелкие фиксы.</li>
-  <li><strong>Открытость.</strong> Всё в одном пакете, никаких скомпилированных бинарников кроме Cython-ускорителя. Хочешь посмотреть как работает — открой исходник.</li>
+  <li><strong>Открытость.</strong> Всё в одном пакете, никаких скомпилированных бинарников кроме Cython-ускорителя.</li>
 </ul>
 
 <h3>Краткая история версий</h3>
 <div class="table-wrap">
 <table>
   <tr><th>Версия</th><th>Дата</th><th>Главное</th></tr>
-  <tr><td><strong>Alpha</strong></td><td>осень 2024</td><td>Первый raycasting. Простые стены, один враг без ИИ. Всё в одном файле <code>engine.py</code>.</td></tr>
-  <tr><td><strong>Beta</strong></td><td>начало 2025</td><td>Спрайты, звук, HUD, мини-карта. Разделение на модули.</td></tr>
-  <tr><td><strong>1.0</strong></td><td>середина 2025</td><td>Разрушаемые стены, партиклы, декали, туман. Появился MicroAPI.</td></tr>
-  <tr><td><strong>1.1</strong></td><td>октябрь 2025</td><td>3D-модели через <code>obj_to_sprites</code>, EffectsManager, Sound3D, пауза, заготовки Menu/Game.</td></tr>
-  <tr><td><strong>1.1.5</strong></td><td>декабрь 2025</td><td>Первый GPU-рендерер на moderngl, MCFI, Cython-версия рейкастера.</td></tr>
-  <tr><td><strong>1.2</strong></td><td>весна 2026</td><td>Вторая попытка GPU-рендерера (уже без ошибок), первые эксперименты с alpha. Из-за производительности alpha временно отключён.</td></tr>
-  <tr><td><strong style="color: #7ad37a;">1.2.5</strong></td><td><strong style="color: #7ad37a;">16.09.2026</strong></td><td><strong>RTE, возврат alpha и height, интерактивные obj, взрывы, динамический свет, полностью переписаный GPU-рендерер.</strong></td></tr>
+  <tr><td><strong>Alpha</strong></td><td>осень 2024</td><td>Первый raycasting. Простые стены, один враг без ИИ.</td></tr>
+  <tr><td><strong>Beta</strong></td><td>начало 2025</td><td>Спрайты, звук, HUD, мини-карта.</td></tr>
+  <tr><td><strong>1.0</strong></td><td>середина 2025</td><td>Разрушаемые стены, партиклы, декали, туман. MicroAPI.</td></tr>
+  <tr><td><strong>1.1</strong></td><td>октябрь 2025</td><td>3D-модели, EffectsManager, Sound3D, Menu/Game заготовки.</td></tr>
+  <tr><td><strong>1.1.5</strong></td><td>декабрь 2025</td><td>Первый GPU-рендерер, MCFI, Cython-версия рейкастера.</td></tr>
+  <tr><td><strong>1.2</strong></td><td>весна 2026</td><td>Вторая попытка GPU-рендерера. Alpha временно отключён.</td></tr>
+  <tr><td><strong>1.2.5</strong></td><td>16.09.2026</td><td>RTE, возврат alpha и height, интерактивные obj, взрывы, динамический свет, полностью переписанный GPU-рендерер.</td></tr>
+  <tr><td><strong style="color:#7ad37a;">1.2.5 API Update</strong></td><td><strong style="color:#7ad37a;">сегодня</strong></td><td><strong>+150 методов в MicroAPI, PhysicsAPI, ModAPI. Кастомные world renderers. Config/Storage/i18n. F1/F3 debug.</strong></td></tr>
 </table>
 </div>
-
-<h3>Что появилось в 1.2.5</h3>
-<ul>
-  <li><strong>RTE</strong> — мягкие тени, зеркала, отражения в воде, динамический свет до 16 источников.</li>
-  <li><strong>Alpha-стены</strong> — возвращены, работают в шейдере, лучи проходят насквозь.</li>
-  <li><strong>Height-стены</strong> — тоже возвращены, растут от пола, над ними видно потолок.</li>
-  <li><strong>Интерактивные .obj</strong> — нажатие E вызывает callback (<code>on_press</code>).</li>
-  <li><strong>Толкаемые .obj</strong> — с массой, трением, упругостью. Игрок толкает объект, объект отскакивает от стен.</li>
-  <li><strong>Взрывы</strong> — урон по радиусу с затуханием, отталкивание врагов, разрушение стен, разлёт осколков, динамический свет.</li>
-  <li><strong>3D-разлёт осколков</strong> — честно говоря, это 2D-спрайты с fake-вертикальным смещением. Настоящие 3D-осколки — в 1.4 на Vulkan.</li>
-  <li><strong>Взрывные пули</strong> — флаг <code>explosive=True</code> в Gun.</li>
-  <li><strong>HUD</strong> — полоски HP теперь масштабируются относительно <code>max_hp</code> врага, а не всегда 100.</li>
-  <li><strong>Парсер тегов</strong> — принимает оба разделителя (<code>,</code> и <code>;</code>) и оба знака (<code>=</code> и <code>:</code>). Параметры врагов больше не теряются.</li>
-</ul>
 
 <!-- ============================================ -->
 <h2 id="install">2. 📦 Установка</h2>
@@ -247,45 +264,46 @@
 </div>
 
 <div class="tip">
-  <strong>Что выбрать.</strong> Если у тебя есть интегрированная GPU (Intel HD, AMD Radeon Vega, любая iGPU 2015+) — ставь <code>moderngl</code>. Ты получишь в 3–5 раз больше FPS и RTE.
-  Если у тебя только CPU с Python 3.12 — собирай Cython, ускорение ~2.5x. Оба варианта совместимы, движок сам выберет лучший.
+  <strong>Что выбрать.</strong> Если у тебя есть iGPU (Intel HD, AMD Radeon Vega, любая 2015+) — ставь <code>moderngl</code>. Если только CPU — собирай Cython.
 </div>
 
 <h3>Структура проекта</h3>
 <pre><code>МойПроект/
 ├── gradus_rc/                ← папка движка
-│   ├── engine.py             ← Engine и MicroAPI
+│   ├── engine.py             ← Engine + MicroAPI + PhysicsAPI
 │   ├── player.py
 │   ├── enemy.py
 │   ├── gun.py
 │   ├── config.py
-│   ├── raycast/              ← CPU-рейкастер + Cython
-│   ├── render/               ← GPU-рейкастер (moderngl)
-│   ├── light/                ← LightTracer + LightSource
-│   ├── material/             ← MaterialLibrary, текстуры
-│   ├── sprite/               ← Sprite, ModelSprite, AnimatedModelSprite
-│   ├── object/               ← InteractiveObject, GameObjectRegistry
-│   ├── polygon/              ← obj_to_sprites, redactor.py
-│   ├── effects/              ← particles, decals, explosion, manager
-│   ├── sound/                ← mixer, Sound3D
-│   ├── hud/                  ← HUDManager, minimap, pause
-│   ├── image/                ← load_image, SpriteManager
-│   ├── utils/                ← MapParser
-│   └── ai/                   ← pathfinding (A*)
-├── assets/                   ← твои ассеты
-│   ├── models/               ← .obj, .gbj
-│   ├── textures/             ← текстуры
-│   ├── sound/                ← звуки
-│   └── image/                ← оверлеи, скины оружия
-├── cache/                    ← кэш спрайтов моделей (создаётся сам)
-├── main.py                   ← твой игровой файл
-├── setup_cython.py           ← для сборки Cython
-└── RUN_ME.ps1                ← скрипт сборки Cython</code></pre>
+│   ├── raycast/
+│   ├── render/
+│   ├── light/
+│   ├── material/
+│   ├── sprite/
+│   ├── object/
+│   ├── polygon/
+│   ├── effects/
+│   ├── sound/
+│   ├── hud/
+│   ├── image/
+│   ├── utils/
+│   ├── ai/
+│   └── mods/                 ← ModsManager + ModAPI + ModAPI hooks
+├── mods/                     ← моды сторонних разработчиков
+│   └── example/
+│       ├── mod.py
+│       ├── mod.json
+│       ├── config.json       (auto)
+│       ├── save.json         (auto)
+│       ├── lang/
+│       └── assets/
+├── assets/
+├── cache/
+├── main.py
+└── setup_cython.py</code></pre>
 
 <!-- ============================================ -->
 <h2 id="quickstart">3. 🚀 Быстрый старт</h2>
-
-<p>Минимальная игра — коридор из 4 клеток с одним источником света.</p>
 
 <pre><code>import pygame
 from gradus_rc import Engine
@@ -312,11 +330,8 @@ def main():
     clock = pygame.time.Clock()
 
     engine = Engine(
-        clock=clock,
-        levels=[LEVEL1],
-        current_level=0,
-        width=WIDTH, height=HEIGHT,
-        fov=60, rays=200, tile_size=64,
+        clock=clock, levels=[LEVEL1], current_level=0,
+        width=WIDTH, height=HEIGHT, fov=60, rays=200, tile_size=64,
         player_speed=48.0, player_rot_speed=3.0,
     )
 
@@ -337,42 +352,29 @@ def main():
 if __name__ == "__main__":
     main()</code></pre>
 
-<p><strong>Что здесь происходит:</strong></p>
-<ol>
-  <li>Создаётся окно Pygame 800×600.</li>
-  <li>Создаётся <code>Engine</code>, передаётся карта уровня и настройки.</li>
-  <li>В цикле: события → логика → рендер.</li>
-</ol>
-
-<p><strong>Управление по умолчанию:</strong> WASD — движение, ←/→ — поворот, ПКМ — захват мыши, ЛКМ — стрельба.</p>
+<p><strong>Управление:</strong> WASD — движение, ←/→ — поворот, ПКМ — захват мыши, ЛКМ — стрельба.</p>
 
 <!-- ============================================ -->
 <h2 id="migration">4. 🔄 Миграция с 1.2 на 1.2.5</h2>
 
-<p>Если у тебя проект на 1.2 — вот что нужно проверить и поменять.</p>
-
 <h3>Теги enemy в карте</h3>
-<p><strong>Раньше</strong> тег мог обрезаться на втором параметре (парсер ловил только <code>type=chase</code> и <code>sprite:...</code>). Теперь всё работает, но для консистентности лучше переписать в формате <code>;</code> + <code>:</code>:</p>
-
 <pre><code># Было (работало плохо)
 0&lt;enemy:type=chase,hp=50,aim=10,shoot_delay=1.0&gt;
 
 # Стало (рекомендуется)
 0&lt;enemy:type:chase;hp:50;aim:10;shoot_delay:1.0&gt;</code></pre>
 
-<p>Оба варианта теперь парсятся, но новый читается лучше.</p>
-
 <h3>Alpha-стены</h3>
-<p>Раньше тег <code>alpha:0.5</code> вызывал падение FPS до 0.2. Теперь работает корректно и быстро. Если ты раньше отключал alpha из-за лагов — включи обратно.</p>
+<p>Раньше тег <code>alpha:0.5</code> вызывал падение FPS. Теперь работает быстро.</p>
 
 <h3>Интерактивные объекты</h3>
-<p>Новые теги <code>interactive</code>, <code>pushable</code>, <code>on_press</code>. Если у тебя ID=6 модели уже были — они не станут толкаемыми автоматически, нужно явно поставить тег.</p>
+<p>Новые теги <code>interactive</code>, <code>pushable</code>, <code>on_press</code>. Если у тебя ID=6 модели были — они не станут толкаемыми автоматически.</p>
 
-<h3>Обработчик E</h3>
-<p>Если раньше у тебя был свой скример на ID=8 — оставь как есть. Если хочешь новую систему с <code>on_press</code> — используй <code>on_interactive_press</code> в наследнике Engine.</p>
+<h3>RTE</h3>
+<p>Включается через <code>api.set_rt(...)</code>. По умолчанию выключен.</p>
 
-<h3>Изменения в RTE</h3>
-<p>RTE включается через <code>api.set_rt(...)</code>. Параметры <code>enabled</code>, <code>max_lights</code>, <code>reflections</code>. По умолчанию всё выключено — RTE не тормозит игру, если его не включить.</p>
+<h3>Новое в API Update</h3>
+<p>Моды теперь грузятся <strong>до</strong> загрузки первого уровня. Все новые API-методы аддитивны — если ты не используешь их, ничего не меняется.</p>
 
 <!-- ============================================ -->
 <h2 id="arch">5. 🧩 Архитектура</h2>
@@ -382,34 +384,34 @@ if __name__ == "__main__":
 <h3>Основные классы</h3>
 
 <h4>Engine</h4>
-<p>Центральный класс. Хранит ссылки на все системы, загружает уровни, обновляет логику, вызывает рендер. Один экземпляр на игру.</p>
+<p>Центральный класс. Хранит ссылки на все системы, загружает уровни, обновляет логику, вызывает рендер.</p>
 
 <h4>Player</h4>
-<p>Позиция (<code>pos</code>), угол (<code>angle</code>), скорость, поворот, HP, регенерация, флаг <code>alive</code>, обработчик <code>on_death</code>.</p>
+<p>Позиция, угол, скорость, поворот, HP, регенерация, флаг <code>alive</code>, обработчик <code>on_death</code>.</p>
 
 <h4>RayCaster <span class="badge">CPU</span></h4>
-<p>Алгоритм рейкастинга на CPU. Возвращает <code>RayResult</code> для каждого луча: глубину, попадание, объекты за лучом, координату вдоль стены. Есть Python-версия и Cython-версия.</p>
+<p>Алгоритм рейкастинга на CPU. Есть Python-версия и Cython-версия.</p>
 
 <h4>GPURaycaster <span class="rte">RTE</span></h4>
-<p>Модуль <code>render/gpu_renderer.py</code>. Выполняет <em>всю сцену</em> в шейдере на GPU: пол/потолок, стены, прозрачность, отражения, тени, туман, динамический свет. Возвращает готовый <code>pygame.Surface</code>, который движок копирует в <code>render_surface</code>.</p>
+<p>Выполняет всю сцену в шейдере на GPU: пол/потолок, стены, прозрачность, отражения, тени, туман, динамический свет.</p>
 
 <h4>LightTracer</h4>
-<p>Статическое освещение: источники, амбиент, фонарик игрока. Возвращает множитель яркости (0..1).</p>
+<p>Статическое освещение: источники, амбиент, фонарик игрока.</p>
 
 <h4>EnemyAI</h4>
-<p>Враг: HP, тип ИИ, точность, задержка выстрела, спрайт. Полностью настраивается через теги карты.</p>
+<p>Враг: HP, тип ИИ, точность, задержка выстрела, спрайт.</p>
 
 <h4>Gun / GunManager / Bullet</h4>
-<p>Оружие: урон, темп, магазин, перезарядка. Поддерживает <code>explosive=True</code> для RPG.</p>
+<p>Оружие: урон, темп, магазин, перезарядка. Поддерживает <code>explosive=True</code>.</p>
 
-<h4>Explosion <span class="new">1.2.5</span></h4>
-<p>Класс <code>effects/explosion.py</code>. Урон по радиусу, отталкивание врагов, разрушение стен, 3D-разлёт осколков (это 2D-спрайты с fake-z), динамический свет.</p>
+<h4>Explosion</h4>
+<p>Урон по радиусу, отталкивание врагов, разрушение стен, осколки, динамический свет.</p>
 
-<h4>InteractiveManager / InteractiveObject <span class="new">1.2.5</span></h4>
+<h4>InteractiveObject</h4>
 <p>Объекты с реакцией на клавишу E и/или физикой толкания.</p>
 
 <h4>SpriteManager / DecalSystem / ParticleSystem</h4>
-<p>Спрайты (сортировка по глубине), пятна на полу, частицы.</p>
+<p>Спрайты, пятна на полу, частицы.</p>
 
 <h4>SoundManager / Sound3D</h4>
 <p>Загрузка, проигрывание, позиционирование звука в мире.</p>
@@ -418,118 +420,98 @@ if __name__ == "__main__":
 <p>Полноэкранные эффекты: VHS, шум, glitch.</p>
 
 <h4>MicroAPI</h4>
-<p>Единая точка управления всем движком. Доступна через <code>engine.api</code>.</p>
+<p>Единая точка управления движком. <code>engine.api</code>.</p>
+
+<h4>PhysicsAPI <span class="new">API Update</span></h4>
+<p>Круглые тела, силы, джойнты, слои, триггеры. <code>engine.physics</code>.</p>
+
+<h4>ModsManager / ModAPI <span class="new">API Update</span></h4>
+<p>Загрузка модов, регистрация сущностей, lifecycle. Мод получает объект <code>api</code> в момент загрузки.</p>
 
 <h3>Поток данных в кадре</h3>
 <ol>
-  <li><code>Player.update()</code> — читает ввод, двигает и поворачивает игрока.</li>
-  <li><code>EnemyAI.update()</code> — двигает врагов, стреляет.</li>
-  <li><code>Bullet.update()</code> — двигает пули, проверяет попадания.</li>
-  <li><code>Explosion.update()</code> — обрабатывает урон по радиусу, спавнит осколки, создаёт динамический свет.</li>
-  <li><code>InteractiveObject.update()</code> — физика толкания, трение, коллизии.</li>
-  <li><code>ParticleSystem.update()</code>, <code>DecalSystem.update()</code> — двигают частицы.</li>
-  <li><code>GPURaycaster.render()</code> или <code>RayCaster.cast_rays()</code> — сцена.</li>
-  <li>Спрайты, враги, модельки — pygame поверх GPU-рендера.</li>
+  <li>Scheduled callbacks, screen flashes, trigger zones, mods lifecycle.</li>
+  <li><code>Player.update()</code>.</li>
+  <li><code>EnemyAI.update()</code>.</li>
+  <li><code>Bullet.update()</code>.</li>
+  <li><code>Explosion.update()</code>.</li>
+  <li><code>InteractiveObject.update()</code>.</li>
+  <li><code>Physics._step()</code> — тела, джойнты, body-vs-body, area triggers.</li>
+  <li>Particle/Decal update.</li>
+  <li><code>GPURaycaster.render()</code> или <code>RayCaster.cast_rays()</code>.</li>
+  <li>Спрайты, враги, модели, world renderers.</li>
   <li><code>_draw_overlays</code> — HUD, миникарта, сообщения, эффекты.</li>
+  <li>F1/F3 debug overlay.</li>
 </ol>
 
 <!-- ============================================ -->
 <h2 id="map">6. 🗺️ Формат карт и теги</h2>
 
-<p>Карта — многострочная строка с секциями. Секция начинается с <code>[ИМЯ]</code>. Регистр неважен.</p>
+<p>Карта — многострочная строка с секциями. Секция начинается с <code>[ИМЯ]</code>.</p>
 
 <h3>Секции</h3>
 <div class="table-wrap">
 <table>
   <tr><th>Секция</th><th>Что делает</th><th>Пример</th></tr>
   <tr><td><code>[COLLISION]</code></td><td>Основная сетка</td><td><code>1 1 1<br>1 0 1</code></td></tr>
-  <tr><td><code>[FLOOR_COLOR=RRGGBB]</code></td><td>Цвет пола (HEX без #)</td><td><code>FLOOR_COLOR=333333</code></td></tr>
+  <tr><td><code>[FLOOR_COLOR=RRGGBB]</code></td><td>Цвет пола</td><td><code>FLOOR_COLOR=333333</code></td></tr>
   <tr><td><code>[CEILING_COLOR=RRGGBB]</code></td><td>Цвет потолка</td><td><code>CEILING_COLOR=111111</code></td></tr>
   <tr><td><code>[SPAWN=x,y]</code></td><td>Спавн игрока (в клетках)</td><td><code>SPAWN=0.5,0.5</code></td></tr>
   <tr><td><code>[AMBIENT=0..1]</code></td><td>Базовая яркость</td><td><code>AMBIENT=0.15</code></td></tr>
   <tr><td><code>[USE_LT=0/1]</code></td><td>Освещение пола/потолка</td><td><code>USE_LT=1</code></td></tr>
   <tr><td><code>[LIGHTS=x,y,int,radius;...]</code></td><td>Статические источники</td><td><code>LIGHTS=2.5,2.5,0.5,200</code></td></tr>
-  <tr><td><code>[BILBOARDS=x,y,key;...]</code></td><td>Спрайты из <code>textures/</code></td><td><code>BILBOARDS=3.5,2.5,tree</code></td></tr>
-  <tr><td><code>[FOG_COLOR=RRGGBB]</code></td><td>Цвет тумана (включает туман)</td><td><code>FOG_COLOR=303040</code></td></tr>
+  <tr><td><code>[BILBOARDS=x,y,key;...]</code></td><td>Спрайты</td><td><code>BILBOARDS=3.5,2.5,tree</code></td></tr>
+  <tr><td><code>[FOG_COLOR=RRGGBB]</code></td><td>Цвет тумана</td><td><code>FOG_COLOR=303040</code></td></tr>
   <tr><td><code>[FOG_START=N]</code></td><td>Начало тумана</td><td><code>FOG_START=400</code></td></tr>
   <tr><td><code>[FOG_END=N]</code></td><td>Конец тумана</td><td><code>FOG_END=1200</code></td></tr>
 </table>
 </div>
 
 <h3>Синтаксис клетки</h3>
-<p>Клетка — ID, после которого идут теги в угловых скобках:</p>
 <pre><code>1&lt;material:brick;height:0.9;alpha:0.5&gt;
 6&lt;path:models/cube.obj;roty:45;scale:2.0&gt;
 7&lt;type:door;id:door1;link:key1&gt;
 0&lt;enemy:type:chase;hp:50;aim:10&gt;</code></pre>
 
 <div class="note">
-  <strong>Разделители.</strong> Внутри тега разрешены оба разделителя: <code>,</code> и <code>;</code>. Между ключом и значением — <code>:</code> или <code>=</code>. Это сделано для совместимости со старыми картами. Рекомендуется <code>key:value;key:value</code> — читается лучше.
+  <strong>Разделители.</strong> Разрешены и <code>,</code> и <code>;</code>, между ключом и значением — <code>:</code> или <code>=</code>.
 </div>
 
-<h3>Полный список тегов (v1.2.5)</h3>
+<h3>Полный список тегов (v1.2.5 API Update)</h3>
 
 <div class="table-wrap">
 <table>
   <tr><th>Тег</th><th>Применяется к</th><th>Что делает</th></tr>
-  <tr><td><code>material:name</code></td><td>ID 1–5</td><td>Материал стены (brick, granite, metal, silver, ...)</td></tr>
+  <tr><td><code>material:name</code></td><td>ID 1–5</td><td>Материал стены</td></tr>
   <tr><td><code>color:RRGGBB</code></td><td>ID 1–5, 6</td><td>Тинт цвета</td></tr>
-  <tr><td><code>height:0..1</code></td><td>ID 1–5</td><td><strong>Полувысотная стена</strong> <span class="new">1.2.5</span></td></tr>
-  <tr><td><code>alpha:0..1</code></td><td>ID 1–5</td><td><strong>Прозрачная стена</strong> <span class="new">1.2.5</span></td></tr>
+  <tr><td><code>height:0..1</code></td><td>ID 1–5</td><td>Полувысотная стена</td></tr>
+  <tr><td><code>alpha:0..1</code></td><td>ID 1–5</td><td>Прозрачная стена</td></tr>
   <tr><td><code>isvisible:0/1</code></td><td>все</td><td>Невидимость (коллизия остаётся)</td></tr>
   <tr><td><code>addcollision:0/1</code></td><td>ID 1–6</td><td>Коллизия для игрока и пуль</td></tr>
   <tr><td><code>destructible:1</code></td><td>ID 1–6</td><td>Разрушаемость</td></tr>
-  <tr><td><code>hp:N</code></td><td>ID 1–6</td><td>HP разрушаемой клетки (100 по умолч.)</td></tr>
-  <tr><td><code>reflectivity:0..1</code></td><td>ID 1–5 + water</td><td>Зеркальность для RTE <span class="new">1.2.5</span></td></tr>
+  <tr><td><code>hp:N</code></td><td>ID 1–6</td><td>HP разрушаемой клетки</td></tr>
+  <tr><td><code>reflectivity:0..1</code></td><td>ID 1–5 + water</td><td>Зеркальность для RTE</td></tr>
   <tr><td><code>water:true / puddle:true</code></td><td>пол</td><td>Вода / лужа для отражений</td></tr>
   <tr><td><code>path:file.obj</code></td><td>ID 6</td><td>Путь к модели</td></tr>
   <tr><td><code>rotx/roty/rotz:deg</code></td><td>ID 6</td><td>Поворот модели</td></tr>
   <tr><td><code>scale:N</code></td><td>ID 6</td><td>Масштаб</td></tr>
-  <tr><td><code>anim:path1,path2</code></td><td>ID 6</td><td>Анимация (последовательность моделей)</td></tr>
+  <tr><td><code>anim:path1,path2</code></td><td>ID 6</td><td>Анимация</td></tr>
   <tr><td><code>anim_speed:sec</code></td><td>ID 6</td><td>Скорость анимации</td></tr>
   <tr><td><code>type:door/key</code></td><td>ID 7</td><td>Дверь или ключ</td></tr>
   <tr><td><code>id:name</code></td><td>ID 7, 8</td><td>Уникальный ID</td></tr>
   <tr><td><code>link:name</code></td><td>ID 7</td><td>Связь ключа и двери</td></tr>
   <tr><td><code>level:N</code></td><td>ID 9</td><td>Целевой уровень портала</td></tr>
   <tr><td><code>enemy:key:val;...</code></td><td>ID 0–5</td><td>Спавн врага</td></tr>
-  <tr><td><code>pushable:1</code></td><td>ID 6</td><td><strong>Толкаемый объект</strong> <span class="new">1.2.5</span></td></tr>
-  <tr><td><code>mass:N</code></td><td>ID 6 pushable</td><td>Масса (влияет на скорость толчка)</td></tr>
-  <tr><td><code>friction:0..1</code></td><td>ID 6 pushable</td><td>Трение (0.85 = быстро тормозит)</td></tr>
-  <tr><td><code>bounciness:0..1</code></td><td>ID 6 pushable</td><td>Упругость при ударе о стену</td></tr>
-  <tr><td><code>interactive:1</code></td><td>ID 6</td><td>Реагирует на клавишу E <span class="new">1.2.5</span></td></tr>
+  <tr><td><code>pushable:1</code></td><td>ID 6</td><td>Толкаемый объект</td></tr>
+  <tr><td><code>mass:N</code></td><td>ID 6 pushable</td><td>Масса</td></tr>
+  <tr><td><code>friction:0..1</code></td><td>ID 6 pushable</td><td>Трение</td></tr>
+  <tr><td><code>bounciness:0..1</code></td><td>ID 6 pushable</td><td>Упругость</td></tr>
+  <tr><td><code>interactive:1</code></td><td>ID 6</td><td>Реагирует на E</td></tr>
   <tr><td><code>on_press:action</code></td><td>ID 6</td><td>Имя события при нажатии E</td></tr>
-  <tr><td><code>radius:N</code></td><td>ID 6</td><td>Радиус взаимодействия (умолч. 32)</td></tr>
+  <tr><td><code>radius:N</code></td><td>ID 6</td><td>Радиус взаимодействия</td></tr>
+  <tr><td><code>render:name;...params</code> <span class="new">API Update</span></td><td>любая</td><td>Привязать кастомный world renderer к клетке</td></tr>
 </table>
 </div>
-
-<h3>Пример полной карты</h3>
-<pre><code>LEVEL1 = """
-[COLLISION]
-1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-1 0 0 0 0 0 0 1 0 0 0 0 0 0 0 1
-1 0 1 1 1 0 0 1 0 1 1 1 0 0 0 1
-1 0 0 0 1 0 0&lt;enemy:type:chase;hp:50;aim:10&gt; 0 0 0 0 1 0 0 1
-1 3&lt;destructible:true&gt; 1 1 1 0 0 0 0 0 0 1 0 0 1
-1 0 0 0 0 0 0 1 1 1 0 1 0 0 1
-1 0 0 0 0 0 0 0 0 0 0 0 0 0 1
-1 0 1 0 0 0 0 1 0 0 0 0 0 0 1
-1 0 1 0 0 0 0 1 0 1 1 1 0 0 1
-1 0 1 0 0 0 0 1 0 0 0 0 0 0 1
-1 0 0 0 0 0 0 0 0 0 0 0 0 0 1
-1 1 1 1 1 0 0 0 0 0 0 0 0 0 1
-1 0 0 0 0 0 0 0 0 0 0 6&lt;path:models/model.gbj&gt; 0 1
-1 0 0 0 0 0 0 0 0 0 0 0 0 9&lt;level:1&gt; 1
-1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-
-[FLOOR_COLOR=333333]
-[CEILING_COLOR=111111]
-[SPAWN=0.5,0.5]
-[AMBIENT=0.15]
-[LIGHTS=2.5,2.5,0.5,200;7.5,4.5,0.6,250]
-[FOG_COLOR=303040]
-[FOG_START=400]
-[FOG_END=1200]
-"""</code></pre>
 
 <!-- ============================================ -->
 <h2 id="ids">7. 🧱 ID клеток</h2>
@@ -550,41 +532,18 @@ if __name__ == "__main__":
 </table>
 </div>
 
-<h3>Примеры использования стен</h3>
-<pre><code># Полная кирпичная стена
-3&lt;material:brick&gt;
-
-# Стеклянная стена (прозрачная на 30%)
-2&lt;alpha:0.3&gt;
-
-# Полувысотный парапет — 40% высоты, можно целиться поверх
-3&lt;height:0.4&gt;
-
-# Разрушаемая стена из металла, 200 HP
-5&lt;material:metal;destructible:true;hp:200&gt;
-
-# Зеркальная стена для RTE
-5&lt;material:silver;reflectivity:0.9&gt;
-
-# Лужа воды на полу
-0&lt;water:true;reflectivity:0.6&gt;</code></pre>
-
 <!-- ============================================ -->
 <h2 id="enemy">8. 👾 Враги</h2>
 
-<p>Враги — отдельные сущности со своим ИИ, спрайтом и HP. Не привязаны к клеткам жёстко: двигаются, стреляют, умирают.</p>
+<p>Враги — сущности со своим ИИ, спрайтом и HP. Двигаются, стреляют, умирают.</p>
 
 <h3>Как создать врага</h3>
-
-<p><strong>Способ 1 — тег в карте.</strong> В клетке с ID &lt; 6:</p>
 <pre><code>0&lt;enemy:type:chase;sprite:assets/enemy_demon.png;hp:50;aim:10;shoot_delay:1.0;shoot_intensity:20;attack_type:ranged;detect_radius:6;attack_radius:4;speed:60&gt;</code></pre>
 
-<p><strong>Способ 2 — через API:</strong></p>
+<p>Или через API:</p>
 <pre><code>engine.api.spawn_enemy_by_tile(
     tile_x=5, tile_y=3,
-    enemy_type='chase',
-    hp=100,
-    aim=15,
+    enemy_type='chase', hp=100, aim=15,
     sprite='assets/enemy_demon.png'
 )</code></pre>
 
@@ -594,7 +553,7 @@ if __name__ == "__main__":
   <tr><th>Тип</th><th>Поведение</th></tr>
   <tr><td><code>static</code></td><td>Стоит. Атакует, если игрок в радиусе атаки.</td></tr>
   <tr><td><code>chase</code></td><td>Идёт к игроку с A*. Если пути нет — идёт напрямую.</td></tr>
-  <tr><td><code>patrol</code></td><td>Ходит по случайным проходимым клеткам, меняет направление раз в 1–3 сек.</td></tr>
+  <tr><td><code>patrol</code></td><td>Ходит по случайным проходимым клеткам.</td></tr>
   <tr><td><code>multiplayer</code></td><td>Позиция задаётся кодом (для будущего мультиплеера).</td></tr>
 </table>
 </div>
@@ -603,10 +562,10 @@ if __name__ == "__main__":
 <div class="table-wrap">
 <table>
   <tr><th>Параметр</th><th>Умолч.</th><th>Что делает</th></tr>
-  <tr><td><code>hp</code></td><td>100</td><td>Здоровье. Полоска HP масштабируется относительно этого значения.</td></tr>
-  <tr><td><code>aim</code></td><td>10</td><td>Шанс промаха (0 — не промахивается, 100 — всегда мимо)</td></tr>
+  <tr><td><code>hp</code></td><td>100</td><td>Здоровье</td></tr>
+  <tr><td><code>aim</code></td><td>10</td><td>Шанс промаха (0..100)</td></tr>
   <tr><td><code>shoot_delay</code></td><td>1.0</td><td>Задержка между выстрелами, сек</td></tr>
-  <tr><td><code>shoot_intensity</code></td><td>0</td><td>Шанс доп. случайной задержки (0..100)</td></tr>
+  <tr><td><code>shoot_intensity</code></td><td>0</td><td>Шанс доп. задержки</td></tr>
   <tr><td><code>attack_type</code></td><td>ranged</td><td><code>ranged</code> или <code>melee</code></td></tr>
   <tr><td><code>detect_radius</code></td><td>5</td><td>Радиус обнаружения, клетки</td></tr>
   <tr><td><code>attack_radius</code></td><td>3</td><td>Радиус атаки, клетки</td></tr>
@@ -615,37 +574,14 @@ if __name__ == "__main__":
 </table>
 </div>
 
-<div class="note">
-  <strong>Про парсер тегов.</strong> До 1.2.5 тег <code>&lt;enemy:type=chase,hp=50,...&gt;</code> обрезался на втором параметре — терялись HP, aim и всё остальное. В 1.2.5 парсер принимает оба разделителя и оба знака. Все параметры врага теперь долетают корректно.
-</div>
-
-<h3>Примеры</h3>
-<pre><code># Медленный тупой зомби
-0&lt;enemy:type:chase;hp:40;aim:25;shoot_delay:1.5;attack_type:melee;detect_radius:4;speed:30&gt;
-
-# Быстрый точный стрелок
-0&lt;enemy:type:chase;hp:80;aim:5;shoot_delay:0.5;attack_type:ranged;detect_radius:10;speed:90&gt;
-
-# Неподвижная турель
-0&lt;enemy:type:static;hp:200;aim:10;shoot_delay:0.4;attack_type:ranged;attack_radius:12;speed:0&gt;
-
-# Босс со своим спрайтом
-0&lt;enemy:type:chase;hp:1500;sprite:assets/boss.png;aim:25;speed:30;detect_radius:15&gt;</code></pre>
-
 <!-- ============================================ -->
 <h2 id="weapons">9. 🔫 Оружие и пули</h2>
-
-<p>Оружие описывается классом <code>Gun</code>. У игрока может быть несколько — переключение через <code>GunManager</code>.</p>
 
 <pre><code>from gradus_rc import Gun, load_image
 
 shotgun = Gun(
-    name='shotgun',
-    damage=39,
-    fire_rate=0.8,
-    ammo=6,
-    max_ammo=24,
-    reload_speed=1.5,
+    name='shotgun', damage=39, fire_rate=0.8,
+    ammo=6, max_ammo=24, reload_speed=1.5,
     texture=load_image('shotgun', 'assets/shotgun.png'),
     animation_fire=[load_image('shotgun_fire', 'assets/shotgun_fire.png')],
     key='shotgun',
@@ -657,113 +593,75 @@ engine.gun_manager.switch_gun('shotgun')</code></pre>
 <pre><code>if keys[pygame.K_SPACE] or pygame.mouse.get_pressed()[0]:
     engine.api.fire_current_gun()</code></pre>
 
-<h3>Пуля (Bullet)</h3>
-<p>Хранит позицию, угол, урон, скорость и владельца. Обрабатывает коллизии со стенами, врагами, игроком. У взрывных пуль — дополнительные поля (<code>explosive</code>, <code>explosion_radius</code>, <code>explosion_damage</code>).</p>
-
 <!-- ============================================ -->
-<h2 id="explosions">10. 💥 Взрывы и RPG <span class="new">1.2.5</span></h2>
-
-<p>Взрывное оружие создаётся флагом <code>explosive=True</code>:</p>
+<h2 id="explosions">10. 💥 Взрывы и RPG</h2>
 
 <pre><code>rpg = Gun(
     name='rpg', damage=80, fire_rate=1.5, ammo=3, max_ammo=10,
-    animation_fire=[load_image('rpg_fire', 'assets/rpg_shot.png')],
     texture=load_image('rpg', 'assets/rpg.png'),
     key='rpg',
     explosive=True,
     explosion_radius=180.0,
     explosion_damage=150.0,
-)
-engine.gun_manager.add_gun(rpg)</code></pre>
+)</code></pre>
 
-<p>Когда такая пуля во что-то попадает, в мире создаётся <code>Explosion</code>. Что он делает:</p>
-
+<p>Что делает взрыв:</p>
 <ol>
-  <li><strong>Урон по радиусу с затуханием.</strong> Враг в центре получает <code>150</code>, на краю — <code>0</code>. Формула: <code>damage × (1 − dist/radius)</code>.</li>
-  <li><strong>Отталкивание врагов.</strong> Чем ближе — тем сильнее отбрасывает.</li>
-  <li><strong>Урон игроку</strong> — по той же формуле, но с коэффициентом <code>0.6</code>.</li>
-  <li><strong>Разрушение стен.</strong> Все клетки с <code>destructible:true</code> в радиусе получают урон. Если HP ≤ 0 — стена разрушается, спавнятся осколки, декаль.</li>
-  <li><strong>2D-осколки с fake-z.</strong> Честно: это плоские полигоны с текстурой, но каждый получает стартовую <code>z</code>-высоту и скорость <code>vz</code> вверх. При отрисовке <code>z</code> сдвигает спрайт на экране вверх. Это создаёт ощущение объёма, но это не настоящие 3D-осколки. Настоящие будут в 1.4.</li>
-  <li><strong>Динамический свет.</strong> На время жизни взрыва (0.35 сек) создаётся временный источник света. Если включён RTE — интенсивность ×12, обычный режим — ×3.</li>
+  <li>Урон по радиусу с затуханием: <code>damage × (1 − dist/radius)</code>.</li>
+  <li>Отталкивание врагов.</li>
+  <li>Урон игроку (коэф. 0.6).</li>
+  <li>Разрушение стен с <code>destructible:true</code>.</li>
+  <li>Осколки (2D-спрайты с fake-z).</li>
+  <li>Динамический свет на 0.35 сек.</li>
 </ol>
 
-<h3>Ручной спавн взрыва</h3>
 <pre><code>engine.api.spawn_explosion(x=500, y=400, radius=200, damage=180)</code></pre>
 
 <!-- ============================================ -->
-<h2 id="interactive">11. 📦 Интерактивные и толкаемые объекты <span class="new">1.2.5</span></h2>
-
-<p>Объекты (модели ID=6) могут быть <strong>толкаемыми</strong>, <strong>интерактивными</strong> или <strong>обоими сразу</strong>. Свойства независимы.</p>
+<h2 id="interactive">11. 📦 Интерактивные и толкаемые объекты</h2>
 
 <div class="table-wrap">
 <table>
   <tr><th>Тег</th><th>Что даёт</th></tr>
-  <tr><td><code>pushable:true</code></td><td>Объект можно толкать игроком</td></tr>
-  <tr><td><code>interactive:true</code></td><td>Реагирует на клавишу E рядом с игроком</td></tr>
-  <tr><td><code>on_press:name</code></td><td>Событие при нажатии E</td></tr>
-  <tr><td><code>mass:N</code></td><td>Масса (для толкания) — тяжёлый двигается медленнее</td></tr>
-  <tr><td><code>friction:0..1</code></td><td>Трение — как быстро объект тормозит</td></tr>
-  <tr><td><code>bounciness:0..1</code></td><td>Упругость при ударе о стену</td></tr>
-  <tr><td><code>radius:N</code></td><td>Радиус взаимодействия (умолч. 32)</td></tr>
+  <tr><td><code>pushable:true</code></td><td>Можно толкать</td></tr>
+  <tr><td><code>interactive:true</code></td><td>Реагирует на E</td></tr>
+  <tr><td><code>on_press:name</code></td><td>Событие при нажатии</td></tr>
+  <tr><td><code>mass:N</code></td><td>Масса</td></tr>
+  <tr><td><code>friction:0..1</code></td><td>Трение</td></tr>
+  <tr><td><code>bounciness:0..1</code></td><td>Упругость</td></tr>
+  <tr><td><code>radius:N</code></td><td>Радиус взаимодействия</td></tr>
 </table>
 </div>
 
-<h3>Примеры в карте</h3>
-<pre><code># Только толкается
-6&lt;path:models/box.gbj;pushable:true;mass:20;friction:0.85;bounciness:0.2&gt;
-
-# Только interactive — на E вызывает событие "scream"
+<pre><code>6&lt;path:models/box.gbj;pushable:true;mass:20;friction:0.85;bounciness:0.2&gt;
 6&lt;path:models/scary.gbj;interactive:true;on_press:scream;radius:64&gt;
-
-# И то, и другое
 6&lt;path:models/lever.gbj;pushable:true;mass:100;interactive:true;on_press:pull_lever&gt;</code></pre>
 
-<h3>Обработка событий</h3>
-
-<p>Наследуй <code>Engine</code> и переопредели <code>on_interactive_press</code>:</p>
-
+<h3>Обработка</h3>
 <pre><code>class MyEngine(Engine):
     def on_interactive_press(self, action_name, obj):
         if action_name == 'scream':
             self.trigger_scream()
         elif action_name == 'open_door':
             self.api.open_door(obj.props.get('door_id'))
-        elif action_name == 'spawn_wave':
-            for i in range(5):
-                self.api.spawn_enemy(obj.x + i * 60, obj.y, enemy_type='chase')</code></pre>
 
-<p>В игровом цикле — вызови проверку при нажатии E:</p>
-<pre><code>if event.type == pygame.KEYDOWN and event.key == pygame.K_e:
-    self.engine.api.try_interact()</code></pre>
-
-<div class="tip">
-  <strong>Простота.</strong> Если не хочешь писать код — оставь <code>on_press</code> пустым. <code>try_interact</code> найдёт ближайший интерактивный объект в радиусе и позовёт колбэк, если он есть.
-</div>
+# В игровом цикле:
+if event.type == pygame.KEYDOWN and event.key == pygame.K_e:
+    engine.api.try_interact()</code></pre>
 
 <!-- ============================================ -->
-<h2 id="rte">12. 🎯 RTE — Ray Tracing Emulator <span class="rte">главное в 1.2.5</span></h2>
+<h2 id="rte">12. 🎯 RTE — Ray Tracing Emulator</h2>
 
-<p>RTE — эмуляция трассировки лучей на GPU в шейдере. Не требует RT-ядер, работает на любой видеокарте с OpenGL 3.3+ (начиная с iGPU 2012 года).</p>
+<p>RTE — эмуляция трассировки лучей на GPU в шейдере. Работает на любой видеокарте с OpenGL 3.3+.</p>
 
-<div class="note">
-  <strong>Зачем это нужно.</strong> Классический рейкастинг считает один луч на пиксель и красит стену по формуле «яркость = f(расстояние)». RTE идёт дальше: для каждого пикселя он пускает <em>дополнительный</em> луч в сторону источника света и проверяет, не перекрыт ли путь. Если перекрыт — пиксель в тени. Это даёт настоящие мягкие тени от стен, врагов и взрывов.
-</div>
+<h3>Три подсистемы</h3>
 
-<h3>Три подсистемы RTE</h3>
+<h4>1. Мягкие тени</h4>
+<p>Для каждого источника света шейдер трассирует вторичный луч. Если между пикселем и источником есть стена — пиксель в тени.</p>
 
-<h4>1. Мягкие тени (soft shadows)</h4>
-<p>Для каждого источника света и каждого пикселя шейдер трассирует вторичный луч. Если между пикселем и источником есть стена — пиксель получает только ambient. Если нет — полный вклад источника с кубическим затуханием.</p>
-
-<pre><code>// Упрощённо из шейдера
-float shade = shadow_visibility(world_pos, u_light_pos[i]);
-col += light_color * intensity * falloff * shade;</code></pre>
-
-<h4>2. Зеркала (perfect reflection)</h4>
-<p>Если у материала стены <code>reflectivity &gt; 0</code>, шейдер пускает отражённый луч и подмешивает его цвет к цвету стены с коэффициентом Френеля.</p>
-
+<h4>2. Зеркала</h4>
 <pre><code>5&lt;material:silver;reflectivity:0.85&gt;</code></pre>
 
-<p>Материалы с предустановленной зеркальностью:</p>
 <div class="table-wrap">
 <table>
   <tr><th>Материал</th><th>Reflectivity</th></tr>
@@ -777,175 +675,67 @@ col += light_color * intensity * falloff * shade;</code></pre>
 </div>
 
 <h4>3. Динамический свет</h4>
-<p>RTE поддерживает до 16 источников, которые обновляются каждый кадр. Движок использует это для вспышек от выстрелов, ореолов от взрывов, фонарика игрока в режиме <code>circle</code>.</p>
+<p>До 16 источников, обновляются каждый кадр.</p>
 
-<h3>Управление RTE</h3>
-
-<pre><code># Включить с мягкими тенями от 2 источников + зеркала
-game.api.set_rt(enabled=True, max_lights=2, reflections=True)
-
-# Только тени, без зеркал
+<h3>Управление</h3>
+<pre><code>game.api.set_rt(enabled=True, max_lights=2, reflections=True)
 game.api.set_rt(enabled=True, max_lights=4, reflections=False)
-
-# Выключить
 game.api.set_rt(enabled=False)</code></pre>
 
-<h3>Параметр <code>max_lights</code></h3>
+<h3>max_lights</h3>
 <div class="table-wrap">
 <table>
-  <tr><th>Значение</th><th>Стоимость</th><th>Что даёт</th></tr>
-  <tr><td>0</td><td>0%</td><td>RTE выключен</td></tr>
-  <tr><td>2</td><td>+15–25%</td><td>Тени от 2 ближайших источников</td></tr>
-  <tr><td>4</td><td>+30–50%</td><td>Более глубокие тени</td></tr>
-  <tr><td>8</td><td>+80–120%</td><td>Много источников</td></tr>
+  <tr><th>Значение</th><th>Стоимость</th></tr>
+  <tr><td>0</td><td>0% — выключен</td></tr>
+  <tr><td>2</td><td>+15–25%</td></tr>
+  <tr><td>4</td><td>+30–50%</td></tr>
+  <tr><td>8</td><td>+80–120%</td></tr>
 </table>
 </div>
 
-<h3>Фонарик игрока — режим «circle»</h3>
-<p>Обычно свет вокруг игрока освещает его равномерно. Режим «circle» превращает его в конусный луч, как настоящий фонарик:</p>
-
-<pre><code>game.api.set_player_light_mode(mode='circle', range=500.0, cone_angle=70.0)
-# mode='default' — вернуть круговой свет</code></pre>
-
-<h3>Зеркала и вода в действии</h3>
-
-<p>Стена-зеркало отражает всё, что стоит перед ней. Лужа на полу отражает верх сцены (потолок + стены, которые «смотрят вниз»).</p>
-
-<pre><code># Лужа
-0&lt;water:true;reflectivity:0.6&gt;
-
-# Стеклянная стена с отражением
-2&lt;alpha:0.3;reflectivity:0.5&gt;</code></pre>
+<h3>Фонарик — режим circle</h3>
+<pre><code>game.api.set_player_light_mode(mode='circle', range=500.0, cone_angle=70.0)</code></pre>
 
 <h3>Что НЕ делает RTE</h3>
 <ul>
-  <li><strong>Global illumination</strong> — нет multi-bounce.</li>
-  <li><strong>Отражения спрайтов сложной формы</strong> — отражение использует аппроксимацию (круг вместо точной формы).</li>
-  <li><strong>Тени от спрайтов на других спрайтах</strong> — тени накладываются на стены и пол, но не друг на друга.</li>
-  <li><strong>Рефракцию</strong> — нет.</li>
+  <li>Global illumination — нет multi-bounce.</li>
+  <li>Отражения спрайтов сложной формы — аппроксимация.</li>
+  <li>Тени от спрайтов на других спрайтах.</li>
+  <li>Рефракция.</li>
 </ul>
 
-<h3>Архитектура GPU-рендерера</h3>
-
-<pre><code>render/gpu_renderer.py
-
-GPURaycaster
-├── moderngl context (standalone, OpenGL 3.3)
-├── FBO с color+depth
-├── shader program:
-│   ├── vertex: full-screen quad
-│   └── fragment:
-│       ├── DDA-марш луча по карте
-│       ├── floor/ceiling projection
-│       ├── wall texture fetch (atlas)
-│       ├── alpha compositing (прозрачные стены)
-│       ├── shadow rays (RTE)
-│       ├── reflection rays (RTE)
-│       ├── dynamic lights
-│       └── fog
-└── API: render() → pygame.Surface</code></pre>
-
-<p>Один вызов <code>vao.render()</code> рисует всю сцену. FBO читается обратно через <code>glReadPixels</code>, результат возвращается как <code>pygame.Surface</code>.</p>
-
-<h3>Readback: цена компромисса</h3>
-<p>GPU→CPU копирование стоит <strong>3–5 мс</strong> на 1080p. Это фиксированная плата за совместимость с pygame. Даже с ней GPU-путь в 3–5 раз быстрее CPU-рейкастера на сложных сценах.</p>
-
 <!-- ============================================ -->
-<h2 id="alpha_height">13. 🪟 Прозрачные и полувысотные стены <span class="new">возвращено в 1.2.5</span></h2>
+<h2 id="alpha_height">13. 🪟 Прозрачные и полувысотные стены</h2>
 
-<p>В v1.1 alpha-стены давали падение FPS до 0.2 из-за повторных проходов луча. В v1.2.5 alpha и height полностью возвращены и работают без потерь производительности на GPU-пути.</p>
-
-<h3>Прозрачные стены</h3>
-<pre><code># Стекло на 30% прозрачности
-2&lt;material:glass;alpha:0.3&gt;
-
-# Очень прозрачная перегородка
+<h3>Прозрачные</h3>
+<pre><code>2&lt;material:glass;alpha:0.3&gt;
 1&lt;material:ice;alpha:0.15&gt;
-
-# Почти сплошная, но чуть просвечивает
 3&lt;alpha:0.9&gt;</code></pre>
 
-<p><strong>Что происходит внутри (GPU):</strong></p>
-<ol>
-  <li>Луч марширует по карте. На прозрачной клетке цвет накапливается с учётом alpha.</li>
-  <li>Луч продолжает идти дальше — за стеклом видно другой мир.</li>
-  <li>Непрозрачная стена рвёт луч мгновенно.</li>
-  <li>Спрайты за прозрачной стеной видны — <code>_is_sprite_visible</code> пропускает клетки с <code>alpha &lt; 1.0</code>.</li>
-</ol>
-
-<div class="tip">
-  <strong>Производительность.</strong> Прозрачные стены стоят дорого только там, где реально просвечивают. Если alpha &lt; 1 у 5% клеток — потеря FPS незаметна.
-</div>
-
-<h3>Полувысотные стены</h3>
-<pre><code># Парапет высотой 40% — за ним можно спрятаться, но видно верх
-3&lt;material:brick;height:0.4&gt;
-
-# Колонна на всю высоту, но узкая
+<h3>Полувысотные</h3>
+<pre><code>3&lt;material:brick;height:0.4&gt;
 5&lt;material:marble;height:1.0&gt;
-
-# Низкая перегородка
 1&lt;height:0.3&gt;</code></pre>
 
-<p><strong>Особенности:</strong></p>
-<ul>
-  <li>Стена растёт от пола вверх — её верх всегда на уровне <code>y_пола + height</code>.</li>
-  <li>Над ней видно потолок и стены за ней.</li>
-  <li>Коллизия с игроком — как у обычной стены (можно настроить <code>addcollision:0</code>).</li>
-</ul>
-
-<h3>Комбинация alpha + height</h3>
-<pre><code># Полувысотная стеклянная перегородка
-2&lt;material:glass;height:0.5;alpha:0.4&gt;</code></pre>
-
-<p>Отлично подходит для декоративных элементов — например, стеклянных витрин в торговом центре.</p>
+<h3>Комбинация</h3>
+<pre><code>2&lt;material:glass;height:0.5;alpha:0.4&gt;</code></pre>
 
 <!-- ============================================ -->
-<h2 id="obj">14. 🎨 obj_to_sprites — эволюция и API <span class="new">эволюция</span></h2>
+<h2 id="obj">14. 🎨 obj_to_sprites</h2>
 
-<p>Модуль <code>polygon/obj_to_sprites.py</code> — самый эволюционировавший в проекте. Он превращает 3D-модель в спрайты-ракурсы, чтобы рендерить их в рейкастере.</p>
-
-<h3>Как это работает</h3>
-<ol>
-  <li>Загружается .obj или .gbj.</li>
-  <li>Модель поворачивается по кругу — генерируется N ракурсов (по умолчанию 128).</li>
-  <li>Каждый ракурс рендерится в изометрической проекции в Surface 512×512.</li>
-  <li>Все спрайты сохраняются в кэш <code>cache/имя_модели/</code>.</li>
-  <li>В игре рендерер выбирает ракурс, ближайший к текущему углу взгляда.</li>
-</ol>
-
-<h3>История версий</h3>
-<div class="table-wrap">
-<table>
-  <tr><th>Версия</th><th>Что добавилось</th></tr>
-  <tr><td><strong>Alpha</strong></td><td>Загрузка .obj через trimesh. Рендер 8 ракурсов. Без цветов граней, однотонный серый.</td></tr>
-  <tr><td><strong>Beta</strong></td><td>128 ракурсов вместо 8. Билинейная заливка. Появился кэш на диск.</td></tr>
-  <tr><td><strong>1.0</strong></td><td>Z-сортировка граней (правильное перекрытие). Цвет материала из тега.</td></tr>
-  <tr><td><strong>1.1</strong></td><td>Формат .gbj — OBJ с HEX-цветами граней. Плавные тени от граней.</td></tr>
-  <tr><td><strong>1.1.5</strong></td><td>Асинхронная предзагрузка. Анимация (несколько .obj, переключаются по таймеру).</td></tr>
-  <tr><td><strong>1.2.5</strong></td><td>Правильные имена кэша. Устранён баг с «пустыми» слотами атласа. Спрайты моделей появились в зеркалах RTE.</td></tr>
-  <tr><td><strong>1.3 <span class="roadmap">Q4 2026</span></strong></td><td>Текстуры на гранях .obj вместо HEX-цветов. Апгрейд <code>redactor.py</code> под текстуры. Плавные UV-координаты.</td></tr>
-</table>
-</div>
+<p>Модуль <code>polygon/obj_to_sprites.py</code> превращает 3D-модель в спрайты-ракурсы.</p>
 
 <h3>API</h3>
 <pre><code>from gradus_rc.polygon.obj_to_sprites import obj_to_sprites
 
 sprites = obj_to_sprites(
     path='models/cube.obj',
-    num_angles=128,
-    sprite_size=(512, 512),
-    scale=2.0,
-    color=(200, 100, 100),
-    model_rot_x=0.0,
-    model_rot_y=45.0,
-    model_rot_z=0.0,
-)
-# → list[pygame.Surface] длиной num_angles</code></pre>
+    num_angles=128, sprite_size=(512, 512),
+    scale=2.0, color=(200, 100, 100),
+    model_rot_x=0.0, model_rot_y=45.0, model_rot_z=0.0,
+)</code></pre>
 
 <h3>Формат .gbj</h3>
-<p>Расширение .obj: после индексов вершин в строке грани можно указать HEX-цвет:</p>
-
 <pre><code>v -0.5 -0.5 -0.5
 v  0.5 -0.5 -0.5
 v  0.5  0.5 -0.5
@@ -955,74 +745,27 @@ f 1 2 3 FF0000
 f 2 4 3 00FF00
 f 1 3 4 0000FF</code></pre>
 
-<p>Если цвет не указан — используется общий <code>color</code> из тега клетки.</p>
-
 <h3>Анимация</h3>
-<p>Тег <code>anim</code> создаёт последовательность моделей, которые переключаются по таймеру:</p>
-
 <pre><code>6&lt;path:models/idle.gbj;anim:models/walk1.gbj,models/walk2.gbj;anim_speed:0.3&gt;</code></pre>
 
-<h3>Кэш</h3>
-<div class="warn">
-  <strong>Если изменил модель — удали папку <code>cache/</code>.</strong> Иначе увидишь старый вариант — движок не пересоздаёт уже закэшированные спрайты.
-</div>
-
 <!-- ============================================ -->
-<h2 id="models">15. 📦 3D-модели (OBJ/GBJ)</h2>
+<h2 id="models">15. 📦 3D-модели</h2>
 
-<h3>Использование в карте</h3>
-<pre><code># Простая модель
-6&lt;path:models/cube.obj&gt;
-
-# С поворотом и цветом
+<pre><code>6&lt;path:models/cube.obj&gt;
 6&lt;path:models/statue.gbj;roty:90;color:FFAA00&gt;
-
-# Разрушаемая модель
 6&lt;path:models/vase.gbj;destructible:true;hp:40&gt;
-
-# Модель-ящик, который можно толкать
 6&lt;path:models/box.gbj;pushable:true;mass:20&gt;
-
-# Модель-кнопка, которая реагирует на E
 6&lt;path:models/button.gbj;interactive:true;on_press:activate;radius:64&gt;</code></pre>
-
-<h3>Порядок загрузки</h3>
-<ol>
-  <li>При первом уровне движок собирает все ID=6 клетки со всех уровней.</li>
-  <li>Для каждой — проверяет глобальный кэш в памяти.</li>
-  <li>Не нашёл — смотрит файловый кэш <code>cache/имя/</code>.</li>
-  <li>Не нашёл — вызывает <code>obj_to_sprites</code>, генерирует спрайты, сохраняет.</li>
-  <li>Создаёт <code>AnimatedModelSprite</code> и добавляет в <code>SpriteManager</code>.</li>
-</ol>
-
-<h3>Очистка кэша</h3>
-<pre><code># Полная
-rm -r cache/
-
-# Для конкретной модели
-rm -r cache/имя_модели/</code></pre>
 
 <!-- ============================================ -->
 <h2 id="lighting">16. 💡 Освещение</h2>
 
-<p>Освещение считается <code>LightTracer</code> (статика) и GPU-шейдером (динамический свет от RTE и взрывов).</p>
-
-<h3>Статические источники</h3>
-<p>Из карты:</p>
 <pre><code>[LIGHTS=2.5,2.5,0.5,200;5,5,0.6,250]
 [AMBIENT=0.15]</code></pre>
-<p>Формат: <code>x,y,intensity,radius</code> — координаты в клетках, интенсивность 0..1, радиус в пикселях.</p>
 
-<p>Из кода:</p>
 <pre><code>from gradus_rc import LightSource
-
 lamp = LightSource(x=300, y=300, radius=250, intensity=0.7, color=(255, 200, 100))
 engine.light_tracer.add_source(lamp)</code></pre>
-
-<h3>Динамический свет (RTE)</h3>
-<pre><code># Ручной динамический свет на 0.5 сек
-engine.transient_lights.append([500, 400, 250, 3.0, (255, 200, 100), 0.5])
-# [x, y, radius, intensity, color, ttl_сек]</code></pre>
 
 <h3>Хоррор-пресет</h3>
 <pre><code>engine.api.set_ambient(0.02)
@@ -1031,76 +774,34 @@ engine.api.set_fog(True, color=(10, 10, 15), start=200, end=600)
 engine.api.set_rt(enabled=True, max_lights=2, reflections=True)</code></pre>
 
 <!-- ============================================ -->
-<h2 id="particles">17. 🎆 Партиклы и осколки <span class="new">1.2.5</span></h2>
+<h2 id="particles">17. 🎆 Партиклы и осколки</h2>
 
-<p>Частицы получили координату Z и скорость <code>vz</code>. Разлёт стал визуально объёмным — осколки летят не только в стороны, но и вверх, потом падают по гравитации.</p>
+<p>Частицы имеют координату Z и скорость <code>vz</code> — виртуальная вертикаль.</p>
 
 <div class="warn">
-  <strong>Честно про «3D-осколки».</strong> На самом деле это <strong>2D-спрайты</strong>. Каждый осколок — плоский полигон с текстурой стены. Мы добавили <code>z</code> как виртуальную высоту: при отрисовке она сдвигает спрайт вверх на экране, создавая иллюзию объёма. Настоящие 3D-осколки (объёмные многогранники, падающие на пол, со столкновениями друг с другом) будут в 1.4 вместе с Vulkan-рендером. Пока это компромисс между визуалом и производительностью.
+  <strong>Честно про «3D-осколки».</strong> Это 2D-спрайты с виртуальной Z. Настоящие 3D-осколки — в 1.4.
 </div>
 
-<h3>Поля Particle</h3>
-<ul>
-  <li><code>x, y, vx, vy</code> — 2D-физика.</li>
-  <li><code>z, vz, gravity_z</code> — виртуальная вертикаль.</li>
-  <li><code>life, max_life</code> — время жизни.</li>
-  <li><code>color, world_size</code> — визуал.</li>
-</ul>
-
-<h3>Как рисуется</h3>
-<pre><code>z_shift = z × proj_coeff / (dist × tile_size) × 0.5
-screen_y -= z_shift</code></pre>
-
-<h3>Разлёт от взрыва</h3>
-<p>В <code>Explosion.spawn_particles</code> каждая искра получает:</p>
-<ul>
-  <li><code>z = random(0, radius × 0.75)</code> — высота старта.</li>
-  <li><code>vz = random(60, 320)</code> — скорость вверх.</li>
-  <li>боковая скорость уменьшается с высотой (получается сфера, а не веер).</li>
-</ul>
-
-<h3>Осколки стен</h3>
-<pre><code>d.z = random(4, 24)
-d.vz = random(80, 260)
-d.gravity_z = -600.0</code></pre>
-
-<h3>Режимы партиклов</h3>
 <pre><code>engine.api.particles_set_mode('optimal')  # off | main | optimal | all</code></pre>
 
 <!-- ============================================ -->
 <h2 id="decals">18. 🩸 Декали</h2>
 
-<p>Пятна на полу: кровь под попаданиями по врагам, обломки под разрушенными стенами, обугленность после взрывов.</p>
-
 <pre><code>engine.decals.spawn_blood(x=300, y=200, size=64)
 engine.decals.spawn_rubble(x=300, y=200, wall_color=(120,120,120), wall_texture=tex)
 engine.decals.spawn_scorch(x=300, y=200, size=56)
-
-# Убрать все декали клетки
 engine.decals.remove_by_cell(cell_x=5, cell_y=3)</code></pre>
-
-<div class="tip">
-  <strong>Автоматика.</strong> При разрушении стены декаль обломков создаётся сама. При восстановлении через <code>restore_wall</code> — декали клетки удаляются.
-</div>
 
 <!-- ============================================ -->
 <h2 id="hud">19. 📊 HUD</h2>
 
-<p>Полоски HP и патронов, иконка оружия, прицел с расхождением. Всё в <code>HUDManager</code>, доступно через <code>engine.hud</code>.</p>
-
 <pre><code>engine.hud.show_hud = True
 engine.hud.show_crosshair = True
-engine.hud.show_hp_bar = True
-engine.hud.show_ammo = True
-engine.hud.show_weapon_icon = True
-
 engine.api.hud_shake(intensity=10, duration=0.4)
 engine.hud.hit_marker(intensity=1.0)
 engine.hud.damage_taken(amount=10)</code></pre>
 
 <h3>Полоски HP над врагами</h3>
-<p>В 1.2.5 полоска масштабируется относительно <code>max_hp</code> врага, а не всегда относительно 100. Если у врага 40 HP — полоска покажет 100% при полном здоровье.</p>
-
 <pre><code>engine.show_enemy_hp = True
 engine.enemy_bar_max_distance = 800
 engine.api.set_enemy_bars(hp=True, ammo=False, max_distance=800)</code></pre>
@@ -1109,34 +810,14 @@ engine.api.set_enemy_bars(hp=True, ammo=False, max_distance=800)</code></pre>
 <h2 id="minimap">20. 🗺️ Мини-карта</h2>
 
 <pre><code>game.api.set_minimap(
-    enabled=True,
-    mode='color',
-    size=15,
-    tile_px=20,
-    position=(WIDTH - 5*20 - 20, 20),
-    alpha=160,
-    show_enemies=True,
-    enemy_instant_visible=False,
+    enabled=True, mode='color', size=15, tile_px=20,
+    position=(WIDTH - 5*20 - 20, 20), alpha=160,
+    show_enemies=True, enemy_instant_visible=False,
     enemy_hide_delay=5.0,
-    show_billboards=False,
-    show_models=True,
-    show_doors=True,
-    show_keys=False,
+    show_billboards=False, show_models=True,
+    show_doors=True, show_keys=False,
     show_player_arrow=True,
 )</code></pre>
-
-<h3>Кастомный рендер</h3>
-<pre><code>def my_renderer(screen, minimap):
-    grid, px, py = minimap.get_visible_grid()
-    half = minimap.size // 2
-    ox, oy = minimap.position
-    for gy, row in enumerate(grid):
-        for gx, cell_id in enumerate(row):
-            # своя логика
-            pass
-
-game.api.set_minimap(mode='custom')
-game.api.set_minimap_custom(my_renderer)</code></pre>
 
 <!-- ============================================ -->
 <h2 id="sound">21. 🔊 Звук и Sound3D</h2>
@@ -1147,7 +828,6 @@ game.api.set_minimap_custom(my_renderer)</code></pre>
 })
 engine.play_sound('scream')
 
-# Sound3D
 engine.play_sound_3d_world('music', world_x=500, world_y=300)
 engine.play_sound_3d_tile('music', tile_x=5, tile_y=3)
 engine.play_sound_3d_player_camera('music', offset_x=-1.0, offset_y=0.5)
@@ -1159,14 +839,270 @@ engine.play_sound_3d_player('music', offset_x=10, offset_y=0)</code></pre>
 <pre><code>engine.api.set_effect('vhs', alpha=180, intensity=0.7)
 engine.api.clear_effect()</code></pre>
 
-<p>Доступные эффекты: <code>noise</code>, <code>static</code>, <code>glitch</code>, <code>vhs</code>.</p>
+<p>Эффекты: <code>noise</code>, <code>static</code>, <code>glitch</code>, <code>vhs</code>.</p>
 
 <!-- ============================================ -->
-<h2 id="microapi">23. 🔧 MicroAPI — полное руководство</h2>
+<!-- ============================================ -->
+<!-- MICROAPI — ПОЛНОЕ РУКОВОДСТВО (API Update)  -->
+<!-- ============================================ -->
+<!-- ============================================ -->
+<h2 id="microapi">23. 🔧 MicroAPI — полное руководство <span class="new">API Update</span></h2>
 
-<p><code>MicroAPI</code> — единая точка управления. Доступна через <code>engine.api</code>.</p>
+<p><code>MicroAPI</code> — единая точка управления движком. Доступна через <code>engine.api</code>.
+После API Update здесь <strong>~65 новых методов</strong>: полный контроль над миром, игроком, врагами, картой, временем и эффектами.</p>
 
-<h3>Клетки и стены</h3>
+<div class="note" style="border-color:#7ad37a;">
+  <strong>Соглашение об именах.</strong>
+  <code>get_*</code> — возвращает, не меняет. <code>set_*</code> — устанавливает и <strong>возвращает старое значение</strong> (удобно для read-modify-write).
+  <code>spawn_*</code> — создаёт объект и возвращает его. <code>query_*</code> — всегда возвращает список (пустой, если ничего нет).
+  <code>_tile</code> в имени аргумента — координаты в клетках. Всё остальное — пиксели, радианы, секунды.
+</div>
+
+<h3 id="microapi-coords">23.1 Координаты и математика</h3>
+<div class="table-wrap">
+<table>
+<tr><th>Метод</th><th>Параметры</th><th>Возвращает</th><th>Что делает</th></tr>
+<tr><td><code>world_to_tile(x, y)</code></td><td>x, y — пиксели</td><td>(tx, ty) int</td><td>Перевод мировых пикселей в индекс клетки</td></tr>
+<tr><td><code>tile_to_world(tx, ty, center=True)</code></td><td>tx, ty — клетки</td><td>(x, y) float</td><td>Обратный перевод. <code>center=True</code> — центр клетки</td></tr>
+<tr><td><code>get_map_size()</code></td><td>—</td><td>(w, h) int</td><td>Размер карты в клетках</td></tr>
+<tr><td><code>is_walkable(x, y)</code></td><td>x, y — пиксели</td><td>bool</td><td>Проходима ли точка</td></tr>
+<tr><td><code>get_cell_property(tx, ty, key, default=None)</code></td><td>—</td><td>Any</td><td>Свойство клетки без полного <code>get_cell</code></td></tr>
+<tr><td><code>world_distance(x1, y1, x2, y2)</code></td><td>—</td><td>float</td><td>Длина между точками</td></tr>
+<tr><td><code>angle_to(x1, y1, x2, y2)</code></td><td>—</td><td>float (rad)</td><td>Угол между точками</td></tr>
+<tr><td><code>angle_diff(a, b)</code></td><td>—</td><td>float (rad)</td><td>Нормализованная разница (-π..π)</td></tr>
+</table>
+</div>
+
+<pre><code>tx, ty = api.world_to_tile(player.pos.x, player.pos.y)
+wx, wy = api.tile_to_world(5, 7)
+if api.is_walkable(wx, wy):
+    api.spawn_sprite(wx, wy, 'props/coin.png')</code></pre>
+
+<h3 id="microapi-raycast">23.2 Raycast / LOS / проекция</h3>
+<div class="table-wrap">
+<table>
+<tr><th>Метод</th><th>Параметры</th><th>Возвращает</th><th>Что делает</th></tr>
+<tr><td><code>raycast(x, y, dx, dy, max_dist=None, ignore_walls=False, ignore_sprites=False)</code></td>
+<td>x,y — старт, dx,dy — направление, max_dist — лимит</td>
+<td><code>dict</code> см. ниже</td>
+<td>DDA-луч по сетке + проверка спрайтов</td></tr>
+<tr><td><code>has_line_of_sight(x1, y1, x2, y2)</code></td><td>—</td><td>bool</td><td>Прямая видимость без стен</td></tr>
+<tr><td><code>project_world_to_screen(wx, wy)</code></td><td>—</td><td><code>(screen_x, horizon_y, size_px)</code> или <code>None</code></td><td>Проекция точки мира на экран</td></tr>
+</table>
+</div>
+
+<p><strong>Формат ответа <code>raycast</code>:</strong></p>
+<pre><code>{
+  'hit':       bool,
+  'type':      'wall' | 'sprite' | None,
+  'x':         float,   'y': float,
+  'dist':      float,
+  'cell':      dict | None,
+  'sprite':    obj  | None,
+  'normal':    (nx, ny),
+}</code></pre>
+
+<pre><code>px, py = api.get_player_pos()
+if api.has_line_of_sight(enemy.x, enemy.y, px, py):
+    api.set_enemy_target(enemy, px, py)
+
+api.hitscan(player.pos.x, player.pos.y, player.angle, damage=25, max_dist=800)</code></pre>
+
+<h3 id="microapi-query">23.3 Пакетные запросы</h3>
+<div class="table-wrap">
+<table>
+<tr><th>Метод</th><th>Возвращает</th><th>Что делает</th></tr>
+<tr><td><code>query_enemies_in_radius(x, y, r)</code></td><td><code>[EnemyAI, ...]</code></td><td>Все живые враги в радиусе</td></tr>
+<tr><td><code>query_interactives_in_radius(x, y, r)</code></td><td><code>[InteractiveObject, ...]</code></td><td>Все интерактивные объекты</td></tr>
+<tr><td><code>query_tiles_in_radius(x, y, r)</code></td><td><code>[(tx, ty, cell), ...]</code></td><td>Все клетки в радиусе</td></tr>
+<tr><td><code>get_nearest_enemy(x, y, max_dist=None)</code></td><td><code>EnemyAI | None</code></td><td>Ближайший враг</td></tr>
+<tr><td><code>get_nearest_interactive(x, y, max_dist=None)</code></td><td><code>obj | None</code></td><td>Ближайший объект</td></tr>
+</table>
+</div>
+
+<pre><code>for enemy in api.query_enemies_in_radius(x, y, 200):
+    api.damage_enemy(enemy, 30, knockback=40)</code></pre>
+
+<h3 id="microapi-player">23.4 Игрок</h3>
+<div class="table-wrap">
+<table>
+<tr><th>Метод</th><th>Параметры</th><th>Возвращает</th><th>Что делает</th></tr>
+<tr><td><code>get_player_pos()</code></td><td>—</td><td>(x, y)</td><td>Позиция игрока</td></tr>
+<tr><td><code>get_player_angle()</code></td><td>—</td><td>float (rad)</td><td>Направление взгляда</td></tr>
+<tr><td><code>get_player_pitch()</code></td><td>—</td><td>float (rad)</td><td>Наклон камеры</td></tr>
+<tr><td><code>set_player_pitch(pitch)</code></td><td>float</td><td>старое</td><td>Задать наклон</td></tr>
+<tr><td><code>get_player_hp()</code></td><td>—</td><td>float</td><td>Текущее HP</td></tr>
+<tr><td><code>get_player_max_hp()</code></td><td>—</td><td>float</td><td>Максимум HP</td></tr>
+<tr><td><code>set_player_hp(hp)</code></td><td>float</td><td>старое</td><td>Установить HP. ≤0 — вызовет on_death</td></tr>
+<tr><td><code>set_player_max_hp(hp)</code></td><td>float</td><td>старое</td><td>Максимум HP</td></tr>
+<tr><td><code>heal_player(amount)</code></td><td>float</td><td>новое HP</td><td>Прибавить HP</td></tr>
+<tr><td><code>kill_player()</code></td><td>—</td><td>—</td><td>Убить игрока</td></tr>
+<tr><td><code>is_player_alive()</code></td><td>—</td><td>bool</td><td>Жив ли</td></tr>
+<tr><td><code>set_player_invulnerable(inv=True)</code></td><td>bool</td><td>старое</td><td>Неуязвимость</td></tr>
+<tr><td><code>set_player_noclip(enabled=True)</code></td><td>bool</td><td>старое</td><td>Пройти сквозь стены</td></tr>
+<tr><td><code>set_player_regen(enabled=None, value=None, interval=None)</code></td><td>—</td><td>—</td><td>Настройка регенерации</td></tr>
+<tr><td><code>teleport_player(x, y, angle=None, pitch=None)</code></td><td>—</td><td>—</td><td>Мгновенное перемещение</td></tr>
+<tr><td><code>get_player_velocity()</code></td><td>—</td><td>(vx, vy)</td><td>Скорость</td></tr>
+<tr><td><code>set_player_velocity(vx, vy)</code></td><td>—</td><td>старое</td><td>Задать скорость (dash)</td></tr>
+</table>
+</div>
+
+<pre><code># Dash на Q
+if keys[pygame.K_q]:
+    vx, vy = api.get_player_velocity()
+    api.set_player_velocity(vx * 3, vy * 3)
+    api.after(0.2, lambda: api.set_player_velocity(0, 0))
+    api.flash_screen((80, 120, 255), alpha=100, duration=0.15)</code></pre>
+
+<h3 id="microapi-enemy">23.5 Враги</h3>
+<div class="table-wrap">
+<table>
+<tr><th>Метод</th><th>Параметры</th><th>Возвращает</th><th>Что делает</th></tr>
+<tr><td><code>damage_enemy(enemy, amount, knockback=0.0, source=None)</code></td><td>—</td><td>нанесённый урон</td><td>Урон + откидывание</td></tr>
+<tr><td><code>kill_enemy(enemy)</code></td><td>—</td><td>—</td><td>Мгновенная смерть</td></tr>
+<tr><td><code>set_enemy_hp(enemy, hp)</code></td><td>—</td><td>старое</td><td>Установить HP</td></tr>
+<tr><td><code>set_enemy_speed(enemy, speed)</code></td><td>—</td><td>старое</td><td>Скорость пиксели/сек</td></tr>
+<tr><td><code>set_enemy_state(enemy, state)</code></td><td><code>'static'/'chase'/'patrol'/'frozen'</code></td><td>старое</td><td>Сменить тип ИИ</td></tr>
+<tr><td><code>freeze_enemy(enemy, duration)</code></td><td>сек</td><td>—</td><td>Заморозка на N секунд</td></tr>
+<tr><td><code>set_enemy_target(enemy, x, y)</code></td><td>—</td><td>—</td><td>Принудительная цель</td></tr>
+<tr><td><code>get_enemies_by_type(type_name)</code></td><td>str</td><td>список</td><td>Все враги данного типа</td></tr>
+<tr><td><code>is_enemy_visible(enemy)</code></td><td>—</td><td>bool</td><td>Не перекрыт ли стеной</td></tr>
+</table>
+</div>
+
+<pre><code>api.freeze_enemy(boss, 3.0)
+for e in api.query_enemies_in_radius(500, 500, 150):
+    api.damage_enemy(e, 40, knockback=60, source='explosion')</code></pre>
+
+<h3 id="microapi-weapons">23.6 Оружие, пули, hitscan</h3>
+<div class="table-wrap">
+<table>
+<tr><th>Метод</th><th>Параметры</th><th>Возвращает</th><th>Что делает</th></tr>
+<tr><td><code>spawn_bullet(x, y, angle, damage=10, speed=800, owner='script', explosive=False, explosion_radius=0, explosion_damage=0, kind=None)</code></td><td>—</td><td>Bullet</td><td>Создать пулю. <code>kind</code> — тип из <code>register_bullet_type</code></td></tr>
+<tr><td><code>hitscan(x, y, angle, damage=10, max_dist=None, source=None)</code></td><td>—</td><td>EnemyAI | None</td><td>Мгновенный выстрел по лучу</td></tr>
+<tr><td><code>give_gun(gun)</code></td><td>Gun</td><td>—</td><td>Добавить оружие</td></tr>
+<tr><td><code>remove_gun(key)</code></td><td>str</td><td>bool</td><td>Убрать оружие</td></tr>
+<tr><td><code>switch_gun(key)</code></td><td>str</td><td>bool</td><td>Переключиться</td></tr>
+<tr><td><code>get_current_gun()</code></td><td>—</td><td>Gun | None</td><td>Активное оружие</td></tr>
+<tr><td><code>get_gun(key)</code></td><td>str</td><td>Gun | None</td><td>Оружие по ключу</td></tr>
+<tr><td><code>set_gun_ammo(key, ammo)</code></td><td>—</td><td>старое</td><td>Установить патроны</td></tr>
+<tr><td><code>give_ammo(key, amount)</code></td><td>—</td><td>прибавлено</td><td>Добавить патроны</td></tr>
+</table>
+</div>
+
+<h3 id="microapi-spawn">23.7 Спавн объектов</h3>
+<div class="table-wrap">
+<table>
+<tr><th>Метод</th><th>Параметры</th><th>Возвращает</th><th>Что делает</th></tr>
+<tr><td><code>spawn_sprite(x, y, texture, key=None, scale=1.0, world_radius=None)</code></td><td>texture — Surface или путь</td><td>Sprite</td><td>Билборд в мире</td></tr>
+<tr><td><code>spawn_model(x, y, model_path, scale=1.0, rot_y=0, rot_x=0, rot_z=0, color=(200,100,100), key=None)</code></td><td>—</td><td>AnimatedModelSprite</td><td>3D-модель как billboard</td></tr>
+<tr><td><code>spawn_blood(x, y, size=64)</code></td><td>—</td><td>—</td><td>Пятно крови</td></tr>
+<tr><td><code>spawn_transient_light(x, y, radius=200, intensity=1.5, color=(255,240,180), ttl=0.35)</code></td><td>—</td><td>—</td><td>Временный источник света</td></tr>
+<tr><td><code>spawn_explosion(x, y, radius=120, damage=100, color=(255,180,60))</code></td><td>—</td><td>Explosion</td><td>Создать взрыв</td></tr>
+</table>
+</div>
+
+<pre><code>orb = api.spawn_sprite(600, 400, 'props/orb.png', world_radius=24)
+api.spawn_transient_light(600, 400, radius=180, intensity=1.5,
+                          color=(120, 180, 255), ttl=999)</code></pre>
+
+<h3 id="microapi-map">23.8 Управление картой</h3>
+<div class="table-wrap">
+<table>
+<tr><th>Метод</th><th>Параметры</th><th>Возвращает</th><th>Что делает</th></tr>
+<tr><td><code>set_cell_material(tx, ty, mat_name)</code></td><td>str</td><td>старое</td><td>Материал клетки</td></tr>
+<tr><td><code>set_cell_texture(tx, ty, texture_path)</code></td><td>str</td><td>старое</td><td>Путь к текстуре</td></tr>
+<tr><td><code>set_cell_height(tx, ty, height)</code></td><td>0..1</td><td>старое</td><td>Высота стены</td></tr>
+<tr><td><code>set_cell_water(tx, ty, enabled=True, reflectivity=0.7)</code></td><td>—</td><td>—</td><td>Пометить как воду</td></tr>
+<tr><td><code>fill_rect(tx1, ty1, tx2, ty2, base_id=0, **props)</code></td><td>—</td><td>кол-во клеток</td><td>Залить прямоугольник</td></tr>
+<tr><td><code>fill_circle(cx, cy, radius, base_id=0, **props)</code></td><td>—</td><td>кол-во клеток</td><td>Круглая заливка</td></tr>
+</table>
+</div>
+
+<pre><code>api.fill_circle(10, 10, 6, base_id=0, water=True, reflectivity=0.6)
+api.fill_rect(5, 12, 15, 12, base_id=5, material='metal')</code></pre>
+
+<h3 id="microapi-timers">23.9 Тайминги и триггеры</h3>
+<div class="table-wrap">
+<table>
+<tr><th>Метод</th><th>Параметры</th><th>Возвращает</th><th>Что делает</th></tr>
+<tr><td><code>schedule(delay, callback, repeat=None)</code></td><td>сек</td><td>handle</td><td>Отложенный вызов</td></tr>
+<tr><td><code>after(delay, callback)</code></td><td>сек</td><td>handle</td><td>Короткая форма <code>schedule</code></td></tr>
+<tr><td><code>every(interval, callback)</code></td><td>сек</td><td>handle</td><td>Повторяющийся таймер</td></tr>
+<tr><td><code>cancel_schedule(handle)</code></td><td>handle</td><td>—</td><td>Отменить</td></tr>
+<tr><td><code>set_time_scale(scale)</code></td><td>float</td><td>старое</td><td>Множитель времени</td></tr>
+<tr><td><code>get_frame_count()</code></td><td>—</td><td>int</td><td>Сколько кадров прошло</td></tr>
+<tr><td><code>get_elapsed_time()</code></td><td>—</td><td>float</td><td>Секунд с запуска</td></tr>
+<tr><td><code>spawn_trigger(x, y, callback, radius=32, once=True, tag=None)</code></td><td>—</td><td>handle</td><td>Невидимая зона</td></tr>
+<tr><td><code>remove_trigger(handle)</code></td><td>—</td><td>—</td><td>Удалить зону</td></tr>
+</table>
+</div>
+
+<pre><code>def spawn_wave():
+    for _ in range(5):
+        api.spawn_enemy(500, 500, enemy_type='chase', hp=50)
+    api.push_notification("Волна!", "Приготовься", duration=2)
+api.every(30.0, spawn_wave)
+
+def on_altar(player):
+    api.show_message("Алтарь активирован", 3.0)
+api.spawn_trigger(altar_x, altar_y, on_altar, radius=64, once=True)</code></pre>
+
+<h3 id="microapi-sound">23.10 Звук и музыка</h3>
+<div class="table-wrap">
+<table>
+<tr><th>Метод</th><th>Параметры</th><th>Что делает</th></tr>
+<tr><td><code>play_sound(key, volume=1.0)</code></td><td>—</td><td>Проиграть SFX</td></tr>
+<tr><td><code>play_music(path, loop=True, volume=1.0, fade_ms=0)</code></td><td>—</td><td>Фоновая музыка</td></tr>
+<tr><td><code>stop_music(fade_ms=0)</code></td><td>—</td><td>Стоп</td></tr>
+<tr><td><code>pause_music(paused=True)</code></td><td>—</td><td>Пауза/снятие паузы</td></tr>
+<tr><td><code>set_music_volume(v)</code></td><td>0..1</td><td>Громкость музыки</td></tr>
+<tr><td><code>stop_3d_sound(handle)</code></td><td>handle</td><td>Остановить 3D-звук</td></tr>
+</table>
+</div>
+
+<h3 id="microapi-screen">23.11 Эффекты экрана</h3>
+<div class="table-wrap">
+<table>
+<tr><th>Метод</th><th>Параметры</th><th>Что делает</th></tr>
+<tr><td><code>flash_screen(color=(255,255,255), alpha=180, duration=0.15)</code></td><td>—</td><td>Вспышка на весь экран</td></tr>
+<tr><td><code>set_vignette(intensity=0.5, color=(0,0,0))</code></td><td>0..1</td><td>Радиальное затемнение</td></tr>
+<tr><td><code>clear_vignette()</code></td><td>—</td><td>Убрать вигнетку</td></tr>
+<tr><td><code>set_skybox(texture_path=None, color=(20,20,30))</code></td><td>—</td><td>Небо (цвет/текстура)</td></tr>
+<tr><td><code>set_floor_texture(texture_path)</code></td><td>—</td><td>Заменить текстуру пола</td></tr>
+<tr><td><code>set_ceiling_texture(texture_path)</code></td><td>—</td><td>Заменить текстуру потолка</td></tr>
+</table>
+</div>
+
+<pre><code>api.flash_screen((200, 30, 30), alpha=120, duration=0.2)
+api.set_vignette(0.7, (100, 0, 0))
+api.after(2.0, api.clear_vignette)</code></pre>
+
+<h3 id="microapi-hud">23.12 HUD и уведомления</h3>
+<div class="table-wrap">
+<table>
+<tr><th>Метод</th><th>Параметры</th><th>Возвращает</th><th>Что делает</th></tr>
+<tr><td><code>show_subtitle(text, duration=2, color=(255,255,255), font='Arial', size=24)</code></td><td>—</td><td>—</td><td>Субтитр снизу</td></tr>
+<tr><td><code>push_notification(title, text='', duration=2.5, icon=None, color=(255,200,100))</code></td><td>—</td><td>—</td><td>Тост в углу</td></tr>
+<tr><td><code>bind_hud(draw_fn, layer=100)</code></td><td>draw_fn(screen, engine)</td><td>handle</td><td>Постоянный HUD-коллбэк</td></tr>
+<tr><td><code>unbind_hud(handle)</code></td><td>—</td><td>—</td><td>Снять коллбэк</td></tr>
+<tr><td><code>draw_text_world(wx, wy, text, ...)</code></td><td>—</td><td>bool</td><td>Надпись над мировой точкой</td></tr>
+</table>
+</div>
+
+<pre><code>def draw_stamina(screen, engine):
+    ratio = stamina / 100
+    w = int(200 * ratio)
+    pygame.draw.rect(screen, (60, 200, 60), (20, 100, w, 12))
+    pygame.draw.rect(screen, (200, 200, 200), (20, 100, 200, 12), 2)
+api.bind_hud(draw_stamina, layer=50)
+api.draw_text_world(enemy.x, enemy.y, "!", color=(255, 60, 60))</code></pre>
+
+<h3 id="microapi-legacy">23.13 Унаследованные методы (из 1.0–1.2.5)</h3>
+
+<p>Эти методы были до API Update и продолжают работать без изменений.</p>
+
+<h4>Клетки и стены</h4>
 <pre><code>api.get_cell(x, y)
 api.set_cell_property(x, y, key, value)
 api.set_cell_base_id(x, y, new_id)
@@ -1180,101 +1116,838 @@ api.break_wall(x, y, mode='big')
 api.restore_wall(x, y, delay=5.0, wall_id=3, hp=100)
 api.cancel_restore(x, y)</code></pre>
 
-<h3>Игрок</h3>
-<pre><code>api.set_player_position(x, y)
-api.set_player_angle(angle)
-api.set_player_speed(speed)
-api.set_player_rot_speed(rot_speed)</code></pre>
-
-<h3>Свет</h3>
+<h4>Свет</h4>
 <pre><code>api.add_light(x, y, radius, intensity, color)
 api.remove_light(index)
 api.set_ambient(value)
-api.set_player_light(radius, intensity, color)
-api.set_player_light_mode(mode='circle', range=500.0, cone_angle=70.0)</code></pre>
+api.set_player_light(radius, intensity, color)</code></pre>
 
-<h3>RTE <span class="new">1.2.5</span></h3>
+<h4>RTE</h4>
 <pre><code>api.set_rt(enabled=True, max_lights=2, reflections=True)
 api.set_reflection(tile_x, tile_y, value)</code></pre>
 
-<h3>Взрывы <span class="new">1.2.5</span></h3>
-<pre><code>api.spawn_explosion(x, y, radius=120.0, damage=100.0, color=(255,180,60))</code></pre>
-
-<h3>Интерактивные объекты <span class="new">1.2.5</span></h3>
+<h4>Интерактивные</h4>
 <pre><code>api.try_interact()
-api.register_action(name, func)
 api.get_object(key)
 api.query_objects_in_circle(x, y, r)
 api.push_object(key_or_obj, ix, iy)
-api.set_gravity_for(key, gravity)</code></pre>
+api.set_gravity_for(key, gravity)
+api.set_ceiling_collision(enabled)</code></pre>
 
-<h3>Враги</h3>
-<pre><code>api.spawn_enemy(x, y, **kwargs)
-api.spawn_enemy_by_tile(tile_x, tile_y, **kwargs)</code></pre>
-
-<h3>Оружие</h3>
-<pre><code>api.give_gun(gun)
-api.fire_current_gun()</code></pre>
-
-<h3>Модели</h3>
+<h4>Модели/спрайты</h4>
 <pre><code>api.get_model(key)
 api.set_model_position(key, x, y)
-api.set_model_rotation_x(key, degrees)
-api.set_model_rotation_y(key, degrees)
-api.set_model_rotation_z(key, degrees)
-api.set_model_visible(key, visible)</code></pre>
-
-<h3>Спрайты</h3>
-<pre><code>api.get_sprites()
+api.set_model_rotation_x/y/z(key, degrees)
+api.set_model_visible(key, visible)
+api.get_sprites()
 api.set_sprite_position(key, x, y)
 api.set_sprite_visible(key, visible)
 api.remove_sprite(key)</code></pre>
 
-<h3>Двери и ключи</h3>
+<h4>Двери и ключи</h4>
 <pre><code>api.open_door(door_id)
 api.close_door(door_id)
 api.is_door_open(door_id)
 api.collect_key(key_id)
 api.has_key(key_id)</code></pre>
 
-<h3>Партиклы и эффекты</h3>
+<h4>Прочее</h4>
 <pre><code>api.particles_set_mode('optimal')
 api.particles_spawn(x, y, count=10, color=(255,255,255), speed=100, life=0.5, size=3)
 api.set_effect('vhs', alpha=180, intensity=0.7)
-api.clear_effect()</code></pre>
-
-<h3>Мини-карта</h3>
-<pre><code>api.set_minimap(enabled=True, mode='color', size=15, ...)
+api.clear_effect()
+api.set_minimap(...)
 api.set_minimap_mode('wb')
-api.set_minimap_visible_objects(enemies=True, models=True, ...)
+api.set_minimap_visible_objects(...)
 api.set_minimap_custom(renderer)
-api.minimap_show_enemy_now(enemy)</code></pre>
-
-<h3>Туман и графика</h3>
-<pre><code>api.set_fog(enabled=True, color=(30,30,40), start=400, end=1200)
+api.minimap_show_enemy_now(enemy)
+api.set_fog(...)
 api.disable_fog()
 api.set_graphics_level('high')
 api.set_debris_mode('medium')
-api.set_enemy_bars(hp=True, ammo=False, max_distance=800)</code></pre>
-
-<h3>3D-звук</h3>
-<pre><code>api.play_sound_3d_world('sound', x=300, y=200)
+api.set_enemy_bars(hp=True, ammo=False, max_distance=800)
+api.play_sound_3d_world('sound', x=300, y=200)
 api.play_sound_3d_tile('sound', tile_x=5, tile_y=3)
 api.play_sound_3d_player_camera('sound', offset_x=-1.0, offset_y=0.5)
-api.play_sound_3d_player('sound', offset_x=10, offset_y=0)</code></pre>
-
-<h3>HUD</h3>
-<pre><code>api.hud_set_visible(True)
+api.play_sound_3d_player('sound', offset_x=10, offset_y=0)
+api.hud_set_visible(True)
 api.hud_set_crosshair(True)
 api.hud_shake(intensity=10, duration=0.4)
 api.hud_set_crosshair_spread(10)</code></pre>
 
 <!-- ============================================ -->
-<h2 id="events">24. 🧩 События (переопределение)</h2>
+<!-- ============================================ -->
+<!-- PHYSICSAPI — ПОЛНОЕ РУКОВОДСТВО (API Update) -->
+<!-- ============================================ -->
+<!-- ============================================ -->
+<h2 id="physicsapi">24. 🧲 PhysicsAPI — полное руководство <span class="new">API Update</span></h2>
+
+<p><code>PhysicsAPI</code> — встроенная физика (круглые тела). Доступна через <code>engine.physics</code>
+и через делегацию <code>api.&lt;method&gt;()</code>. После API Update — <strong>~38 новых методов</strong>.</p>
+
+<div class="note" style="border-color:#7ad37a;">
+  <strong>Совместимость.</strong> Старые методы (<code>add_body</code>, <code>remove_body</code>, <code>apply_impulse</code>,
+  <code>raycast</code>, <code>query_circle</code>, <code>push_object</code>, <code>set_gravity</code>) работают.
+  Новые поля (<code>friction</code>, <code>restitution</code>, <code>gravity_scale</code>, <code>kinematic</code>, <code>sleeping</code>)
+  опциональны. Body-vs-body по умолчанию выключен.
+</div>
+
+<h3 id="phys-bodies">24.1 Тела: геттеры</h3>
+<div class="table-wrap">
+<table>
+<tr><th>Метод</th><th>Возвращает</th><th>Что делает</th></tr>
+<tr><td><code>get_body_position(body)</code></td><td>(x, y) | None</td><td>Позиция</td></tr>
+<tr><td><code>get_body_velocity(body)</code></td><td>(vx, vy) | None</td><td>Скорость</td></tr>
+<tr><td><code>get_body_mass(body)</code></td><td>float | None</td><td>Масса</td></tr>
+<tr><td><code>get_body_radius(body)</code></td><td>float | None</td><td>Радиус</td></tr>
+<tr><td><code>get_body_count()</code></td><td>int</td><td>Сколько тел в мире</td></tr>
+<tr><td><code>is_body_sleeping(body)</code></td><td>bool</td><td>Спит ли</td></tr>
+<tr><td><code>is_body_kinematic(body)</code></td><td>bool</td><td>Управляется кодом</td></tr>
+<tr><td><code>is_body_colliding(body)</code></td><td>bool</td><td>Включены ли коллизии</td></tr>
+</table>
+</div>
+
+<h3 id="phys-setters">24.2 Тела: сеттеры (все возвращают старое)</h3>
+<div class="table-wrap">
+<table>
+<tr><th>Метод</th><th>Что задаёт</th></tr>
+<tr><td><code>set_body_position(body, x, y)</code></td><td>Позиция</td></tr>
+<tr><td><code>set_body_velocity(body, vx, vy)</code></td><td>Скорость</td></tr>
+<tr><td><code>set_body_mass(body, mass)</code></td><td>Масса (мин. 1e-3)</td></tr>
+<tr><td><code>set_body_radius(body, radius)</code></td><td>Радиус</td></tr>
+<tr><td><code>set_body_friction(body, f)</code></td><td>0..1. 1.0 = без трения, 0.9 = быстро тормозит</td></tr>
+<tr><td><code>set_body_restitution(body, e)</code></td><td>0..1. 0 = не отскакивает, 1 = абсолютно упругий</td></tr>
+<tr><td><code>set_body_gravity_scale(body, scale)</code></td><td>Множитель гравитации (0 = невесомость)</td></tr>
+<tr><td><code>set_body_kinematic(body, kinematic=True)</code></td><td>Игнорировать гравитацию и стены</td></tr>
+<tr><td><code>set_body_collision_enabled(body, enabled=True)</code></td><td>Полное отключение коллизий</td></tr>
+<tr><td><code>wake_body(body)</code> / <code>sleep_body(body)</code></td><td>Разбудить/усыпить</td></tr>
+</table>
+</div>
+
+<pre><code>phys.add_body(ice_ball)
+phys.set_body_friction(ice_ball, 0.98)
+phys.set_body_restitution(ice_ball, 0.7)
+
+phys.set_body_kinematic(torch, True)
+phys.set_body_position(torch, 400, 400)</code></pre>
+
+<h3 id="phys-queries">24.3 Запросы</h3>
+<div class="table-wrap">
+<table>
+<tr><th>Метод</th><th>Параметры</th><th>Возвращает</th><th>Что делает</th></tr>
+<tr><td><code>query_circle(x, y, r)</code></td><td>—</td><td>список</td><td>(Старый) — все тела в круге</td></tr>
+<tr><td><code>query_rect(x, y, w, h)</code></td><td>—</td><td>список</td><td>AABB-запрос по центрам</td></tr>
+<tr><td><code>get_bodies_in_radius(x, y, r)</code></td><td>—</td><td>список</td><td>Семантически чистый вариант query_circle</td></tr>
+<tr><td><code>raycast_all(x, y, dx, dy, max_dist, ignore=None)</code></td><td>—</td><td><code>[(body, dist), ...]</code></td><td>Все пересечения по лучу</td></tr>
+<tr><td><code>raycast(x, y, dx, dy, max_dist, ignore=None)</code></td><td>—</td><td><code>(body, dist)</code></td><td>(Старый) — первое пересечение</td></tr>
+<tr><td><code>shape_cast(x, y, dx, dy, radius, max_dist, ignore=None)</code></td><td>—</td><td><code>(body, dist)</code></td><td>Swept circle</td></tr>
+<tr><td><code>explosion_query(x, y, radius)</code></td><td>—</td><td><code>[(body, dist), ...]</code></td><td>Все в радиусе + дистанция</td></tr>
+</table>
+</div>
+
+<h3 id="phys-forces">24.4 Силы и импульсы</h3>
+<div class="table-wrap">
+<table>
+<tr><th>Метод</th><th>Параметры</th><th>Что делает</th></tr>
+<tr><td><code>add_body(body)</code></td><td>—</td><td>(Старый) — добавить тело</td></tr>
+<tr><td><code>remove_body(body)</code></td><td>—</td><td>(Старый) — убрать тело</td></tr>
+<tr><td><code>apply_impulse(body, ix, iy)</code></td><td>—</td><td>(Старый) — мгновенный импульс</td></tr>
+<tr><td><code>apply_force(body, fx, fy)</code></td><td>—</td><td>Постоянная сила (ускорение) на шаг</td></tr>
+<tr><td><code>apply_torque(body, torque)</code></td><td>—</td><td>Момент силы (для angular_vel)</td></tr>
+<tr><td><code>apply_impulse_at_point(body, ix, iy, px, py)</code></td><td>—</td><td>Импульс в точке: линейный + момент</td></tr>
+<tr><td><code>apply_force_at_point(body, fx, fy, px, py)</code></td><td>—</td><td>Сила в точке</td></tr>
+<tr><td><code>apply_force_field(x, y, radius, fx, fy, falloff='linear', inverse=False)</code></td><td>—</td><td>Притяжение/отталкивание всех тел в радиусе. Falloff: 'linear' | 'constant' | 'inverse'</td></tr>
+<tr><td><code>apply_radial_impulse(x, y, radius, strength)</code></td><td>—</td><td>Взрывной импульс (как граната)</td></tr>
+<tr><td><code>set_gravity(g)</code></td><td>—</td><td>(Старый) — глобальная гравитация</td></tr>
+<tr><td><code>set_gravity_for(key, gravity)</code></td><td>—</td><td>(Старый) — гравитация для объекта</td></tr>
+</table>
+</div>
+
+<h3 id="phys-joints">24.5 Связи (joints)</h3>
+<div class="table-wrap">
+<table>
+<tr><th>Метод</th><th>Параметры</th><th>Возвращает</th><th>Что делает</th></tr>
+<tr><td><code>add_distance_joint(a, b, distance)</code></td><td>—</td><td>joint</td><td>Жёсткая связь «верёвка»: тела не сближаются/не отдаляются дальше rest</td></tr>
+<tr><td><code>add_spring_joint(a, b, rest, k=10.0, damping=0.5)</code></td><td>—</td><td>joint</td><td>Пружина между телами</td></tr>
+<tr><td><code>add_pin_joint(body, x, y)</code></td><td>—</td><td>joint</td><td>Прибить тело к точке мира</td></tr>
+<tr><td><code>remove_joint(joint)</code></td><td>—</td><td>—</td><td>Убрать связь</td></tr>
+<tr><td><code>clear_joints()</code></td><td>—</td><td>—</td><td>Убрать все связи</td></tr>
+</table>
+</div>
+
+<pre><code># Верёвка
+j = phys.add_distance_joint(crate1, crate2, distance=80)
+
+# Пружина
+j = phys.add_spring_joint(crate1, crate2, rest=60, k=80, damping=1.2)
+
+# Прибить лампу к потолку
+phys.add_pin_joint(lamp, x=500, y=300)</code></pre>
+
+<h3 id="phys-layers">24.6 Слои коллизий</h3>
+<div class="table-wrap">
+<table>
+<tr><th>Метод</th><th>Параметры</th><th>Что делает</th></tr>
+<tr><td><code>register_layer(name, index)</code></td><td>name: str, index: 0..31</td><td>Дать имя слою</td></tr>
+<tr><td><code>get_layer_index(name_or_index)</code></td><td>—</td><td>Разрешить имя в индекс</td></tr>
+<tr><td><code>set_collision_layer(body, layer)</code></td><td>имя или индекс</td><td>Слой, к которому принадлежит тело</td></tr>
+<tr><td><code>set_collision_mask(body, mask)</code></td><td>имя, int или список имён</td><td>С какими слоями сталкивается тело</td></tr>
+<tr><td><code>set_layer_collision(a, b, enabled=True)</code></td><td>—</td><td>Матрица «слой X ↔ слой Y». Симметрично</td></tr>
+</table>
+</div>
+
+<pre><code>phys.register_layer('player',  0)
+phys.register_layer('props',   1)
+phys.register_layer('hazards', 2)
+
+phys.set_layer_collision('props', 'hazards', False)
+
+phys.set_collision_layer(crate, 'props')
+phys.set_collision_mask(crate, ['props', 'player'])</code></pre>
+
+<h3 id="phys-bodybody">24.7 Body-vs-body (opt-in)</h3>
+<div class="table-wrap">
+<table>
+<tr><th>Метод</th><th>Параметры</th><th>Что делает</th></tr>
+<tr><td><code>set_body_collisions(enabled=True, iterations=4)</code></td><td>—</td><td>Включает взаимные столкновения тел (impulse-based solver)</td></tr>
+</table>
+</div>
+
+<p>По умолчанию выключено — старое поведение не меняется.</p>
+
+<h3 id="phys-triggers">24.8 Триггеры-области</h3>
+<div class="table-wrap">
+<table>
+<tr><th>Метод</th><th>Параметры</th><th>Возвращает</th><th>Что делает</th></tr>
+<tr><td><code>add_trigger_area(x, y, w, h, callback, once=True, tag=None)</code></td><td>—</td><td>handle</td><td>Прямоугольник. Callback(body, phase, area), phase ∈ {'enter','exit'}</td></tr>
+<tr><td><code>add_trigger_circle(x, y, r, callback, once=True, tag=None)</code></td><td>—</td><td>handle</td><td>Круглая зона</td></tr>
+<tr><td><code>remove_area_trigger(handle)</code></td><td>—</td><td>—</td><td>Удалить зону</td></tr>
+<tr><td><code>get_bodies_in_trigger(area)</code></td><td>—</td><td>список</td><td>Тела, находящиеся в зоне сейчас</td></tr>
+</table>
+</div>
+
+<pre><code>def on_hazard(body, phase, area):
+    if phase == 'enter':
+        api.spawn_explosion(body.x, body.y, radius=100, damage=30)
+        api.spawn_transient_light(body.x, body.y, radius=250,
+                                  intensity=2.0, ttl=0.5)
+phys.add_trigger_circle(560, 560, r=80, callback=on_hazard, once=False,
+                        tag='lava')</code></pre>
+
+<h3 id="phys-serialization">24.9 Сериализация</h3>
+<div class="table-wrap">
+<table>
+<tr><th>Метод</th><th>Возвращает</th><th>Что делает</th></tr>
+<tr><td><code>get_state()</code></td><td>dict</td><td>Снимок физического мира — позиции, скорости, массы, флаги</td></tr>
+<tr><td><code>set_state(state)</code></td><td>—</td><td>Восстановить состояние (по количеству тел совпадает)</td></tr>
+<tr><td><code>dump_bodies()</code></td><td>—</td><td>Отладочный вывод всех тел в консоль</td></tr>
+</table>
+</div>
+
+<p>Фундамент для полноценных сохранений в 1.4.</p>
+
+<h3 id="phys-example">24.10 Полный пример: физический ящик со слоями, джойнтом и триггером</h3>
+
+<pre><code>class Crate:
+    def __init__(self, x, y, mass=20.0):
+        self.x, self.y = float(x), float(y)
+        self.vx = self.vy = 0.0
+        self.mass = mass
+        self.radius = 22.0
+        self.friction = 0.85
+        self.restitution = 0.15
+        self.angular_vel = 0.0
+
+
+def on_load(engine):
+    api.log("Physics example loading…")
+
+    phys = api.physics
+
+    # Слои
+    phys.register_layer('player', 0)
+    phys.register_layer('props',  1)
+    phys.register_layer('hazards', 2)
+    phys.set_layer_collision('props', 'hazards', False)
+
+    # Body-vs-body
+    phys.set_body_collisions(enabled=True, iterations=6)
+
+    # Ящик
+    crate = Crate(500, 500)
+    phys.add_body(crate)
+    phys.set_collision_layer(crate, 'props')
+    phys.set_collision_mask(crate, ['props', 'player'])
+
+    # Второй ящик + пружина
+    crate2 = Crate(560, 500)
+    phys.add_body(crate2)
+    phys.set_collision_layer(crate2, 'props')
+    phys.add_spring_joint(crate, crate2, rest=60.0, k=80.0, damping=1.2)
+
+    # Триггер
+    def on_enter(body, phase, area):
+        if phase == 'enter' and body is crate:
+            api.spawn_explosion(body.x, body.y, radius=100, damage=30)
+    phys.add_trigger_circle(560, 560, r=80, callback=on_enter, once=False,
+                            tag='hazard')
+
+    # Отложенный импульс
+    api.after(2.0, lambda: phys.apply_impulse(crate, 400, 0))
+
+    # Радиальный импульс через 4 сек
+    api.after(4.0, lambda: phys.apply_radial_impulse(500, 500, 200, 500))
+
+    api.log("Physics example ready. Тела:", phys.get_body_count())</code></pre>
+
+<!-- ============================================ -->
+<!-- ============================================ -->
+<!-- MODAPI — ПОЛНОЕ РУКОВОДСТВО (API Update)     -->
+<!-- ============================================ -->
+<!-- ============================================ -->
+<h2 id="modapi">25. 🧩 ModAPI и система модов <span class="new">API Update</span></h2>
+
+<p>Моды — Python-пакеты в папке <code>mods/&lt;mod_id&gt;/</code>. Каждый мод получает объект <code>api</code>
+(экземпляр <code>ModAPI</code>) при загрузке. Через него мод регистрирует врагов, оружие, HUD-слои,
+читает конфиг, сохраняет прогресс, общается с другими модами.</p>
+
+<h3 id="modapi-structure">25.1 Структура мода</h3>
+
+<pre><code>mods/scrolls/
+├── mod.py              ← точка входа, определяет on_load(engine)
+├── mod.json            ← метаданные (version, authors, load_after, ...)
+├── config.json         ← настройки (создаётся модом через api.save_config())
+├── save.json           ← сохранённый прогресс (api.save_data())
+├── lang/
+│   ├── ru.json
+│   └── en.json
+└── assets/
+    ├── fireball.png
+    └── sounds/
+        └── cast.wav</code></pre>
+
+<p><strong>mod.json</strong> — необязательный, но полезный:</p>
+<pre><code>{
+  "name": "Magic Scrolls",
+  "version": "1.2.0",
+  "authors": ["Ты"],
+  "description": "Добавляет огненные свитки и заклинания",
+  "enabled_by_default": true,
+  "engine_min": "1.3.0",
+  "load_after": ["base_weapons"]
+}</code></pre>
+
+<h3 id="modapi-basic">25.2 Базовое — из прошлых версий</h3>
+
+<div class="table-wrap">
+<table>
+<tr><th>Метод</th><th>Параметры</th><th>Что делает</th></tr>
+<tr><td><code>load_image(name, size=None, default_color=(255,0,255))</code></td><td>—</td><td>Загрузить картинку из <code>assets/</code> мода</td></tr>
+<tr><td><code>load_sound(name)</code></td><td>—</td><td>Загрузить звук (pygame.mixer.Sound)</td></tr>
+<tr><td><code>load_model(name, **kwargs)</code></td><td>—</td><td>Загрузить .obj/.gbj модель</td></tr>
+<tr><td><code>load_text(name)</code></td><td>—</td><td>Прочитать текстовый файл</td></tr>
+<tr><td><code>load_json(name)</code></td><td>—</td><td>Прочитать JSON</td></tr>
+<tr><td><code>asset_path(name)</code></td><td>—</td><td>Полный путь к ассету</td></tr>
+<tr><td><code>register_enemy(local_name, cls)</code></td><td>—</td><td>Регистрирует класс врага. В карте: <code>type:local_name</code></td></tr>
+<tr><td><code>register_gun(local_name, cls)</code></td><td>—</td><td>Регистрирует класс оружия</td></tr>
+<tr><td><code>register_material(local_name, material)</code></td><td>—</td><td>Регистрирует материал</td></tr>
+<tr><td><code>add_hook(event, callback)</code></td><td>—</td><td>Подписаться на событие движка</td></tr>
+<tr><td><code>spawn_enemy(*args, **kwargs)</code></td><td>—</td><td>Прокси на MicroAPI.spawn_enemy</td></tr>
+<tr><td><code>spawn_enemy_by_tile(*args, **kwargs)</code></td><td>—</td><td>Прокси на MicroAPI.spawn_enemy_by_tile</td></tr>
+<tr><td><code>add_sprite(sprite)</code></td><td>—</td><td>Добавить спрайт</td></tr>
+<tr><td><code>add_light(*args, **kwargs)</code></td><td>—</td><td>Прокси на MicroAPI.add_light</td></tr>
+<tr><td><code>log(*args)</code> / <code>warn(*args)</code> / <code>error(*args)</code></td><td>—</td><td>Вывод с префиксом <code>[MOD:id]</code></td></tr>
+</table>
+</div>
+
+<h3 id="modapi-meta">25.3 Метаданные и версии</h3>
+<div class="table-wrap">
+<table>
+<tr><th>Метод / свойство</th><th>Что даёт</th></tr>
+<tr><td><code>api.id</code></td><td>ID мода</td></tr>
+<tr><td><code>api.engine</code></td><td>Ссылка на Engine</td></tr>
+<tr><td><code>api.assets_dir</code></td><td>Полный путь к <code>assets/</code> мода</td></tr>
+<tr><td><code>api.meta</code></td><td>Сырой <code>mod.json</code></td></tr>
+<tr><td><code>api.version</code></td><td>Версия мода из mod.json</td></tr>
+<tr><td><code>api.authors</code></td><td>Список авторов</td></tr>
+<tr><td><code>api.description</code></td><td>Описание</td></tr>
+<tr><td><code>api.mod_path</code></td><td>Полный путь к папке мода</td></tr>
+<tr><td><code>api.engine_version()</code></td><td>Версия движка</td></tr>
+<tr><td><code>api.check_engine(min_ver=None, max_ver=None)</code></td><td><code>(ok: bool, reason: str|None)</code></td></tr>
+</table>
+</div>
+
+<pre><code>def on_load(engine):
+    ok, why = api.check_engine(min_ver='1.3.0')
+    if not ok:
+        api.error(why)
+        return</code></pre>
+
+<h3 id="modapi-crossmod">25.4 Межмодовое взаимодействие</h3>
+<div class="table-wrap">
+<table>
+<tr><th>Метод</th><th>Параметры</th><th>Возвращает</th><th>Что делает</th></tr>
+<tr><td><code>has_mod(mod_id)</code></td><td>—</td><td>bool</td><td>Загружен ли указанный мод</td></tr>
+<tr><td><code>list_mods()</code></td><td>—</td><td>список</td><td>Все загруженные моды</td></tr>
+<tr><td><code>get_mod_version(mod_id)</code></td><td>—</td><td>str | None</td><td>Версия чужого мода</td></tr>
+<tr><td><code>get_mod_api(mod_id)</code></td><td>—</td><td>ModAPI | None</td><td>API другого мода</td></tr>
+<tr><td><code>require_mod(mod_id, min_ver=None, max_ver=None)</code></td><td>—</td><td>ModAPI</td><td>Бросит ModError если мода нет или версия не та</td></tr>
+<tr><td><code>require_mods(*specs)</code></td><td><code>'a&gt;=1.0'</code>, <code>'b'</code>, …</td><td>dict</td><td>Пакетная проверка. Возвращает {id: ModAPI}</td></tr>
+</table>
+</div>
+
+<pre><code>def on_load(engine):
+    other = api.require_mod('base_weapons', min_ver='1.2')
+    other.register_callback('reload', lambda: api.log("reloaded!"))</code></pre>
+
+<h3 id="modapi-registration">25.5 Расширенная регистрация</h3>
+<div class="table-wrap">
+<table>
+<tr><th>Метод</th><th>Параметры</th><th>Возвращает</th><th>Что делает</th></tr>
+<tr><td><code>register_bullet_type(local_name, cls)</code></td><td>—</td><td>—</td><td>Класс пули. Спавн: <code>spawn_bullet(kind=name)</code></td></tr>
+<tr><td><code>register_pickup_type(local_name, cls)</code></td><td>—</td><td>—</td><td>Класс подбираемого предмета</td></tr>
+<tr><td><code>register_hud_layer(draw_fn, priority=100, key=None)</code></td><td>draw_fn(screen, engine)</td><td>handle</td><td>Постоянный HUD-слой. Авто-снятие при unload</td></tr>
+<tr><td><code>register_debug_panel(title, draw_fn, key=None)</code></td><td>draw_fn(screen, engine, x, y) → new_y</td><td>handle</td><td>Панель для F1-оверлея</td></tr>
+<tr><td><code>register_map_generator(name, generator_fn)</code></td><td>fn(w, h, seed, params) → str</td><td>—</td><td>Процедурный генератор карт</td></tr>
+<tr><td><code>unregister(handle_or_key)</code></td><td>—</td><td>bool</td><td>Снять регистрацию по handle или ключу</td></tr>
+<tr><td><code>get_enemy_class(name)</code></td><td>—</td><td>cls | None</td><td>Получить класс врага по имени</td></tr>
+<tr><td><code>get_material(name)</code></td><td>—</td><td>Material | None</td><td>Получить материал</td></tr>
+</table>
+</div>
+
+<h3 id="modapi-config">25.6 Config — настройки пользователя</h3>
+
+<p>Файл <code>mods/&lt;id&gt;/config.json</code>. Игрок может открыть и отредактировать вручную.</p>
+
+<div class="table-wrap">
+<table>
+<tr><th>Метод</th><th>Возвращает</th><th>Что делает</th></tr>
+<tr><td><code>api.config</code></td><td>dict</td><td>Все настройки (мутация допустима)</td></tr>
+<tr><td><code>get_config(key, default=None)</code></td><td>Any</td><td>Значение по ключу</td></tr>
+<tr><td><code>set_config(key, value)</code></td><td>старое</td><td>Установить значение</td></tr>
+<tr><td><code>save_config()</code></td><td>bool</td><td>Записать в config.json</td></tr>
+<tr><td><code>load_config()</code></td><td>dict</td><td>Перечитать с диска</td></tr>
+</table>
+</div>
+
+<pre><code>def on_load(engine):
+    if api.get_config('fireball_damage') is None:
+        api.set_config('fireball_damage', 25)
+        api.set_config('trail_enabled', True)
+        api.save_config()
+    dmg = api.get_config('fireball_damage')</code></pre>
+
+<h3 id="modapi-storage">25.7 Storage — прогресс игрока</h3>
+
+<p>Файл <code>mods/&lt;id&gt;/save.json</code>. Отдельно от config.</p>
+
+<div class="table-wrap">
+<table>
+<tr><th>Метод</th><th>Возвращает</th><th>Что делает</th></tr>
+<tr><td><code>api.save</code></td><td>dict</td><td>Все сохранённые данные</td></tr>
+<tr><td><code>get_save(key, default=None)</code></td><td>Any</td><td>Значение по ключу</td></tr>
+<tr><td><code>set_save(key, value)</code></td><td>старое</td><td>Установить значение</td></tr>
+<tr><td><code>save_data()</code></td><td>bool</td><td>Записать в save.json</td></tr>
+<tr><td><code>load_data()</code></td><td>dict</td><td>Перечитать</td></tr>
+<tr><td><code>clear_save()</code></td><td>—</td><td>Стереть save.json</td></tr>
+</table>
+</div>
+
+<pre><code>kills = api.get_save('total_kills', 0)
+api.set_save('total_kills', kills + 1)
+api.save_data()</code></pre>
+
+<h3 id="modapi-i18n">25.8 i18n — локализация</h3>
+
+<p>Файлы в <code>lang/&lt;code&gt;.json</code>: <code>{"key": "значение"}</code>. Плейсхолдеры <code>{name}</code>.</p>
+
+<div class="table-wrap">
+<table>
+<tr><th>Метод</th><th>Параметры</th><th>Возвращает</th><th>Что делает</th></tr>
+<tr><td><code>load_lang(code=None)</code></td><td>str | None</td><td>bool</td><td>Загрузить перевод. None — взять из engine.lang</td></tr>
+<tr><td><code>set_lang(code)</code></td><td>str</td><td>старое</td><td>Переключить язык</td></tr>
+<tr><td><code>t(key, **kwargs)</code></td><td>—</td><td>str</td><td>Перевод. Если нет — вернёт сам ключ. Подставит placeholders</td></tr>
+</table>
+</div>
+
+<pre><code>api.load_lang()
+api.log(api.t('loaded', count=42))  # "Загружено 42 картинок"</code></pre>
+
+<h3 id="modapi-assets">25.9 Asset-хелперы</h3>
+<div class="table-wrap">
+<table>
+<tr><th>Метод</th><th>Возвращает</th><th>Что делает</th></tr>
+<tr><td><code>asset_exists(name)</code></td><td>bool</td><td>Есть ли файл в assets/</td></tr>
+<tr><td><code>list_assets(pattern="*", subdir="")</code></td><td>список путей</td><td>Список файлов (glob-паттерн)</td></tr>
+<tr><td><code>resolve(name)</code></td><td>str</td><td>Публичный путь к ассету</td></tr>
+<tr><td><code>override_engine_asset(key, path, size=None)</code></td><td>bool</td><td>Заменить текстуру движка по ключу кэша</td></tr>
+</table>
+</div>
+
+<h3 id="modapi-lifecycle">25.10 Lifecycle — reload, unload, on_unload</h3>
+<div class="table-wrap">
+<table>
+<tr><th>Метод</th><th>Параметры</th><th>Что делает</th></tr>
+<tr><td><code>on_reload(fn)</code></td><td>fn(engine)</td><td>Callback при перезагрузке мода</td></tr>
+<tr><td><code>on_unload(fn)</code></td><td>fn()</td><td>Callback при выгрузке (cleanup)</td></tr>
+<tr><td><code>reload_self()</code></td><td>—</td><td>Запросить перезагрузку мода</td></tr>
+<tr><td><code>unload_self()</code></td><td>—</td><td>Запросить выгрузку</td></tr>
+<tr><td><code>is_loaded()</code></td><td>—</td><td>bool</td></tr>
+</table>
+</div>
+
+<pre><code>api.on_unload(lambda: api.log("Пока!"))
+
+# Через 10 секунд перезагрузиться
+api.after(10.0, api.reload_self)</code></pre>
+
+<h3 id="modapi-hooks">25.11 Хуки с приоритетом и safe-режимом</h3>
+
+<pre><code>add_hook(event, callback, priority=0, safe=False)</code></pre>
+
+<div class="table-wrap">
+<table>
+<tr><th>Параметр</th><th>Что значит</th></tr>
+<tr><td><code>priority</code></td><td>Меньше — раньше. Позволяет перехватить событие до других модов</td></tr>
+<tr><td><code>safe</code></td><td>Обернуть callback в try/except с логом мода</td></tr>
+</table>
+</div>
+
+<p><strong>События движка:</strong></p>
+<div class="table-wrap">
+<table>
+<tr><th>Событие</th><th>Аргументы</th><th>Когда вызывается</th></tr>
+<tr><td><code>update</code></td><td>(dt, keys)</td><td>Каждый кадр до физики</td></tr>
+<tr><td><code>render</code></td><td>(screen)</td><td>Каждый кадр после отрисовки сцены</td></tr>
+<tr><td><code>level_loaded</code></td><td>(index)</td><td>После загрузки уровня</td></tr>
+<tr><td><code>enemy_spawned</code></td><td>(enemy)</td><td>При создании врага</td></tr>
+<tr><td><code>enemy_death</code></td><td>(enemy)</td><td>Когда враг умирает</td></tr>
+<tr><td><code>enemy_damaged</code></td><td>(enemy, dmg, source)</td><td>При уроне врагу</td></tr>
+<tr><td><code>player_damaged</code></td><td>(amount, source)</td><td>При уроне игроку</td></tr>
+<tr><td><code>player_death</code></td><td>()</td><td>Когда игрок умирает</td></tr>
+<tr><td><code>wall_broken</code></td><td>(tx, ty, cell)</td><td>При разрушении стены</td></tr>
+<tr><td><code>bullet_hit</code></td><td>(bullet, hit_type, target)</td><td>При попадании пули</td></tr>
+<tr><td><code>key_pickup</code></td><td>(key_id)</td><td>При подборе ключа</td></tr>
+<tr><td><code>door_opened</code> / <code>door_closed</code></td><td>(door_id)</td><td>При открытии/закрытии двери</td></tr>
+<tr><td><code>interact</code></td><td>(action_name, obj)</td><td>При нажатии E</td></tr>
+<tr><td><code>trigger_enter</code></td><td>(trigger)</td><td>При входе в спавн-триггер</td></tr>
+<tr><td><code>mod_loaded</code></td><td>(mod_id)</td><td>При загрузке мода</td></tr>
+</table>
+</div>
+
+<pre><code>def on_enemy_death(enemy):
+    api.log(f"Убит {type(enemy).__name__}")
+api.add_hook('enemy_death', on_enemy_death, priority=0, safe=True)</code></pre>
+
+<h3 id="modapi-timers">25.12 Mod-scoped таймеры</h3>
+
+<p>Версии <code>after</code> и <code>every</code>, автоматически отменяющиеся при unload мода.</p>
+
+<div class="table-wrap">
+<table>
+<tr><th>Метод</th><th>Возвращает</th><th>Что делает</th></tr>
+<tr><td><code>after(delay, callback)</code></td><td>handle</td><td>Отложенный вызов. При unload — отменяется сам</td></tr>
+<tr><td><code>every(interval, callback)</code></td><td>handle</td><td>Повторяющийся. Тоже отменяется</td></tr>
+<tr><td><code>cancel_timer(handle)</code></td><td>—</td><td>Отменить конкретный</td></tr>
+<tr><td><code>cancel_all_timers()</code></td><td>—</td><td>Отменить все таймеры мода</td></tr>
+</table>
+</div>
+
+<h3 id="modapi-tracking">25.13 Resource tracking</h3>
+
+<p>Мод регистрирует ресурсы — при unload движок их автоматически удаляет.</p>
+
+<div class="table-wrap">
+<table>
+<tr><th>Метод</th><th>Параметры</th><th>Что делает</th></tr>
+<tr><td><code>track(obj, kind='generic')</code></td><td>kind: sprite/enemy/body/trigger/timer/hud/light</td><td>Отслеживать ресурс</td></tr>
+<tr><td><code>untrack(obj)</code></td><td>—</td><td>Убрать из отслеживания</td></tr>
+<tr><td><code>release_all()</code></td><td>—</td><td>Освободить всё (вызывается и автоматически)</td></tr>
+</table>
+</div>
+
+<h3 id="modapi-debug">25.14 Debug-хелперы</h3>
+<div class="table-wrap">
+<table>
+<tr><th>Метод</th><th>Что делает</th></tr>
+<tr><td><code>assert_(cond, msg="assert failed")</code></td><td>assert с префиксом мода, бросит ModError</td></tr>
+<tr><td><code>print_state(title=None)</code></td><td>Дамп состояния мода (версия, таймеры, tracked, hooks, config, save)</td></tr>
+<tr><td><code>timeit(fn, *args, **kwargs)</code></td><td>Замер времени вызова (мс)</td></tr>
+</table>
+</div>
+
+<h3 id="modapi-example">25.15 Полный пример мода</h3>
+
+<pre><code># mods/scrolls/mod.py
+
+class FireballBullet:
+    """Кастомная пуля — огненный шар."""
+    def __init__(self, x, y, angle, damage=25, speed=400, **kw):
+        self.x, self.y = x, y
+        self.angle, self.damage, self.speed = angle, damage, speed
+        self.owner = kw.get('owner', 'script')
+        self.alive = True
+        self.explosive = True
+        self.explosion_radius = 90
+        self.explosion_damage = damage * 2
+        self._trail_t = 0.0
+        self.life = 4.0
+
+    def update(self, dt):
+        import math
+        self.x += math.cos(self.angle) * self.speed * dt
+        self.y += math.sin(self.angle) * self.speed * dt
+        self.life -= dt
+        self._trail_t -= dt
+        if self._trail_t <= 0:
+            self._trail_t = 0.03
+            api.spawn_transient_light(self.x, self.y, radius=120,
+                                      intensity=1.2,
+                                      color=(255, 140, 40), ttl=0.15)
+        if self.life <= 0:
+            self.alive = False
+
+
+def on_load(engine):
+    api.log(f"Scrolls v{api.version} loading…")
+
+    ok, why = api.check_engine(min_ver='1.3.0')
+    if not ok:
+        api.error(why)
+        return
+
+    # Конфиг
+    if api.get_config('fireball_damage') is None:
+        api.set_config('fireball_damage', 25)
+        api.save_config()
+    dmg = api.get_config('fireball_damage')
+
+    # Локализация
+    api.load_lang()
+    api.log(api.t('loaded', count=len(api.list_assets('*.png'))))
+
+    # Регистрация
+    api.register_bullet_type('fireball', FireballBullet)
+
+    # Хук с приоритетом
+    def on_enemy_death(enemy):
+        n = api.get_save('total_kills', 0) + 1
+        api.set_save('total_kills', n)
+        if n % 10 == 0:
+            api.save_data()
+            api.log(f"Сохранено: {n} убийств")
+    api.add_hook('enemy_death', on_enemy_death, priority=0, safe=True)
+
+    # Таймер — отменится при unload
+    api.every(3.0, lambda: api.log("tick"))
+
+    # HUD-слой — снимется при unload
+    def draw_ammo_extra(screen, engine):
+        import pygame
+        f = pygame.font.SysFont('Arial', 20)
+        s = f.render(f"[{api.t('fire')}]", True, (255, 200, 80))
+        screen.blit(s, (screen.get_width() - 300, 30))
+    api.register_hud_layer(draw_ammo_extra, priority=50, key='scrolls_hud')
+
+    # Debug-панель для F1
+    def debug_panel(screen, engine, x, y):
+        import pygame
+        f = pygame.font.SysFont('Consolas', 16)
+        surf = f.render(f"scrolls: dmg={dmg} timers={len(api._timers)}",
+                        True, (180, 220, 255))
+        screen.blit(surf, (x, y))
+        return y + 18
+    api.register_debug_panel('Scrolls', debug_panel, key='scrolls_dbg')
+
+    api.on_unload(lambda: api.log("Пока!"))
+    api.log(api.t('ready'))</code></pre>
+
+<h3 id="modapi-manager">25.16 ModsManager — что нового в жизненном цикле</h3>
+
+<ul>
+  <li>Моды грузятся <strong>до</strong> первого <code>load_level</code> — враги из мода создаются правильным классом.</li>
+  <li><code>request_reload(mod_id)</code> и <code>request_unload(mod_id)</code> — очередь lifecycle. Обрабатывается каждый кадр движком.</li>
+  <li><code>get_api(mod_id)</code> — ModAPI другого мода.</li>
+  <li><code>register_bullet / register_pickup / register_map_generator</code> — новые реестры.</li>
+  <li><code>register_reload_hook(mod_id, fn)</code> — callback на reload.</li>
+  <li>При unload автоматически: HUD-биндинги, таймеры, hooks, tracked-ресурсы, debug-панели.</li>
+</ul>
+
+<!-- ============================================ -->
+<!-- ============================================ -->
+<!-- КАСТОМНЫЙ РЕНДЕР В МИРЕ                       -->
+<!-- ============================================ -->
+<!-- ============================================ -->
+<h2 id="world_renderers">26. 🎨 Кастомный рендер в мире <span class="new">API Update</span></h2>
+
+<p>Одна из самых мощных фич API Update: мод может <strong>зарегистрировать свой рендерер</strong> для
+объектов в мире. Идеальный кейс — мод «мебель», которому нужно нарисовать стул, стол, лампу
+без создания полноценной 3D-модели.</p>
+
+<h3>CPU-рендер (работает всегда)</h3>
+
+<div class="table-wrap">
+<table>
+<tr><th>Метод</th><th>Параметры</th><th>Что делает</th></tr>
+<tr><td><code>register_world_renderer(name, render_fn, z_order='sprite')</code></td><td>render_fn(ctx) — функция рендера<br>z_order: 'floor' | 'sprite' | 'overlay'</td><td>Регистрирует именованный рендерер</td></tr>
+<tr><td><code>unregister_world_renderer(name)</code></td><td>—</td><td>Убрать рендерер</td></tr>
+<tr><td><code>spawn_world_renderer(x, y, name, key=None, **params)</code></td><td>—</td><td>Создать объект с этим рендерером. Возвращает handle</td></tr>
+<tr><td><code>remove_world_renderer(handle)</code></td><td>—</td><td>Удалить объект</td></tr>
+<tr><td><code>set_world_renderer_visible(handle, visible)</code></td><td>—</td><td>Скрыть/показать</td></tr>
+<tr><td><code>set_world_renderer_position(handle, x, y)</code></td><td>—</td><td>Переместить</td></tr>
+<tr><td><code>set_world_renderer_param(handle, key, value)</code></td><td>—</td><td>Изменить параметр</td></tr>
+</table>
+</div>
+
+<p><strong>Что получает <code>render_fn</code>:</strong></p>
+<pre><code>ctx = {
+    'screen':   pygame.Surface,        # рендер-таргет (render_surface)
+    'engine':   Engine,
+    'obj':      объект (has .x, .y, .params),
+    'x, y':     мировые координаты,
+    'params':   dict из карты или spawn_world_renderer,
+    'project':  project_world_to_screen — короткий путь,
+    'player':   player,
+    'dt':       последний dt,
+}</code></pre>
+
+<h3>Порядок отрисовки</h3>
+<ul>
+  <li><code>z_order='floor'</code> — рисуется до стен (под спрайтами).</li>
+  <li><code>z_order='sprite'</code> — вместе со спрайтами (по умолчанию). Дальние рисуются первыми.</li>
+  <li><code>z_order='overlay'</code> — поверх всего, но под HUD.</li>
+</ul>
+
+<h3 id="world_renderers-map">Привязка к клетке карты</h3>
+
+<p>В карте можно использовать тег <code>render:</code>:</p>
+<pre><code>0&lt;render:chair,variant:wood&gt;
+0&lt;render:lamp,color:FFFFAA,intensity:1.5&gt;
+0&lt;render:bookshelf,count:5&gt;</code></pre>
+
+<p>Движок создаст объект <code>world_renderer</code> в этой клетке и передаст все параметры из тега в <code>params</code>.</p>
+
+<h3 id="world_renderers-example">Пример: мод «мебель»</h3>
+
+<pre><code># mods/furniture/mod.py
+import pygame
+
+def _draw_chair(ctx):
+    """Рисуем стул как набор прямоугольников."""
+    project = ctx['project']
+    screen = ctx['screen']
+    x, y = ctx['x'], ctx['y']
+    variant = ctx['params'].get('variant', 'wood')
+
+    # Ножки — 4 маленьких прямоугольника
+    for ox, oy in [(-12, 12), (12, 12), (-12, -12), (12, -12)]:
+        proj = project(x + ox, y + oy)
+        if proj is None:
+            continue
+        sx, horizon, size = proj
+        leg_h = int(size * 0.35)
+        pygame.draw.rect(screen, (110, 70, 40),
+                         (sx - 3, horizon + size * 0.4 - leg_h, 6, leg_h))
+
+    # Сидение
+    proj = project(x, y)
+    if proj is None:
+        return
+    sx, horizon, size = proj
+    seat_w = int(size * 0.6)
+    seat_h = max(3, int(size * 0.08))
+    seat_y = int(horizon + size * 0.4 - size * 0.35)
+    col = (140, 90, 50) if variant == 'wood' else (180, 180, 180)
+    pygame.draw.rect(screen, col,
+                     (sx - seat_w // 2, seat_y, seat_w, seat_h))
+
+
+def on_load(engine):
+    api.log("Furniture mod loading…")
+
+    api.register_world_renderer('chair', _draw_chair, z_order='sprite')
+
+    # Спавн в мире
+    chair = api.spawn_world_renderer(x=500, y=500, name='chair',
+                                     variant='wood')
+    # api.set_world_renderer_param(chair, 'variant', 'metal')
+    # api.remove_world_renderer(chair)
+
+    api.log("Furniture mod ready.")</code></pre>
+
+<h3 id="world_renderers-gpu">GPU-пасс (заготовка)</h3>
+
+<p>Для продвинутых модов, которым нужен свой шейдерный рендер:</p>
+
+<div class="table-wrap">
+<table>
+<tr><th>Метод</th><th>Параметры</th><th>Что делает</th></tr>
+<tr><td><code>register_gpu_pass(name, fragment_shader_src, uniforms=None, blend_mode='alpha')</code></td><td>GLSL 330 frag-шейдер</td><td>Регистрирует дополнительный GPU-pass</td></tr>
+<tr><td><code>unregister_gpu_pass(handle)</code></td><td>—</td><td>Убрать pass</td></tr>
+<tr><td><code>update_gpu_uniform(handle, name, value)</code></td><td>—</td><td>Обновить uniform</td></tr>
+</table>
+</div>
+
+<p>Полноценная реализация GPU-пассов будет в 1.3. Сейчас — только API-контракт: pass сохраняется в очередь и подхватывается, как только gpu_raycaster научится их принимать.</p>
+
+<!-- ============================================ -->
+<!-- ============================================ -->
+<!-- F1 / F3 DEBUG OVERLAY                        -->
+<!-- ============================================ -->
+<!-- ============================================ -->
+<h2 id="debug_overlay">27. 🛠️ F1 / F3 — отладочные оверлеи <span class="new">API Update</span></h2>
+
+<p>По аналогии с Minecraft: <strong>F3 — для игрока</strong>, <strong>F1 — для разработчика</strong>.
+Моды могут добавлять свои панели в F1-оверлей.</p>
+
+<h3>F3 — данные для игрока</h3>
+<ul>
+  <li>FPS</li>
+  <li>Позиция игрока (x, y)</li>
+  <li>Направление взгляда (градусы)</li>
+  <li>HP / max_hp</li>
+  <li>Текущий уровень</li>
+</ul>
+
+<p>По умолчанию <strong>выключено</strong>. Включается клавишей F3 в рантайме (или через <code>engine.show_debug_user = True</code>).</p>
+
+<h3>F1 — данные для разработчика</h3>
+<ul>
+  <li>Uptime, номер кадра</li>
+  <li>time_scale (если ≠ 1.0)</li>
+  <li>Количество врагов, пуль, спрайтов, тел физики</li>
+  <li>Количество частиц, осколков</li>
+  <li>Источники света (статические + динамические)</li>
+  <li>GPU/RTE статус</li>
+  <li>Количество загруженных модов</li>
+  <li>Текущий язык</li>
+  <li>Количество scheduled callbacks, trigger zones, world renderers</li>
+</ul>
+
+<p>Плюс — <strong>панели от модов</strong> (справа сверху): каждый мод может добавить свою строку.</p>
+
+<h3>API для модов</h3>
+<pre><code>def debug_panel(screen, engine, x, y):
+    import pygame
+    f = pygame.font.SysFont('Consolas', 16)
+    surf = f.render(f"my_mod: value={my_value}", True, (180, 220, 255))
+    screen.blit(surf, (x, y))
+    return y + 18   # y для следующей панели
+
+api.register_debug_panel('My Mod', debug_panel, key='my_dbg')</code></pre>
+
+<h3>Как пользоваться</h3>
+<ul>
+  <li>F1 — тумблер дебаг-оверлея разработчика.</li>
+  <li>F3 — тумблер оверлея для игрока.</li>
+  <li>Клавиши обрабатываются движком автоматически, если в <code>handle_event</code> наследника вызвать <code>_process_key_debug(event)</code>.</li>
+</ul>
+
+<!-- ============================================ -->
+<h2 id="events">28. 🧩 События (переопределение в Engine)</h2>
 
 <pre><code>class MyEngine(Engine):
     def on_trigger(self, cell):
-        # ID=8
         trigger_id = cell.get('properties', {}).get('id', 0)
         if trigger_id == 1:
             self.set_overlay('assets/scary.png', alpha=200)
@@ -1288,14 +1961,13 @@ api.hud_set_crosshair_spread(10)</code></pre>
         self.show_message("Нужен ключ!", 1.5)
 
     def on_interactive_press(self, action_name, obj):
-        # Реакция на E
         if action_name == 'scream':
             self.trigger_scream()</code></pre>
 
-<!-- ============================================ -->
-<h2 id="examples">25. 🎮 Заготовки и полный пример</h2>
+<p>Плюс — модульная система событий через <code>api.add_hook(event, fn)</code>, см. секцию 25.11.</p>
 
-<p>В <code>gradus_rc/examples/</code> есть готовые заготовки меню и игры.</p>
+<!-- ============================================ -->
+<h2 id="examples">29. 🎮 Заготовки и полный пример</h2>
 
 <h3>MenuExample</h3>
 <pre><code>from gradus_rc.examples import MenuExample
@@ -1348,13 +2020,13 @@ LEVEL1 = """
 1 0 1&lt;addCollision:False;height:0.1;water:true;reflectivity:0.7;alpha:0.99&gt; 0 0 0 0 1 0 0 0 0 0 0 0 1
 1 0 1&lt;material:silver&gt; 1 1&lt;material:silver&gt; 0 0 1 0 1 1 1 0 0 0 1
 1 0 0 0 1 0 0 0 0 0 0 1 0 0 0 1
-1 0 0 0 1 0 0&lt;enemy:type:chase;sprite:assets/enemy_demon.png;hp:50;aim:10;shoot_delay:1.0;attack_type:ranged;detect_radius:6;speed:60&gt; 0 0 0 0 1 0 0 0 1
+1 0 0 0 1 0 0&lt;enemy:type:chase;sprite:assets/enemy_demon.png;hp:50;aim:10;attack_type:ranged;detect_radius:6;speed:60&gt; 0 0 0 0 1 0 0 0 1
 1 3&lt;destructible:true&gt; 1 1 1 0 0 0 0 0 0 1 0 0 0 1
 1 0 0 0 0 0 0 1 1 1 0 1 0 0 0 1
 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1
 1 0 1 0 0 0 0 1 0 0 0 0 0 0 0 1
 1 0 1 0 0 0 0 1 0 1 1 1 0 0 0 1
-1 0 1 0 0&lt;enemy:type:patrol;hp:40;aim:5;shoot_delay:1.5;attack_type:melee;detect_radius:4;speed:40&gt; 0 0 0 0 1 0 0 0 0 0 1
+1 0 1 0 0&lt;enemy:type:patrol;hp:40;aim:5;attack_type:melee;detect_radius:4;speed:40&gt; 0 0 0 0 1 0 0 0 0 0 1
 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1
 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 1
 1 0 0 0 0 0 0 0 0 0 0 0 6&lt;path:models/model.gbj;destructible:true&gt; 0 0 1
@@ -1386,14 +2058,10 @@ class MyDoomEngine(Engine):
         )
         self.rpg = Gun(
             name='rpg', damage=80, fire_rate=1.5, ammo=3, max_ammo=10,
-            animation_fire=[load_image('rpg_fire', 'assets/rpg_shot.png',
-                                       size=(self.i.current_w//3, self.i.current_h//3))],
             texture=load_image('rpg', 'assets/rpg.png',
                                size=(self.i.current_w//3, self.i.current_h//3)),
-            key='rpg',
-            explosive=True,
-            explosion_radius=180.0,
-            explosion_damage=150.0,
+            key='rpg', explosive=True,
+            explosion_radius=180.0, explosion_damage=150.0,
         )
         self.api.set_player_light(radius=300, intensity=1.0, color=(255, 255, 255))
         self.gun_manager.add_gun(self.shotgun)
@@ -1402,7 +2070,6 @@ class MyDoomEngine(Engine):
         self.player.on_death = self._on_player_death
         self.game_over = False
 
-        # Скример
         self.scream_image = None
         self.scream_sound = None
         self.scream_timer = 0.0
@@ -1446,7 +2113,8 @@ class MyDoomEngine(Engine):
         self.bullets.append(bullet)
 
     def handle_event(self, event):
-        pass
+        if self._process_key_debug(event):
+            return
 
 
 class DoomGameExample(GameExample):
@@ -1454,16 +2122,11 @@ class DoomGameExample(GameExample):
                  player_speed=48.0, **kwargs):
         super().__init__(engine_class, levels, current_level, width, height,
                          player_speed, **kwargs)
-        self.sm5l = True
-        self.l1 = self.l2 = self.l3 = self.l4 = True
         self.pause_menu = PauseMenu(width, height)
         self.paused = False
         self.engine.font = pygame.font.SysFont('Arial', 18)
 
     def run(self):
-        font_hp = pygame.font.SysFont('Arial', 36)
-        font_ammo = pygame.font.SysFont('Arial', 36)
-        font_fps = pygame.font.SysFont('Arial', 36)
         clock = pygame.time.Clock()
         running = True
 
@@ -1492,6 +2155,7 @@ class DoomGameExample(GameExample):
                     pygame.mouse.set_visible(True)
                     pygame.event.set_grab(False)
                     continue
+                self.engine.handle_event(event)
                 self.engine.handle_mouse(event)
 
             if not running:
@@ -1535,10 +2199,9 @@ def main():
         pygame.display.flip()
 
     if settings:
-        levels = [LEVEL1]
         game = DoomGameExample(
             engine_class=MyDoomEngine,
-            levels=levels, current_level=0,
+            levels=[LEVEL1], current_level=0,
             width=WIDTH, height=HEIGHT,
             player_speed=48.0, tile_size=64, proj_coeff=50000,
             **settings
@@ -1549,7 +2212,6 @@ def main():
             show_enemies=True, enemy_hide_delay=5.0,
             show_models=True, show_doors=True,
         )
-        # Включить RTE
         # game.api.set_rt(enabled=True, max_lights=2, reflections=True)
         game.api.set_player_light_mode('circle', range=500.0, cone_angle=70.0)
         game.run()
@@ -1559,180 +2221,147 @@ if __name__ == "__main__":
     main()</code></pre>
 
 <!-- ============================================ -->
-<h2 id="cython">26. ⚡ Cython-сборка</h2>
+<h2 id="cython">30. ⚡ Cython-сборка</h2>
 
-<p>Cython-версия <code>cast_rays</code> ускоряет CPU-рейкастинг в 2.5–5 раз. Если собран GPU-рендерер — Cython не нужен.</p>
+<p>Cython-версия <code>cast_rays</code> ускоряет CPU-рейкастинг в 2.5–5 раз.</p>
 
 <pre><code>.\RUN_ME.ps1</code></pre>
 
-<p>Скрипт проверит Python, Cython, компилятор, соберёт <code>core_cy.pyd</code>. Если что-то пойдёт не так — движок откатится на Python-версию.</p>
-
 <!-- ============================================ -->
-<h2 id="gpu">27. 🚀 GPU-рендерер (under the hood)</h2>
+<h2 id="gpu">31. 🚀 GPU-рендерер (under the hood)</h2>
 
-<p>GPU-рендерер полностью берёт на себя 3D-сцену. Работает через <code>moderngl</code> (обёртка над OpenGL 3.3 core).</p>
+<p>GPU-рендерер полностью берёт на себя 3D-сцену. Работает через <code>moderngl</code> (OpenGL 3.3 core).</p>
 
 <h3>Архитектура</h3>
 <ol>
-  <li><strong>Standalone context</strong> — <code>moderngl.create_standalone_context(require=330)</code>. Не требует окна, работает параллельно с pygame.</li>
-  <li><strong>FBO</strong> — framebuffer с color + depth текстурами, размер совпадает с <code>render_surface</code>.</li>
-  <li><strong>Fullscreen quad</strong> — 2 треугольника, покрывают весь экран. Один вызов <code>vao.render()</code>.</li>
+  <li><strong>Standalone context</strong> — не требует окна.</li>
+  <li><strong>FBO</strong> — framebuffer с color + depth.</li>
+  <li><strong>Fullscreen quad</strong> — 2 треугольника.</li>
   <li><strong>Fragment shader</strong> — вся логика сцены.</li>
-  <li><strong>Readback</strong> — <code>fbo.read(components=3)</code>, массив numpy → <code>pygame.Surface</code>.</li>
+  <li><strong>Readback</strong> — <code>fbo.read()</code> → pygame.Surface.</li>
 </ol>
-
-<h3>Что делает fragment shader</h3>
-<ol>
-  <li>Ray direction из позиции пикселя.</li>
-  <li>DDA-марш луча: 128 шагов, читает meta-текстуру (blocking, mat_idx, height, alpha).</li>
-  <li>Floor/ceiling projection: та же DDA-логика, но для пола.</li>
-  <li>При попадании в стену: fetch текстуры из атласа (8×8 слотов, 128×128 каждый).</li>
-  <li>Alpha-композит: если walpha < 1 — смешать с accum, продолжить луч.</li>
-  <li>RTE: shadow ray к каждому источнику, отражённый луч для зеркал.</li>
-  <li>Динамический свет: до 16 источников, кубическое затухание.</li>
-  <li>Fog, player cone, освещение от статики.</li>
-</ol>
-
-<h3>Спрайт-атлас</h3>
-<p>Все спрайты (модели, враги, декали) пакуются в атлас 1024×1024 (8×8 слотов по 128×128). В шейдере — <code>texelFetch</code> по индексу.</p>
 
 <h3>Ограничения</h3>
 <ul>
-  <li>Максимум 64 материала (у каждого — свой слот в атласе).</li>
-  <li>Максимум 8 спрайтов в кадре (по производительности — на iGPU).</li>
+  <li>Максимум 64 материала.</li>
+  <li>Максимум 8 спрайтов в кадре.</li>
   <li>Максимум 16 динамических источников.</li>
   <li>Максимум 128 шагов DDA на луч.</li>
 </ul>
 
 <!-- ============================================ -->
-<h2 id="benchmarks">28. 📊 Бенчмарки</h2>
+<h2 id="benchmarks">32. 📊 Бенчмарки</h2>
 
-<p>Тестовый уровень: 32×32, 3 источника света, 3 врага, 1 модель. Разрешение 1920×1080. AMD Radeon Vega (iGPU, 2019).</p>
+<p>32×32, 3 источника света, 3 врага, 1 модель, 1920×1080, AMD Radeon Vega (iGPU, 2019).</p>
 
 <div class="table-wrap">
 <table>
-  <tr><th>Режим</th><th>Cast (ms)</th><th>Render (ms)</th><th>Всего кадр</th><th>FPS</th></tr>
+  <tr><th>Режим</th><th>Cast (ms)</th><th>Render (ms)</th><th>Всего</th><th>FPS</th></tr>
   <tr><td>Python CPU-рейкастер</td><td>4.5</td><td>18</td><td>22.5</td><td>44</td></tr>
   <tr><td>Cython CPU-рейкастер</td><td>1.5</td><td>18</td><td>19.5</td><td>51</td></tr>
-  <tr><td>GPU без RTE</td><td>0</td><td>0.4</td><td>3.5 (readback)</td><td>280</td></tr>
+  <tr><td>GPU без RTE</td><td>0</td><td>0.4</td><td>3.5</td><td>280</td></tr>
   <tr><td>GPU + RTE (2 источника)</td><td>0</td><td>0.9</td><td>4.0</td><td>250</td></tr>
   <tr><td>GPU + RTE (2 + зеркала)</td><td>0</td><td>1.5</td><td>4.6</td><td>215</td></tr>
   <tr><td>GPU + RTE (4 + зеркала)</td><td>0</td><td>2.8</td><td>5.9</td><td>170</td></tr>
 </table>
 </div>
 
-<p>Основная стоимость GPU-режима — <strong>readback</strong> (~3 мс), а не сам рендер. Это ограничение pygame-совместимости. В 1.4 на Vulkan с прямой передачей текстуры readback исчезнет полностью.</p>
-
 <!-- ============================================ -->
-<h2 id="optimization">29. ⚡ Оптимизация</h2>
+<h2 id="optimization">33. ⚡ Оптимизация</h2>
 
 <div class="table-wrap">
 <table>
   <tr><th>Параметр</th><th>Что делать</th><th>Прирост</th></tr>
-  <tr><td><code>render_scale</code></td><td>Поставить 2 или 3</td><td>+50–150%</td></tr>
-  <tr><td><code>rays</code></td><td>Снизить до 200–300 (только CPU)</td><td>+30–60%</td></tr>
-  <tr><td>RTE</td><td><code>max_lights=2</code> вместо 4</td><td>+15–25%</td></tr>
-  <tr><td>RTE reflections</td><td>Выключить</td><td>+5–15%</td></tr>
-  <tr><td><code>particles_mode</code></td><td><code>off</code> или <code>main</code></td><td>+5–15%</td></tr>
-  <tr><td><code>graphics_level</code></td><td><code>lite</code> или <code>medium</code></td><td>+10–30%</td></tr>
-  <tr><td>Туман</td><td><code>end=800</code></td><td>+5–10%</td></tr>
-  <tr><td>Cython</td><td>Собрать <code>core_cy</code></td><td>+30–60% (CPU)</td></tr>
+  <tr><td><code>render_scale</code></td><td>2 или 3</td><td>+50–150%</td></tr>
+  <tr><td><code>rays</code></td><td>200–300 (только CPU)</td><td>+30–60%</td></tr>
+  <tr><td>RTE</td><td>max_lights=2 вместо 4</td><td>+15–25%</td></tr>
+  <tr><td>RTE reflections</td><td>выключить</td><td>+5–15%</td></tr>
+  <tr><td><code>particles_mode</code></td><td>off или main</td><td>+5–15%</td></tr>
+  <tr><td><code>graphics_level</code></td><td>lite или medium</td><td>+10–30%</td></tr>
+  <tr><td>Туман</td><td>end=800</td><td>+5–10%</td></tr>
+  <tr><td>Cython</td><td>собрать</td><td>+30–60% (CPU)</td></tr>
 </table>
 </div>
 
 <!-- ============================================ -->
-<h2 id="limitations">30. ⚠️ Ограничения — честно</h2>
+<h2 id="limitations">34. ⚠️ Ограничения — честно</h2>
 
-<p>Проект развивается быстро, но честное описание границ полезнее маркетинга.</p>
-
-<h3>Что НЕ работает в 1.2.5</h3>
+<h3>Что НЕ работает в 1.2.5 API Update</h3>
 <ul>
-  <li><strong>Настоящие 3D-осколки.</strong> То, что мы называем «3D-разлётом», — это 2D-спрайты с virtual-z сдвигом. Полноценные объёмные осколки (падающие, сталкивающиеся, с реальным 3D-мешем) — в 1.4.</li>
-  <li><strong>Текстуры на гранях .obj.</strong> В 1.2.5 модель можно красить HEX-цветом на грань. Загрузка UV-координат и текстур — в 1.3.</li>
-  <li><strong>Мультиплеер.</strong> Только тип врага <code>multiplayer</code> для ручного управления. Сетевая синхронизация — в 1.3.</li>
-  <li><strong>Наклонные поверхности.</strong> Только горизонтальные полы. Sector-based геометрия с переменной высотой — не раньше 1.4.</li>
-  <li><strong>Global Illumination.</strong> RTE работает с одним bounce. Многократные отражения — нет.</li>
-  <li><strong>Chunk streaming.</strong> Вся карта загружается в память. Для карт &gt;256×256 может занять много RAM — в 1.3.</li>
+  <li>Настоящие 3D-осколки (только 2D-спрайты с virtual-z).</li>
+  <li>Текстуры на гранях .obj (только HEX-цвет).</li>
+  <li>Мультиплеер (только тип врага <code>multiplayer</code>).</li>
+  <li>Наклонные поверхности (только горизонтальные полы).</li>
+  <li>Global Illumination (RTE с одним bounce).</li>
+  <li>Chunk streaming (вся карта в память).</li>
 </ul>
 
-<h3>Известные ограничения производительности</h3>
+<h3>Ограничения производительности</h3>
 <ul>
-  <li><strong>Readback GPU→CPU</strong> — 3–5 мс на 1080p. Это узкое место GPU-режима. Устраняется в 1.4 через прямую передачу текстуры в Vulkan.</li>
-  <li><strong>Один поток для DDA</strong> — CPU-рейкастер работает в отдельном потоке, но GIL всё равно тормозит. Cython-версия не отпускает GIL, поэтому <code>async_raycast</code> даёт мало.</li>
-  <li><strong>Спрайты</strong> — не окклюзируются GPU-z-буфером. Врагов за стеной видно. Пока это компромисс: спрайты на pygame, сцена на GPU. В 1.3 будем выносить спрайты в шейдер.</li>
+  <li><strong>Readback GPU→CPU</strong> — 3–5 мс на 1080p.</li>
+  <li><strong>Один поток для DDA</strong> — GIL.</li>
+  <li><strong>Спрайты</strong> не окклюзируются GPU-z-буфером.</li>
 </ul>
 
 <!-- ============================================ -->
-<h2 id="glossary">31. 📚 Глоссарий</h2>
+<h2 id="glossary">35. 📚 Глоссарий</h2>
 
 <div class="table-wrap">
 <table>
   <tr><th>Термин</th><th>Что значит</th></tr>
-  <tr><td><strong>Рейкастинг</strong></td><td>Алгоритм, при котором для каждого столбца экрана пускается луч в 2D-пространстве, и находится ближайшая стена.</td></tr>
-  <tr><td><strong>DDA</strong></td><td>Digital Differential Analyzer. Алгоритм марша луча по клеточной сетке. Используется в CPU- и GPU-рейкастинге.</td></tr>
-  <tr><td><strong>RTE</strong></td><td>Ray Tracing Emulator. Наша реализация трассировки лучей в шейдере: мягкие тени, зеркала, динамический свет.</td></tr>
-  <tr><td><strong>Fresnel</strong></td><td>Коэффициент отражения в зависимости от угла. Чем скользящее угол — тем сильнее отражение (как на воде).</td></tr>
-  <tr><td><strong>MCFI</strong></td><td>Motion-Compensated Frame Interpolation. Frame blending для плавности. Наш вариант — очень упрощённый.</td></tr>
-  <tr><td><strong>Y-shearing</strong></td><td>Сдвиг горизонта для эмуляции наклона камеры. Классический приём из Doom.</td></tr>
-  <tr><td><strong>Atlas</strong></td><td>Пакет текстур в одну большую. Уменьшает количество переключений текстуры в шейдере.</td></tr>
-  <tr><td><strong>FBO</strong></td><td>Framebuffer Object. Off-screen буфер, куда GPU рендерит сцену, прежде чем отдать на экран.</td></tr>
-  <tr><td><strong>Readback</strong></td><td>Чтение из GPU-буфера в CPU-память. В нашем случае — это <code>glReadPixels</code>.</td></tr>
-  <tr><td><strong>.gbj</strong></td><td>Gradus Binary JSON? Нет — это текстовый формат, расширение .obj с HEX-цветами граней.</td></tr>
+  <tr><td><strong>Рейкастинг</strong></td><td>Алгоритм с лучом на столбец экрана</td></tr>
+  <tr><td><strong>DDA</strong></td><td>Digital Differential Analyzer</td></tr>
+  <tr><td><strong>RTE</strong></td><td>Ray Tracing Emulator — тени, зеркала, свет</td></tr>
+  <tr><td><strong>Fresnel</strong></td><td>Отражение в зависимости от угла</td></tr>
+  <tr><td><strong>MCFI</strong></td><td>Motion-Compensated Frame Interpolation</td></tr>
+  <tr><td><strong>Y-shearing</strong></td><td>Сдвиг горизонта для наклона камеры</td></tr>
+  <tr><td><strong>Atlas</strong></td><td>Пакет текстур в одну большую</td></tr>
+  <tr><td><strong>FBO</strong></td><td>Framebuffer Object</td></tr>
+  <tr><td><strong>Readback</strong></td><td>Чтение из GPU-буфера в CPU</td></tr>
+  <tr><td><strong>.gbj</strong></td><td>OBJ с HEX-цветами граней</td></tr>
+  <tr><td><strong>ModAPI</strong></td><td>Фасад для мода (load_image, register_enemy, config, save, i18n)</td></tr>
+  <tr><td><strong>World Renderer</strong></td><td>Кастомная функция отрисовки в мире (для мебели, эффектов)</td></tr>
 </table>
 </div>
 
 <!-- ============================================ -->
-<h2 id="faq">32. ❓ FAQ</h2>
+<h2 id="faq">36. ❓ FAQ</h2>
 
 <h3>Модель .obj не отображается</h3>
-<p>Проверь: установлен ли <code>trimesh</code>, правильный ли путь, есть ли папка <code>cache/</code>. Если модель была раньше — удали <code>cache/</code>.</p>
+<p>Проверь <code>trimesh</code>, путь, <code>cache/</code>. Если модель была раньше — удали <code>cache/</code>.</p>
 
 <h3>Прозрачные стены лагают</h3>
-<p>На CPU-пути (<code>use_gpu=False</code>) alpha действительно дороже. Включи <code>moderngl</code> или убери alpha с больших участков.</p>
+<p>На CPU-пути alpha дороже. Включи <code>moderngl</code>.</p>
 
 <h3>RTE не включается</h3>
-<p>Установи <code>moderngl</code>. Проверь в логе <code>[Engine] GPU renderer: enabled</code>.</p>
+<p>Установи <code>moderngl</code>. Проверь <code>[Engine] GPU renderer: enabled</code> в логе.</p>
 
-<h3>Зеркало светит белым</h3>
-<p>Слишком высокая <code>reflectivity</code>. Понизь до 0.5–0.7.</p>
+<h3>Мод не загружается</h3>
+<p>Проверь структуру <code>mods/&lt;id&gt;/mod.py</code> и <code>mod.json</code>. Посмотри <code>[MODS]</code> в консоли.</p>
 
-<h3>Взрыв не создаёт осколков</h3>
-<p>Проверь, что объект был с <code>destructible:true</code>.</p>
-
-<h3>Интерактивный объект толкается</h3>
-<p>Значит у него <code>pushable:true</code>. Убери этот тег.</p>
-
-<h3>Триггер срабатывает каждый кадр</h3>
-<p>Внутри <code>on_trigger</code> вызови <code>self.deactivate_trigger(('id', trigger_id))</code>.</p>
-
-<h3>FPS падает при height&lt;1 на CPU</h3>
-<p>На CPU-пути полувысотные стены требуют доп. вычислений. На GPU-пути они бесплатны.</p>
+<h3>Враг из мода не появляется / создаётся как обычный EnemyAI</h3>
+<p>Проверь порядок загрузки: моды должны грузиться <strong>до</strong> <code>load_level</code>. В логе должно быть сначала <code>[MOD] ...</code>, потом <code>[AI-DEBUG] type=dragon</code> и <code>[dragon] init at ...</code>.</p>
 
 <h3>Как сделать скример</h3>
-<p>Объект <code>6&lt;...;interactive:true;on_press:scream&gt;</code> + переопределить <code>on_interactive_press</code> в наследнике Engine. См. пример в разделе 25.</p>
+<p>Объект <code>6&lt;...;interactive:true;on_press:scream&gt;</code> + переопределить <code>on_interactive_press</code> в наследнике Engine. См. секцию 29.</p>
+
+<h3>Как сделать мод на мебель</h3>
+<p>Используй <code>api.register_world_renderer('chair', fn)</code> + тег <code>render:chair</code> в карте. См. секцию 26.</p>
 
 <h3>Почему <code>async_raycast</code> даёт мало</h3>
-<p>Cython-версия не отпускает GIL. Поток работает, но главный поток ждёт. Ускорение ~5–10% вместо ожидаемых 50%.</p>
+<p>Cython-версия не отпускает GIL. Ускорение ~5–10%.</p>
 
 <h3>Какие сроки у 1.3 и 1.4</h3>
-<p>1.3 — Q4 2026 (мультиплеер, chunk streaming, текстуры на гранях .obj). 1.4 — Q1 2027 (Vulkan, крупнейшее обновление в истории движка).</p>
+<p>1.3 — Q4 2026. 1.4 — Q1 2027 (Vulkan).</p>
 
-<h3>Почему в 1.4 будет Vulkan, а не OpenGL</h3>
-<p>OpenGL упёрся в свой потолок по API overhead. Vulkan даёт:
-<ul>
-  <li>Отсутствие readback — рендер прямо в текстуру окна.</li>
-  <li>Многопоточную подготовку командных буферов.</li>
-  <li>Полный контроль над памятью GPU.</li>
-  <li>Vulkan — не маркетинг, а объективная необходимость для 3D-осколков, теней следующего поколения и мультиплеера с 60 Hz state sync.</li>
-</ul>
-Плюс: мы станем <strong>единственным рейкастинг-движком на Vulkan</strong> в мире.</p>
+<h3>Почему в 1.4 будет Vulkan</h3>
+<p>Readback исчезнет, многопоточные командные буферы, полный контроль над памятью GPU. И мы станем <strong>единственным рейкастинг-движком на Vulkan</strong> в мире.</p>
 
-<h3>Сколько будет стоить 1.3 и 1.4</h3>
-<p>Бесплатно. Gradus RC всегда был и будет под MIT License.</p>
+<h3>Сколько стоит</h3>
+<p>MIT License. Бесплатно.</p>
 
 <!-- ============================================ -->
-<h2 id="contact">📬 Контакты</h2>
-<div class="contact">
+<div id="contact" class="contact">
   <p>По вопросам, багам и предложениям:</p>
   <p><a href="mailto:gradus.support@gmail.com">gradus.support@gmail.com</a></p>
   <p><a href="https://t.me/gradus_seo">Telegram (основной)</a></p>
@@ -1741,7 +2370,7 @@ if __name__ == "__main__":
 </div>
 
 <div class="footer">
-  <strong style="color: #8ab4f8;">Gradus RC v1.2.5</strong> · релиз 16.09.2026 · документация для разработчиков · 🚀<br>
+  <strong style="color: #8ab4f8;">Gradus RC v1.2.5 API Update (1.3 Beta)</strong> · релиз 16.09.2026 · документация для разработчиков · 🚀<br>
   Copyright (c) 2024–2026 Gradus Team · Licensed under CC BY-ND 4.0<br>
   <span style="font-size: 0.85em; margin-top: 8px; display: inline-block;">
     Разработано с ❤️ сообществом. Спасибо всем, кто тестировал, репортил баги и терпел падения FPS.
