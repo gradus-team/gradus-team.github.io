@@ -247,6 +247,67 @@ html, body { overflow-x: hidden; max-width: 100vw; }
     padding-right: max(14px, env(safe-area-inset-right));
   }
 }
+    /* ===== FAQ аккордеон ===== */
+.faq-item {
+    background: #0f1722;
+    border: 1px solid #2a3a4e;
+    border-radius: 10px;
+    margin: 10px 0;
+    overflow: hidden;
+    transition: border-color 0.2s;
+}
+.faq-item[open] {
+    border-color: #8ab4f8;
+}
+.faq-item > summary {
+    padding: 14px 20px;
+    cursor: pointer;
+    font-weight: 500;
+    color: #b6c8e0;
+    font-size: 1.05em;
+    list-style: none;
+    position: relative;
+    padding-right: 40px;
+    user-select: none;
+    transition: background 0.15s;
+}
+.faq-item > summary::-webkit-details-marker { display: none; }
+.faq-item > summary::before {
+    content: "▸";
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #8ab4f8;
+    font-size: 1.2em;
+    transition: transform 0.2s;
+}
+.faq-item[open] > summary::before {
+    transform: translateY(-50%) rotate(90deg);
+}
+.faq-item > summary:hover {
+    background: #1a2634;
+    color: #8ab4f8;
+}
+.faq-item[open] > summary {
+    color: #8ab4f8;
+    border-bottom: 1px solid #1e2a3a;
+}
+.faq-item > .faq-body {
+    padding: 14px 20px 18px 20px;
+    color: #d4dcec;
+    font-size: 0.95em;
+    line-height: 1.7;
+}
+.faq-item > .faq-body > p:first-child { margin-top: 0; }
+.faq-item > .faq-body > p:last-child { margin-bottom: 0; }
+.faq-item code {
+    font-size: 0.88em;
+}
+.faq-item pre {
+    margin: 12px 0;
+    font-size: 0.85em;
+}
   </style>
 </head>
 <body>
@@ -298,37 +359,88 @@ html, body { overflow-x: hidden; max-width: 100vw; }
 <div class="tip" style="border-color: #7ad37a;">
   <strong style="color:#7ad37a;">🚀 Системные требования</strong>
 
-  <div style="display:flex; flex-wrap:wrap; gap:16px; margin-top:14px;">
-    <div style="flex:1; min-width:280px; background:#0f1722; padding:16px 20px; border-radius:12px; border:1px solid #2a3a4e;">
-      <h4 style="margin:0 0 10px 0; color:#f0b37a;">Минимальные</h4>
-      <ul style="margin:0; padding-left:18px; font-size:0.95em;">
-        <li><strong>ОС:</strong> Windows 10 / Linux / macOS 10.15+</li>
-        <li><strong>Python:</strong> 3.10+</li>
-        <li><strong>CPU:</strong> i5-3450 / i7-3610QM / Ryzen 3 2200G</li>
-        <li><strong>GPU:</strong> GT730 / GT930M / Intel HD 4000 + OpenGL 3.3</li>
-        <li><strong>RAM:</strong> 4 GB</li>
-        <li><strong>Диск:</strong> 100 MB (с запасом; реальный минимум 10–40 MB)</li>
-        <li><strong>FPS:</strong> 30–40+ на минимуме, без RTE, с <code>async_raycast</code></li>
-      </ul>
-    </div>
-    <div style="flex:1; min-width:280px; background:#0f1722; padding:16px 20px; border-radius:12px; border:1px solid #2a3a4e;">
-      <h4 style="margin:0 0 10px 0; color:#7ad37a;">Рекомендуемые</h4>
-      <ul style="margin:0; padding-left:18px; font-size:0.95em;">
-        <li><strong>ОС:</strong> Windows 10/11 64-bit / Linux</li>
-        <li><strong>Python:</strong> 3.12+</li>
-        <li><strong>CPU:</strong> i5-10400 / Ryzen 5 4600H или лучше</li>
-        <li><strong>GPU:</strong> GT1030 / Vega 6 / любая с OpenGL 4.3+</li>
-        <li><strong>RAM:</strong> 8 GB+</li>
-        <li><strong>Диск:</strong> 500 MB+ под моды и редактор</li>
-        <li><strong>FPS:</strong> 60+ на максимуме, RTE 16x, <code>max_lights=2</code></li>
-      </ul>
-    </div>
+  <div class="table-wrap" style="margin-top: 14px;">
+  <table>
+    <tr>
+      <th style="width: 20%;">Компонент</th>
+      <th style="width: 27%;">Минимум<br><span style="font-weight:400;font-size:0.85em;color:#7a8aa0;">RTE fast / off, 30 FPS</span></th>
+      <th style="width: 27%;">Рекомендуется<br><span style="font-weight:400;font-size:0.85em;color:#7a8aa0;">RTE high, 60 FPS</span></th>
+      <th style="width: 26%;">Максимум<br><span style="font-weight:400;font-size:0.85em;color:#7a8aa0;">RTE reference, 60 FPS</span></th>
+    </tr>
+    <tr>
+      <td><strong>ОС</strong></td>
+      <td>Windows 10 64-bit</td>
+      <td>Windows 10/11 64-bit</td>
+      <td>Windows 10/11 64-bit</td>
+    </tr>
+    <tr>
+      <td><strong>Python</strong></td>
+      <td>3.10+</td>
+      <td>3.12+</td>
+      <td>3.12+</td>
+    </tr>
+    <tr>
+      <td><strong>CPU</strong></td>
+      <td>i3-3220 / Ryzen 3 1200</td>
+      <td>i5-6500 / Ryzen 5 1600</td>
+      <td>i5-9400F / Ryzen 5 3600</td>
+    </tr>
+    <tr>
+      <td><strong>GPU</strong></td>
+      <td>Intel HD 4000 / GT 730<br>
+          <span style="color:#7a8aa0; font-size:0.85em;">OpenGL 3.3, RTE off или fast</span></td>
+      <td>GTX 1050 Ti / GTX 1650 Mobile / RX 560<br>
+          <span style="color:#7a8aa0; font-size:0.85em;">OpenGL 4.3+</span></td>
+      <td>GTX 1650 / GTX 1060 / RX 570<br>
+          <span style="color:#7a8aa0; font-size:0.85em;">OpenGL 4.5+</span></td>
+    </tr>
+    <tr>
+      <td><strong>RAM</strong></td>
+      <td>4 GB</td>
+      <td>8 GB</td>
+      <td>8 GB</td>
+    </tr>
+    <tr>
+      <td><strong>Диск</strong></td>
+      <td>100 MB<br>
+          <span style="color:#7a8aa0; font-size:0.85em;">с запасом; минимум 10–40 MB</span></td>
+      <td>300 MB<br>
+          <span style="color:#7a8aa0; font-size:0.85em;">моды, кэш моделей</span></td>
+      <td>500 MB<br>
+          <span style="color:#7a8aa0; font-size:0.85em;">большие проекты</span></td>
+    </tr>
+    <tr>
+      <td><strong>FPS</strong></td>
+      <td>30 FPS<br>
+          RTE fast, <code>async_raycast=True</code></td>
+      <td><strong>60 FPS</strong><br>
+          RTE high (4 shadow + 8 AO + bounce 0.5)</td>
+      <td><strong>60 FPS</strong> без просадок<br>
+          RTE reference (8 shadow + 16 AO + bounce 0.5)</td>
+    </tr>
+  </table>
+  </div>
+
+  <div class="note" style="border-color: #f0b37a; margin-top: 16px;">
+    <strong>⚠️ Про RTE и GPU.</strong> На встроенной графике (Intel HD, AMD Vega,
+    Iris Xe) RTE запускается, но выдаёт <strong>15–25 FPS</strong> на средних настройках.
+    Для комфортной игры с RTE нужна дискретная видеокарта уровня <strong>GTX 1050 Ti</strong>
+    и выше. Без RTE движок работает на любом OpenGL 3.3+ железе, включая iGPU.
   </div>
 
   <div class="note" style="border-color: #8ab4f8; margin-top: 16px;">
-    <strong>💡 Про GPU.</strong> Intel HD/UHD, AMD Vega, Iris Xe (2015+) — RTE и GPU-рендер заработают.
-    Проверка: <a href="https://www.realtech-vr.com/home/glview">OpenGL Extensions Viewer</a> (Windows) или
-    <code>glxinfo | grep "OpenGL version"</code> (Linux). Без OpenGL 3.3+ движок откатится на Cython-рейкастер.
+    <strong>💡 Про ноутбуки.</strong> Если у тебя гибридный ноутбук (iGPU + dGPU) и в логе
+    видно <code>[GPU] AMD Radeon(TM) Graphics</code> вместо <code>[GPU] NVIDIA GeForce GTX...</code> —
+    Python запускается на встроенной графике. Как это исправить — см. FAQ, вопрос
+    «Игра запускается на встроенной графике вместо дискретной».
+  </div>
+
+  <div class="note" style="border-color: #7ad37a; margin-top: 16px;">
+    <strong>🐧 Про Linux и macOS.</strong> Основная платформа — <strong>Windows</strong>.
+    Linux работает при наличии драйверов <strong>OpenGL 3.3+</strong>, но Cython-модуль
+    придётся пересобрать под свою платформу (получится <code>.so</code> вместо <code>.pyd</code>).
+    macOS работает через <strong>deprecated OpenGL</strong> — возможны просадки производительности.
+    На Apple Silicon (M1/M2/M3) OpenGL работает через трансляцию — <strong>медленно</strong>.
   </div>
 </div>
 <div class="tip" style="border-color: #7ad37a;">
@@ -2590,39 +2702,207 @@ if __name__ == "__main__":
 <!-- ============================================ -->
 <h2 id="faq">36. ❓ FAQ</h2>
 
-<h3>Модель .obj не отображается</h3>
-<p>Проверь <code>trimesh</code>, путь, <code>cache/</code>. Если модель была раньше — удали <code>cache/</code>.</p>
+<p>Ниже — частые вопросы. Нажми на вопрос, чтобы раскрыть ответ.</p>
 
-<h3>Прозрачные стены лагают</h3>
-<p>На CPU-пути alpha дороже. Включи <code>moderngl</code>.</p>
+<details class="faq-item">
+  <summary>Игра запускается на встроенной графике вместо дискретной (ноутбук)</summary>
+  <div class="faq-body">
+    <p>Если у тебя гибридный ноутбук (Intel/AMD iGPU + NVIDIA/AMD dGPU) и в логе видно
+    <code>[GPU] AMD Radeon(TM) Graphics</code> вместо <code>[GPU] NVIDIA GeForce GTX...</code> —
+    значит Python запускается через встроенную видеокарту. Это частая проблема Windows,
+    особенно когда игра запускается из IDE вроде PyCharm.</p>
 
-<h3>RTE не включается</h3>
-<p>Установи <code>moderngl</code>. Проверь <code>[Engine] GPU renderer: enabled</code> в логе.</p>
+    <p><strong>Шаг 1. Узнай, какой именно процесс рендерит сцену.</strong></p>
+    <ol>
+      <li>Запусти игру, открой <strong>Диспетчер задач</strong> (Ctrl+Shift+Esc).</li>
+      <li>Вкладка <strong>Подробности</strong> → найди процессы <code>python.exe</code> и <code>pythonw.exe</code>.</li>
+      <li>Правый клик → <strong>Открыть расположение файла</strong> — это твои целевые пути.
+          Их обычно <strong>два</strong>: один в <code>.venv\Scripts\</code>, второй — базовый интерпретатор
+          (<code>C:\Users\&lt;user&gt;\AppData\Local\Programs\Python\Python3XX\</code>).
+          <strong>Нужно добавить оба.</strong></li>
+    </ol>
 
-<h3>Мод не загружается</h3>
-<p>Проверь структуру <code>mods/&lt;id&gt;/mod.py</code> и <code>mod.json</code>. Посмотри <code>[MODS]</code> в консоли.</p>
+    <p><strong>Шаг 2. Настройки Windows.</strong></p>
+    <ol>
+      <li><strong>Пуск → Параметры → Система → Дисплей → Настройки графики</strong>.</li>
+      <li><strong>Обзор</strong> → добавь <code>python.exe</code> и <code>pythonw.exe</code> из venv.</li>
+      <li>Повтори то же для <code>python.exe</code> и <code>pythonw.exe</code> базового интерпретатора.</li>
+      <li>Для каждого файла → <strong>Параметры → Высокая производительность</strong> → Сохранить.</li>
+    </ol>
 
-<h3>Враг из мода не появляется / создаётся как обычный EnemyAI</h3>
-<p>Проверь порядок загрузки: моды должны грузиться <strong>до</strong> <code>load_level</code>. В логе должно быть сначала <code>[MOD] ...</code>, потом <code>[AI-DEBUG] type=dragon</code> и <code>[dragon] init at ...</code>.</p>
+    <p><strong>Шаг 3 (если настройки Windows не сработали — реестр).</strong></p>
+    <ol>
+      <li>Win+R → <code>regedit</code> → OK.</li>
+      <li>Перейди в <code>HKEY_CURRENT_USER\Software\Microsoft\DirectX\UserGpuPreferences</code>.</li>
+      <li>Правый клик в правой панели → <strong>Создать → Строковый параметр</strong>.</li>
+      <li>Имя — полный путь к процессу (например,
+          <code>C:\Users\&lt;user&gt;\AppData\Local\Programs\Python\Python312\python.exe</code>).</li>
+      <li>Значение — <code>GpuPreference=2;</code> (2 = «Высокая производительность»).</li>
+      <li>Повтори для <strong>всех</strong> <code>python.exe</code> / <code>pythonw.exe</code>.</li>
+      <li><strong>Перезагрузи Windows</strong>, не просто игру.</li>
+    </ol>
 
-<h3>Как сделать скример</h3>
-<p>Объект <code>6&lt;...;interactive:true;on_press:scream&gt;</code> + переопределить <code>on_interactive_press</code> в наследнике Engine. См. секцию 29.</p>
+    <p><strong>Шаг 4. Проверь, что сработало.</strong> Запусти игру и посмотри в консоль:</p>
+    <pre><code>[GPU] NVIDIA Corporation | NVIDIA GeForce GTX 1650/PCIe/SSE2</code></pre>
+    <p>Если видишь NVIDIA — всё получилось. Если всё ещё AMD/Intel — вернись к Шагу 1,
+    там точно есть ещё один <code>python.exe</code>, который ты пропустил (обычно базовый).</p>
 
-<h3>Как сделать мод на мебель</h3>
-<p>Используй <code>api.register_world_renderer('chair', fn)</code> + тег <code>render:chair</code> в карте. См. секцию 26.</p>
+    <p><strong>Шаг 5 (крайний случай).</strong> В некоторых игровых ноутбуках есть
+    <strong>MUX Switch</strong> — аппаратный переключатель iGPU ↔ dGPU в BIOS. Если он есть,
+    после переключения ноутбук будет работать только от дискретной карты.</p>
+  </div>
+</details>
 
-<h3>Почему <code>async_raycast</code> даёт мало</h3>
-<p>Cython-версия не отпускает GIL. Ускорение ~5–10%.</p>
+<details class="faq-item">
+  <summary>Модель .obj не отображается</summary>
+  <div class="faq-body">
+    <p>Проверь: установлен ли <code>trimesh</code>, правильный ли путь, есть ли папка <code>cache/</code>.
+    Если модель была раньше — удали <code>cache/</code>, движок пересоздаст спрайты.</p>
+  </div>
+</details>
 
-<h3>Какие сроки у 1.3 и 1.4</h3>
-<p>1.3 — Q4 2026. 1.4 — Q1 2027 (Vulkan).</p>
+<details class="faq-item">
+  <summary>Прозрачные стены лагают</summary>
+  <div class="faq-body">
+    <p>На CPU-пути (<code>use_gpu=False</code>) alpha действительно дороже.
+    Включи <code>moderngl</code> или убери alpha с больших участков карты.</p>
+  </div>
+</details>
 
-<h3>Почему в 1.4 будет Vulkan</h3>
-<p>Readback исчезнет, многопоточные командные буферы, полный контроль над памятью GPU. </p>
+<details class="faq-item">
+  <summary>RTE не включается</summary>
+  <div class="faq-body">
+    <p>Установи <code>moderngl</code>. Проверь в логе <code>[Engine] GPU renderer: enabled</code>.
+    Если видишь <code>[GPU] SHADER COMPILE ERROR</code> — значит драйвер не принял шейдер,
+    движок откатился на CPU-путь. Обнови драйвер видеокарты.</p>
+  </div>
+</details>
 
-<h3>Сколько стоит</h3>
-<p>CC BY-ND 4.0 · Бесплатно.</p>
+<details class="faq-item">
+  <summary>Зеркало светит белым</summary>
+  <div class="faq-body">
+    <p>Слишком высокая <code>reflectivity</code> у материала. Понизь до 0.5–0.7
+    в <code>MaterialLibrary</code> или через тег карты <code>reflectivity:0.6</code>.</p>
+  </div>
+</details>
 
+<details class="faq-item">
+  <summary>Взрыв не создаёт осколков</summary>
+  <div class="faq-body">
+    <p>Проверь, что у объекта (стены или модели) стоит тег <code>destructible:true</code>.
+    Без него взрыв наносит урон, но не разрушает клетку.</p>
+  </div>
+</details>
+
+<details class="faq-item">
+  <summary>Интерактивный объект толкается</summary>
+  <div class="faq-body">
+    <p>Значит у него стоит <code>pushable:true</code>. Убери этот тег — объект перестанет
+    реагировать на толчок игрока, но продолжит вызывать <code>on_press</code> при нажатии E.</p>
+  </div>
+</details>
+
+<details class="faq-item">
+  <summary>Триггер срабатывает каждый кадр</summary>
+  <div class="faq-body">
+    <p>Внутри <code>on_trigger</code> вызови <code>self.deactivate_trigger(('id', trigger_id))</code>,
+    чтобы отключить повторное срабатывание.</p>
+  </div>
+</details>
+
+<details class="faq-item">
+  <summary>FPS падает при height&lt;1 на CPU</summary>
+  <div class="faq-body">
+    <p>На CPU-пути (<code>use_gpu=False</code>) полувысотные стены требуют дополнительных
+    вычислений. На GPU-пути они бесплатны. Включи <code>moderngl</code> — проблема исчезнет.</p>
+  </div>
+</details>
+
+<details class="faq-item">
+  <summary>Как сделать скример</summary>
+  <div class="faq-body">
+    <p>Объект <code>6&lt;...;interactive:true;on_press:scream&gt;</code> + переопределить
+    <code>on_interactive_press</code> в наследнике Engine. Полный пример — в разделе 29.</p>
+  </div>
+</details>
+
+<details class="faq-item">
+  <summary>Почему async_raycast даёт мало</summary>
+  <div class="faq-body">
+    <p>Cython-версия не отпускает GIL. Поток работает, но главный поток ждёт.
+    Ускорение ~5–10% вместо ожидаемых 50%. На GPU-пути async не используется.</p>
+  </div>
+</details>
+
+<details class="faq-item">
+  <summary>Тени на границах выглядят как пиксельные ступеньки</summary>
+  <div class="faq-body">
+    <p>Это следствие <strong>soft shadows с малым числом сэмплов</strong>. При 4 сэмплах
+    результат тени — это дробь с знаменателем 4 (уровни 0.0, 0.25, 0.5, 0.75, 1.0),
+    переходы между ними видны как ступеньки. Варианты решения:</p>
+    <ul>
+      <li>Поставить <code>rt_quality='reference'</code> (8 сэмплов) — ступеньки станут мельче.</li>
+      <li>Уменьшить <code>rt_shadow_samples</code> до 1 — тени станут жёсткими, но без ступенек вообще.</li>
+      <li>Использовать временную фильтрацию (temporal denoising) — планируется в 1.4.</li>
+    </ul>
+  </div>
+</details>
+
+<details class="faq-item">
+  <summary>Свет слишком резкий, тень режет в чёрный</summary>
+  <div class="faq-body">
+    <p>Минимальное освещение сейчас <code>1%</code> (<code>vec3(0.01)</code>). Если хочется
+    больше мягкости — в <code>apply_lighting</code> измени <code>max(total, vec3(0.01))</code>
+    на <code>vec3(0.05)</code> или <code>vec3(0.10)</code>. Это добавит ambient-подсветки
+    в тенях, но снизит контраст.</p>
+  </div>
+</details>
+
+<details class="faq-item">
+  <summary>Как работает bounce-свет (1-bounce GI)</summary>
+  <div class="faq-body">
+    <p>От каждой точки поверхности шейдер пускает <strong>один дополнительный луч</strong>
+    в отражённом направлении. Если луч попадает в стену — берётся её цвет,
+    умножается на <code>reflectivity</code> и добавляется к освещению точки.</p>
+    <p>Настройка: <code>engine.gpu_raycaster.rt_bounce</code>:</p>
+    <ul>
+      <li><code>0.0</code> — bounce выключен, самый быстрый режим.</li>
+      <li><code>0.5</code> — дефолт, заметное свечение у зеркальных стен.</li>
+      <li><code>1.0</code> — максимум, сцены с зеркалами начинают «светиться».</li>
+    </ul>
+    <p><strong>Стоимость:</strong> -10–15% FPS на reference из-за одного дополнительного луча на пиксель.</p>
+  </div>
+</details>
+
+<details class="faq-item">
+  <summary>Какие сроки у 1.3 и 1.4</summary>
+  <div class="faq-body">
+    <p><strong>1.3</strong> — Q4 2026 (мультиплеер, chunk streaming, текстуры на гранях .obj).<br>
+    <strong>1.4</strong> — Q1 2027 (Vulkan, крупнейшее обновление в истории движка).</p>
+  </div>
+</details>
+
+<!--<details class="faq-item">-->
+<!--  <summary>Почему в 1.4 используется Vulkan, а не OpenGL</summary>-->
+<!--  <div class="faq-body">-->
+<!--    <p>OpenGL упёрся в свой потолок по API overhead. Vulkan даёт:</p>-->
+<!--    <ul>-->
+<!--      <li>Отсутствие readback — рендер прямо в текстуру окна.</li>-->
+<!--      <li>Многопоточную подготовку командных буферов.</li>-->
+<!--      <li>Полный контроль над памятью GPU.</li>-->
+<!--      <li>Vulkan — не маркетинг, а объективная необходимость для 3D-осколков,-->
+<!--          теней следующего поколения и мультиплеера с 60 Hz state sync.</li>-->
+<!--    </ul>-->
+<!--    <p>Плюс: мы стали <strong>единственным рейкастинг-движком на Vulkan</strong> в мире.</p>-->
+<!--  </div>-->
+<!--</details>-->
+
+<details class="faq-item">
+  <summary>Сколько будет стоить 1.3 и 1.4</summary>
+  <div class="faq-body">
+    <p>Бесплатно. Gradus RC всегда был и будет под MIT License.</p>
+  </div>
+</details>
 <!-- ============================================ -->
 <div id="contact" class="contact">
   <p>По вопросам, багам и предложениям:</p>
