@@ -363,7 +363,7 @@ html, body { overflow-x: hidden; max-width: 100vw; }
   <table>
     <tr>
       <th style="width: 20%;">Компонент</th>
-      <th style="width: 27%;">Минимум<br><span style="font-weight:400;font-size:0.85em;color:#7a8aa0;">RTE fast / off, 30 FPS</span></th>
+      <th style="width: 27%;">Минимум<br><span style="font-weight:400;font-size:0.85em;color:#7a8aa0;">RTE off, 30 FPS</span></th>
       <th style="width: 27%;">Рекомендуется<br><span style="font-weight:400;font-size:0.85em;color:#7a8aa0;">RTE high, 60 FPS</span></th>
       <th style="width: 26%;">Максимум<br><span style="font-weight:400;font-size:0.85em;color:#7a8aa0;">RTE reference, 60 FPS</span></th>
     </tr>
@@ -381,17 +381,17 @@ html, body { overflow-x: hidden; max-width: 100vw; }
     </tr>
     <tr>
       <td><strong>CPU</strong></td>
-      <td>i3-3220 / Ryzen 3 1200</td>
-      <td>i5-6500 / Ryzen 5 1600</td>
-      <td>i5-9400F / Ryzen 5 3600</td>
+      <td>i3-3220 / Ryzen 5 1600</td>
+      <td>i5-6500 / Ryzen 5 3600</td>
+      <td>i5-9400F / Ryzen 5 5200</td>
     </tr>
     <tr>
       <td><strong>GPU</strong></td>
-      <td>Intel HD 4000 / GT 730<br>
-          <span style="color:#7a8aa0; font-size:0.85em;">OpenGL 3.3, RTE off или fast</span></td>
-      <td>GTX 1050 Ti / GTX 1650 Mobile / RX 560<br>
+      <td>Intel HD 4000 / GT 710<br>
+          <span style="color:#7a8aa0; font-size:0.85em;">OpenGL 3.3, RTE off</span></td>
+      <td>Vega 6 / GT1030<br>
           <span style="color:#7a8aa0; font-size:0.85em;">OpenGL 4.3+</span></td>
-      <td>GTX 1650 / GTX 1060 / RX 570<br>
+      <td>GTX 1056 / GTX 1650 Mobile / RX 570<br>
           <span style="color:#7a8aa0; font-size:0.85em;">OpenGL 4.5+</span></td>
     </tr>
     <tr>
@@ -402,17 +402,17 @@ html, body { overflow-x: hidden; max-width: 100vw; }
     </tr>
     <tr>
       <td><strong>Диск</strong></td>
+      <td>25 MB<br>
+          <span style="color:#7a8aa0; font-size:0.85em;">с запасом; минимум 10 MB (сам движок 5 MB)</span></td>
       <td>100 MB<br>
-          <span style="color:#7a8aa0; font-size:0.85em;">с запасом; минимум 10–40 MB</span></td>
-      <td>300 MB<br>
           <span style="color:#7a8aa0; font-size:0.85em;">моды, кэш моделей</span></td>
-      <td>500 MB<br>
+      <td>1 GB<br>
           <span style="color:#7a8aa0; font-size:0.85em;">большие проекты</span></td>
     </tr>
     <tr>
       <td><strong>FPS</strong></td>
       <td>30 FPS<br>
-          RTE fast, <code>async_raycast=True</code></td>
+          RTE off, <code>particles=main/off</code></td>
       <td><strong>60 FPS</strong><br>
           RTE high (4 shadow + 8 AO + bounce 0.5)</td>
       <td><strong>60 FPS</strong> без просадок<br>
@@ -2708,7 +2708,7 @@ if __name__ == "__main__":
   <summary>Игра запускается на встроенной графике вместо дискретной (ноутбук)</summary>
   <div class="faq-body">
     <p>Если у тебя гибридный ноутбук (Intel/AMD iGPU + NVIDIA/AMD dGPU) и в логе видно
-    <code>[GPU] AMD Radeon(TM) Graphics</code> вместо <code>[GPU] NVIDIA GeForce GTX...</code> —
+    <code>[GPU] AMD Radeon(TM) Graphics (или другой)</code> вместо <code>[GPU] NVIDIA GeForce... (или другой)</code> —
     значит Python запускается через встроенную видеокарту. Это частая проблема Windows,
     особенно когда игра запускается из IDE вроде PyCharm.</p>
 
@@ -2822,7 +2822,8 @@ if __name__ == "__main__":
   <summary>Как сделать скример</summary>
   <div class="faq-body">
     <p>Объект <code>6&lt;...;interactive:true;on_press:scream&gt;</code> + переопределить
-    <code>on_interactive_press</code> в наследнике Engine. Полный пример — в разделе 29.</p>
+    <code>on_interactive_press</code> в наследнике Engine. Полный пример — в разделе 29.
+    Также есть вариант сделать скример через Триггер (id=8), см. раздел 23.9</p>
   </div>
 </details>
 
@@ -2830,33 +2831,33 @@ if __name__ == "__main__":
   <summary>Почему async_raycast даёт мало</summary>
   <div class="faq-body">
     <p>Cython-версия не отпускает GIL. Поток работает, но главный поток ждёт.
-    Ускорение ~5–10% вместо ожидаемых 50%. На GPU-пути async не используется.</p>
+    Ускорение ~5–10%. На GPU-пути async не используется.</p>
   </div>
 </details>
 
-<details class="faq-item">
-  <summary>Тени на границах выглядят как пиксельные ступеньки</summary>
-  <div class="faq-body">
-    <p>Это следствие <strong>soft shadows с малым числом сэмплов</strong>. При 4 сэмплах
-    результат тени — это дробь с знаменателем 4 (уровни 0.0, 0.25, 0.5, 0.75, 1.0),
-    переходы между ними видны как ступеньки. Варианты решения:</p>
-    <ul>
-      <li>Поставить <code>rt_quality='reference'</code> (8 сэмплов) — ступеньки станут мельче.</li>
-      <li>Уменьшить <code>rt_shadow_samples</code> до 1 — тени станут жёсткими, но без ступенек вообще.</li>
-      <li>Использовать временную фильтрацию (temporal denoising) — планируется в 1.4.</li>
-    </ul>
-  </div>
-</details>
+<!--<details class="faq-item">-->
+<!--  <summary>Тени на границах выглядят как пиксельные ступеньки</summary>-->
+<!--  <div class="faq-body">-->
+<!--    <p>Это следствие <strong>soft shadows с малым числом сэмплов</strong>. При 4 сэмплах-->
+<!--    результат тени — это дробь с знаменателем 4 (уровни 0.0, 0.25, 0.5, 0.75, 1.0),-->
+<!--    переходы между ними видны как ступеньки. Варианты решения:</p>-->
+<!--    <ul>-->
+<!--      <li>Поставить <code>rt_quality='reference'</code> (8 сэмплов) — ступеньки станут мельче.</li>-->
+<!--      <li>Уменьшить <code>rt_shadow_samples</code> до 1 — тени станут жёсткими, но без ступенек вообще.</li>-->
+<!--      <li>Использовать временную фильтрацию (temporal denoising) — планируется в 1.4.</li>-->
+<!--    </ul>-->
+<!--  </div>-->
+<!--</details>-->
 
-<details class="faq-item">
-  <summary>Свет слишком резкий, тень режет в чёрный</summary>
-  <div class="faq-body">
-    <p>Минимальное освещение сейчас <code>1%</code> (<code>vec3(0.01)</code>). Если хочется
-    больше мягкости — в <code>apply_lighting</code> измени <code>max(total, vec3(0.01))</code>
-    на <code>vec3(0.05)</code> или <code>vec3(0.10)</code>. Это добавит ambient-подсветки
-    в тенях, но снизит контраст.</p>
-  </div>
-</details>
+<!--<details class="faq-item">-->
+<!--  <summary>Свет слишком резкий, тень режет в чёрный</summary>-->
+<!--  <div class="faq-body">-->
+<!--    <p>Минимальное освещение сейчас <code>1%</code> (<code>vec3(0.01)</code>). Если хочется-->
+<!--    больше мягкости — в <code>apply_lighting</code> измени <code>max(total, vec3(0.01))</code>-->
+<!--    на <code>vec3(0.05)</code> или <code>vec3(0.10)</code>. Это добавит ambient-подсветки-->
+<!--    в тенях, но снизит контраст.</p>-->
+<!--  </div>-->
+<!--</details>-->
 
 <details class="faq-item">
   <summary>Как работает bounce-свет (1-bounce GI)</summary>
@@ -2900,7 +2901,7 @@ if __name__ == "__main__":
 <details class="faq-item">
   <summary>Сколько будет стоить 1.3 и 1.4</summary>
   <div class="faq-body">
-    <p>Бесплатно. Gradus RC всегда был и будет под MIT License.</p>
+    <p>Бесплатно. Gradus RC всегда был и будет под лицензией CC BY-ND 4.0.</p>
   </div>
 </details>
 <!-- ============================================ -->
