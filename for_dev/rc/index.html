@@ -308,6 +308,111 @@ html, body { overflow-x: hidden; max-width: 100vw; }
     margin: 12px 0;
     font-size: 0.85em;
 }
+    /* ===== Галерея скриншотов ===== */
+.screenshots-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 14px;
+    margin: 20px 0;
+}
+
+.screenshot-item {
+    display: block;
+    aspect-ratio: 16 / 9;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #2a3a4e;
+    background: #0f1722;
+    position: relative;
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    text-decoration: none;
+}
+
+.screenshot-item::after {
+    content: "🔍";
+    position: absolute;
+    top: 10px; right: 10px;
+    font-size: 18px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
+}
+
+.screenshot-item:hover {
+    transform: translateY(-3px);
+    border-color: #8ab4f8;
+    box-shadow: 0 10px 24px rgba(138, 180, 248, 0.18);
+}
+
+.screenshot-item:hover::after { opacity: 1; }
+
+.screenshot-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+}
+
+.screenshot-item:hover img {
+    transform: scale(1.04);
+}
+
+/* ===== Lightbox (открывается по клику) ===== */
+.lightbox {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.9);
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    cursor: zoom-out;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+.lightbox:target {
+    display: flex;
+    animation: lbFade 0.25s ease;
+}
+
+@keyframes lbFade {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.lightbox img {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 12px;
+    box-shadow: 0 0 80px rgba(0, 0, 0, 0.85);
+}
+
+/* ===== Адаптив ===== */
+@media (max-width: 900px) {
+    .screenshots-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 10px;
+    }
+}
+
+@media (max-width: 640px) {
+    .screenshots-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    .screenshot-item {
+        border-radius: 10px;
+    }
+    .screenshot-item::after { display: none; }  /* на телефоне иконка не нужна */
+    .lightbox { padding: 8px; }
+    .lightbox img { border-radius: 8px; }
+}
+
   </style>
 </head>
 <body>
@@ -355,8 +460,49 @@ html, body { overflow-x: hidden; max-width: 100vw; }
   </ul>
   Всё аддитивно: старый код продолжит работать без изменений.
 </div>
-
-<div class="tip" style="border-color: #7ad37a;">
+<div class="toc">
+  <strong>📑 Содержание</strong><br>
+  <a href="#sys">Системные требования движка</a>
+  <a href="#screenshot">Скриншоты</a>
+  <a>  *  *  *  </a>
+  <a href="#intro">1. Введение и история</a>
+  <a href="#install">2. Установка</a>
+  <a href="#quickstart">3. Быстрый старт</a>
+  <a href="#migration">4. Миграция с 1.2 на 1.2.5</a>
+  <a href="#arch">5. Архитектура</a>
+  <a href="#map">6. Формат карт и теги</a>
+  <a href="#ids">7. ID клеток</a>
+  <a href="#enemy">8. Враги</a>
+  <a href="#weapons">9. Оружие и пули</a>
+  <a href="#explosions">10. Взрывы и RPG</a>
+  <a href="#interactive">11. Интерактивные и толкаемые объекты</a>
+  <a href="#rte">12. RTE — Ray Tracing Emulator</a>
+  <a href="#alpha_height">13. Прозрачные и полувысотные стены</a>
+  <a href="#obj">14. obj_to_sprites — эволюция и API</a>
+  <a href="#models">15. 3D-модели</a>
+  <a href="#lighting">16. Освещение</a>
+  <a href="#particles">17. Партиклы и осколки</a>
+  <a href="#decals">18. Декали</a>
+  <a href="#hud">19. HUD</a>
+  <a href="#minimap">20. Мини-карта</a>
+  <a href="#sound">21. Звук и Sound3D</a>
+  <a href="#effects">22. EffectsManager</a>
+  <a href="#microapi"><strong style="color:#7ad37a;">23. MicroAPI — полное руководство (API Update)</strong></a>
+  <a href="#physicsapi"><strong style="color:#7ad37a;">24. PhysicsAPI — полное руководство (API Update)</strong></a>
+  <a href="#modapi"><strong style="color:#7ad37a;">25. ModAPI и система модов (API Update)</strong></a>
+  <a href="#world_renderers"><strong style="color:#7ad37a;">26. Кастомный рендер в мире</strong></a>
+  <a href="#debug_overlay"><strong style="color:#7ad37a;">27. F1 / F3 — отладочные оверлеи</strong></a>
+  <a href="#events">28. События (переопределение)</a>
+  <a href="#examples">29. Заготовки и полный пример</a>
+  <a href="#cython">30. Cython-сборка</a>
+  <a href="#gpu">31. GPU-рендерер (under the hood)</a>
+  <a href="#benchmarks">32. Бенчмарки</a>
+  <a href="#optimization">33. Оптимизация</a>
+  <a href="#limitations">34. Ограничения честно</a>
+  <a href="#glossary">35. Глоссарий</a>
+  <a href="#faq">36. FAQ</a>
+</div>
+<div class="tip" id="sys" style="border-color: #7ad37a;">
   <strong style="color:#7ad37a;">🚀 Системные требования</strong>
 
   <div class="table-wrap" style="margin-top: 14px;">
@@ -450,46 +596,43 @@ html, body { overflow-x: hidden; max-width: 100vw; }
   улучшенная система сохранений, Achievements API (локальный).<br>
   <strong>1.4 — Q1 2027.</strong> Самое крупное обновление в истории. Vulkan-рендер, граф-редактор... (остальные спойлеры вырезаны).
 </div>
+  <h2 id="screenshots">📸 Скриншоты</h2>
 
-<div class="toc">
-  <strong>📑 Содержание</strong><br>
-  <a href="#intro">1. Введение и история</a>
-  <a href="#install">2. Установка</a>
-  <a href="#quickstart">3. Быстрый старт</a>
-  <a href="#migration">4. Миграция с 1.2 на 1.2.5</a>
-  <a href="#arch">5. Архитектура</a>
-  <a href="#map">6. Формат карт и теги</a>
-  <a href="#ids">7. ID клеток</a>
-  <a href="#enemy">8. Враги</a>
-  <a href="#weapons">9. Оружие и пули</a>
-  <a href="#explosions">10. Взрывы и RPG</a>
-  <a href="#interactive">11. Интерактивные и толкаемые объекты</a>
-  <a href="#rte">12. RTE — Ray Tracing Emulator</a>
-  <a href="#alpha_height">13. Прозрачные и полувысотные стены</a>
-  <a href="#obj">14. obj_to_sprites — эволюция и API</a>
-  <a href="#models">15. 3D-модели</a>
-  <a href="#lighting">16. Освещение</a>
-  <a href="#particles">17. Партиклы и осколки</a>
-  <a href="#decals">18. Декали</a>
-  <a href="#hud">19. HUD</a>
-  <a href="#minimap">20. Мини-карта</a>
-  <a href="#sound">21. Звук и Sound3D</a>
-  <a href="#effects">22. EffectsManager</a>
-  <a href="#microapi"><strong style="color:#7ad37a;">23. MicroAPI — полное руководство (API Update)</strong></a>
-  <a href="#physicsapi"><strong style="color:#7ad37a;">24. PhysicsAPI — полное руководство (API Update)</strong></a>
-  <a href="#modapi"><strong style="color:#7ad37a;">25. ModAPI и система модов (API Update)</strong></a>
-  <a href="#world_renderers"><strong style="color:#7ad37a;">26. Кастомный рендер в мире</strong></a>
-  <a href="#debug_overlay"><strong style="color:#7ad37a;">27. F1 / F3 — отладочные оверлеи</strong></a>
-  <a href="#events">28. События (переопределение)</a>
-  <a href="#examples">29. Заготовки и полный пример</a>
-  <a href="#cython">30. Cython-сборка</a>
-  <a href="#gpu">31. GPU-рендерер (under the hood)</a>
-  <a href="#benchmarks">32. Бенчмарки</a>
-  <a href="#optimization">33. Оптимизация</a>
-  <a href="#limitations">34. Ограничения честно</a>
-  <a href="#glossary">35. Глоссарий</a>
-  <a href="#faq">36. FAQ</a>
+<p>Скриншоты из игры — от первого прототипа до текущей версии 1.2.5 с RTE.
+Нажми на любой, чтобы открыть в полном размере.</p>
+
+<div class="screenshots-grid" id="screenshot">
+    <a href="#shot-1" class="screenshot-item">
+        <img src="1.png" alt="Скриншот 1" loading="lazy">
+    </a>
+    <a href="#shot-2" class="screenshot-item">
+        <img src="2.png" alt="Скриншот 2" loading="lazy">
+    </a>
+    <a href="#shot-3" class="screenshot-item">
+        <img src="3.png" alt="Скриншот 3" loading="lazy">
+    </a>
+    <a href="#shot-4" class="screenshot-item">
+        <img src="4.png" alt="Скриншот 4" loading="lazy">
+    </a>
+    <a href="#shot-5" class="screenshot-item">
+        <img src="5.png" alt="Скриншот 5" loading="lazy">
+    </a>
+    <a href="#shot-6" class="screenshot-item">
+        <img src="6.png" alt="Скриншот 6" loading="lazy">
+    </a>
+    <a href="#shot-7" class="screenshot-item">
+        <img src="7.png" alt="Скриншот 7" loading="lazy">
+    </a>
 </div>
+
+<!-- Лайтбоксы. Один на каждый скриншот. -->
+<a href="#" class="lightbox" id="shot-1"><img src="1.png" alt="Скриншот 1"></a>
+<a href="#" class="lightbox" id="shot-2"><img src="2.png" alt="Скриншот 2"></a>
+<a href="#" class="lightbox" id="shot-3"><img src="3.png" alt="Скриншот 3"></a>
+<a href="#" class="lightbox" id="shot-4"><img src="4.png" alt="Скриншот 4"></a>
+<a href="#" class="lightbox" id="shot-5"><img src="5.png" alt="Скриншот 5"></a>
+<a href="#" class="lightbox" id="shot-6"><img src="6.png" alt="Скриншот 6"></a>
+<a href="#" class="lightbox" id="shot-7"><img src="7.png" alt="Скриншот 7"></a>
 
 <!-- ============================================ -->
 <h2 id="intro">1. 📖 Введение и история</h2>
