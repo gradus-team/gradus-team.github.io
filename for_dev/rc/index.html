@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gradus RC v1.2.5 API Update (1.3 Beta) — Полная документация</title>
+  <title>Gradus RC v1.3 — Полная документация</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-text-size-adjust: 100%; }
     body {
@@ -102,351 +102,230 @@
       padding: 4px 12px; border-radius: 8px; margin: 4px 6px 4px 0;
       font-size: 0.85em;
     }
+    html, body { overflow-x: hidden; max-width: 100vw; }
+
     @media (max-width: 900px) {
-      .container { padding: 30px 25px; border-radius: 16px; }
-      h1 { font-size: 2.2em; } h2 { font-size: 1.6em; } h3 { font-size: 1.2em; }
-      pre { padding: 14px 16px; font-size: 0.85em; }
+      .container { padding: 24px 18px; }
+      h1 { font-size: 2em; }
+      h2 { font-size: 1.5em; padding-left: 12px; margin-top: 2em; }
+      h3 { font-size: 1.15em; margin-top: 1.3em; }
+      pre { padding: 14px 16px; font-size: 0.85em; border-radius: 10px; }
+      .toc { padding: 16px 18px; }
+      .toc a { display: inline-block; margin: 6px 10px 6px 0; }
+      table { min-width: 0; }
+      th, td { padding: 10px 12px; font-size: 0.9em; }
     }
-    @media (max-width: 700px) {
-      body { padding: 10px; }
-      .container { padding: 20px 15px; border-radius: 12px; }
-      h1 { font-size: 1.8em; } h2 { font-size: 1.4em; padding-left: 12px; }
-      h3 { font-size: 1.1em; }
-      p, li { font-size: 0.95em; } pre { font-size: 0.8em; }
-      .toc a { display: block; margin: 6px 0; }
-      table { min-width: 500px; }
-      th, td { padding: 8px 10px; font-size: 0.85em; }
+    @media (max-width: 640px) {
+      body { padding: 8px; font-size: 15px; line-height: 1.7; }
+      .container { padding: 18px 14px; border-radius: 12px; }
+      h1 { font-size: 1.65em; padding-bottom: 10px; }
+      h2 { font-size: 1.3em; padding-left: 10px; }
+      h3 { font-size: 1.05em; }
+      h4 { font-size: 0.98em; }
+      p, li { font-size: 0.95em; }
+      code { font-size: 0.85em; padding: 1px 6px; word-break: break-all; }
+      pre { padding: 12px 14px; font-size: 0.78em; line-height: 1.5; border-radius: 10px; -webkit-overflow-scrolling: touch; }
+      pre code { word-break: normal; }
+      .toc { padding: 14px 16px; }
+      .toc a { display: block; margin: 8px 0; padding: 6px 0; border-bottom: 1px solid #1e2a3a; font-size: 0.95em; }
+      .toc a:last-child { border-bottom: none; }
+      .table-wrap { position: relative; border-radius: 10px; border: 1px solid #1e2a3a; }
+      .table-wrap::after {
+        content: "→ свайп →";
+        position: absolute; top: 8px; right: 10px;
+        font-size: 0.7em; color: #7a8aa0;
+        pointer-events: none; opacity: 0.7;
+      }
+      table { min-width: 520px; }
+      th, td { padding: 8px 10px; font-size: 0.82em; white-space: normal; }
+      th { font-size: 0.8em; }
+      .badge { font-size: 0.75em; padding: 3px 9px; margin: 3px 4px 3px 0; }
+      .note, .tip, .warn { padding: 12px 14px; border-radius: 8px; font-size: 0.94em; }
+      .contact a { display: block; padding: 12px 0; font-size: 1.05em; min-height: 44px; line-height: 44px; }
+      .footer { font-size: 0.85em; }
     }
-    /* ====== Мобильная адаптация (улучшенная) ====== */
-
-/* Общее: горизонтальная прокрутка страницы запрещена */
-html, body { overflow-x: hidden; max-width: 100vw; }
-
-/* Планшеты в портрете */
-@media (max-width: 900px) {
-  .container { padding: 24px 18px; }
-  h1 { font-size: 2em; }
-  h2 { font-size: 1.5em; padding-left: 12px; margin-top: 2em; }
-  h3 { font-size: 1.15em; margin-top: 1.3em; }
-  pre { padding: 14px 16px; font-size: 0.85em; border-radius: 10px; }
-  .toc { padding: 16px 18px; }
-  .toc a { display: inline-block; margin: 6px 10px 6px 0; }
-  table { min-width: 0; }
-  th, td { padding: 10px 12px; font-size: 0.9em; }
-}
-
-/* Телефоны (портрет) */
-@media (max-width: 640px) {
-  body { padding: 8px; font-size: 15px; line-height: 1.7; }
-  .container { padding: 18px 14px; border-radius: 12px; }
-
-  h1 { font-size: 1.65em; padding-bottom: 10px; }
-  h2 { font-size: 1.3em; padding-left: 10px; }
-  h3 { font-size: 1.05em; }
-  h4 { font-size: 0.98em; }
-
-  p, li { font-size: 0.95em; }
-
-  /* Код: переносим аккуратно */
-  code {
-    font-size: 0.85em;
-    padding: 1px 6px;
-    word-break: break-all;
-  }
-  pre {
-    padding: 12px 14px;
-    font-size: 0.78em;
-    line-height: 1.5;
-    border-radius: 10px;
-    -webkit-overflow-scrolling: touch;
-  }
-  pre code { word-break: normal; }
-
-  /* TOC: раскрывающийся список — экономит пол-экрана */
-  .toc { padding: 14px 16px; }
-  .toc a {
-    display: block;
-    margin: 8px 0;
-    padding: 6px 0;
-    border-bottom: 1px solid #1e2a3a;
-    font-size: 0.95em;
-  }
-  .toc a:last-child { border-bottom: none; }
-
-  /* Таблицы: явная подсказка про свайп */
-  .table-wrap {
-    position: relative;
-    border-radius: 10px;
-    border: 1px solid #1e2a3a;
-  }
-  .table-wrap::after {
-    content: "→ свайп →";
-    position: absolute;
-    top: 8px; right: 10px;
-    font-size: 0.7em;
-    color: #7a8aa0;
-    pointer-events: none;
-    opacity: 0.7;
-  }
-  table { min-width: 520px; }
-  th, td {
-    padding: 8px 10px;
-    font-size: 0.82em;
-    white-space: normal;
-  }
-  th { font-size: 0.8em; }
-
-  /* Бейджи компактнее */
-  .badge { font-size: 0.75em; padding: 3px 9px; margin: 3px 4px 3px 0; }
-
-  /* Note/Tip/Warn: чуть плотнее */
-  .note, .tip, .warn {
-    padding: 12px 14px;
-    border-radius: 8px;
-    font-size: 0.94em;
-  }
-
-  /* Ссылки в контактах: чтобы палец попадал */
-  .contact a {
-    display: block;
-    padding: 12px 0;
-    font-size: 1.05em;
-    min-height: 44px;
-    line-height: 44px;
-  }
-
-  .footer { font-size: 0.85em; }
-}
-
-/* Очень узкие экраны (маленькие телефоны, 320px) */
-@media (max-width: 380px) {
-  body { padding: 4px; font-size: 14px; }
-  .container { padding: 14px 10px; }
-  h1 { font-size: 1.4em; }
-  h2 { font-size: 1.15em; }
-  pre { font-size: 0.72em; padding: 10px 12px; }
-  th, td { padding: 6px 8px; font-size: 0.78em; }
-  .badge { font-size: 0.7em; padding: 2px 7px; }
-}
-
-/* Тач-устройства: увеличить кликабельные зоны */
-@media (hover: none) and (pointer: coarse) {
-  a, .toc a { min-height: 40px; display: inline-flex; align-items: center; }
-  .toc a { display: flex; }
-  button, .badge { cursor: pointer; }
-}
-
-/* Ландшафт планшета — компактнее, чем десктоп, но не так тесно как телефон */
-@media (min-width: 641px) and (max-width: 1024px) and (orientation: landscape) {
-  .container { padding: 28px 30px; }
-  .toc a { display: inline-block; margin: 5px 12px 5px 0; }
-}
+    @media (max-width: 380px) {
+      body { padding: 4px; font-size: 14px; }
+      .container { padding: 14px 10px; }
+      h1 { font-size: 1.4em; }
+      h2 { font-size: 1.15em; }
+      pre { font-size: 0.72em; padding: 10px 12px; }
+      th, td { padding: 6px 8px; font-size: 0.78em; }
+      .badge { font-size: 0.7em; padding: 2px 7px; }
+    }
+    @media (hover: none) and (pointer: coarse) {
+      a, .toc a { min-height: 40px; display: inline-flex; align-items: center; }
+      .toc a { display: flex; }
+      button, .badge { cursor: pointer; }
+    }
+    @media (min-width: 641px) and (max-width: 1024px) and (orientation: landscape) {
+      .container { padding: 28px 30px; }
+      .toc a { display: inline-block; margin: 5px 12px 5px 0; }
+    }
     @supports (padding: max(0px)) {
-  .container {
-    padding-left: max(14px, env(safe-area-inset-left));
-    padding-right: max(14px, env(safe-area-inset-right));
-  }
-}
-    /* ===== FAQ аккордеон ===== */
-.faq-item {
-    background: #0f1722;
-    border: 1px solid #2a3a4e;
-    border-radius: 10px;
-    margin: 10px 0;
-    overflow: hidden;
-    transition: border-color 0.2s;
-}
-.faq-item[open] {
-    border-color: #8ab4f8;
-}
-.faq-item > summary {
-    padding: 14px 20px;
-    cursor: pointer;
-    font-weight: 500;
-    color: #b6c8e0;
-    font-size: 1.05em;
-    list-style: none;
-    position: relative;
-    padding-right: 40px;
-    user-select: none;
-    transition: background 0.15s;
-}
-.faq-item > summary::-webkit-details-marker { display: none; }
-.faq-item > summary::before {
-    content: "▸";
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #8ab4f8;
-    font-size: 1.2em;
-    transition: transform 0.2s;
-}
-.faq-item[open] > summary::before {
-    transform: translateY(-50%) rotate(90deg);
-}
-.faq-item > summary:hover {
-    background: #1a2634;
-    color: #8ab4f8;
-}
-.faq-item[open] > summary {
-    color: #8ab4f8;
-    border-bottom: 1px solid #1e2a3a;
-}
-.faq-item > .faq-body {
-    padding: 14px 20px 18px 20px;
-    color: #d4dcec;
-    font-size: 0.95em;
-    line-height: 1.7;
-}
-.faq-item > .faq-body > p:first-child { margin-top: 0; }
-.faq-item > .faq-body > p:last-child { margin-bottom: 0; }
-.faq-item code {
-    font-size: 0.88em;
-}
-.faq-item pre {
-    margin: 12px 0;
-    font-size: 0.85em;
-}
-    /* ===== Галерея скриншотов ===== */
-.screenshots-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 14px;
-    margin: 20px 0;
-}
-
-.screenshot-item {
-    display: block;
-    aspect-ratio: 16 / 9;
-    border-radius: 12px;
-    overflow: hidden;
-    border: 1px solid #2a3a4e;
-    background: #0f1722;
-    position: relative;
-    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
-    text-decoration: none;
-}
-
-.screenshot-item::after {
-    content: "🔍";
-    position: absolute;
-    top: 10px; right: 10px;
-    font-size: 18px;
-    opacity: 0;
-    transition: opacity 0.2s ease;
-    pointer-events: none;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
-}
-
-.screenshot-item:hover {
-    transform: translateY(-3px);
-    border-color: #8ab4f8;
-    box-shadow: 0 10px 24px rgba(138, 180, 248, 0.18);
-}
-
-.screenshot-item:hover::after { opacity: 1; }
-
-.screenshot-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    transition: transform 0.4s ease;
-}
-
-.screenshot-item:hover img {
-    transform: scale(1.04);
-}
-
-/* ===== Lightbox (открывается по клику) ===== */
-.lightbox {
-    display: none;
-    position: fixed;
-    z-index: 9999;
-    top: 0; left: 0;
-    width: 100vw; height: 100vh;
-    background: rgba(0, 0, 0, 0.9);
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    cursor: zoom-out;
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-}
-
-.lightbox:target {
-    display: flex;
-    animation: lbFade 0.25s ease;
-}
-
-@keyframes lbFade {
-    from { opacity: 0; }
-    to   { opacity: 1; }
-}
-
-.lightbox img {
-    max-width: 100%;
-    max-height: 100%;
-    border-radius: 12px;
-    box-shadow: 0 0 80px rgba(0, 0, 0, 0.85);
-}
-
-/* ===== Адаптив ===== */
-@media (max-width: 900px) {
-    .screenshots-grid {
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 10px;
+      .container {
+        padding-left: max(14px, env(safe-area-inset-left));
+        padding-right: max(14px, env(safe-area-inset-right));
+      }
     }
-}
 
-@media (max-width: 640px) {
+    .faq-item {
+      background: #0f1722; border: 1px solid #2a3a4e;
+      border-radius: 10px; margin: 10px 0; overflow: hidden;
+      transition: border-color 0.2s;
+    }
+    .faq-item[open] { border-color: #8ab4f8; }
+    .faq-item > summary {
+      padding: 14px 20px; cursor: pointer; font-weight: 500;
+      color: #b6c8e0; font-size: 1.05em; list-style: none;
+      position: relative; padding-right: 40px;
+      user-select: none; transition: background 0.15s;
+    }
+    .faq-item > summary::-webkit-details-marker { display: none; }
+    .faq-item > summary::before {
+      content: "▸"; position: absolute; right: 20px; top: 50%;
+      transform: translateY(-50%); color: #8ab4f8; font-size: 1.2em;
+      transition: transform 0.2s;
+    }
+    .faq-item[open] > summary::before { transform: translateY(-50%) rotate(90deg); }
+    .faq-item > summary:hover { background: #1a2634; color: #8ab4f8; }
+    .faq-item[open] > summary { color: #8ab4f8; border-bottom: 1px solid #1e2a3a; }
+    .faq-item > .faq-body {
+      padding: 14px 20px 18px 20px; color: #d4dcec;
+      font-size: 0.95em; line-height: 1.7;
+    }
+    .faq-item > .faq-body > p:first-child { margin-top: 0; }
+    .faq-item > .faq-body > p:last-child { margin-bottom: 0; }
+    .faq-item code { font-size: 0.88em; }
+    .faq-item pre { margin: 12px 0; font-size: 0.85em; }
+
     .screenshots-grid {
-        grid-template-columns: 1fr;
-        gap: 12px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+      margin: 20px 0;
     }
     .screenshot-item {
-        border-radius: 10px;
+      display: block;
+      aspect-ratio: 16 / 9;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #2a3a4e;
+      background: #0f1722;
+      position: relative;
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+      text-decoration: none;
+      cursor: zoom-in;
     }
-    .screenshot-item::after { display: none; }  /* на телефоне иконка не нужна */
-    .lightbox { padding: 8px; }
-    .lightbox img { border-radius: 8px; }
-}
+    .screenshot-item::after {
+      content: "🔍"; position: absolute; top: 10px; right: 10px;
+      font-size: 18px; opacity: 0; transition: opacity 0.2s ease;
+      pointer-events: none; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
+    }
+    .screenshot-item:hover {
+      transform: translateY(-3px);
+      border-color: #8ab4f8;
+      box-shadow: 0 10px 24px rgba(138, 180, 248, 0.18);
+    }
+    .screenshot-item:hover::after { opacity: 1; }
+    .screenshot-item img {
+      width: 100%; height: 100%; object-fit: cover;
+      display: block; transition: transform 0.4s ease;
+    }
+    .screenshot-item:hover img { transform: scale(1.04); }
 
+    .lightbox {
+      display: none;
+      position: fixed; z-index: 9999;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(0, 0, 0, 0.9);
+      justify-content: center; align-items: center;
+      padding: 20px;
+      cursor: zoom-out;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+    .lightbox.active { display: flex; animation: lbFade 0.25s ease; }
+    @keyframes lbFade { from { opacity: 0; } to { opacity: 1; } }
+    .lightbox img {
+      max-width: 100%; max-height: 100%;
+      border-radius: 12px;
+      box-shadow: 0 0 80px rgba(0, 0, 0, 0.85);
+    }
+
+    .video-wrap {
+      margin: 24px 0;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid #2a3a4e;
+      background: #000;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    .video-wrap video {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-width: 100%;
+      background: #000;
+    }
+    .video-caption {
+      padding: 10px 16px;
+      background: #0f1722;
+      color: #b6c8e0;
+      font-size: 0.9em;
+      border-top: 1px solid #1e2a3a;
+    }
+
+    @media (max-width: 900px) {
+      .screenshots-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+      .video-wrap { border-radius: 10px; }
+    }
+    @media (max-width: 640px) {
+      .screenshots-grid { grid-template-columns: 1fr; gap: 12px; }
+      .screenshot-item { border-radius: 10px; }
+      .screenshot-item::after { display: none; }
+      .lightbox { padding: 8px; }
+      .lightbox img { border-radius: 8px; }
+      .video-wrap { border-radius: 8px; margin: 14px 0; }
+      .video-caption { font-size: 0.82em; padding: 8px 12px; }
+    }
   </style>
 </head>
 <body>
 <div class="container">
 
-<h1>🧭 Gradus RC v1.2.5 API Update (1.3 Beta)</h1>
+<h1>🧭 Gradus RC v1.3 — Полная документация</h1>
 <p style="font-size: 1.1em; color: #a8b8d0;">
-  Python 3.12+ · Pygame 2.6+ · MIT License · релиз: <strong style="color: #8ab4f8;">16.09.2026</strong><br>
-  <span style="color: #7ad37a;">API Update — 150+ новых методов в MicroAPI, PhysicsAPI и ModAPI</span>
+  Python 3.12+ · Pygame 2.6+ · CC BY-ND 4.0 · релиз: <strong style="color: #8ab4f8;">20.09.2026</strong><br>
+  <span style="color: #7ad37a;">API Update + достижения, сохранения, кат-сцены, чанки, генератор, мультиплеер, сплит</span>
 </p>
 
 <div class="badge-row">
   <span class="badge" style="background:#2a5a3a; color:#b8e8c8;">+150 методов API</span>
-  <span class="badge" style="background:#3a2a5a; color:#c8b8f8;">ModAPI + Mods</span>
-  <span class="badge" style="background:#5a3a2a; color:#f8c8b8;">PhysicsAPI 2.0</span>
-  <span class="badge" style="background:#2a4a5a; color:#b8d8f8;">Custom World Renderers</span>
+  <span class="badge" style="background:#3a2a5a; color:#c8b8f8;">Достижения</span>
+  <span class="badge" style="background:#5a3a2a; color:#f8c8b8;">Savegame</span>
+  <span class="badge" style="background:#2a4a5a; color:#b8d8f8;">Кат-сцены .gs3</span>
+  <span class="badge">Чанки карты</span>
+  <span class="badge">Процедурный генератор</span>
+  <span class="badge">TCP-мультиплеер</span>
+  <span class="badge">Локальный сплит</span>
+  <span class="badge">Toast-система</span>
+  <span class="badge">Видео-запись</span>
+  <span class="badge">PhysicsAPI 2.0</span>
+  <span class="badge">Custom world renderers</span>
   <span class="badge">RTE на GPU</span>
-  <span class="badge">Triggers &amp; Timers</span>
-  <span class="badge">Config &amp; Storage &amp; i18n</span>
-  <span class="badge">F1 / F3 Debug</span>
+  <span class="badge">F1 / F3 debug</span>
   <span class="badge">Alpha &amp; Height стены</span>
-  <span class="badge">Интерактивные и толкаемые obj</span>
-  <span class="badge">Взрывы + 3D-свет</span>
 </div>
 
 <div class="note" style="border-color: #8ab4f8;">
-  <strong>⚡ Что нового в 1.2.5</strong><br>
-  Возвращены <strong>прозрачные (alpha)</strong> и <strong>полувысотные (height)</strong> стены — теперь без потери производительности, потому что работают в шейдере на GPU. Появился <strong>RTE (Ray Tracing Emulator)</strong> — мягкие тени, зеркала, отражения в воде, динамический свет от взрывов. Полностью переписан GPU-рендерер на moderngl. Добавлены <strong>интерактивные</strong> и <strong>толкаемые</strong> .obj-объекты. Взрывы теперь наносят урон по радиусу, разлетаются 3D-разлётом осколков и подсвечивают сцену динамическим светом.
+  <strong>⚡ Что нового в 1.3</strong><br>
+  <strong>Достижения</strong> — обычные, прогрессные, скрытые (с радужной карточкой и конфетти). <strong>Сохранения</strong> — вся игра в JSON: карта (включая разбитые стены), игрок, враги, пули, оружие, время, RTE. <strong>Кат-сцены</strong> в формате <code>.gs3</code> с визуальным редактором и отдельным проигрывателем. <strong>Чанки</strong> — регионы карт для стриминга и модульности. <strong>Процедурная генерация</strong> — лабиринт, пещеры, комнаты, город. <strong>TCP-мультиплеер</strong> до 8 игроков. <strong>Локальный сплит-скрин</strong> на 2 игрока с раздельными <code>GunManager</code> и респавном. <strong>Toast-система</strong> для уведомлений. <strong>Запись видео</strong> 720p / 30 FPS / MP4. <strong>PauseMenu</strong>. Плюс исправления парсера тегов (принимает <code>,</code> и <code>;</code>, <code>=</code> и <code>:</code>).
 </div>
 
 <div class="note" style="border-color: #7ad37a; background:#1a2e1a;">
   <strong style="color:#7ad37a;">🚀 API Update — что появилось</strong><br>
-  Это обновление не про рендер и не про геймплей — оно про <strong>API</strong>. Мы добавили <strong>150+ новых методов</strong>
-  в три ключевых класса: <code>MicroAPI</code>, <code>PhysicsAPI</code> и <code>ModAPI</code>. Теперь из мода или игрового кода можно:
+  Обновление про <strong>API</strong>: 150+ методов в <code>MicroAPI</code>, <code>PhysicsAPI</code> и <code>ModAPI</code>. Из мода или игрового кода можно:
   <ul style="margin-top:8px;">
     <li>Пускать лучи по сетке (<code>raycast</code>), проверять видимость (<code>has_line_of_sight</code>), проецировать мир на экран (<code>project_world_to_screen</code>).</li>
     <li>Полностью управлять игроком: телепорт, HP, регенерация, noclip, invulnerable, скорости.</li>
@@ -460,48 +339,64 @@ html, body { overflow-x: hidden; max-width: 100vw; }
   </ul>
   Всё аддитивно: старый код продолжит работать без изменений.
 </div>
+
 <div class="toc">
   <strong>📑 Содержание</strong><br>
-  <a href="#sys">Системные требования движка</a>
-  <a href="#screenshot">Скриншоты</a>
-  <a>  *  *  *  </a>
+  <a href="#sys">Системные требования</a>
+  <a href="#screenshots">Скриншоты</a>
+  <a href="#video">🎬 Геймплей</a>
+  <a>   *  *  *    </a>
   <a href="#intro">1. Введение и история</a>
   <a href="#install">2. Установка</a>
   <a href="#quickstart">3. Быстрый старт</a>
-  <a href="#migration">4. Миграция с 1.2 на 1.2.5</a>
+  <a href="#migration">4. Миграция</a>
   <a href="#arch">5. Архитектура</a>
   <a href="#map">6. Формат карт и теги</a>
   <a href="#ids">7. ID клеток</a>
   <a href="#enemy">8. Враги</a>
   <a href="#weapons">9. Оружие и пули</a>
   <a href="#explosions">10. Взрывы и RPG</a>
-  <a href="#interactive">11. Интерактивные и толкаемые объекты</a>
-  <a href="#rte">12. RTE — Ray Tracing Emulator</a>
-  <a href="#alpha_height">13. Прозрачные и полувысотные стены</a>
-  <a href="#obj">14. obj_to_sprites — эволюция и API</a>
+  <a href="#interactive">11. Интерактивные объекты</a>
+  <a href="#rte">12. RTE</a>
+  <a href="#alpha_height">13. Прозрачные стены</a>
+  <a href="#obj">14. obj_to_sprites</a>
   <a href="#models">15. 3D-модели</a>
   <a href="#lighting">16. Освещение</a>
-  <a href="#particles">17. Партиклы и осколки</a>
+  <a href="#particles">17. Партиклы</a>
   <a href="#decals">18. Декали</a>
   <a href="#hud">19. HUD</a>
   <a href="#minimap">20. Мини-карта</a>
   <a href="#sound">21. Звук и Sound3D</a>
   <a href="#effects">22. EffectsManager</a>
-  <a href="#microapi"><strong style="color:#7ad37a;">23. MicroAPI — полное руководство (API Update)</strong></a>
-  <a href="#physicsapi"><strong style="color:#7ad37a;">24. PhysicsAPI — полное руководство (API Update)</strong></a>
-  <a href="#modapi"><strong style="color:#7ad37a;">25. ModAPI и система модов (API Update)</strong></a>
-  <a href="#world_renderers"><strong style="color:#7ad37a;">26. Кастомный рендер в мире</strong></a>
-  <a href="#debug_overlay"><strong style="color:#7ad37a;">27. F1 / F3 — отладочные оверлеи</strong></a>
-  <a href="#events">28. События (переопределение)</a>
-  <a href="#examples">29. Заготовки и полный пример</a>
+  <a href="#microapi"><strong style="color:#7ad37a;">23. MicroAPI — полное руководство</strong></a>
+  <a href="#physicsapi"><strong>24. PhysicsAPI — полное руководство</strong></a>
+  <a href="#modapi"><strong>25. ModAPI и моды</strong></a>
+  <a href="#world_renderers"><strong>26. Кастомный рендер в мире</strong></a>
+  <a href="#debug_overlay"><strong>27. F1 / F3 оверлеи</strong></a>
+  <a href="#events">28. События движка</a>
+  <a href="#examples">29. Заготовки и примеры</a>
   <a href="#cython">30. Cython-сборка</a>
-  <a href="#gpu">31. GPU-рендерер (under the hood)</a>
+  <a href="#gpu">31. GPU-рендерер</a>
   <a href="#benchmarks">32. Бенчмарки</a>
   <a href="#optimization">33. Оптимизация</a>
-  <a href="#limitations">34. Ограничения честно</a>
+  <a href="#limitations">34. Ограничения</a>
   <a href="#glossary">35. Глоссарий</a>
   <a href="#faq">36. FAQ</a>
+  <a href="#achievements"><strong style="color:#7ad37a;">37. Достижения</strong></a>
+  <a href="#savegame"><strong style="color:#7ad37a;">38. Сохранения</strong></a>
+  <a href="#cutscene"><strong style="color:#7ad37a;">39. Кат-сцены</strong></a>
+  <a href="#chunks"><strong style="color:#7ad37a;">40. Чанки</strong></a>
+  <a href="#generator"><strong style="color:#7ad37a;">41. Генератор карт</strong></a>
+  <a href="#multiplayer"><strong style="color:#7ad37a;">42. Мультиплеер</strong></a>
+  <a href="#toast"><strong style="color:#7ad37a;">43. Toast-система</strong></a>
+  <a href="#pause"><strong style="color:#7ad37a;">44. PauseMenu</strong></a>
+  <a href="#hudcore"><strong style="color:#7ad37a;">45. HUDManager</strong></a>
+  <a href="#videorec"><strong style="color:#7ad37a;">46. VideoRecorder</strong></a>
+  <a href="#split"><strong style="color:#7ad37a;">47. Сплит-скрин</strong></a>
+  <a href="#playerpresets"><strong style="color:#7ad37a;">48. Пресеты управления</strong></a>
+  <a href="#parser"><strong style="color:#7ad37a;">49. MapParser</strong></a>
 </div>
+
 <div class="tip" id="sys" style="border-color: #7ad37a;">
   <strong style="color:#7ad37a;">🚀 Системные требования</strong>
 
@@ -513,128 +408,80 @@ html, body { overflow-x: hidden; max-width: 100vw; }
       <th style="width: 27%;">Рекомендуется<br><span style="font-weight:400;font-size:0.85em;color:#7a8aa0;">RTE high, 60 FPS</span></th>
       <th style="width: 26%;">Максимум<br><span style="font-weight:400;font-size:0.85em;color:#7a8aa0;">RTE reference, 60 FPS</span></th>
     </tr>
-    <tr>
-      <td><strong>ОС</strong></td>
-      <td>Windows 10 64-bit</td>
-      <td>Windows 10/11 64-bit</td>
-      <td>Windows 10/11 64-bit</td>
-    </tr>
-    <tr>
-      <td><strong>Python</strong></td>
-      <td>3.10+</td>
-      <td>3.12+</td>
-      <td>3.12+</td>
-    </tr>
-    <tr>
-      <td><strong>CPU</strong></td>
-      <td>i3-3220 / Ryzen 5 1600</td>
-      <td>i5-6500 / Ryzen 5 3600</td>
-      <td>i5-9400F / Ryzen 5 5200</td>
-    </tr>
+    <tr><td><strong>ОС</strong></td><td>Windows 10 64-bit</td><td>Windows 10/11 64-bit</td><td>Windows 10/11 64-bit</td></tr>
+    <tr><td><strong>Python</strong></td><td>3.10+</td><td>3.12+</td><td>3.12+</td></tr>
+    <tr><td><strong>CPU</strong></td><td>i3-3220 / Ryzen 5 1600</td><td>i5-6500 / Ryzen 5 3600</td><td>i5-9400F / Ryzen 5 5200</td></tr>
     <tr>
       <td><strong>GPU</strong></td>
-      <td>Intel HD 4000 / GT 710<br>
-          <span style="color:#7a8aa0; font-size:0.85em;">OpenGL 3.3, RTE off</span></td>
-      <td>Vega 6 / GT1030<br>
-          <span style="color:#7a8aa0; font-size:0.85em;">OpenGL 4.3+</span></td>
-      <td>GTX 1050 Ti / GTX 1650 Mobile / RX 570<br>
-          <span style="color:#7a8aa0; font-size:0.85em;">OpenGL 4.5+</span></td>
+      <td>Intel HD 4000 / GT 710<br><span style="color:#7a8aa0; font-size:0.85em;">OpenGL 3.3, RTE off</span></td>
+      <td>Vega 6 / GT1030<br><span style="color:#7a8aa0; font-size:0.85em;">OpenGL 4.3+</span></td>
+      <td>GTX 1050 Ti / GTX 1650 Mobile / RX 570<br><span style="color:#7a8aa0; font-size:0.85em;">OpenGL 4.5+</span></td>
     </tr>
-    <tr>
-      <td><strong>RAM</strong></td>
-      <td>4 GB</td>
-      <td>8 GB</td>
-      <td>8 GB</td>
-    </tr>
+    <tr><td><strong>RAM</strong></td><td>4 GB</td><td>8 GB</td><td>8 GB</td></tr>
     <tr>
       <td><strong>Диск</strong></td>
-      <td>25 MB<br>
-          <span style="color:#7a8aa0; font-size:0.85em;">с запасом; минимум 10 MB (сам движок 5 MB)</span></td>
-      <td>100 MB<br>
-          <span style="color:#7a8aa0; font-size:0.85em;">моды, кэш моделей</span></td>
-      <td>1 GB<br>
-          <span style="color:#7a8aa0; font-size:0.85em;">большие проекты</span></td>
+      <td>25 MB<br><span style="color:#7a8aa0; font-size:0.85em;">с запасом; минимум 10 MB</span></td>
+      <td>100 MB<br><span style="color:#7a8aa0; font-size:0.85em;">моды, кэш моделей</span></td>
+      <td>1 GB<br><span style="color:#7a8aa0; font-size:0.85em;">большие проекты</span></td>
     </tr>
     <tr>
       <td><strong>FPS</strong></td>
-      <td>30 FPS<br>
-          RTE off, <code>particles=main/off</code></td>
-      <td><strong>60 FPS</strong><br>
-          RTE high (4 shadow + 8 AO + bounce 0.5)</td>
-      <td><strong>60 FPS</strong> без просадок<br>
-          RTE reference (8 shadow + 16 AO + bounce 0.5)</td>
+      <td>30 FPS<br>RTE off, <code>particles=main/off</code></td>
+      <td><strong>60 FPS</strong><br>RTE high (4 shadow + 8 AO + bounce 0.5)</td>
+      <td><strong>60 FPS</strong> без просадок<br>RTE reference (8 shadow + 16 AO + bounce 0.5)</td>
     </tr>
   </table>
   </div>
 
   <div class="note" style="border-color: #f0b37a; margin-top: 16px;">
-    <strong>⚠️ Про RTE и GPU.</strong> На встроенной графике (Intel HD, AMD Vega,
-    Iris Xe) RTE запускается, но выдаёт <strong>15–25 FPS</strong> на средних настройках.
-    Для комфортной игры с RTE нужна дискретная видеокарта уровня <strong>GTX 1050 Ti</strong>
-    и выше. Без RTE движок работает на любом OpenGL 3.3+ железе, включая iGPU.
+    <strong>⚠️ Про RTE и GPU.</strong> На встроенной графике (Intel HD, AMD Vega, Iris Xe) RTE запускается, но выдаёт <strong>15–25 FPS</strong> на средних настройках. Для комфортной игры с RTE нужна дискретная видеокарта уровня <strong>GTX 1050 Ti</strong> и выше. Без RTE движок работает на любом OpenGL 3.3+ железе, включая iGPU.
   </div>
 
   <div class="note" style="border-color: #8ab4f8; margin-top: 16px;">
-    <strong>💡 Про ноутбуки.</strong> Если у тебя гибридный ноутбук (iGPU + dGPU) и в логе
-    видно <code>[GPU] AMD Radeon(TM) Graphics</code> вместо <code>[GPU] NVIDIA GeForce GTX...</code> —
-    Python запускается на встроенной графике. Как это исправить — см. FAQ, вопрос
-    «Игра запускается на встроенной графике вместо дискретной».
+    <strong>💡 Про ноутбуки.</strong> Если у тебя гибридный ноутбук (iGPU + dGPU) и в логе видно <code>[GPU] AMD Radeon(TM) Graphics</code> вместо <code>[GPU] NVIDIA GeForce GTX...</code> — Python запускается на встроенной графике. Как это исправить — см. FAQ, вопрос «Игра запускается на встроенной графике вместо дискретной».
   </div>
 
   <div class="note" style="border-color: #7ad37a; margin-top: 16px;">
-    <strong>🐧 Про Linux и macOS.</strong> Основная платформа — <strong>Windows</strong>.
-    Linux работает при наличии драйверов <strong>OpenGL 3.3+</strong>, но Cython-модуль
-    придётся пересобрать под свою платформу (получится <code>.so</code> вместо <code>.pyd</code>).
-    macOS работает через <strong>deprecated OpenGL</strong> — возможны просадки производительности.
-    На Apple Silicon (M1/M2/M3) OpenGL работает через трансляцию — <strong>медленно</strong>.
+    <strong>🐧 Про Linux и macOS.</strong> Основная платформа — <strong>Windows</strong>. Linux работает при наличии драйверов <strong>OpenGL 3.3+</strong>, но Cython-модуль придётся пересобрать под свою платформу (получится <code>.so</code> вместо <code>.pyd</code>). macOS работает через <strong>deprecated OpenGL</strong> — возможны просадки производительности. На Apple Silicon (M1/M2/M3) OpenGL работает через трансляцию — <strong>медленно</strong>.
   </div>
 </div>
+
 <div class="tip" style="border-color: #7ad37a;">
   <strong>🚀 Дорожная карта</strong><br>
-  <strong>1.3 — Q4 2026.</strong> Мультиплеер (базовый + Firebase RTDB), chunk-based map streaming,
-  текстуры на гранях .obj (расширение .gbj + апгрейд <code>redactor.py</code>), прокачка <code>obj_to_sprites</code>,
-  улучшенная система сохранений, Achievements API (локальный).<br>
-  <strong>1.4 — Q1 2027.</strong> Самое крупное обновление в истории. Vulkan-рендер, граф-редактор... (остальные спойлеры вырезаны).
-</div>
-  <h2 id="screenshots">📸 Скриншоты</h2>
-
-<p>Скриншоты из игры — от врагов до RTE.
-Нажми на любой, чтобы открыть в полном размере.</p>
-
-<div class="screenshots-grid" id="screenshot">
-    <a href="#shot-1" class="screenshot-item">
-        <img src="1.png" alt="Скриншот 1" loading="lazy">
-    </a>
-    <a href="#shot-2" class="screenshot-item">
-        <img src="2.png" alt="Скриншот 2" loading="lazy">
-    </a>
-    <a href="#shot-3" class="screenshot-item">
-        <img src="3.png" alt="Скриншот 3" loading="lazy">
-    </a>
-    <a href="#shot-4" class="screenshot-item">
-        <img src="4.png" alt="Скриншот 4" loading="lazy">
-    </a>
-    <a href="#shot-5" class="screenshot-item">
-        <img src="5.png" alt="Скриншот 5" loading="lazy">
-    </a>
-    <a href="#shot-6" class="screenshot-item">
-        <img src="6.png" alt="Скриншот 6" loading="lazy">
-    </a>
-    <a href="#shot-7" class="screenshot-item">
-        <img src="7.png" alt="Скриншот 7" loading="lazy">
-    </a>
+  <strong>1.4 — Q1 2027.</strong> Самое крупное обновление в истории. Vulkan-рендер, текстуры на гранях .obj, граф-редактор (остальные спойлеры вырезаны).
 </div>
 
-<!-- Лайтбоксы. Один на каждый скриншот. -->
-<a href="#" class="lightbox" id="shot-1"><img src="1.png" alt="Скриншот 1"></a>
-<a href="#" class="lightbox" id="shot-2"><img src="2.png" alt="Скриншот 2"></a>
-<a href="#" class="lightbox" id="shot-3"><img src="3.png" alt="Скриншот 3"></a>
-<a href="#" class="lightbox" id="shot-4"><img src="4.png" alt="Скриншот 4"></a>
-<a href="#" class="lightbox" id="shot-5"><img src="5.png" alt="Скриншот 5"></a>
-<a href="#" class="lightbox" id="shot-6"><img src="6.png" alt="Скриншот 6"></a>
-<a href="#" class="lightbox" id="shot-7"><img src="7.png" alt="Скриншот 7"></a>
+<h2 id="screenshots">📸 Скриншоты</h2>
+<p>Нажми на любой, чтобы открыть в полном размере. Клик по фону или ESC — закрыть.</p>
 
-<!-- ============================================ -->
+<div class="screenshots-grid">
+  <a href="#shot-1" class="screenshot-item"><img src="1.png" alt="Скриншот 1" loading="lazy"></a>
+  <a href="#shot-2" class="screenshot-item"><img src="2.png" alt="Скриншот 2" loading="lazy"></a>
+  <a href="#shot-3" class="screenshot-item"><img src="3.png" alt="Скриншот 3" loading="lazy"></a>
+  <a href="#shot-4" class="screenshot-item"><img src="4.png" alt="Скриншот 4" loading="lazy"></a>
+  <a href="#shot-5" class="screenshot-item"><img src="5.png" alt="Скриншот 5" loading="lazy"></a>
+  <a href="#shot-6" class="screenshot-item"><img src="6.png" alt="Скриншот 6" loading="lazy"></a>
+  <a href="#shot-7" class="screenshot-item"><img src="7.png" alt="Скриншот 7" loading="lazy"></a>
+</div>
+
+<div class="lightbox" id="shot-1"><img src="1.png" alt="Скриншот 1"></div>
+<div class="lightbox" id="shot-2"><img src="2.png" alt="Скриншот 2"></div>
+<div class="lightbox" id="shot-3"><img src="3.png" alt="Скриншот 3"></div>
+<div class="lightbox" id="shot-4"><img src="4.png" alt="Скриншот 4"></div>
+<div class="lightbox" id="shot-5"><img src="5.png" alt="Скриншот 5"></div>
+<div class="lightbox" id="shot-6"><img src="6.png" alt="Скриншот 6"></div>
+<div class="lightbox" id="shot-7"><img src="7.png" alt="Скриншот 7"></div>
+
+<h2 id="video">🎬 Геймплей</h2>
+<div class="video-wrap">
+  <video controls preload="metadata" playsinline>
+    <source src="gameplay.mp4" type="video/mp4">
+    Ваш браузер не поддерживает воспроизведение MP4.
+    <a href="gameplay.mp4">Скачать видео</a>.
+  </video>
+  <div class="video-caption">Демонстрация геймплея Gradus RC v1.3. Рекомендуется смотреть в полноэкранном режиме.</div>
+</div>
+
 <h2 id="intro">1. 📖 Введение и история</h2>
 
 <p><strong>Gradus RC</strong> — библиотека для создания псевдо-3D игр на Python + Pygame. Это не игровой движок в привычном смысле (как Unreal или Unity), а <em>набор инструментов</em> для рейкастинга: вы пишете свой <code>main.py</code>, создаёте <code>Engine</code>, а библиотека берёт на себя рендеринг стен, пола, потолка, спрайтов, врагов, стрельбу, звук, эффекты.</p>
@@ -643,7 +490,7 @@ html, body { overflow-x: hidden; max-width: 100vw; }
 
 <h3>Философия проекта</h3>
 <ul>
-  <li><strong>Простота — приоритет.</strong> Игру можно собрать в 2 строки (все настройки по умолчанию), в 20 строк (некоторые настройки свои), в 200 строк (полная гибкость) или в 2000 строк (переопределить всё). Каждый уровень погружения — твой выбор.</li>
+  <li><strong>Простота — приоритет.</strong> Игру можно собрать в 2 строки, в 20 строк, в 200 строк или в 2000 строк — каждый уровень погружения твой выбор.</li>
   <li><strong>Никаких внешних зависимостей без нужды.</strong> Pygame — единственная обязательная. Остальное — по желанию.</li>
   <li><strong>Производительность через архитектуру, а не через оптимизации.</strong> Сначала правильная архитектура (GPU-шейдер), потом мелкие фиксы.</li>
   <li><strong>Открытость.</strong> Всё в одном пакете, никаких скомпилированных бинарников кроме Cython-ускорителя.</li>
@@ -657,113 +504,98 @@ html, body { overflow-x: hidden; max-width: 100vw; }
   <tr>
     <td><strong>Alpha</strong></td>
     <td>~17 июля 2026</td>
-    <td>Самый первый прототип. Модули <code>Engine</code>, <code>Camera</code> (будущий <code>Player</code>) и
-        <code>LightTracing</code> с честным, но крайне тяжёлым расчётом света. Умел только ходьбу и поворот камеры.
-        Стены — однотонные белые. Без текстур, без API, без врагов.</td>
+    <td>Самый первый прототип. Модули <code>Engine</code>, <code>Camera</code> (будущий <code>Player</code>) и <code>LightTracing</code> с честным, но крайне тяжёлым расчётом света. Умел только ходьбу и поворот камеры. Стены — однотонные белые. Без текстур, без API, без врагов.</td>
   </tr>
 
   <tr>
     <td><strong>Beta</strong></td>
     <td>конец июля — начало августа 2026</td>
-    <td>Первые теги в картах, смена цвета стен. Попытка интеграции <code>.obj</code> через модуль
-        <code>polygon/converter.py</code> (должен был строить полигоны на «настоящем» 3D — не сработало, отложено).
-        Первый набросок <strong>MicroAPI</strong> — пока только телепорт игрока (именно с него началась идея ID=9,
-        потом ID=8 и ID=7, но всё это — в будущем). <code>Camera</code> переделан в <code>Player</code>:
-        теперь хранит позицию и угол, а не просто рисует экран. Появились теги <code>material</code> и <code>isvisible</code>.
-        Текстуризация почти не работала — 80 лучей на Ryzen 5 4600H давали 40 FPS.</td>
+    <td>Первые теги в картах, смена цвета стен. Попытка интеграции <code>.obj</code> через модуль <code>polygon/converter.py</code> (должен был строить полигоны на «настоящем» 3D — не сработало, отложено). Первый набросок <strong>MicroAPI</strong> — пока только телепорт игрока. <code>Camera</code> переделан в <code>Player</code>: теперь хранит позицию и угол. Появились теги <code>material</code> и <code>isvisible</code>. Текстуризация почти не работала — 80 лучей на Ryzen 5 4600H давали 40 FPS.</td>
   </tr>
 
   <tr>
     <td><strong>1.0</strong></td>
     <td>~17 августа 2026</td>
-    <td>Расширенный MicroAPI. Билборды (спрайты, ещё без врагов). <code>obj_to_sprites</code> на <code>trimesh</code> —
-        генерировал 32 ракурса модели, медленно и грубо, но тогда казалось прорывом. Теги <code>height</code> и
-        <code>alpha</code> — вызывали ужасные лаги на неоптимизированном CPU. Триггеры (именно они заставили сделать
-        полноценный API, а не только телепорты). Улучшенные порталы (прототипы были уже в Beta). Оверлеи.
-        Нерабочая интеграция видео через <code>ffmpeg</code>. <code>sound/mixer</code> — обёртка над <code>pygame.mixer</code>.
-        MaterialManager научился грузить картинки (в Beta он был, но умел только цветные стены по ID).</td>
+    <td>Расширенный MicroAPI. Билборды (спрайты, ещё без врагов). <code>obj_to_sprites</code> на <code>trimesh</code> — генерировал 32 ракурса модели. Теги <code>height</code> и <code>alpha</code> — вызывали ужасные лаги на неоптимизированном CPU. Триггеры. Улучшенные порталы. Оверлеи. Нерабочая интеграция видео через <code>ffmpeg</code>. <code>sound/mixer</code> — обёртка над <code>pygame.mixer</code>. MaterialManager научился грузить картинки.</td>
   </tr>
 
   <tr>
     <td><strong>1.1</strong></td>
     <td>22 августа 2026</td>
-    <td>Оптимизация ~50%: Light Tracing переписан, добавлен <strong>Async Raycast</strong> (120 лучей в те же 40 FPS).
-        Заложена основа <code>EnemyAI</code> и <code>GunManager</code>. Появился ID=7 (двери/ключи).
-        <code>height</code> и <code>alpha</code> временно удалены из-за лагов. Первый редактор объектов —
-        <code>.obj</code>-редактор (крайне сырой, вскоре заменён). Заготовки <code>GameExample</code>/<code>MenuExample</code>
-        существовали, но не работали.</td>
+    <td>Оптимизация ~50%: Light Tracing переписан, добавлен <strong>Async Raycast</strong> (120 лучей в те же 40 FPS). Заложена основа <code>EnemyAI</code> и <code>GunManager</code>. Появился ID=7 (двери/ключи). <code>height</code> и <code>alpha</code> временно удалены из-за лагов. Первый редактор объектов — <code>.obj</code>-редактор (крайне сырой, вскоре заменён). Заготовки <code>GameExample</code>/<code>MenuExample</code> существовали, но не работали.</td>
   </tr>
 
   <tr>
     <td><strong>1.1.5</strong></td>
     <td>конец августа — начало сентября 2026</td>
-    <td><strong>Прорыв в оптимизации: ускорение рейкастинга в 30.5 раз.</strong> Кэш текстурных столбцов,
-        предрасчёт углов, Render Scale (Off / 2x / 3x / 4x). Прототип <strong>MCFI</strong> (frame blending) —
-        визуально давал ощущение +30% FPS. Теперь стабильно шло <strong>1920 лучей в 10–30 FPS</strong>
-        или <strong>960 лучей в 60 FPS</strong>. Полноценный <code>EnemyAI</code> (static/chase/patrol/multiplayer),
-        <code>Gun</code>/<code>GunManager</code>/<code>Bullet</code>, <code>Player</code> с HP, смертью и <code>on_death</code>.
-        Формат <strong>.gbj</strong> (OBJ с HEX-цветами граней) и первый встроенный редактор <code>redactor.py</code>.
-        Заготовки Menu/Game доведены до рабочего состояния. <code>Sound3D</code>, <code>EffectsManager</code>,
-        видео-оверлей (full/angle/custom/chroma), экран загрузки с водяным знаком. Материалы: brick, concrete, glass,
-        wood, granite, earth, metal, plaster, marble, obsidian, gold, silver, copper, sand, snow, water, lava.</td>
+    <td><strong>Прорыв в оптимизации: ускорение рейкастинга в 30.5 раз.</strong> Кэш текстурных столбцов, предрасчёт углов, Render Scale (Off / 2x / 3x / 4x). Прототип <strong>MCFI</strong>. Теперь стабильно <strong>1920 лучей в 10–30 FPS</strong> или <strong>960 лучей в 60 FPS</strong>. Полноценный <code>EnemyAI</code> (static/chase/patrol/multiplayer), <code>Gun</code>/<code>GunManager</code>/<code>Bullet</code>, <code>Player</code> с HP, смертью и <code>on_death</code>. Формат <strong>.gbj</strong> (OBJ с HEX-цветами граней) и первый встроенный редактор <code>redactor.py</code>. <code>Sound3D</code>, <code>EffectsManager</code>, видео-оверлей (full/angle/custom/chroma), экран загрузки с водяным знаком. Материалы: brick, concrete, glass, wood, granite, earth, metal, plaster, marble, obsidian, gold, silver, copper, sand, snow, water, lava.</td>
   </tr>
 
   <tr>
     <td><strong>1.2</strong></td>
     <td>15 сентября 2026</td>
-    <td>Переписан расчёт лучей на <strong>Cython</strong>. <strong>GPU-рендеринг</strong> через <code>moderngl</code>
-        (OpenGL 3.3+). Мини-карта с 3 режимами (White-Black, Colorful, Custom). <strong>A*</strong> для врагов.
-        Система частиц с 4 уровнями (Off / Main / Optimal / All). Разрушаемые стены и интерактивные объекты.
-        HUD (HP, патроны, иконка оружия, опциональный показ над врагами). Тряска экрана. Туман и дымка.</td>
+    <td>Переписан расчёт лучей на <strong>Cython</strong>. <strong>GPU-рендеринг</strong> через <code>moderngl</code> (OpenGL 3.3+). Мини-карта с 3 режимами (White-Black, Colorful, Custom). <strong>A*</strong> для врагов. Система частиц с 4 уровнями (Off / Main / Optimal / All). Разрушаемые стены и интерактивные объекты. HUD (HP, патроны, иконка оружия, опциональный показ над врагами). Тряска экрана. Туман и дымка.</td>
   </tr>
 
   <tr>
-    <td><strong style="color:#7ad37a;">1.2.5 API Update</strong></td>
-    <td><strong style="color:#7ad37a;">16 сентября 2026</strong></td>
-    <td><strong>RTE — Ray Tracing Emulator</strong> (мягкие тени, зеркала, отражения в воде, динамический свет
-        до 16 источников). Возврат <code>alpha</code> и <code>height</code> — теперь в шейдере, без потери
-        производительности. Интерактивные и толкаемые <code>.obj</code>. <strong>Взрывные патроны</strong>
-        (флаг <code>explosive=True</code>, RPG). Полностью переписанный GPU-рендерер.
-        <strong>+150 методов API</strong> в <code>MicroAPI</code>, <code>PhysicsAPI</code>, <code>ModAPI</code>.
-        Кастомные world renderers. Config/Storage/i18n для модов. F1/F3 отладочные оверлеи.</td>
+    <td><strong>1.2.5 API Update</strong></td>
+    <td><strong>16 сентября 2026</strong></td>
+    <td><strong>RTE — Ray Tracing Emulator</strong> (мягкие тени, зеркала, отражения в воде, динамический свет до 16 источников). Возврат <code>alpha</code> и <code>height</code> — теперь в шейдере. Интерактивные и толкаемые <code>.obj</code>. <strong>Взрывные патроны</strong>. Полностью переписанный GPU-рендерер. <strong>+150 методов API</strong> в <code>MicroAPI</code>, <code>PhysicsAPI</code>, <code>ModAPI</code>. Кастомные world renderers. Config/Storage/i18n для модов. F1/F3 отладочные оверлеи.</td>
+  </tr>
+
+  <tr>
+    <td><strong style="color:#7ad37a;">1.3</strong></td>
+    <td><strong style="color:#7ad37a;">18 сентября 2026</strong></td>
+    <td><strong>Достижения</strong> (обычные, прогрессные, скрытые + тосты с конфетти). <strong>Сохранения</strong> в JSON. <strong>Кат-сцены</strong> <code>.gs3</code> + редактор + проигрыватель. <strong>Чанки</strong> карт (sparse + full). <strong>Процедурный генератор</strong> (labirint / random / corridors / city + кастомные). <strong>TCP-мультиплеер</strong> до 8 игроков. <strong>Локальный сплит-скрин</strong> с раздельными <code>GunManager</code> и респавном. <strong>Toast-система</strong>. <strong>VideoRecorder</strong> (720p / 30 FPS / MP4). <strong>PauseMenu</strong>. Улучшенный парсер тегов (<code>,</code> и <code>;</code>, <code>=</code> и <code>:</code>).</td>
   </tr>
 
 </table>
 </div>
 
 <div class="note">
-  <strong>О датах.</strong> Указаны ориентировочные даты — движок развивался короткими спринтами по 3–5 дней.
-  Промежуточные билды (например, <code>1.0.1</code>, <code>1.1.2</code>) в таблице не перечислены, чтобы не путать.
-  Все версии — открытые, доступны в истории проекта.
+  <strong>О датах.</strong> Указаны ориентировочные даты — движок развивался короткими спринтами по 3–5 дней. Промежуточные билды (например, <code>1.0.1</code>, <code>1.1.2</code>) в таблице не перечислены, чтобы не путать.
 </div>
+
+<h3>Что появилось в 1.3</h3>
+<ul>
+  <li><strong>Достижения</strong> — обычные, прогрессные и скрытые (радужная карточка + конфетти).</li>
+  <li><strong>Сохранения</strong> — вся игра в JSON, включая модификации карты (разбитые стены, открытые двери).</li>
+  <li><strong>Кат-сцены</strong> — <code>.gs3</code> с интерполяцией между кадрами, сменой карты на лету, событиями.</li>
+  <li><strong>Чанки карт</strong> — регионы с offset, разреженный формат.</li>
+  <li><strong>Процедурный генератор</strong> — 4 встроенных типа, регистрация кастомных.</li>
+  <li><strong>Мультиплеер</strong> — TCP, сервер авторитетен, синхронизация состояния.</li>
+  <li><strong>Сплит-скрин</strong> — 2 игрока на одной клавиатуре, раздельные пушки, респавн через 15 сек.</li>
+  <li><strong>Toast-система</strong> — уведомления о достижениях, скриншотах, записи.</li>
+  <li><strong>VideoRecorder</strong> — запись 720p 30 FPS MP4 в отдельном потоке.</li>
+  <li><strong>Парсер тегов</strong> — принимает оба разделителя и оба знака.</li>
+</ul>
 
 <h3>Что появилось в 1.2.5</h3>
 <ul>
   <li><strong>RTE</strong> — мягкие тени, зеркала, отражения в воде, динамический свет до 16 источников.</li>
-  <li><strong>Alpha-стены</strong> — возвращены, работают в шейдере, лучи проходят насквозь.</li>
-  <li><strong>Height-стены</strong> — тоже возвращены, растут от пола, над ними видно потолок.</li>
   <li><strong>Интерактивные .obj</strong> — нажатие E вызывает callback (<code>on_press</code>).</li>
-  <li><strong>Толкаемые .obj</strong> — с массой, трением и упругостью. Игрок толкает объект, объект отскакивает от стен.</li>
-  <li><strong>Взрывы</strong> — урон по радиусу с затуханием, отталкивание врагов, разрушение стен, разлёт осколков, динамический свет.</li>
-  <li><strong>Взрывные патроны</strong> — флаг <code>explosive=True</code> в <code>Gun</code>. Основа для RPG-гранатомёта.</li>
-  <li><strong>HUD</strong> — полоски HP теперь масштабируются относительно <code>max_hp</code> врага, а не всегда относительно 100.</li>
-  <li><strong>Парсер тегов</strong> — принимает оба разделителя (<code>,</code> и <code>;</code>) и оба знака (<code>=</code> и <code>:</code>). Параметры врагов больше не теряются.</li>
+  <li><strong>Толкаемые .obj</strong> — с массой, трением и упругостью.</li>
+  <li><strong>Взрывы</strong> — урон по радиусу, отталкивание врагов, разрушение стен, осколки, динамический свет.</li>
+  <li><strong>Взрывные патроны</strong> — <code>explosive=True</code> в <code>Gun</code>. Основа для RPG.</li>
+  <li><strong>Разрушаемые стены</strong> — с осколками и декалями.</li>
+  <li><strong>HUD</strong> — полоски HP масштабируются относительно <code>max_hp</code> врага.</li>
 </ul>
 
 <h3>Что появилось в 1.2</h3>
 <ul>
   <li><strong>Cython-рейкастер</strong> — ускорение CPU-пути в 2.5–5 раз.</li>
-  <li><strong>GPU-рендеринг</strong> — через <code>moderngl</code> (OpenGL 3.3+), единый fragment shader.</li>
-  <li><strong>Мини-карта</strong> — 3 режима: White-Black, Colorful, Custom.</li>
+  <li><strong>Alpha-стены</strong> — возвращены, работают в шейдере, лучи проходят насквозь.</li>
+  <li><strong>Height-стены</strong> — тоже возвращены, растут от пола, над ними видно потолок.</li>
+  <li><strong>PauseMenu</strong> — пауза с тремя кнопками.</li>
+  <li><strong>GPU-рендеринг</strong> — через <code>moderngl</code> (OpenGL 3.3+).</li>
+  <li><strong>Мини-карта</strong> — 3 режима.</li>
   <li><strong>A* для врагов</strong> — умное обхождение препятствий.</li>
-  <li><strong>Система частиц</strong> — 4 уровня (Off / Main / Optimal / All).</li>
-  <li><strong>Разрушаемые стены</strong> — с осколками и декалями.</li>
+  <li><strong>Система частиц</strong> — 4 уровня.</li>
   <li><strong>HUD</strong> — HP, патроны, иконка оружия.</li>
-  <li><strong>Тряска экрана</strong> — выстрелы, попадания, взрывы.</li>
-  <li><strong>Туман и дымка</strong> — атмосфера и мягкая оптимизация дальней сцены.</li>
+  <li><strong>Тряска экрана</strong>.</li>
+  <li><strong>Туман и дымка</strong>.</li>
 </ul>
 
-<!-- ============================================ -->
 <h2 id="install">2. 📦 Установка</h2>
 
 <h3>Зависимости</h3>
@@ -775,7 +607,7 @@ html, body { overflow-x: hidden; max-width: 100vw; }
   <tr><td><code>pygame</code></td><td>Окно, ввод, рисование, звук</td><td>Да</td></tr>
   <tr><td><code>trimesh</code></td><td>Загрузка .obj моделей</td><td>Только если используете .obj</td></tr>
   <tr><td><code>numpy</code></td><td>Математика внутри .obj → спрайты, чтение буфера GPU</td><td>Только для .obj или GPU</td></tr>
-  <tr><td><code>imageio</code>, <code>imageio-ffmpeg</code></td><td>Проигрывание видео</td><td>Только если используете видео</td></tr>
+  <tr><td><code>imageio</code>, <code>imageio-ffmpeg</code></td><td>Проигрывание и запись видео</td><td>Только если используете видео</td></tr>
   <tr><td><code>cython</code></td><td>Ускоренный рейкастер на CPU</td><td>Опционально</td></tr>
   <tr><td><code>moderngl</code></td><td>GPU-рендерер + RTE</td><td>Опционально, но очень рекомендуется</td></tr>
 </table>
@@ -787,27 +619,8 @@ html, body { overflow-x: hidden; max-width: 100vw; }
 
 <h3>Структура проекта</h3>
 <pre><code>МойПроект/
-├── gradus_rc/                ← папка движка
-│   ├── engine.py             ← Engine + MicroAPI + PhysicsAPI
-│   ├── player.py
-│   ├── enemy.py
-│   ├── gun.py
-│   ├── config.py
-│   ├── raycast/
-│   ├── render/
-│   ├── light/
-│   ├── material/
-│   ├── sprite/
-│   ├── object/
-│   ├── polygon/
-│   ├── effects/
-│   ├── sound/
-│   ├── hud/
-│   ├── image/
-│   ├── utils/
-│   ├── ai/
-│   └── mods/                 ← ModsManager + ModAPI + ModAPI hooks
-├── mods/                     ← моды сторонних разработчиков
+├── gradus_rc/
+├── mods/                     ← моды
 │   └── example/
 │       ├── mod.py
 │       ├── mod.json
@@ -815,12 +628,21 @@ html, body { overflow-x: hidden; max-width: 100vw; }
 │       ├── save.json         (auto)
 │       ├── lang/
 │       └── assets/
+├── REDACTORS
+│   ├── cutscene_editor.py
+│   └── tools/
+│       ├── cutscenes/        ← создаётся
+│       └── play_cutscene.py
 ├── assets/
-├── cache/
-├── main.py
+├── cache/                    ← создаётся
+├── saves/                    ← создаётся
+├── screenshots/              ← создаётся
+├── replays/                  ← создаётся
+├── chunks/                   ← создаётся
+├── achievements.json         ← создаётся
+├── game.py
 └── setup_cython.py</code></pre>
 
-<!-- ============================================ -->
 <h2 id="quickstart">3. 🚀 Быстрый старт</h2>
 
 <pre><code>import pygame
@@ -870,10 +692,9 @@ def main():
 if __name__ == "__main__":
     main()</code></pre>
 
-<p><strong>Управление:</strong> WASD — движение, ←/→ — поворот, ПКМ — захват мыши, ЛКМ — стрельба.</p>
+<p><strong>Управление:</strong> WASD — движение, ←/→ — поворот, ПКМ — захват мыши, ЛКМ/Space — стрельба.</p>
 
-<!-- ============================================ -->
-<h2 id="migration">4. 🔄 Миграция с 1.2 на 1.2.5</h2>
+<h2 id="migration">4. 🔄 Миграция с 1.2 на 1.3</h2>
 
 <h3>Теги enemy в карте</h3>
 <pre><code># Было (работало плохо)
@@ -883,7 +704,7 @@ if __name__ == "__main__":
 0&lt;enemy:type:chase;hp:50;aim:10;shoot_delay:1.0&gt;</code></pre>
 
 <h3>Alpha-стены</h3>
-<p>Раньше тег <code>alpha:0.5</code> вызывал падение FPS. Теперь работает быстро.</p>
+<p>Раньше тег <code>alpha:0.5</code> вызывал падение FPS. Теперь работает быстро (шейдер).</p>
 
 <h3>Интерактивные объекты</h3>
 <p>Новые теги <code>interactive</code>, <code>pushable</code>, <code>on_press</code>. Если у тебя ID=6 модели были — они не станут толкаемыми автоматически.</p>
@@ -891,10 +712,6 @@ if __name__ == "__main__":
 <h3>RTE</h3>
 <p>Включается через <code>api.set_rt(...)</code>. По умолчанию выключен.</p>
 
-<h3>Новое в API Update</h3>
-<p>Моды теперь грузятся <strong>до</strong> загрузки первого уровня. Все новые API-методы аддитивны — если ты не используешь их, ничего не меняется.</p>
-
-<!-- ============================================ -->
 <h2 id="arch">5. 🧩 Архитектура</h2>
 
 <p>Движок разделён на независимые системы. Каждая отвечает за свою область и вызывается из <code>Engine</code>.</p>
@@ -905,10 +722,10 @@ if __name__ == "__main__":
 <p>Центральный класс. Хранит ссылки на все системы, загружает уровни, обновляет логику, вызывает рендер.</p>
 
 <h4>Player</h4>
-<p>Позиция, угол, скорость, поворот, HP, регенерация, флаг <code>alive</code>, обработчик <code>on_death</code>.</p>
+<p>Позиция, угол, скорость, поворот, HP, регенерация, флаг <code>alive</code>, обработчик <code>on_death</code>, <code>input_map</code> для управления.</p>
 
 <h4>RayCaster <span class="badge">CPU</span></h4>
-<p>Алгоритм рейкастинга на CPU. Есть Python-версия и Cython-версия.</p>
+<p>Алгоритм рейкастинга на CPU. Есть Python-версия и Cython-версия (<code>core_cy.pyx</code>).</p>
 
 <h4>GPURaycaster <span class="rte">RTE</span></h4>
 <p>Выполняет всю сцену в шейдере на GPU: пол/потолок, стены, прозрачность, отражения, тени, туман, динамический свет.</p>
@@ -917,34 +734,55 @@ if __name__ == "__main__":
 <p>Статическое освещение: источники, амбиент, фонарик игрока.</p>
 
 <h4>EnemyAI</h4>
-<p>Враг: HP, тип ИИ, точность, задержка выстрела, спрайт.</p>
+<p>Враг: HP, тип ИИ, точность, задержка выстрела, спрайт. Типы: static / chase / patrol / multiplayer.</p>
 
 <h4>Gun / GunManager / Bullet</h4>
-<p>Оружие: урон, темп, магазин, перезарядка. Поддерживает <code>explosive=True</code>.</p>
+<p>Оружие: урон, темп, магазин, перезарядка, флаг <code>explosive</code>. <code>GunManager</code> — набор оружий и активное.</p>
 
 <h4>Explosion</h4>
 <p>Урон по радиусу, отталкивание врагов, разрушение стен, осколки, динамический свет.</p>
 
 <h4>InteractiveObject</h4>
-<p>Объекты с реакцией на клавишу E и/или физикой толкания.</p>
+<p>Объекты с реакцией на клавишу E (<code>on_press</code>) и/или физикой толкания (<code>pushable</code>).</p>
 
 <h4>SpriteManager / DecalSystem / ParticleSystem</h4>
-<p>Спрайты, пятна на полу, частицы.</p>
+<p>Спрайты (включая модели), пятна на полу, частицы.</p>
 
 <h4>SoundManager / Sound3D</h4>
-<p>Загрузка, проигрывание, позиционирование звука в мире.</p>
+<p>Загрузка, проигрывание, позиционирование звука в мире с учётом ориентации игрока.</p>
 
 <h4>EffectsManager</h4>
 <p>Полноэкранные эффекты: VHS, шум, glitch.</p>
 
 <h4>MicroAPI</h4>
-<p>Единая точка управления движком. <code>engine.api</code>.</p>
+<p>Единая точка управления движком. Доступ: <code>engine.api</code>. См. §23.</p>
 
-<h4>PhysicsAPI <span class="new">API Update</span></h4>
-<p>Круглые тела, силы, джойнты, слои, триггеры. <code>engine.physics</code>.</p>
+<h4>PhysicsAPI <span class="new">1.3</span></h4>
+<p>Круглые тела, силы, джойнты, слои, триггеры. <code>engine.physics</code>. См. §24.</p>
 
-<h4>ModsManager / ModAPI <span class="new">API Update</span></h4>
-<p>Загрузка модов, регистрация сущностей, lifecycle. Мод получает объект <code>api</code> в момент загрузки.</p>
+<h4>ModsManager / ModAPI <span class="new">1.3</span></h4>
+<p>Загрузка модов, регистрация сущностей, lifecycle. Мод получает объект <code>api</code> в момент загрузки. См. §25.</p>
+
+<h4>AchievementsManager <span class="new">1.3</span></h4>
+<p>Достижения с прогрессом, JSON-сохранение, события. См. §37.</p>
+
+<h4>MultiplayerManager <span class="new">1.3</span></h4>
+<p>TCP мультиплеер, синхронизация. См. §42.</p>
+
+<h4>CutscenePlayer <span class="new">1.3</span></h4>
+<p>Проигрывание кат-сцен, интерполяция кадров. См. §39.</p>
+
+<h4>ToastManager / AchievementToastManager <span class="new">1.3</span></h4>
+<p>Универсальные уведомления и тосты достижений. См. §43.</p>
+
+<h4>PauseMenu <span class="new">1.3</span></h4>
+<p>Меню паузы. См. §44.</p>
+
+<h4>HUDManager / ScreenShake <span class="new">1.3</span></h4>
+<p>HP/ammo/crosshair, тряска, кастомные слои. См. §45.</p>
+
+<h4>VideoRecorder <span class="new">1.3</span></h4>
+<p>Запись 720p 30 FPS MP4. См. §46.</p>
 
 <h3>Поток данных в кадре</h3>
 <ol>
@@ -955,15 +793,13 @@ if __name__ == "__main__":
   <li><code>Explosion.update()</code>.</li>
   <li><code>InteractiveObject.update()</code>.</li>
   <li><code>Physics._step()</code> — тела, джойнты, body-vs-body, area triggers.</li>
-  <li>Particle/Decal update.</li>
+  <li>Particle / Decal update.</li>
   <li><code>GPURaycaster.render()</code> или <code>RayCaster.cast_rays()</code>.</li>
   <li>Спрайты, враги, модели, world renderers.</li>
-  <li><code>_draw_overlays</code> — HUD, миникарта, сообщения, эффекты.</li>
+  <li><code>_draw_overlays</code> — HUD, миникарта, сообщения, эффекты, тосты.</li>
   <li>F1/F3 debug overlay.</li>
 </ol>
-
-<!-- ============================================ -->
-<h2 id="map">6. 🗺️ Формат карт и теги</h2>
+    <h2 id="map">6. 🗺️ Формат карт и теги</h2>
 
 <p>Карта — многострочная строка с секциями. Секция начинается с <code>[ИМЯ]</code>.</p>
 
@@ -982,6 +818,7 @@ if __name__ == "__main__":
   <tr><td><code>[FOG_COLOR=RRGGBB]</code></td><td>Цвет тумана</td><td><code>FOG_COLOR=303040</code></td></tr>
   <tr><td><code>[FOG_START=N]</code></td><td>Начало тумана</td><td><code>FOG_START=400</code></td></tr>
   <tr><td><code>[FOG_END=N]</code></td><td>Конец тумана</td><td><code>FOG_END=1200</code></td></tr>
+  <tr><td><code>[GENERATION=TRUE,...]</code></td><td>Процедурная генерация</td><td>см. §41</td></tr>
 </table>
 </div>
 
@@ -995,7 +832,7 @@ if __name__ == "__main__":
   <strong>Разделители.</strong> Разрешены и <code>,</code> и <code>;</code>, между ключом и значением — <code>:</code> или <code>=</code>.
 </div>
 
-<h3>Полный список тегов (v1.2.5 API Update)</h3>
+<h3>Полный список тегов</h3>
 
 <div class="table-wrap">
 <table>
@@ -1027,11 +864,10 @@ if __name__ == "__main__":
   <tr><td><code>interactive:1</code></td><td>ID 6</td><td>Реагирует на E</td></tr>
   <tr><td><code>on_press:action</code></td><td>ID 6</td><td>Имя события при нажатии E</td></tr>
   <tr><td><code>radius:N</code></td><td>ID 6</td><td>Радиус взаимодействия</td></tr>
-  <tr><td><code>render:name;...params</code> <span class="new">API Update</span></td><td>любая</td><td>Привязать кастомный world renderer к клетке</td></tr>
+  <tr><td><code>render:name;...params</code></td><td>любая</td><td>Привязать world renderer к клетке</td></tr>
 </table>
 </div>
 
-<!-- ============================================ -->
 <h2 id="ids">7. 🧱 ID клеток</h2>
 
 <div class="table-wrap">
@@ -1050,7 +886,6 @@ if __name__ == "__main__":
 </table>
 </div>
 
-<!-- ============================================ -->
 <h2 id="enemy">8. 👾 Враги</h2>
 
 <p>Враги — сущности со своим ИИ, спрайтом и HP. Двигаются, стреляют, умирают.</p>
@@ -1072,7 +907,7 @@ if __name__ == "__main__":
   <tr><td><code>static</code></td><td>Стоит. Атакует, если игрок в радиусе атаки.</td></tr>
   <tr><td><code>chase</code></td><td>Идёт к игроку с A*. Если пути нет — идёт напрямую.</td></tr>
   <tr><td><code>patrol</code></td><td>Ходит по случайным проходимым клеткам.</td></tr>
-  <tr><td><code>multiplayer</code></td><td>Позиция задаётся кодом (для будущего мультиплеера).</td></tr>
+  <tr><td><code>multiplayer</code></td><td>Позиция задаётся кодом (для мультиплеера).</td></tr>
 </table>
 </div>
 
@@ -1092,7 +927,6 @@ if __name__ == "__main__":
 </table>
 </div>
 
-<!-- ============================================ -->
 <h2 id="weapons">9. 🔫 Оружие и пули</h2>
 
 <pre><code>from gradus_rc import Gun, load_image
@@ -1111,7 +945,10 @@ engine.gun_manager.switch_gun('shotgun')</code></pre>
 <pre><code>if keys[pygame.K_SPACE] or pygame.mouse.get_pressed()[0]:
     engine.api.fire_current_gun()</code></pre>
 
-<!-- ============================================ -->
+<h3>Раздельные пушки для сплита</h3>
+<pre><code># У P2 свой менеджер — engine.api.fire_current_gun(p2)
+engine.api.fire_current_gun(player=p2)</code></pre>
+
 <h2 id="explosions">10. 💥 Взрывы и RPG</h2>
 
 <pre><code>rpg = Gun(
@@ -1135,7 +972,6 @@ engine.gun_manager.switch_gun('shotgun')</code></pre>
 
 <pre><code>engine.api.spawn_explosion(x=500, y=400, radius=200, damage=180)</code></pre>
 
-<!-- ============================================ -->
 <h2 id="interactive">11. 📦 Интерактивные и толкаемые объекты</h2>
 
 <div class="table-wrap">
@@ -1167,7 +1003,6 @@ engine.gun_manager.switch_gun('shotgun')</code></pre>
 if event.type == pygame.KEYDOWN and event.key == pygame.K_e:
     engine.api.try_interact()</code></pre>
 
-<!-- ============================================ -->
 <h2 id="rte">12. 🎯 RTE — Ray Tracing Emulator</h2>
 
 <p>RTE — эмуляция трассировки лучей на GPU в шейдере. Работает на любой видеокарте с OpenGL 3.3+.</p>
@@ -1214,6 +1049,9 @@ game.api.set_rt(enabled=False)</code></pre>
 <h3>Фонарик — режим circle</h3>
 <pre><code>game.api.set_player_light_mode(mode='circle', range=500.0, cone_angle=70.0)</code></pre>
 
+<h3>RTE Quality</h3>
+<pre><code>game.api.set_rt_quality('high')  # fast | balanced | high | ultra | reference</code></pre>
+
 <h3>Что НЕ делает RTE</h3>
 <ul>
   <li>Global illumination — нет multi-bounce.</li>
@@ -1222,7 +1060,6 @@ game.api.set_rt(enabled=False)</code></pre>
   <li>Рефракция.</li>
 </ul>
 
-<!-- ============================================ -->
 <h2 id="alpha_height">13. 🪟 Прозрачные и полувысотные стены</h2>
 
 <h3>Прозрачные</h3>
@@ -1238,7 +1075,6 @@ game.api.set_rt(enabled=False)</code></pre>
 <h3>Комбинация</h3>
 <pre><code>2&lt;material:glass;height:0.5;alpha:0.4&gt;</code></pre>
 
-<!-- ============================================ -->
 <h2 id="obj">14. 🎨 obj_to_sprites</h2>
 
 <p>Модуль <code>polygon/obj_to_sprites.py</code> превращает 3D-модель в спрайты-ракурсы.</p>
@@ -1266,7 +1102,6 @@ f 1 3 4 0000FF</code></pre>
 <h3>Анимация</h3>
 <pre><code>6&lt;path:models/idle.gbj;anim:models/walk1.gbj,models/walk2.gbj;anim_speed:0.3&gt;</code></pre>
 
-<!-- ============================================ -->
 <h2 id="models">15. 📦 3D-модели</h2>
 
 <pre><code>6&lt;path:models/cube.obj&gt;
@@ -1275,7 +1110,6 @@ f 1 3 4 0000FF</code></pre>
 6&lt;path:models/box.gbj;pushable:true;mass:20&gt;
 6&lt;path:models/button.gbj;interactive:true;on_press:activate;radius:64&gt;</code></pre>
 
-<!-- ============================================ -->
 <h2 id="lighting">16. 💡 Освещение</h2>
 
 <pre><code>[LIGHTS=2.5,2.5,0.5,200;5,5,0.6,250]
@@ -1291,7 +1125,6 @@ engine.api.set_player_light(radius=150, intensity=0.6, color=(255, 220, 180))
 engine.api.set_fog(True, color=(10, 10, 15), start=200, end=600)
 engine.api.set_rt(enabled=True, max_lights=2, reflections=True)</code></pre>
 
-<!-- ============================================ -->
 <h2 id="particles">17. 🎆 Партиклы и осколки</h2>
 
 <p>Частицы имеют координату Z и скорость <code>vz</code> — виртуальная вертикаль.</p>
@@ -1302,7 +1135,6 @@ engine.api.set_rt(enabled=True, max_lights=2, reflections=True)</code></pre>
 
 <pre><code>engine.api.particles_set_mode('optimal')  # off | main | optimal | all</code></pre>
 
-<!-- ============================================ -->
 <h2 id="decals">18. 🩸 Декали</h2>
 
 <pre><code>engine.decals.spawn_blood(x=300, y=200, size=64)
@@ -1310,7 +1142,6 @@ engine.decals.spawn_rubble(x=300, y=200, wall_color=(120,120,120), wall_texture=
 engine.decals.spawn_scorch(x=300, y=200, size=56)
 engine.decals.remove_by_cell(cell_x=5, cell_y=3)</code></pre>
 
-<!-- ============================================ -->
 <h2 id="hud">19. 📊 HUD</h2>
 
 <pre><code>engine.hud.show_hud = True
@@ -1324,7 +1155,6 @@ engine.hud.damage_taken(amount=10)</code></pre>
 engine.enemy_bar_max_distance = 800
 engine.api.set_enemy_bars(hp=True, ammo=False, max_distance=800)</code></pre>
 
-<!-- ============================================ -->
 <h2 id="minimap">20. 🗺️ Мини-карта</h2>
 
 <pre><code>game.api.set_minimap(
@@ -1337,7 +1167,6 @@ engine.api.set_enemy_bars(hp=True, ammo=False, max_distance=800)</code></pre>
     show_player_arrow=True,
 )</code></pre>
 
-<!-- ============================================ -->
 <h2 id="sound">21. 🔊 Звук и Sound3D</h2>
 
 <pre><code>engine.sound_manager.load_all({
@@ -1351,29 +1180,19 @@ engine.play_sound_3d_tile('music', tile_x=5, tile_y=3)
 engine.play_sound_3d_player_camera('music', offset_x=-1.0, offset_y=0.5)
 engine.play_sound_3d_player('music', offset_x=10, offset_y=0)</code></pre>
 
-<!-- ============================================ -->
 <h2 id="effects">22. ✨ EffectsManager</h2>
 
 <pre><code>engine.api.set_effect('vhs', alpha=180, intensity=0.7)
 engine.api.clear_effect()</code></pre>
 
 <p>Эффекты: <code>noise</code>, <code>static</code>, <code>glitch</code>, <code>vhs</code>.</p>
+    <h2 id="microapi">23. 🔧 MicroAPI — полное руководство <span class="new">API Update</span></h2>
 
-<!-- ============================================ -->
-<!-- ============================================ -->
-<!-- MICROAPI — ПОЛНОЕ РУКОВОДСТВО (API Update)  -->
-<!-- ============================================ -->
-<!-- ============================================ -->
-<h2 id="microapi">23. 🔧 MicroAPI — полное руководство <span class="new">API Update</span></h2>
-
-<p><code>MicroAPI</code> — единая точка управления движком. Доступна через <code>engine.api</code>.
-После API Update здесь <strong>~65 новых методов</strong>: полный контроль над миром, игроком, врагами, картой, временем и эффектами.</p>
+<p><code>MicroAPI</code> — единая точка управления движком. Доступна через <code>engine.api</code>. Здесь <strong>~65 новых методов</strong>: полный контроль над миром, игроком, врагами, картой, временем и эффектами.</p>
 
 <div class="note" style="border-color:#7ad37a;">
   <strong>Соглашение об именах.</strong>
-  <code>get_*</code> — возвращает, не меняет. <code>set_*</code> — устанавливает и <strong>возвращает старое значение</strong> (удобно для read-modify-write).
-  <code>spawn_*</code> — создаёт объект и возвращает его. <code>query_*</code> — всегда возвращает список (пустой, если ничего нет).
-  <code>_tile</code> в имени аргумента — координаты в клетках. Всё остальное — пиксели, радианы, секунды.
+  <code>get_*</code> — возвращает, не меняет. <code>set_*</code> — устанавливает и <strong>возвращает старое значение</strong>. <code>spawn_*</code> — создаёт объект и возвращает его. <code>query_*</code> — всегда возвращает список. <code>_tile</code> в имени аргумента — координаты в клетках. Всё остальное — пиксели, радианы, секунды.
 </div>
 
 <h3 id="microapi-coords">23.1 Координаты и математика</h3>
@@ -1505,6 +1324,7 @@ for e in api.query_enemies_in_radius(500, 500, 150):
 <tr><td><code>get_gun(key)</code></td><td>str</td><td>Gun | None</td><td>Оружие по ключу</td></tr>
 <tr><td><code>set_gun_ammo(key, ammo)</code></td><td>—</td><td>старое</td><td>Установить патроны</td></tr>
 <tr><td><code>give_ammo(key, amount)</code></td><td>—</td><td>прибавлено</td><td>Добавить патроны</td></tr>
+<tr><td><code>fire_current_gun(player=None)</code></td><td>player (для сплита)</td><td>bool</td><td>Стреляет от имени игрока</td></tr>
 </table>
 </div>
 
@@ -1616,9 +1436,7 @@ api.after(2.0, api.clear_vignette)</code></pre>
 api.bind_hud(draw_stamina, layer=50)
 api.draw_text_world(enemy.x, enemy.y, "!", color=(255, 60, 60))</code></pre>
 
-<h3 id="microapi-legacy">23.13 Унаследованные методы (из 1.0–1.2.5)</h3>
-
-<p>Эти методы были до API Update и продолжают работать без изменений.</p>
+<h3 id="microapi-legacy">23.13 Унаследованные методы</h3>
 
 <h4>Клетки и стены</h4>
 <pre><code>api.get_cell(x, y)
@@ -1626,7 +1444,6 @@ api.set_cell_property(x, y, key, value)
 api.set_cell_base_id(x, y, new_id)
 api.set_cell_visible(x, y, visible)
 api.set_cell_collision(x, y, collision)
-
 api.set_wall_hp(x, y, hp)
 api.get_wall_hp(x, y)
 api.make_indestructible(x, y)
@@ -1693,21 +1510,12 @@ api.hud_set_crosshair(True)
 api.hud_shake(intensity=10, duration=0.4)
 api.hud_set_crosshair_spread(10)</code></pre>
 
-<!-- ============================================ -->
-<!-- ============================================ -->
-<!-- PHYSICSAPI — ПОЛНОЕ РУКОВОДСТВО (API Update) -->
-<!-- ============================================ -->
-<!-- ============================================ -->
 <h2 id="physicsapi">24. 🧲 PhysicsAPI — полное руководство <span class="new">API Update</span></h2>
 
-<p><code>PhysicsAPI</code> — встроенная физика (круглые тела). Доступна через <code>engine.physics</code>
-и через делегацию <code>api.&lt;method&gt;()</code>. После API Update — <strong>~38 новых методов</strong>.</p>
+<p><code>PhysicsAPI</code> — встроенная физика (круглые тела). Доступна через <code>engine.physics</code> и через делегацию <code>api.&lt;method&gt;()</code>.</p>
 
 <div class="note" style="border-color:#7ad37a;">
-  <strong>Совместимость.</strong> Старые методы (<code>add_body</code>, <code>remove_body</code>, <code>apply_impulse</code>,
-  <code>raycast</code>, <code>query_circle</code>, <code>push_object</code>, <code>set_gravity</code>) работают.
-  Новые поля (<code>friction</code>, <code>restitution</code>, <code>gravity_scale</code>, <code>kinematic</code>, <code>sleeping</code>)
-  опциональны. Body-vs-body по умолчанию выключен.
+  <strong>Совместимость.</strong> Старые методы (<code>add_body</code>, <code>remove_body</code>, <code>apply_impulse</code>, <code>raycast</code>, <code>query_circle</code>, <code>push_object</code>, <code>set_gravity</code>) работают. Новые поля (<code>friction</code>, <code>restitution</code>, <code>gravity_scale</code>, <code>kinematic</code>, <code>sleeping</code>) опциональны. Body-vs-body по умолчанию выключен.
 </div>
 
 <h3 id="phys-bodies">24.1 Тела: геттеры</h3>
@@ -1785,7 +1593,7 @@ phys.set_body_position(torch, 400, 400)</code></pre>
 <div class="table-wrap">
 <table>
 <tr><th>Метод</th><th>Параметры</th><th>Возвращает</th><th>Что делает</th></tr>
-<tr><td><code>add_distance_joint(a, b, distance)</code></td><td>—</td><td>joint</td><td>Жёсткая связь «верёвка»: тела не сближаются/не отдаляются дальше rest</td></tr>
+<tr><td><code>add_distance_joint(a, b, distance)</code></td><td>—</td><td>joint</td><td>Жёсткая связь «верёвка»</td></tr>
 <tr><td><code>add_spring_joint(a, b, rest, k=10.0, damping=0.5)</code></td><td>—</td><td>joint</td><td>Пружина между телами</td></tr>
 <tr><td><code>add_pin_joint(body, x, y)</code></td><td>—</td><td>joint</td><td>Прибить тело к точке мира</td></tr>
 <tr><td><code>remove_joint(joint)</code></td><td>—</td><td>—</td><td>Убрать связь</td></tr>
@@ -1918,16 +1726,9 @@ def on_load(engine):
 
     api.log("Physics example ready. Тела:", phys.get_body_count())</code></pre>
 
-<!-- ============================================ -->
-<!-- ============================================ -->
-<!-- MODAPI — ПОЛНОЕ РУКОВОДСТВО (API Update)     -->
-<!-- ============================================ -->
-<!-- ============================================ -->
 <h2 id="modapi">25. 🧩 ModAPI и система модов <span class="new">API Update</span></h2>
 
-<p>Моды — Python-пакеты в папке <code>mods/&lt;mod_id&gt;/</code>. Каждый мод получает объект <code>api</code>
-(экземпляр <code>ModAPI</code>) при загрузке. Через него мод регистрирует врагов, оружие, HUD-слои,
-читает конфиг, сохраняет прогресс, общается с другими модами.</p>
+<p>Моды — Python-пакеты в папке <code>mods/&lt;mod_id&gt;/</code>. Каждый мод получает объект <code>api</code> (экземпляр <code>ModAPI</code>) при загрузке. Через него мод регистрирует врагов, оружие, HUD-слои, читает конфиг, сохраняет прогресс, общается с другими модами.</p>
 
 <h3 id="modapi-structure">25.1 Структура мода</h3>
 
@@ -2291,16 +2092,87 @@ def on_load(engine):
   <li>При unload автоматически: HUD-биндинги, таймеры, hooks, tracked-ресурсы, debug-панели.</li>
 </ul>
 
-<!-- ============================================ -->
-<!-- ============================================ -->
-<!-- КАСТОМНЫЙ РЕНДЕР В МИРЕ                       -->
-<!-- ============================================ -->
-<!-- ============================================ -->
+<h3 id="modapi-example-mod">25.17 Пример мода из коробки (example)</h3>
+
+<p>В комплекте с движком идёт демо-мод. Он показывает минимальную структуру: своя текстура, свой враг, свой хук.</p>
+
+<pre><code># mods/example/mod.py
+from gradus_rc import Sprite
+
+_DRAGON_TEX = None
+
+
+class DragonEnemy:
+    """Кастомный враг. По поведению — летит к игроку."""
+
+    def __init__(self, x, y, hp=200, speed=18, **kwargs):
+        self.x = x
+        self.y = y
+        self.hp = hp
+        self.max_hp = hp
+        self.alive = True
+        self.speed = speed or 18
+        # Приоритет: текстура из карты (kwargs['texture']) → наша _DRAGON_TEX
+        self.texture = kwargs.get('texture') or _DRAGON_TEX
+        self._hit_timer = 0.0
+        print(f"[dragon] init at {x},{y} tex={self.texture}")
+
+    def update(self, dt, player_pos, engine):
+        import math
+        dx = player_pos[0] - self.x
+        dy = player_pos[1] - self.y
+        d = math.hypot(dx, dy) or 1.0
+        self.x += dx / d * self.speed * dt
+        self.y += dy / d * self.speed * dt
+
+    def update_visibility(self, dt, engine):
+        pass
+
+    def take_damage(self, dmg, source=None):
+        self.hp -= dmg
+        if self.hp <= 0:
+            self.alive = False
+
+
+def on_load(engine):
+    global _DRAGON_TEX
+
+    api.log("Загружаю example_mod")
+
+    # 1. Грузим текстуру ОДИН РАЗ. Файл в mods/example/assets/dragon.png
+    _DRAGON_TEX = api.load_image('dragon.png', size=(64, 64))
+    api.log(f"dragon.png загружена: {_DRAGON_TEX}")
+
+    # 2. Регистрируем врага
+    api.register_enemy('dragon', DragonEnemy)
+
+    def on_update(dt, keys):
+        pass
+
+    api.add_hook('update', on_update)
+    api.log("Готово. Враг 'dragon' доступен из карты.")</code></pre>
+
+<pre><code>// mods/example/mod.json
+{
+  "id": "example_mod",
+  "name": "Example Mod",
+  "version": "1.0.0",
+  "author": "GradRC",
+  "description": "Демо: своя текстура, звук, материал и враг",
+  "engine_min": "1.3.0",
+  "enabled_by_default": true
+}</code></pre>
+
+<p>В карте враг из мода вызывается так:</p>
+<pre><code>0&lt;enemy:type=dragon;hp:30&gt;</code></pre>
+
+<div class="tip">
+  <strong>Текстуры из коробки.</strong> Встроенные материалы (<code>brick</code>, <code>concrete</code>, <code>glass</code>, <code>wood</code>, <code>granite</code>, <code>earth</code>, <code>metal</code>, <code>plaster</code>, <code>marble</code>, <code>obsidian</code>, <code>gold</code>, <code>silver</code>, <code>copper</code>, <code>sand</code>, <code>snow</code>, <code>water</code>, <code>lava</code>) задаются в <code>MaterialLibrary</code>. При желании заменяй свои текстуры в <code>gradus_rc/material/images/&lt;name&gt;.png</code> — движок подхватит автоматически.
+</div>
+
 <h2 id="world_renderers">26. 🎨 Кастомный рендер в мире <span class="new">API Update</span></h2>
 
-<p>Одна из самых мощных фич API Update: мод может <strong>зарегистрировать свой рендерер</strong> для
-объектов в мире. Идеальный кейс — мод «мебель», которому нужно нарисовать стул, стол, лампу
-без создания полноценной 3D-модели.</p>
+<p>Одна из самых мощных фич API Update: мод может <strong>зарегистрировать свой рендерер</strong> для объектов в мире. Идеальный кейс — мод «мебель», которому нужно нарисовать стул, стол, лампу без создания полноценной 3D-модели.</p>
 
 <h3>CPU-рендер (работает всегда)</h3>
 
@@ -2406,17 +2278,11 @@ def on_load(engine):
 </table>
 </div>
 
-<p>Полноценная реализация GPU-пассов будет в 1.3. Сейчас — только API-контракт: pass сохраняется в очередь и подхватывается, как только gpu_raycaster научится их принимать.</p>
+<p>Полноценная реализация GPU-пассов будет в 1.4. Сейчас — только API-контракт: pass сохраняется в очередь и подхватывается, как только gpu_raycaster научится их принимать.</p>
 
-<!-- ============================================ -->
-<!-- ============================================ -->
-<!-- F1 / F3 DEBUG OVERLAY                        -->
-<!-- ============================================ -->
-<!-- ============================================ -->
 <h2 id="debug_overlay">27. 🛠️ F1 / F3 — отладочные оверлеи <span class="new">API Update</span></h2>
 
-<p>По аналогии с Minecraft: <strong>F3 — для игрока</strong>, <strong>F1 — для разработчика</strong>.
-Моды могут добавлять свои панели в F1-оверлей.</p>
+<p>По аналогии с Minecraft: <strong>F3 — для игрока</strong>, <strong>F1 — для разработчика</strong>. Моды могут добавлять свои панели в F1-оверлей.</p>
 
 <h3>F3 — данные для игрока</h3>
 <ul>
@@ -2440,6 +2306,7 @@ def on_load(engine):
   <li>Количество загруженных модов</li>
   <li>Текущий язык</li>
   <li>Количество scheduled callbacks, trigger zones, world renderers</li>
+  <li>Достижения: unlocked / total</li>
 </ul>
 
 <p>Плюс — <strong>панели от модов</strong> (справа сверху): каждый мод может добавить свою строку.</p>
@@ -2458,10 +2325,13 @@ api.register_debug_panel('My Mod', debug_panel, key='my_dbg')</code></pre>
 <ul>
   <li>F1 — тумблер дебаг-оверлея разработчика.</li>
   <li>F3 — тумблер оверлея для игрока.</li>
+  <li>F5 — сохранить в <code>saves/quicksave.json</code>.</li>
+  <li>F6 — загрузить из <code>saves/quicksave.json</code>.</li>
+  <li>F9 — начать/остановить запись видео.</li>
+  <li>F12 — скриншот в <code>screenshots/</code>.</li>
   <li>Клавиши обрабатываются движком автоматически, если в <code>handle_event</code> наследника вызвать <code>_process_key_debug(event)</code>.</li>
 </ul>
 
-<!-- ============================================ -->
 <h2 id="events">28. 🧩 События (переопределение в Engine)</h2>
 
 <pre><code>class MyEngine(Engine):
@@ -2482,9 +2352,8 @@ api.register_debug_panel('My Mod', debug_panel, key='my_dbg')</code></pre>
         if action_name == 'scream':
             self.trigger_scream()</code></pre>
 
-<p>Плюс — модульная система событий через <code>api.add_hook(event, fn)</code>, см. секцию 25.11.</p>
+<p>Плюс — модульная система событий через <code>api.add_hook(event, fn)</code>, см. §25.11.</p>
 
-<!-- ============================================ -->
 <h2 id="examples">29. 🎮 Заготовки и полный пример</h2>
 
 <h3>MenuExample</h3>
@@ -2535,7 +2404,7 @@ from gradus_rc.hud.pause import PauseMenu
 LEVEL1 = """
 [COLLISION]
 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-1 0 1&lt;addCollision:False;height:0.1;water:true;reflectivity:0.7;alpha:0.99&gt; 0 0 0 0 1 0 0 0 0 0 0 0 1
+1 0 1&lt;addcollision:false;height:0.1;water:true;reflectivity:0.7;alpha:0.99&gt; 0 0 0 0 1 0 0 0 0 0 0 0 1
 1 0 1&lt;material:silver&gt; 1 1&lt;material:silver&gt; 0 0 1 0 1 1 1 0 0 0 1
 1 0 0 0 1 0 0 0 0 0 0 1 0 0 0 1
 1 0 0 0 1 0 0&lt;enemy:type:chase;sprite:assets/enemy_demon.png;hp:50;aim:10;attack_type:ranged;detect_radius:6;speed:60&gt; 0 0 0 0 1 0 0 0 1
@@ -2738,14 +2607,15 @@ def main():
 if __name__ == "__main__":
     main()</code></pre>
 
-<!-- ============================================ -->
 <h2 id="cython">30. ⚡ Cython-сборка</h2>
 
 <p>Cython-версия <code>cast_rays</code> ускоряет CPU-рейкастинг в 2.5–5 раз.</p>
 
 <pre><code>.\RUN_ME.ps1</code></pre>
 
-<!-- ============================================ -->
+<p>Или вручную:</p>
+<pre><code>python setup_cython.py build_ext --inplace</code></pre>
+
 <h2 id="gpu">31. 🚀 GPU-рендерер (under the hood)</h2>
 
 <p>GPU-рендерер полностью берёт на себя 3D-сцену. Работает через <code>moderngl</code> (OpenGL 3.3 core).</p>
@@ -2762,12 +2632,11 @@ if __name__ == "__main__":
 <h3>Ограничения</h3>
 <ul>
   <li>Максимум 64 материала.</li>
-  <li>Максимум 8 спрайтов в кадре.</li>
+  <li>Максимум 18 спрайтов в кадре.</li>
   <li>Максимум 16 динамических источников.</li>
   <li>Максимум 128 шагов DDA на луч.</li>
 </ul>
 
-<!-- ============================================ -->
 <h2 id="benchmarks">32. 📊 Бенчмарки</h2>
 
 <p>32×32, 3 источника света, 3 врага, 1 модель, 1920×1080, AMD Radeon Vega (iGPU, 2019).</p>
@@ -2784,7 +2653,6 @@ if __name__ == "__main__":
 </table>
 </div>
 
-<!-- ============================================ -->
 <h2 id="optimization">33. ⚡ Оптимизация</h2>
 
 <div class="table-wrap">
@@ -2801,17 +2669,16 @@ if __name__ == "__main__":
 </table>
 </div>
 
-<!-- ============================================ -->
 <h2 id="limitations">34. ⚠️ Ограничения — честно</h2>
 
-<h3>Что НЕ работает в 1.2.5 API Update</h3>
+<h3>Что НЕ работает в 1.3</h3>
 <ul>
   <li>Настоящие 3D-осколки (только 2D-спрайты с virtual-z).</li>
   <li>Текстуры на гранях .obj (только HEX-цвет).</li>
-  <li>Мультиплеер (только тип врага <code>multiplayer</code>).</li>
   <li>Наклонные поверхности (только горизонтальные полы).</li>
   <li>Global Illumination (RTE с одним bounce).</li>
   <li>Chunk streaming (вся карта в память).</li>
+  <li>Голосовой чат в мультиплеере.</li>
 </ul>
 
 <h3>Ограничения производительности</h3>
@@ -2821,7 +2688,6 @@ if __name__ == "__main__":
   <li><strong>Спрайты</strong> не окклюзируются GPU-z-буфером.</li>
 </ul>
 
-<!-- ============================================ -->
 <h2 id="glossary">35. 📚 Глоссарий</h2>
 
 <div class="table-wrap">
@@ -2839,10 +2705,13 @@ if __name__ == "__main__":
   <tr><td><strong>.gbj</strong></td><td>OBJ с HEX-цветами граней</td></tr>
   <tr><td><strong>ModAPI</strong></td><td>Фасад для мода (load_image, register_enemy, config, save, i18n)</td></tr>
   <tr><td><strong>World Renderer</strong></td><td>Кастомная функция отрисовки в мире (для мебели, эффектов)</td></tr>
+  <tr><td><strong>Cutscene</strong></td><td>Кат-сцена, файл .gs3</td></tr>
+  <tr><td><strong>Chunk</strong></td><td>Регион карты с offset</td></tr>
+  <tr><td><strong>Toast</strong></td><td>Всплывающее уведомление</td></tr>
+  <tr><td><strong>Achievement</strong></td><td>Достижение с прогрессом</td></tr>
 </table>
 </div>
 
-<!-- ============================================ -->
 <h2 id="faq">36. ❓ FAQ</h2>
 
 <p>Ниже — частые вопросы. Нажми на вопрос, чтобы раскрыть ответ.</p>
@@ -2850,19 +2719,13 @@ if __name__ == "__main__":
 <details class="faq-item">
   <summary>Игра запускается на встроенной графике вместо дискретной (ноутбук)</summary>
   <div class="faq-body">
-    <p>Если у тебя гибридный ноутбук (Intel/AMD iGPU + NVIDIA/AMD dGPU) и в логе видно
-    <code>[GPU] AMD Radeon(TM) Graphics (или другой)</code> вместо <code>[GPU] NVIDIA GeForce... (или другой)</code> —
-    значит Python запускается через встроенную видеокарту. Это частая проблема Windows,
-    особенно когда игра запускается из IDE вроде PyCharm.</p>
+    <p>Если у тебя гибридный ноутбук (Intel/AMD iGPU + NVIDIA/AMD dGPU) и в логе видно <code>[GPU] AMD Radeon(TM) Graphics (или другой)</code> вместо <code>[GPU] NVIDIA GeForce... (или другой)</code> — значит Python запускается через встроенную видеокарту. Это частая проблема Windows, особенно когда игра запускается из IDE вроде PyCharm.</p>
 
     <p><strong>Шаг 1. Узнай, какой именно процесс рендерит сцену.</strong></p>
     <ol>
       <li>Запусти игру, открой <strong>Диспетчер задач</strong> (Ctrl+Shift+Esc).</li>
       <li>Вкладка <strong>Подробности</strong> → найди процессы <code>python.exe</code> и <code>pythonw.exe</code>.</li>
-      <li>Правый клик → <strong>Открыть расположение файла</strong> — это твои целевые пути.
-          Их обычно <strong>два</strong>: один в <code>.venv\Scripts\</code>, второй — базовый интерпретатор
-          (<code>C:\Users\&lt;user&gt;\AppData\Local\Programs\Python\Python3XX\</code>).
-          <strong>Нужно добавить оба.</strong></li>
+      <li>Правый клик → <strong>Открыть расположение файла</strong> — это твои целевые пути. Их обычно <strong>два</strong>: один в <code>.venv\Scripts\</code>, второй — базовый интерпретатор (<code>C:\Users\&lt;user&gt;\AppData\Local\Programs\Python\Python3XX\</code>). <strong>Нужно добавить оба.</strong></li>
     </ol>
 
     <p><strong>Шаг 2. Настройки Windows.</strong></p>
@@ -2878,8 +2741,7 @@ if __name__ == "__main__":
       <li>Win+R → <code>regedit</code> → OK.</li>
       <li>Перейди в <code>HKEY_CURRENT_USER\Software\Microsoft\DirectX\UserGpuPreferences</code>.</li>
       <li>Правый клик в правой панели → <strong>Создать → Строковый параметр</strong>.</li>
-      <li>Имя — полный путь к процессу (например,
-          <code>C:\Users\&lt;user&gt;\AppData\Local\Programs\Python\Python312\python.exe</code>).</li>
+      <li>Имя — полный путь к процессу (например, <code>C:\Users\&lt;user&gt;\AppData\Local\Programs\Python\Python312\python.exe</code>).</li>
       <li>Значение — <code>GpuPreference=2;</code> (2 = «Высокая производительность»).</li>
       <li>Повтори для <strong>всех</strong> <code>python.exe</code> / <code>pythonw.exe</code>.</li>
       <li><strong>Перезагрузи Windows</strong>, не просто игру.</li>
@@ -2887,127 +2749,86 @@ if __name__ == "__main__":
 
     <p><strong>Шаг 4. Проверь, что сработало.</strong> Запусти игру и посмотри в консоль:</p>
     <pre><code>[GPU] NVIDIA Corporation | NVIDIA GeForce GTX 1650/PCIe/SSE2</code></pre>
-    <p>Если видишь NVIDIA — всё получилось. Если всё ещё AMD/Intel — вернись к Шагу 1,
-    там точно есть ещё один <code>python.exe</code>, который ты пропустил (обычно базовый).</p>
+    <p>Если видишь NVIDIA — всё получилось. Если всё ещё AMD/Intel — вернись к Шагу 1, там точно есть ещё один <code>python.exe</code>, который ты пропустил (обычно базовый).</p>
 
-    <p><strong>Шаг 5 (крайний случай).</strong> В некоторых игровых ноутбуках есть
-    <strong>MUX Switch</strong> — аппаратный переключатель iGPU ↔ dGPU в BIOS. Если он есть,
-    после переключения ноутбук будет работать только от дискретной карты.</p>
+    <p><strong>Шаг 5 (крайний случай).</strong> В некоторых игровых ноутбуках есть <strong>MUX Switch</strong> — аппаратный переключатель iGPU ↔ dGPU в BIOS. Если он есть, после переключения ноутбук будет работать только от дискретной карты.</p>
   </div>
 </details>
 
 <details class="faq-item">
   <summary>Модель .obj не отображается</summary>
   <div class="faq-body">
-    <p>Проверь: установлен ли <code>trimesh</code>, правильный ли путь, есть ли папка <code>cache/</code>.
-    Если модель была раньше — удали <code>cache/</code>, движок пересоздаст спрайты.</p>
+    <p>Проверь: установлен ли <code>trimesh</code>, правильный ли путь, есть ли папка <code>cache/</code>. Если модель была раньше — удали <code>cache/</code>, движок пересоздаст спрайты.</p>
   </div>
 </details>
 
 <details class="faq-item">
   <summary>Прозрачные стены лагают</summary>
   <div class="faq-body">
-    <p>На CPU-пути (<code>use_gpu=False</code>) alpha действительно дороже.
-    Включи <code>moderngl</code> или убери alpha с больших участков карты.</p>
+    <p>На CPU-пути (<code>use_gpu=False</code>) alpha действительно дороже. Включи <code>moderngl</code> или убери alpha с больших участков карты.</p>
   </div>
 </details>
 
 <details class="faq-item">
   <summary>RTE не включается</summary>
   <div class="faq-body">
-    <p>Установи <code>moderngl</code>. Проверь в логе <code>[Engine] GPU renderer: enabled</code>.
-    Если видишь <code>[GPU] SHADER COMPILE ERROR</code> — значит драйвер не принял шейдер,
-    движок откатился на CPU-путь. Обнови драйвер видеокарты.</p>
+    <p>Установи <code>moderngl</code>. Проверь в логе <code>[Engine] GPU renderer: enabled</code>. Если видишь <code>[GPU] SHADER COMPILE ERROR</code> — значит драйвер не принял шейдер, движок откатился на CPU-путь. Обнови драйвер видеокарты.</p>
   </div>
 </details>
 
 <details class="faq-item">
   <summary>Зеркало светит белым</summary>
   <div class="faq-body">
-    <p>Слишком высокая <code>reflectivity</code> у материала. Понизь до 0.5–0.7
-    в <code>MaterialLibrary</code> или через тег карты <code>reflectivity:0.6</code>.</p>
+    <p>Слишком высокая <code>reflectivity</code> у материала. Понизь до 0.5–0.7 в <code>MaterialLibrary</code> или через тег карты <code>reflectivity:0.6</code>.</p>
   </div>
 </details>
 
 <details class="faq-item">
   <summary>Взрыв не создаёт осколков</summary>
   <div class="faq-body">
-    <p>Проверь, что у объекта (стены или модели) стоит тег <code>destructible:true</code>.
-    Без него взрыв наносит урон, но не разрушает клетку.</p>
+    <p>Проверь, что у объекта (стены или модели) стоит тег <code>destructible:true</code>. Без него взрыв наносит урон, но не разрушает клетку.</p>
   </div>
 </details>
 
 <details class="faq-item">
   <summary>Интерактивный объект толкается</summary>
   <div class="faq-body">
-    <p>Значит у него стоит <code>pushable:true</code>. Убери этот тег — объект перестанет
-    реагировать на толчок игрока, но продолжит вызывать <code>on_press</code> при нажатии E.</p>
+    <p>Значит у него стоит <code>pushable:true</code>. Убери этот тег — объект перестанет реагировать на толчок игрока, но продолжит вызывать <code>on_press</code> при нажатии E.</p>
   </div>
 </details>
 
 <details class="faq-item">
   <summary>Триггер срабатывает каждый кадр</summary>
   <div class="faq-body">
-    <p>Внутри <code>on_trigger</code> вызови <code>self.deactivate_trigger(('id', trigger_id))</code>,
-    чтобы отключить повторное срабатывание.</p>
+    <p>Внутри <code>on_trigger</code> вызови <code>self.deactivate_trigger(('id', trigger_id))</code>, чтобы отключить повторное срабатывание.</p>
   </div>
 </details>
 
 <details class="faq-item">
   <summary>FPS падает при height&lt;1 на CPU</summary>
   <div class="faq-body">
-    <p>На CPU-пути (<code>use_gpu=False</code>) полувысотные стены требуют дополнительных
-    вычислений. На GPU-пути они бесплатны. Включи <code>moderngl</code> — проблема исчезнет.</p>
+    <p>На CPU-пути (<code>use_gpu=False</code>) полувысотные стены требуют дополнительных вычислений. На GPU-пути они бесплатны. Включи <code>moderngl</code> — проблема исчезнет.</p>
   </div>
 </details>
 
 <details class="faq-item">
   <summary>Как сделать скример</summary>
   <div class="faq-body">
-    <p>Объект <code>6&lt;...;interactive:true;on_press:scream&gt;</code> + переопределить
-    <code>on_interactive_press</code> в наследнике Engine. Полный пример — в разделе 29.
-    Также есть вариант сделать скример через Триггер (id=8), см. раздел 23.9</p>
+    <p>Объект <code>6&lt;...;interactive:true;on_press:scream&gt;</code> + переопределить <code>on_interactive_press</code> в наследнике Engine. Полный пример — в разделе 29. Также есть вариант сделать скример через Триггер (id=8), см. раздел 23.9.</p>
   </div>
 </details>
 
 <details class="faq-item">
   <summary>Почему async_raycast даёт мало</summary>
   <div class="faq-body">
-    <p>Cython-версия не отпускает GIL. Поток работает, но главный поток ждёт.
-    Ускорение ~5–10%. На GPU-пути async не используется.</p>
+    <p>Cython-версия не отпускает GIL. Поток работает, но главный поток ждёт. Ускорение ~5–10%. На GPU-пути async не используется.</p>
   </div>
 </details>
-
-<!--<details class="faq-item">-->
-<!--  <summary>Тени на границах выглядят как пиксельные ступеньки</summary>-->
-<!--  <div class="faq-body">-->
-<!--    <p>Это следствие <strong>soft shadows с малым числом сэмплов</strong>. При 4 сэмплах-->
-<!--    результат тени — это дробь с знаменателем 4 (уровни 0.0, 0.25, 0.5, 0.75, 1.0),-->
-<!--    переходы между ними видны как ступеньки. Варианты решения:</p>-->
-<!--    <ul>-->
-<!--      <li>Поставить <code>rt_quality='reference'</code> (8 сэмплов) — ступеньки станут мельче.</li>-->
-<!--      <li>Уменьшить <code>rt_shadow_samples</code> до 1 — тени станут жёсткими, но без ступенек вообще.</li>-->
-<!--      <li>Использовать временную фильтрацию (temporal denoising) — планируется в 1.4.</li>-->
-<!--    </ul>-->
-<!--  </div>-->
-<!--</details>-->
-
-<!--<details class="faq-item">-->
-<!--  <summary>Свет слишком резкий, тень режет в чёрный</summary>-->
-<!--  <div class="faq-body">-->
-<!--    <p>Минимальное освещение сейчас <code>1%</code> (<code>vec3(0.01)</code>). Если хочется-->
-<!--    больше мягкости — в <code>apply_lighting</code> измени <code>max(total, vec3(0.01))</code>-->
-<!--    на <code>vec3(0.05)</code> или <code>vec3(0.10)</code>. Это добавит ambient-подсветки-->
-<!--    в тенях, но снизит контраст.</p>-->
-<!--  </div>-->
-<!--</details>-->
 
 <details class="faq-item">
   <summary>Как работает bounce-свет (1-bounce GI)</summary>
   <div class="faq-body">
-    <p>От каждой точки поверхности шейдер пускает <strong>один дополнительный луч</strong>
-    в отражённом направлении. Если луч попадает в стену — берётся её цвет,
-    умножается на <code>reflectivity</code> и добавляется к освещению точки.</p>
+    <p>От каждой точки поверхности шейдер пускает <strong>один дополнительный луч</strong> в отражённом направлении. Если луч попадает в стену — берётся её цвет, умножается на <code>reflectivity</code> и добавляется к освещению точки.</p>
     <p>Настройка: <code>engine.gpu_raycaster.rt_bounce</code>:</p>
     <ul>
       <li><code>0.0</code> — bounce выключен, самый быстрый режим.</li>
@@ -3019,45 +2840,894 @@ if __name__ == "__main__":
 </details>
 
 <details class="faq-item">
-  <summary>Какие сроки у 1.3 и 1.4</summary>
+  <summary>Какие сроки у 1.4</summary>
   <div class="faq-body">
-    <p><strong>1.3</strong> — Q4 2026 (мультиплеер, chunk streaming, текстуры на гранях .obj).<br>
-    <strong>1.4</strong> — Q1 2027 (Vulkan, крупнейшее обновление в истории движка).</p>
+    <p><strong>1.4</strong> — Q1 2027 (Vulkan, крупнейшее обновление в истории движка, текстуры на гранях .obj, граф-редактор).</p>
   </div>
 </details>
 
-<!--<details class="faq-item">-->
-<!--  <summary>Почему в 1.4 используется Vulkan, а не OpenGL</summary>-->
-<!--  <div class="faq-body">-->
-<!--    <p>OpenGL упёрся в свой потолок по API overhead. Vulkan даёт:</p>-->
-<!--    <ul>-->
-<!--      <li>Отсутствие readback — рендер прямо в текстуру окна.</li>-->
-<!--      <li>Многопоточную подготовку командных буферов.</li>-->
-<!--      <li>Полный контроль над памятью GPU.</li>-->
-<!--      <li>Vulkan — не маркетинг, а объективная необходимость для 3D-осколков,-->
-<!--          теней следующего поколения и мультиплеера с 60 Hz state sync.</li>-->
-<!--    </ul>-->
-<!--    <p>Плюс: мы стали <strong>единственным рейкастинг-движком на Vulkan</strong> в мире.</p>-->
-<!--  </div>-->
-<!--</details>-->
-
 <details class="faq-item">
-  <summary>Сколько будет стоить 1.3 и 1.4</summary>
+  <summary>Сколько будет стоить 1.4</summary>
   <div class="faq-body">
     <p>Бесплатно. Gradus RC всегда был и будет под лицензией CC BY-ND 4.0.</p>
   </div>
 </details>
-<!-- ============================================ -->
+
+<details class="faq-item">
+  <summary>Как быстро добавить достижения в игру?</summary>
+  <div class="faq-body">
+    <p>Самый быстрый путь — через <code>define_achievements</code> в <code>game.py</code> до создания меню (тогда они видны в меню сразу):</p>
+    <pre><code>from gradus_rc import achievements
+achievements.define_achievements({
+    "l2": {"title": "Первый хардкор", "description": "Пройди второй уровень"},
+    "l5": {"title": "Последний выживший", "description": "Пройди пятый уровень", "hidden": True},
+})</code></pre>
+    <p>Разблокировка — через <code>engine.api.unlock_achievement("l2")</code>.</p>
+  </div>
+</details>
+
+<details class="faq-item">
+  <summary>Как сделать кат-сцену</summary>
+  <div class="faq-body">
+    <ol>
+      <li>Запусти редактор: <code>python tools/cutscene_editor.py</code>.</li>
+      <li>Нарисуй стены ЛКМ, поставь камеру SHIFT+ЛКМ, размести ПКМ-объекты.</li>
+      <li>SPACE — новый кадр, задай ему duration.</li>
+      <li>F5 — предпросмотр. Ctrl+S — сохранить .gs3.</li>
+      <li>В игре: <code>engine.api.play_cutscene("cutscenes/intro.gs3")</code>.</li>
+    </ol>
+  </div>
+</details>
+
+<details class="faq-item">
+  <summary>Почему в сплите оба игрока стреляют от одного?</summary>
+  <div class="faq-body">
+    <p>Потому что <code>gun_manager</code> общий. Фикс — создать P2 свой <code>GunManager</code> в момент <code>setup_split</code> (см. код в engine.py) и стрелять через <code>engine.api.fire_current_gun(p)</code> для каждого игрока отдельно.</p>
+  </div>
+</details>
+
+<details class="faq-item">
+  <summary>Мультиплеер не подключается</summary>
+  <div class="faq-body">
+    <ul>
+      <li>Проверь <code>signature</code> — он должен совпадать у хоста и клиента.</li>
+      <li>Проверь порт и версию протокола (<code>PROTOCOL_VERSION = 2</code>).</li>
+      <li>Проверь firewall — <code>SO_REUSEADDR</code> включён, но Windows может блокировать порт.</li>
+      <li>В логе должно быть <code>[MP] Host up: port=...</code> и <code>[MP] Connected to ... pid=...</code>.</li>
+    </ul>
+  </div>
+</details>
+
+<details class="faq-item">
+  <summary>Сохранение не грузит уровень</summary>
+  <div class="faq-body">
+    <p>Убедись, что структура <code>saves/quicksave.json</code> — валидный JSON. При загрузке в консоль печатается либо <code>[Load] Loaded from ...</code>, либо стектрейс с причиной. Часто проблема — в модах, которые зарегистрировали кастомные классы врагов: при загрузке движок пробует <code>engine.mods_manager.get_enemy_class(type)</code> и падает на <code>None</code>. Сначала загрузи мод, потом сейв.</p>
+  </div>
+</details>
+
+<details class="faq-item">
+  <summary>Как добавить свой материал</summary>
+  <div class="faq-body">
+    <pre><code>from gradus_rc.material.library import Material
+
+mat = Material(color=(180, 120, 60), texture=my_surface,
+               alpha=1.0, reflection=0.2)
+engine.material_lib.add_material('custom_stone', mat)</code></pre>
+    <p>Или через мод: <code>api.register_material('custom_stone', mat)</code>. В карте: <code>1&lt;material:custom_stone&gt;</code>.</p>
+  </div>
+</details>
+
+<details class="faq-item">
+  <summary>Как сделать свою пулю</summary>
+  <div class="faq-body">
+    <pre><code>class FireballBullet:
+    def __init__(self, x, y, angle, damage=25, speed=400, **kw):
+        self.x, self.y, self.angle = x, y, angle
+        self.damage, self.speed = damage, speed
+        self.alive = True; self.life = 4.0
+        self.owner = kw.get('owner', 'script')
+
+    def update(self, dt):
+        import math
+        self.x += math.cos(self.angle) * self.speed * dt
+        self.y += math.sin(self.angle) * self.speed * dt
+        self.life -= dt
+        if self.life <= 0: self.alive = False
+
+# В моде:
+api.register_bullet_type('fireball', FireballBullet)
+
+# В игре:
+engine.api.spawn_bullet(x, y, angle, damage=25, kind='fireball')</code></pre>
+  </div>
+</details>
+
+<details class="faq-item">
+  <summary>Как работает gameplay.mp4 в документации</summary>
+  <div class="faq-body">
+    <p>Видео подгружается стандартным HTML5-тегом <code>&lt;video&gt;</code> с источником <code>gameplay.mp4</code> из той же папки, что и скриншоты (1.png, 2.png, ...). Никакого JS не требуется — работает во всех современных браузерах, включая мобильные с <code>playsinline</code>. Если браузер не поддерживает — есть fallback-ссылка на скачивание.</p>
+  </div>
+</details>
+
+<details class="faq-item">
+  <summary>Почему клик по скриншоту раньше кидал наверх страницы</summary>
+  <div class="faq-body">
+    <p>Изначально использовалась конструкция <code>&lt;a href="#shot-1"&gt;</code> + CSS <code>:target</code>. При закрытии (клик по lightbox <code>&lt;a href="#"&gt;</code>) браузер скроллил наверх из-за изменения URL. Сейчас используется JS с классом <code>.active</code> — URL не трогается, страница не скроллится, работает ESC, и закрытие кликом по фону.</p>
+  </div>
+</details>
+
+<!-- ================================================================== -->
+<!-- ============ НОВЫЕ МОДУЛИ 1.3 ===================================== -->
+<!-- ================================================================== -->
+
+<h2 id="achievements">37. 🏆 Достижения <span class="new">new</span></h2>
+
+<p>Модуль <code>gradus_rc/achievements.py</code> предоставляет систему достижений с прогрессом, скрытыми ачивками и сохранением в JSON.</p>
+
+<h3>37.1 Регистрация</h3>
+
+<p>Есть два уровня регистрации:</p>
+<ol>
+  <li><strong>Глобальный</strong> — через <code>define_achievement()</code> до создания Engine. Так меню увидит их с первого запуска.</li>
+  <li><strong>Динамический</strong> — через <code>engine.achievements.register(...)</code> или <code>api.register_achievement(...)</code>.</li>
+</ol>
+
+<pre><code>from gradus_rc import achievements
+
+# Одиночная
+achievements.define_achievement(
+    "first_shot", "Первый выстрел", "Сделай первый выстрел")
+
+# Пакетная
+achievements.define_achievements({
+    "kill_10": {
+        "title": "Охотник",
+        "description": "Убей 10 врагов",
+        "max_progress": 10,
+    },
+    "l5": {
+        "title": "Последний выживший",
+        "description": "Пройди пятый уровень",
+        "hidden": True,
+    },
+})</code></pre>
+
+<h3>37.2 Разблокировка через API</h3>
+
+<pre><code># Мгновенно
+engine.api.unlock_achievement("first_shot")
+
+# Прогресс +1 (вернёт True, если разблокировалось именно сейчас)
+engine.api.add_achievement_progress("kill_10", 1)
+
+# Установить конкретное значение
+engine.api.set_achievement_progress("kill_10", 7)
+
+# Проверки
+if engine.api.is_achievement_unlocked("l5"):
+    ...
+
+cur, max_ = engine.api.get_achievement_progress("kill_10")</code></pre>
+
+<h3>37.3 Класс Achievement</h3>
+
+<div class="table-wrap">
+<table>
+  <tr><th>Поле</th><th>Тип</th><th>Смысл</th></tr>
+  <tr><td><code>id</code></td><td>str</td><td>Уникальный ID</td></tr>
+  <tr><td><code>title</code></td><td>str</td><td>Заголовок</td></tr>
+  <tr><td><code>description</code></td><td>str</td><td>Описание</td></tr>
+  <tr><td><code>icon</code></td><td>str | None</td><td>Путь к PNG-иконке</td></tr>
+  <tr><td><code>hidden</code></td><td>bool</td><td>Скрытое — до разблокировки не отображается</td></tr>
+  <tr><td><code>max_progress</code></td><td>int</td><td>1 для обычных, N для прогрессных</td></tr>
+  <tr><td><code>current_progress</code></td><td>int</td><td>Текущий прогресс</td></tr>
+  <tr><td><code>unlocked</code></td><td>bool</td><td>Разблокировано ли</td></tr>
+  <tr><td><code>unlocked_at</code></td><td>str | None</td><td>ISO-время разблокировки</td></tr>
+</table>
+</div>
+
+<h3>37.4 События</h3>
+
+<pre><code>def on_change(ach, event_type):
+    # event_type: 'registered' | 'unlocked'
+    print(f"[{event_type}] {ach.title}")
+
+engine.achievements.on_change(on_change)</code></pre>
+
+<h3>37.5 JSON-файл</h3>
+
+<p>Путь по умолчанию — <code>achievements.json</code> в корне проекта (рядом с пакетом <code>gradus_rc/</code>).</p>
+
+<pre><code>{
+  "version": 1,
+  "achievements": {
+    "first_shot": {
+      "title": "Первый выстрел",
+      "description": "Сделай первый выстрел",
+      "icon": null,
+      "hidden": false,
+      "max_progress": 1,
+      "current_progress": 1,
+      "unlocked": true,
+      "unlocked_at": "2026-09-18T14:32:11"
+    }
+  }
+}</code></pre>
+
+<h3>37.6 API-методы</h3>
+
+<div class="table-wrap">
+<table>
+  <tr><th>Метод</th><th>Что делает</th></tr>
+  <tr><td><code>api.register_achievement(id, title, ...)</code></td><td>Объявить достижение (в моде — с префиксом <code>mod_id:</code>)</td></tr>
+  <tr><td><code>api.unlock_achievement(id)</code></td><td>Разблокировать. True если именно сейчас</td></tr>
+  <tr><td><code>api.add_achievement_progress(id, amount=1)</code></td><td>+прогресс</td></tr>
+  <tr><td><code>api.set_achievement_progress(id, value)</code></td><td>Установить прогресс</td></tr>
+  <tr><td><code>api.get_achievement(id)</code></td><td>Получить объект или None</td></tr>
+  <tr><td><code>api.get_achievements()</code></td><td>Все достижения</td></tr>
+  <tr><td><code>api.get_unlocked_achievements()</code></td><td>Только полученные</td></tr>
+  <tr><td><code>api.get_locked_achievements()</code></td><td>Только неполученные</td></tr>
+  <tr><td><code>api.is_achievement_unlocked(id)</code></td><td>bool</td></tr>
+  <tr><td><code>api.get_achievement_progress(id)</code></td><td>(current, max)</td></tr>
+  <tr><td><code>api.reset_achievements(id=None)</code></td><td>Сбросить одно или все</td></tr>
+  <tr><td><code>api.save_achievements()</code> / <code>api.load_achievements()</code></td><td>Ручное сохранение/загрузка</td></tr>
+</table>
+</div>
+
+<h3>37.7 Скрытые достижения</h3>
+<p>С флагом <code>hidden=True</code> достижение не отображается в меню (и в игре — тост особенный: радужный + конфетти). При разблокировке в <code>AchievementToastManager</code> запускается анимированный радужный заголовок.</p>
+
+<h2 id="savegame">38. 💾 Сохранения и загрузки <span class="new">new</span></h2>
+
+<p>Модуль <code>gradus_rc/savegame.py</code> сохраняет всю игру в JSON: карту (включая разбитые стены и открытые двери), игрока, врагов, пули, двери, ключи, оружие, достижения, время, состояние RTE.</p>
+
+<h3>38.1 Через API</h3>
+
+<pre><code>engine.api.save_game("saves/quicksave.json")
+engine.api.load_game("saves/quicksave.json")</code></pre>
+
+<h3>38.2 Напрямую</h3>
+
+<pre><code>engine.save_to_file("saves/quicksave.json")
+engine.load_from_file("saves/quicksave.json")</code></pre>
+
+<h3>38.3 Хоткеи в примере игры</h3>
+<ul>
+  <li><strong>F5</strong> — сохранить в <code>saves/quicksave.json</code>.</li>
+  <li><strong>F6</strong> — загрузить из <code>saves/quicksave.json</code>.</li>
+</ul>
+
+<h3>38.4 Что попадает в сохранение</h3>
+
+<div class="table-wrap">
+<table>
+  <tr><th>Секция</th><th>Содержимое</th></tr>
+  <tr><td><code>level</code></td><td>Индекс уровня, все уровни, текущая карта (текстом), параметры (spawn, floor, ceiling, ambient, fog, lights)</td></tr>
+  <tr><td><code>player</code></td><td>x, y, angle, pitch, hp, max_hp, velocity, speed, rot_speed, alive</td></tr>
+  <tr><td><code>enemies</code></td><td>Все живые враги с полным набором параметров</td></tr>
+  <tr><td><code>bullets</code></td><td>Все активные пули (тип, урон, скорость, владелец)</td></tr>
+  <tr><td><code>doors</code> / <code>keys</code></td><td>Открыты ли, подобраны ли</td></tr>
+  <tr><td><code>guns</code></td><td>Ammo, max_ammo по каждому оружию</td></tr>
+  <tr><td><code>achievements</code></td><td>Весь снимок AchievementsManager</td></tr>
+  <tr><td><code>world</code></td><td>elapsed_time, frame_counter, time_scale</td></tr>
+  <tr><td><code>rt</code></td><td>enabled, quality, max_lights, reflections</td></tr>
+</table>
+</div>
+
+<h3>38.5 Пример: собственная система слотов</h3>
+
+<pre><code>import os
+from gradus_rc.savegame import save_game, load_game
+
+def save_slot(engine, slot_index):
+    os.makedirs("saves", exist_ok=True)
+    path = f"saves/slot_{slot_index}.json"
+    save_game(engine, path)
+    engine.api.push_notification("Сохранено", path, duration=2)
+
+def load_slot(engine, slot_index):
+    path = f"saves/slot_{slot_index}.json"
+    if os.path.isfile(path):
+        load_game(engine, path)
+        engine.api.push_notification("Загружено", path, duration=2)</code></pre>
+
+<h2 id="cutscene">39. 🎬 Кат-сцены <span class="new">new</span></h2>
+
+<p>Кат-сцены в Gradus RC — это файлы <code>.gs3</code> (JSON с ключевыми кадрами). Между кадрами камера и объекты интерполируются. Карта уровня берётся из текущего кадра — то есть сцена может менять стены на лету.</p>
+
+<h3>39.1 API</h3>
+
+<pre><code># Запустить сцену
+player = engine.api.play_cutscene("cutscenes/intro.gs3")
+
+# Остановить
+engine.api.stop_cutscene()
+
+# Идёт ли сейчас сцена
+if engine.api.is_cutscene_playing():
+    ...</code></pre>
+
+<h3>39.2 Формат .gs3</h3>
+
+<pre><code>{
+  "version": 1,
+  "name": "intro",
+  "background_music": "cutscenes/music/intro.ogg",
+  "frames": [
+    {
+      "duration": 2.0,
+      "map": [[1,1,1],[1,0,1],[1,1,1]],
+      "wall_props": {"1,1": {"material": "brick"}},
+      "camera": {"x": 1.5, "y": 1.5, "angle": 0.0, "pitch": 0.0},
+      "objects": [
+        {"key": "statue", "type": "model", "x": 1.5, "y": 2.5,
+         "path": "models/statue.gbj", "roty": 0, "scale": 1.0}
+      ]
+    }
+  ],
+  "events": [
+    {"t": 3.0, "action": "play_sound", "key": "thunder"},
+    {"t": 5.0, "action": "show_subtitle", "text": "Ты слышишь шаги...", "duration": 2.5}
+  ]
+}</code></pre>
+
+<h3>39.3 Поддерживаемые события</h3>
+
+<div class="table-wrap">
+<table>
+  <tr><th>action</th><th>Параметры</th></tr>
+  <tr><td><code>play_sound</code></td><td>key</td></tr>
+  <tr><td><code>play_music</code></td><td>file, loop</td></tr>
+  <tr><td><code>stop_music</code></td><td>—</td></tr>
+  <tr><td><code>show_subtitle</code></td><td>text, duration</td></tr>
+  <tr><td><code>show_message</code></td><td>text, duration</td></tr>
+  <tr><td><code>flash_screen</code></td><td>color, alpha, duration</td></tr>
+  <tr><td><code>spawn_explosion</code></td><td>x, y, radius, damage (координаты в клетках)</td></tr>
+  <tr><td><code>end</code></td><td>—</td></tr>
+</table>
+</div>
+
+<h3>39.4 Редактор кат-сцен</h3>
+
+<p>Файл: <code>tools/cutscene_editor.py</code>. Запуск:</p>
+<pre><code>python tools/cutscene_editor.py</code></pre>
+
+<p><strong>Управление:</strong></p>
+<ul>
+  <li><strong>ЛКМ (зажать)</strong> — рисование стен.</li>
+  <li><strong>SHIFT+ЛКМ</strong> — камера.</li>
+  <li><strong>ПКМ</strong> — поставить/удалить объект.</li>
+  <li><strong>A / D</strong> — угол камеры. <strong>Q / E</strong> — pitch.</li>
+  <li><strong>SPACE</strong> — новый кадр. <strong>DEL</strong> — удалить кадр.</li>
+  <li><strong>Ctrl+S / O / N</strong> — сохранить / открыть / новый файл.</li>
+  <li><strong>F5</strong> — предпросмотр в отдельном окне.</li>
+  <li><strong>ESC</strong> — выход.</li>
+</ul>
+
+<p>Панель справа позволяет задавать:</p>
+<ul>
+  <li>Материал стены, Alpha (100 / 75 / 50 / 25%), Height (1.0 / 0.75 / 0.5 / 0.25 / 0.1), текстуру.</li>
+  <li>Тип объекта: <code>model</code> / <code>sprite</code> / <code>enemy</code>.</li>
+  <li>RotX / RotY / RotZ, Scale.</li>
+  <li>Путь к .gbj/.obj, спрайту; для врага — тип, HP.</li>
+</ul>
+
+<p>Ассеты сканируются рекурсивно в папке <code>ASSETS_ROOT = 'assets'</code> (можно поменять в начале файла).</p>
+
+<h3>39.5 Проигрыватель отдельным окном</h3>
+
+<p>Файл: <code>tools/play_cutscene.py</code>. Запуск:</p>
+<pre><code>python tools/play_cutscene.py cutscenes/intro.gs3</code></pre>
+
+<p>Использует тот же <code>Engine</code> с пустой картой 3×3, запускает <code>CutscenePlayer</code> и после конца сцены держит кадр 300 мс и закрывается. Удобно для отладки.</p>
+
+<h3>39.6 Что происходит с миром</h3>
+
+<p>При старте <code>CutscenePlayer</code> сохраняет текущее состояние игры (позиция игрока, карта, враги, спрайты, пули, частицы, декали, world renderers), очищает сцену, ставит карту первого кадра. При <code>stop()</code> всё восстанавливает и даёт игроку 3 секунды неуязвимости.</p>
+
+<h2 id="chunks">40. 🧩 Чанки карт <span class="new">new</span></h2>
+
+<p>Модуль <code>gradus_rc/chunks.py</code> сохраняет и загружает регионы карты. Разреженный формат (по умолчанию) — только непустые клетки, сжатие в 10–100×.</p>
+
+<h3>40.1 Сохранить регион</h3>
+
+<pre><code>from gradus_rc.chunks import save_region, load_chunk, paste_region
+
+# Из движка:
+engine.api.save_map_region(
+    x1=0, y1=0, x2=15, y2=15,
+    path="chunks/room_a.chunk.json",
+    sparse=True
+)
+
+# Или с автоименем:
+engine.api.save_chunk_to_file(0, 0, 15, 15)</code></pre>
+
+<h3>40.2 Загрузить и вставить чанк</h3>
+
+<pre><code>region = engine.api.load_map_region(
+    "chunks/room_a.chunk.json",
+    offset_x=20, offset_y=20,
+    rebuild_gpu=True
+)
+print(f"Загружен регион {region['width']}×{region['height']}")</code></pre>
+
+<h3>40.3 Собрать карту из чанков</h3>
+
+<pre><code>engine.api.build_map_from_chunks("chunks/", w=64, h=64)</code></pre>
+
+<p>Все файлы <code>*.chunk.json</code> / <code>*.chunk</code> из папки вставляются в новую карту по их <code>offset_x</code> / <code>offset_y</code>. Размер карты вычисляется автоматически (или задаётся через w / h).</p>
+
+<h3>40.4 Формат файла</h3>
+
+<pre><code>{
+  "version": 1,
+  "offset_x": 0, "offset_y": 0,
+  "width": 16, "height": 16,
+  "sparse": true,
+  "cells": {
+    "3,2": {"base_id": 1, "properties": {"material": "brick"}},
+    "5,7": {"base_id": 6, "properties": {"path": "models/statue.gbj"}}
+  }
+}</code></pre>
+
+<p>При <code>sparse=false</code> сохраняется вся сетка подряд (полезно для равномерных карт).</p>
+
+<h3>40.5 Функции модуля</h3>
+
+<div class="table-wrap">
+<table>
+  <tr><th>Функция</th><th>Что делает</th></tr>
+  <tr><td><code>save_region(map_data, x1, y1, x2, y2, path, sparse=True)</code></td><td>Сохранить регион</td></tr>
+  <tr><td><code>load_chunk(path)</code></td><td>Загрузить чанк в виде dict</td></tr>
+  <tr><td><code>paste_region(map_data, region, offset_x=None, offset_y=None)</code></td><td>Вставить чанк в map_data, вернуть (map, w, h)</td></tr>
+  <tr><td><code>list_chunks(directory)</code></td><td>Список файлов чанков</td></tr>
+  <tr><td><code>build_map_from_chunks(directory, w=None, h=None)</code></td><td>Собрать всю карту из папки</td></tr>
+</table>
+</div>
+
+<h2 id="generator">41. 🎲 Процедурная генерация карт <span class="new">new</span></h2>
+
+<p>Модуль <code>gradus_rc/utils/generator.py</code>. Четыре встроенных типа: <code>labirint</code>, <code>random</code> (пещеры), <code>corridors</code> (комнаты), <code>city</code>. Кастомные генераторы — через <code>register_generator</code>.</p>
+
+<h3>41.1 Уровень с процедурной генерацией</h3>
+
+<pre><code>LEVEL_GEN = """
+[COLLISION]
+[GENERATION=TRUE,TILES=96x96,SEED=777]
+[GENERATION_TYPE=LABIRINT]
+[GEN_MATERIAL=brick]
+[GEN_TEXTURE=assets/wall.png]
+[GEN_BARRICADES=TRUE,BARRICADE_COUNT=5,BARRICADE_HP=50-100]
+[GEN_DOORS=TRUE,DOOR_COUNT=3]
+[GEN_KEYS=TRUE]
+[GEN_TRIGGERS=TRUE,TRIGGER_COUNT=2,TRIGGER_ACTION=scream]
+[GEN_PORTALS=TRUE,PORTAL_COUNT=1,PORTAL_TARGET_LEVEL=0]
+[GEN_LIGHT=TRUE,LIGHT_COUNT=8-14,LIGHT_RADIUS=250-500,LIGHT_INTENSITY=50-90,LIGHT_COLOR=random]
+[ADD_ENEMIES=TRUE,TYPE=RANDOM,COUNT=25,HP_RANDOM=40-100,
+              ATTACK_RANDOM=10-30,SPEED_RANDOM=40-90,
+              ENEMY_SPRITE=assets/enemy_demon.png]
+[FLOOR_COLOR=333333]
+[CEILING_COLOR=111111]
+[SPAWN=1.5,1.5]
+[AMBIENT=0.15]
+"""</code></pre>
+
+<h3>41.2 Параметры</h3>
+
+<div class="table-wrap">
+<table>
+  <tr><th>Параметр</th><th>Формат</th><th>Смысл</th></tr>
+  <tr><td><code>TILES</code></td><td>WxH</td><td>Размер карты в клетках</td></tr>
+  <tr><td><code>SEED</code></td><td>int | пусто</td><td>Зерно рандома (пусто = случайное)</td></tr>
+  <tr><td><code>GENERATION_TYPE</code></td><td>строка</td><td>labirint / random / corridors / city / имя кастомного</td></tr>
+  <tr><td><code>GEN_MATERIAL</code></td><td>имя</td><td>Материал всех стен</td></tr>
+  <tr><td><code>GEN_TEXTURE</code></td><td>путь</td><td>Текстура всех стен</td></tr>
+  <tr><td><code>GEN_COLOR</code></td><td>RRGGBB</td><td>Цвет всех стен</td></tr>
+  <tr><td><code>GEN_BARRICADES</code></td><td>TRUE + параметры</td><td>Разрушаемые баррикады в узких проходах</td></tr>
+  <tr><td><code>GEN_DOORS</code> / <code>GEN_KEYS</code></td><td>TRUE</td><td>Двери + ключи, автоматически связаны</td></tr>
+  <tr><td><code>GEN_TRIGGERS</code></td><td>TRUE + action</td><td>Спавн ID=8 в случайных клетках</td></tr>
+  <tr><td><code>GEN_PORTALS</code></td><td>TRUE + target</td><td>Порталы ID=9</td></tr>
+  <tr><td><code>GEN_LIGHT</code></td><td>TRUE + count/radius/intensity/color</td><td>Автоматическая расстановка источников света</td></tr>
+  <tr><td><code>ADD_ENEMIES</code></td><td>TRUE + параметры</td><td>Случайные враги</td></tr>
+</table>
+</div>
+
+<p>Числовые значения можно задавать как одно число (<code>COUNT=10</code>) или диапазон (<code>COUNT=5-15</code>).</p>
+
+<h3>41.3 Прямой вызов</h3>
+
+<pre><code>from gradus_rc.utils.generator import generate_map
+
+map_data = generate_map('labirint', w=64, h=64, seed=42)
+map_data = generate_map('city', 48, 48, seed='moscow')</code></pre>
+
+<h3>41.4 Кастомный генератор</h3>
+
+<pre><code>from gradus_rc.utils.generator import register_generator
+
+def gen_arena(w, h, rng, params):
+    grid = [[1]*w for _ in range(h)]
+    cx, cy = w//2, h//2
+    r = min(w, h)//3
+    for y in range(h):
+        for x in range(w):
+            if (x-cx)**2 + (y-cy)**2 < r*r:
+                grid[y][x] = 0
+    return [[{'base_id': grid[y][x], 'properties': {}}
+             for x in range(w)] for y in range(h)]
+
+register_generator('arena', gen_arena)
+
+# В карте:
+# [GENERATION_TYPE=ARENA]</code></pre>
+
+<h3>41.5 Кастомный генератор в моде</h3>
+
+<pre><code># mods/arena/mod.py
+def make_arena(w, h, seed, params):
+    # Возвращаем уже готовую map_data
+    ...
+
+def on_load(engine):
+    api.register_map_generator('arena', make_arena)</code></pre>
+
+<h2 id="multiplayer">42. 🌐 Мультиплеер <span class="new">new</span></h2>
+
+<p>Модуль <code>gradus_rc/multiplayer.py</code> — TCP-мультиплеер до 8 игроков. Сервер авторитетен по игре, клиент зеркалит. Синхронизируются позиции игроков, враги, пули, двери, ключи, толкаемые объекты и произвольные данные.</p>
+
+<h3>42.1 Хост</h3>
+
+<pre><code>ok = engine.api.start_host(
+    port=50007,
+    signature="my_secret",       # все игроки должны знать
+    mode='pvp',                  # 'pvp' | 'coop'
+    max_players=4
+)
+print(f"Хост запущен: {ok}")</code></pre>
+
+<h3>42.2 Клиент</h3>
+
+<pre><code>ok = engine.api.connect(
+    ip="192.168.0.5",
+    port=50007,
+    signature="my_secret"
+)
+print(f"Подключён: {ok}, мой pid = {engine.mp.my_pid}")</code></pre>
+
+<h3>42.3 Кастомные данные</h3>
+
+<pre><code># Отправить всем
+engine.api.mp_set_data('score', 100)
+
+# Получить последнее принятое
+score = engine.api.mp_get_data('score', 0)
+
+# Подписка на изменения
+def on_score(value):
+    print(f"Новый счёт: {value}")
+engine.api.mp_on_data('score', on_score)</code></pre>
+
+<h3>42.4 События</h3>
+
+<p>Отправляются через <code>engine.mp.notify_event(name, **data)</code>:</p>
+
+<div class="table-wrap">
+<table>
+  <tr><th>Событие</th><th>Данные</th></tr>
+  <tr><td><code>key_pickup</code></td><td><code>key_id</code></td></tr>
+  <tr><td><code>door_open</code></td><td><code>door_id</code></td></tr>
+  <tr><td><code>player_death</code></td><td>—</td></tr>
+  <tr><td><code>message</code></td><td><code>title</code>, <code>text</code></td></tr>
+</table>
+</div>
+
+<pre><code>engine.mp.notify_event('message',
+    title="Атака через 30 сек",
+    text="Готовьтесь")</code></pre>
+
+<h3>42.5 Получение удалённых игроков / врагов</h3>
+
+<pre><code>for rp in engine.api.get_remote_players():
+    print(f"P{rp.pid}: ({rp.x:.0f}, {rp.y:.0f}), HP {rp.hp}")</code></pre>
+
+<h3>42.6 Ограничения</h3>
+<ul>
+  <li>До <strong>8 игроков</strong> одновременно.</li>
+  <li>Один <code>signature</code> на сервер. У кого другой — отказ.</li>
+  <li>Клиенты грузят уровень, переданный хостом.</li>
+  <li>Режимы: <code>pvp</code> (дружественный огонь) и <code>coop</code> (без урона между игроками).</li>
+</ul>
+
+<h2 id="toast">43. 🔔 Toast-система <span class="new">new</span></h2>
+
+<p>Два класса: <code>ToastManager</code> (универсальные уведомления) и <code>AchievementToastManager</code> (только для достижений).</p>
+
+<h3>43.1 ToastManager</h3>
+
+<pre><code># Информационное уведомление
+engine.toasts.push_info(
+    "Скриншот сохранён",
+    description="screenshots/2026-09-18.png",
+    color=(100, 200, 255),
+    duration=3.0
+)
+
+# Уведомление о достижении
+engine.toasts.push_achievement(ach_object)</code></pre>
+
+<h3>43.2 Типы Toast</h3>
+<ul>
+  <li><code>achievement</code> — золотая карточка.</li>
+  <li><code>achievement_hidden</code> — радужная + конфетти.</li>
+  <li><code>info</code> — компактная плашка.</li>
+</ul>
+
+<h3>43.3 AchievementToastManager</h3>
+
+<pre><code># Автоматически подписан на события достижений через Engine.
+# Отрисовка происходит в Engine.render через:
+engine.achievement_toasts.draw(screen)
+
+# Длительность тоста = 5 сек (константа класса).
+# Радужный заголовок + анимированная рамка для hidden.</code></pre>
+
+<div class="note">
+  <strong>Как выглядит.</strong> Обычное достижение — карточка справа сверху с золотой рамкой и заголовком «РАЗБЛОКИРОВАНО НОВОЕ ДОСТИЖЕНИЕ». Скрытое — радужная карточка с анимированной рамкой, заголовком «★ СКРЫТОЕ ДОСТИЖЕНИЕ РАЗБЛОКИРОВАНО ★» и конфетти по всему экрану.
+</div>
+
+<h2 id="pause">44. ⏸ PauseMenu <span class="new">new</span></h2>
+
+<p>Файл <code>gradus_rc/hud/pause.py</code>. Меню паузы с тремя кнопками: Продолжить, Настройки, Сохранить и выйти.</p>
+
+<pre><code>from gradus_rc.hud.pause import PauseMenu
+
+pause = PauseMenu(WIDTH, HEIGHT)
+
+# В игровом цикле:
+if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+    pause.active = True
+
+if pause.active:
+    result = pause.handle_event(event)
+    if result == PauseMenu.STATE_RESUME:
+        pause.active = False
+    elif result == PauseMenu.STATE_EXIT:
+        running = False
+    elif result == PauseMenu.STATE_SETTINGS:
+        print("Открыть настройки")
+
+# В render:
+pause.draw(screen)</code></pre>
+
+<p>Также <code>PauseMenu</code> сам рисует тёмную подложку (alpha 160).</p>
+
+<h2 id="hudcore">45. 📊 HUDManager и ScreenShake <span class="new">new</span></h2>
+
+<p>Файл <code>gradus_rc/hud/core.py</code>. Отвечает за полоски HP, патроны, иконку оружия, прицел, тряску экрана, кастомные слои, субтитры и уведомления.</p>
+
+<h3>45.1 Настройки</h3>
+
+<pre><code>engine.hud.show_hud = True
+engine.hud.show_crosshair = True
+engine.hud.show_hp_bar = True
+engine.hud.show_ammo = True
+engine.hud.show_weapon_icon = True
+
+engine.hud.crosshair_spread = 10
+engine.hud.crosshair_color = (255, 60, 60)</code></pre>
+
+<h3>45.2 Тряска экрана</h3>
+
+<pre><code>engine.hud.shake.trigger(intensity=8.0, duration=0.3)
+engine.api.hud_shake(intensity=8, duration=0.3)</code></pre>
+
+<h3>45.3 Точки попадания / урон</h3>
+
+<pre><code>engine.hud.hit_marker(intensity=1.0)
+engine.hud.damage_taken(amount=10)</code></pre>
+
+<h3>45.4 Кастомные HUD-слои</h3>
+
+<pre><code>def my_overlay(screen, engine):
+    import pygame
+    f = pygame.font.SysFont('Arial', 20)
+    surf = f.render(f"Kills: {kills}", True, (255, 200, 80))
+    screen.blit(surf, (10, 80))
+
+handle = engine.api.bind_hud(my_overlay, layer=50)
+# engine.api.unbind_hud(handle)</code></pre>
+
+<h3>45.5 Субтитры и уведомления</h3>
+
+<pre><code>engine.api.show_subtitle("Привет!", duration=2.5)
+engine.api.push_notification("Заголовок", "Описание", duration=3.0)</code></pre>
+
+<h2 id="videorec">46. 🎥 VideoRecorder <span class="new">new</span></h2>
+
+<p>Файл <code>gradus_rc/render/video_recorder.py</code>. Запись 720p / 30 FPS / MP4 (H.264). Пишет кадры в отдельном потоке — не фризит игру.</p>
+
+<h3>46.1 Через API</h3>
+
+<pre><code># Начать запись
+path = engine.api.start_video_recording(
+    path="replays/my_run.mp4",
+    duration=120.0
+)
+
+# Проверка
+if engine.api.is_recording_video():
+    ...
+
+# Остановить
+engine.api.stop_video_recording()</code></pre>
+
+<h3>46.2 Напрямую</h3>
+
+<pre><code>rec = engine.video_recorder
+
+if not rec.recording:
+    rec.max_duration = 60.0
+    rec.start(path="replays/session.mp4")
+
+# Каждый кадр (обычно делается движком автоматически):
+rec.push_frame(screen)
+
+if rec.recording and rec.duration >= rec.max_duration:
+    rec.stop()</code></pre>
+
+<h3>46.3 Хоткей</h3>
+<ul>
+  <li><strong>F9</strong> — начать / остановить запись. Путь генерируется автоматически в <code>replays/</code>.</li>
+</ul>
+
+<div class="note">
+  <strong>Требования.</strong> Нужны пакеты <code>numpy</code> и <code>imageio</code> (+ <code>imageio-ffmpeg</code>). Если их нет — <code>rec.available == False</code>, запись не запустится, в консоль полетит предупреждение.
+</div>
+
+<h2 id="split">47. 🖥️ Сплит-скрин <span class="new">new</span></h2>
+
+<p>Два игрока на одной клавиатуре в одном окне. Реализовано через подмену контекста рендера (<code>render_for</code>) — сначала рисуется сцена одного игрока в свой rect, затем второго.</p>
+
+<h3>47.1 Включить</h3>
+
+<pre><code># horizontal — левая / правая половины
+# vertical   — верхняя / нижняя
+engine.setup_split((WIDTH, HEIGHT), direction='horizontal')</code></pre>
+
+<p>После вызова:</p>
+<ul>
+  <li><code>engine.split_mode = True</code>.</li>
+  <li><code>engine._split_players = [P1, P2]</code>.</li>
+  <li>P1 управляется по <code>INPUT_SPLIT_P1</code> (WASD + A/D поворот).</li>
+  <li>P2 управляется по <code>INPUT_SPLIT_P2</code> (стрелки, Enter — стрельба, RSHIFT — смена оружия).</li>
+  <li>У P2 автоматически создаётся свой <code>GunManager</code> (ammo, cooldown независимые).</li>
+</ul>
+
+<h3>47.2 В игровом цикле</h3>
+
+<pre><code>if engine.split_mode:
+    engine.render_split(screen)
+else:
+    engine.render(screen)</code></pre>
+
+<h3>47.3 Отключить</h3>
+
+<pre><code>engine.disable_split()</code></pre>
+
+<h3>47.4 Стрельба в сплите</h3>
+
+<pre><code>keys = pygame.key.get_pressed()
+for p in engine._split_players:
+    if not p.alive:
+        continue
+    fire_key = p.input_map.get('fire')
+    if fire_key and keys[fire_key]:
+        engine.api.fire_current_gun(p)   # стреляет от имени p</code></pre>
+
+<h3>47.5 Респавн</h3>
+
+<p>Если один игрок умирает, второй продолжает. У мёртвого игрока 15-секундный отсчёт в его половине экрана (тёмно-красная заливка + текст «ВЫ МЕРТВЫ»). По истечении — респавн на точке спавна с 2 сек неуязвимости. Если умирают оба — GAME OVER.</p>
+
+<div class="note">
+  <strong>Как пофиксить «оба стреляют одновременно».</strong> Убедись, что каждый игрок имеет свой <code>gun_manager</code> (см. <code>setup_split</code> в <code>engine.py</code>). Без этого оружие и cooldown общие.
+</div>
+
+<h2 id="playerpresets">48. 🎮 Пресеты управления <span class="new">new</span></h2>
+
+<p>Файл <code>gradus_rc/player.py</code>. Три пресета: <code>INPUT_WASD</code>, <code>INPUT_SPLIT_P1</code>, <code>INPUT_SPLIT_P2</code>.</p>
+
+<div class="table-wrap">
+<table>
+  <tr><th>Клавиша</th><th>WASD</th><th>SPLIT_P1</th><th>SPLIT_P2</th></tr>
+  <tr><td>Вперёд</td><td>W</td><td>W</td><td>↑</td></tr>
+  <tr><td>Назад</td><td>S</td><td>S</td><td>↓</td></tr>
+  <tr><td>Стрейф влево</td><td>A</td><td>—</td><td>—</td></tr>
+  <tr><td>Стрейф вправо</td><td>D</td><td>—</td><td>—</td></tr>
+  <tr><td>Поворот влево</td><td>←</td><td>A</td><td>←</td></tr>
+  <tr><td>Поворот вправо</td><td>→</td><td>D</td><td>→</td></tr>
+  <tr><td>Pitch up</td><td>Page Up</td><td>R</td><td>Home</td></tr>
+  <tr><td>Pitch down</td><td>Page Down</td><td>F</td><td>End</td></tr>
+  <tr><td>Огонь</td><td>Space</td><td>Space</td><td>Enter</td></tr>
+  <tr><td>Смена оружия</td><td>Q</td><td>Q</td><td>RSHIFT</td></tr>
+  <tr><td>Взаимодействие</td><td>E</td><td>E</td><td>/</td></tr>
+</table>
+</div>
+
+<h3>48.1 Свой пресет</h3>
+
+<pre><code>from gradus_rc.player import Player
+
+MY_INPUT = {
+    'forward':       pygame.K_UP,
+    'backward':      pygame.K_DOWN,
+    'strafe_left':   None,
+    'strafe_right':  None,
+    'rotate_left':   pygame.K_LEFT,
+    'rotate_right':  pygame.K_RIGHT,
+    'pitch_up':      pygame.K_PAGEUP,
+    'pitch_down':    pygame.K_PAGEDOWN,
+    'fire':          pygame.K_SPACE,
+    'switch_gun':    pygame.K_q,
+    'interact':      pygame.K_e,
+}
+
+p = Player(x=100, y=100, input_map=MY_INPUT)</code></pre>
+
+<h2 id="parser">49. 📐 MapParser — обновлённый <span class="new">new</span></h2>
+
+<p>Файл <code>gradus_rc/utils/parser.py</code>. Разбирает текст карты в <code>list[list[dict]]</code> + параметры уровня.</p>
+
+<h3>49.1 Устойчивость к разделителям</h3>
+
+<p>Парсер понимает и <code>;</code>, и <code>,</code> в качестве разделителей между полями клетки:</p>
+
+<pre><code>1&lt;material:brick;height:0.9;alpha:0.5&gt;
+1&lt;material=brick,height=0.9,alpha=0.5&gt;</code></pre>
+
+<p>Обе строки эквивалентны.</p>
+
+<h3>49.2 Разбор секций с подпараметрами</h3>
+
+<p>Секция <code>[KEY=v1,v2,SUBKEY=subval]</code> разбирается в словарь, где значения без <code>=</code> присоединяются к предыдущему ключу через запятую:</p>
+
+<pre><code>[LIGHTS=2.5,2.5,0.5,200;7.5,4.5,0.6,250]
+# → {'lights': '2.5,2.5,0.5,200;7.5,4.5,0.6,250'}
+
+[GENERATION=TRUE,TILES=96x96,SEED=777]
+# → {'generation': 'TRUE', 'tiles': '96x96', 'seed': '777'}</code></pre>
+
+<h3>49.3 Преобразование типов</h3>
+
+<ul>
+  <li><code>true</code> → <code>True</code>, <code>false</code> → <code>False</code>.</li>
+  <li>Число с точкой → <code>float</code>.</li>
+  <li>Целое → <code>int</code>.</li>
+  <li>Остальное — строка.</li>
+</ul>
+
+<h3>49.4 Программное использование</h3>
+
+<pre><code>from gradus_rc.utils.parser import MapParser
+
+parser = MapParser()
+layers = parser.parse_layers(LEVEL_STRING)
+
+map_data = layers['collision']   # list[list[dict]]
+params   = layers['_params']     # dict</code></pre>
+
+<!-- ============ КОНТАКТЫ ============ -->
 <div id="contact" class="contact">
   <p>По вопросам, багам и предложениям:</p>
   <p><a href="mailto:gradus.support@gmail.com">gradus.support@gmail.com</a></p>
   <p><a href="https://t.me/gradus_seo">Telegram (основной)</a></p>
   <p><a href="https://t.me/venooom_wmbot">Telegram (если у вас бан)</a></p>
+    <p><a href="https://t.me/gradus_team">Telegram (официальный канал новостей)</a></p>
   <p style="font-size: 0.9em; color: #7a8aa0;">Отвечаем в течение 24 часов.</p>
 </div>
 
 <div class="footer">
-  <strong style="color: #8ab4f8;">Gradus RC v1.2.5 API Update (1.3 Beta)</strong> · релиз 16.09.2026 · документация для разработчиков · 🚀<br>
+  <strong style="color: #8ab4f8;">Gradus RC v1.3</strong> · релиз 18.09.2026 · документация для разработчиков · 🚀<br>
   Copyright (c) 2024–2026 Gradus Team · Licensed under CC BY-ND 4.0<br>
   <span style="font-size: 0.85em; margin-top: 8px; display: inline-block;">
     Разработано с ❤️ сообществом. Спасибо всем, кто тестировал, репортил баги и терпел падения FPS.
@@ -3065,5 +3735,45 @@ if __name__ == "__main__":
 </div>
 
 </div>
+
+<!-- ============ JS: lightbox без скролла наверх ============ -->
+<script>
+(function () {
+    const boxes = document.querySelectorAll('.lightbox');
+
+    document.querySelectorAll('.screenshot-item').forEach(function (item) {
+        item.addEventListener('click', function (ev) {
+            ev.preventDefault();
+            var href = item.getAttribute('href') || '';
+            var id = href.charAt(0) === '#' ? href.slice(1) : href;
+            var lb = document.getElementById(id);
+            if (lb) {
+                lb.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        });
+    });
+
+    boxes.forEach(function (lb) {
+        lb.addEventListener('click', function () {
+            lb.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+    });
+
+    document.addEventListener('keydown', function (ev) {
+        if (ev.key === 'Escape' || ev.key === 'Esc') {
+            var any = false;
+            document.querySelectorAll('.lightbox.active').forEach(function (lb) {
+                lb.classList.remove('active');
+                any = true;
+            });
+            if (any) {
+                document.body.style.overflow = '';
+            }
+        }
+    });
+})();
+</script>
 </body>
 </html>
