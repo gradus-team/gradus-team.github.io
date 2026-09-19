@@ -329,10 +329,7 @@
     border-color: #3a8a4a;
     box-shadow: 0 4px 14px rgba(122, 211, 122, 0.15);
 }
-.grc-cmp .grc-panel {
-    display: none;
-    animation: grcFade 0.25s ease;
-}
+.grc-cmp .grc-panel { display: none; animation: grcFade 0.25s ease; }
 .grc-cmp .grc-panel.active { display: block; }
 @keyframes grcFade {
     from { opacity: 0; transform: translateY(6px); }
@@ -360,11 +357,11 @@
     width: 100%;
     border-collapse: collapse;
     background: #0f1722;
-    min-width: 900px;
-    font-size: 0.9em;
+    min-width: 980px;
+    font-size: 0.88em;
 }
 .grc-cmp th, .grc-cmp td {
-    padding: 12px 14px;
+    padding: 11px 12px;
     text-align: left;
     border-bottom: 1px solid #1e2a3a;
     vertical-align: top;
@@ -374,7 +371,7 @@
     background: #1a2634;
     color: #b6c8e0;
     font-weight: 500;
-    font-size: 0.88em;
+    font-size: 0.86em;
     position: sticky;
     top: 0;
 }
@@ -388,28 +385,17 @@
     background: rgba(42, 90, 58, 0.12);
     font-weight: 500;
 }
-.grc-cmp tbody tr:hover td.grc-hero-cell {
-    background: rgba(42, 90, 58, 0.22);
-}
+.grc-cmp tbody tr:hover td.grc-hero-cell { background: rgba(42, 90, 58, 0.22); }
 .grc-cmp td.grc-label {
     color: #c8d4e4;
     font-weight: 500;
     white-space: nowrap;
     min-width: 170px;
 }
-/* Индикаторы */
 .grc-cmp .m-yes  { color: #7ad37a; font-weight: 600; }
 .grc-cmp .m-part { color: #f0b37a; font-weight: 600; }
 .grc-cmp .m-no   { color: #d37a7a; font-weight: 600; }
 .grc-cmp .m-plan { color: #8ab4f8; font-weight: 600; }
-.grc-cmp .m-na   { color: #7a8aa0; }
-.grc-cmp .grc-sym {
-    display: inline-block;
-    width: 18px;
-    text-align: center;
-    font-weight: 700;
-    margin-right: 6px;
-}
 .grc-cmp .grc-legend {
     display: flex;
     flex-wrap: wrap;
@@ -430,55 +416,57 @@
     line-height: 1.6;
 }
 .grc-cmp .grc-footnote strong { color: #f0b37a; }
-.grc-cmp .grc-badge {
-    display: inline-block;
-    padding: 2px 8px;
-    border-radius: 6px;
-    font-size: 0.78em;
-    font-weight: 600;
-    margin-left: 6px;
-    vertical-align: middle;
+.grc-cmp .grc-footnote.blue { border-left-color: #8ab4f8; }
+.grc-cmp .grc-footnote.blue strong { color: #8ab4f8; }
+.grc-cmp .grc-footnote.green { border-left-color: #7ad37a; background: #1a2e1a; }
+.grc-cmp .grc-footnote.green strong { color: #7ad37a; }
+.grc-cmp .grc-changelog {
+    margin-top: 24px;
+    padding: 16px 20px;
+    background: #0f1722;
+    border: 1px dashed #3a4a5e;
+    border-radius: 12px;
+    font-size: 0.88em;
+    color: #a8b8d0;
+    line-height: 1.7;
 }
-.grc-cmp .grc-badge.green { background: #2a5a3a; color: #b8e8c8; }
-.grc-cmp .grc-badge.blue  { background: #2a3a5a; color: #b8c8e8; }
-.grc-cmp .grc-badge.gold  { background: #5a4a2a; color: #f8d8a8; }
+.grc-cmp .grc-changelog h4 {
+    color: #8ab4f8;
+    margin: 0 0 10px 0;
+    font-size: 1em;
+    font-weight: 600;
+}
+.grc-cmp .grc-changelog ul { padding-left: 22px; margin: 0; }
+.grc-cmp .grc-changelog li { margin: 5px 0; }
+.grc-cmp .grc-changelog code {
+    background: #202a36; padding: 1px 6px; border-radius: 4px;
+    font-family: 'Consolas', monospace; font-size: 0.9em; color: #e6dbb5;
+}
 
-/* Мобильная адаптация */
 @media (max-width: 900px) {
-    .grc-cmp table { min-width: 760px; font-size: 0.85em; }
-    .grc-cmp th, .grc-cmp td { padding: 10px 12px; }
+    .grc-cmp table { min-width: 820px; font-size: 0.84em; }
+    .grc-cmp th, .grc-cmp td { padding: 9px 10px; }
     .grc-cmp td.grc-label { min-width: 140px; font-size: 0.95em; }
     .grc-cmp .grc-tab { padding: 9px 14px; font-size: 0.9em; }
 }
 @media (max-width: 640px) {
     .grc-cmp { margin: 20px 0; }
-    .grc-cmp .grc-tabs {
-        gap: 6px;
-        padding-bottom: 10px;
-    }
+    .grc-cmp .grc-tabs { gap: 6px; padding-bottom: 10px; }
     .grc-cmp .grc-tab {
-        flex: 1 1 auto;
-        padding: 10px 8px;
-        font-size: 0.82em;
-        text-align: center;
-        min-height: 44px;
+        flex: 1 1 auto; padding: 10px 8px;
+        font-size: 0.82em; text-align: center; min-height: 44px;
     }
     .grc-cmp .grc-table-wrap::after {
         content: "→ свайп →";
-        position: absolute;
-        top: 8px;
-        right: 10px;
-        font-size: 0.7em;
-        color: #7a8aa0;
-        pointer-events: none;
-        opacity: 0.75;
+        position: absolute; top: 8px; right: 10px;
+        font-size: 0.7em; color: #7a8aa0;
+        pointer-events: none; opacity: 0.75;
     }
-    .grc-cmp table { min-width: 640px; font-size: 0.8em; }
-    .grc-cmp th, .grc-cmp td { padding: 8px 10px; }
+    .grc-cmp table { min-width: 720px; font-size: 0.78em; }
+    .grc-cmp th, .grc-cmp td { padding: 7px 9px; }
     .grc-cmp td.grc-label { min-width: 120px; }
     .grc-cmp .grc-desc,
     .grc-cmp .grc-footnote { padding: 12px 14px; font-size: 0.88em; }
-    .grc-cmp .grc-sym { margin-right: 4px; }
 }
   </style>
 </head>
@@ -589,15 +577,9 @@
 </div>
 <div class="grc-cmp">
     <div class="grc-tabs" role="tablist">
-        <button class="grc-tab active" data-grc-tab="arch" role="tab">
-            🏗️ Разные архитектуры
-        </button>
-        <button class="grc-tab" data-grc-tab="equal" role="tab">
-            ⚖️ На равных
-        </button>
-        <button class="grc-tab" data-grc-tab="dx" role="tab">
-            ⚡ Скорость прототипа
-        </button>
+        <button class="grc-tab active" data-grc-tab="arch" role="tab">🏗️ Разные архитектуры</button>
+        <button class="grc-tab" data-grc-tab="equal" role="tab">⚖️ На равных</button>
+        <button class="grc-tab" data-grc-tab="dx" role="tab">⚡ Скорость прототипа</button>
     </div>
 
     <!-- =================== ВАРИАНТ 1: АРХИТЕКТУРЫ =================== -->
@@ -605,10 +587,10 @@
         <div class="grc-desc">
             <strong>Честное сравнение.</strong>
             Gradus RC — <strong>чистый DDA-рейкастинг</strong>. Build Engine, GZDoom, UZDoom и Raze
-            используют <em>другие архитектуры</em>: wall-sorting + порталы, BSP-деревья, сектора.
-            Это не «кто лучше» — это <em>разные способы решать задачу</em>. Важно понимать: каждая
-            фича, которую гибридные движки получают «в лоб» из коробки, в чистом рейкастинге
-            требует переработки самого алгоритма лучей.
+            используют <em>другие архитектуры</em>: сектор-портал-обход, BSP-деревья, гибридные
+            решения. Это не «кто лучше» — это <em>разные способы решать задачу</em>. В чистом
+            рейкастинге каждая фича, которую гибриды получают «в лоб» из секторов, требует
+            переработки самого алгоритма лучей.
         </div>
         <div class="grc-table-wrap">
         <table>
@@ -616,7 +598,7 @@
                 <tr>
                     <th>Параметр</th>
                     <th class="grc-hero">Gradus RC v1.3</th>
-                    <th>Build Engine</th>
+                    <th>Build Engine / EDuke32</th>
                     <th>GZDoom</th>
                     <th>UZDoom</th>
                     <th>Raze</th>
@@ -627,33 +609,42 @@
                 <tr>
                     <td class="grc-label">Архитектура рендера</td>
                     <td class="grc-hero-cell">Чистый raycasting (DDA) + GPU-шейдер</td>
-                    <td>Wall-sorting + порталы</td>
+                    <td>Сектор-портал обход</td>
                     <td>BSP-дерево + растеризация</td>
-                    <td>BSP + Vulkan</td>
+                    <td>BSP + GL/Vulkan</td>
                     <td>Гибрид (Build + Doom)</td>
-                    <td>Секторный raycasting</td>
+                    <td>Секторный рендеринг</td>
                 </tr>
                 <tr>
                     <td class="grc-label">Сложность реализации фич</td>
                     <td class="grc-hero-cell"><span class="m-part">Высокая</span> — каждая фича = переработка лучей</td>
-                    <td><span class="m-yes">Обычная</span> — стандартные методы</td>
+                    <td><span class="m-yes">Обычная</span></td>
                     <td><span class="m-yes">Обычная</span></td>
                     <td><span class="m-yes">Обычная</span></td>
                     <td><span class="m-yes">Обычная</span></td>
                     <td><span class="m-yes">Обычная</span></td>
                 </tr>
                 <tr>
-                    <td class="grc-label">RTE (честные вторичные лучи)</td>
-                    <td class="grc-hero-cell"><span class="m-yes">✓</span> Мягкие тени + отражения до 16 источников</td>
+                    <td class="grc-label">Отражения</td>
+                    <td class="grc-hero-cell"><span class="m-yes">✓</span> Честный вторичный луч (RTE), зеркала + вода</td>
+                    <td><span class="m-part">⚠</span> Зеркала через Sector Effector (культовая фича Duke 3D, но это копия комнаты, а не реальное отражение)</td>
+                    <td><span class="m-part">⚠</span> Line_Mirror (портал-копия сцены, не отражение)</td>
+                    <td><span class="m-part">⚠</span> Line_Mirror</td>
+                    <td><span class="m-part">⚠</span> Наследует Build + Doom</td>
+                    <td><span class="m-part">⚠</span> Ограниченные</td>
+                </tr>
+                <tr>
+                    <td class="grc-label">Мягкие тени / RT</td>
+                    <td class="grc-hero-cell"><span class="m-yes">✓</span> RTE — честные вторичные лучи, до 16 источников</td>
                     <td><span class="m-no">✕</span></td>
                     <td><span class="m-no">✕</span></td>
                     <td><span class="m-no">✕</span></td>
-                    <td><span class="m-part">⚠</span> Path tracing (эксп.)</td>
+                    <td><span class="m-part">⚠</span> Только в Duke-RT (мод), не в базовом Raze</td>
                     <td><span class="m-no">✕</span></td>
                 </tr>
                 <tr>
                     <td class="grc-label">Мод-API</td>
-                    <td class="grc-hero-cell"><span class="m-yes">✓</span> Python, 300+ методов</td>
+                    <td class="grc-hero-cell"><span class="m-yes">✓</span> Python, 150+ методов в API Update + унаследованные</td>
                     <td><span class="m-part">⚠</span> C/C++ через EDuke32</td>
                     <td><span class="m-part">⚠</span> ZScript / ACS</td>
                     <td><span class="m-part">⚠</span> ZScript / ACS</td>
@@ -663,18 +654,27 @@
                 <tr>
                     <td class="grc-label">Порог входа для моддера</td>
                     <td class="grc-hero-cell"><span class="m-yes">Очень низкий</span> — Python за вечер</td>
-                    <td><span class="m-no">Очень высокий</span></td>
-                    <td><span class="m-part">Средний</span></td>
+                    <td><span class="m-no">Высокий</span> — CON-скрипты + C</td>
+                    <td><span class="m-part">Средний</span> — ZScript требует изучения</td>
                     <td><span class="m-part">Средний</span></td>
                     <td><span class="m-part">Средний</span></td>
                     <td><span class="m-no">Высокий</span></td>
                 </tr>
                 <tr>
+                    <td class="grc-label">Скриптинг</td>
+                    <td class="grc-hero-cell"><span class="m-yes">✓</span> Python (полный API)</td>
+                    <td><span class="m-part">⚠</span> CON-скрипты</td>
+                    <td><span class="m-yes">✓</span> ZScript / ACS</td>
+                    <td><span class="m-yes">✓</span> ZScript / ACS</td>
+                    <td><span class="m-yes">✓</span> ZScript</td>
+                    <td><span class="m-yes">✓</span> EVALDRAW</td>
+                </tr>
+                <tr>
                     <td class="grc-label">Физика (тела, джойнты, слои)</td>
                     <td class="grc-hero-cell"><span class="m-yes">✓</span> PhysicsAPI 2.0</td>
                     <td><span class="m-no">✕</span></td>
-                    <td><span class="m-part">⚠</span> Через ZScript</td>
-                    <td><span class="m-part">⚠</span> Через ZScript</td>
+                    <td><span class="m-part">⚠</span> Через ZScript вручную</td>
+                    <td><span class="m-part">⚠</span> Через ZScript вручную</td>
                     <td><span class="m-part">⚠</span> Через ZScript</td>
                     <td><span class="m-part">⚠</span> Базовая</td>
                 </tr>
@@ -682,19 +682,28 @@
                     <td class="grc-label">Процедурная генерация</td>
                     <td class="grc-hero-cell"><span class="m-yes">✓</span> 4 типа + кастомные</td>
                     <td><span class="m-no">✕</span></td>
-                    <td><span class="m-no">✕</span></td>
-                    <td><span class="m-no">✕</span></td>
-                    <td><span class="m-no">✕</span></td>
+                    <td><span class="m-part">⚠</span> Возможна через ZScript/ACS, но вручную</td>
+                    <td><span class="m-part">⚠</span> То же</td>
+                    <td><span class="m-part">⚠</span> То же</td>
                     <td><span class="m-no">✕</span></td>
                 </tr>
                 <tr>
                     <td class="grc-label">Мультиплеер</td>
-                    <td class="grc-hero-cell"><span class="m-yes">✓</span> TCP до 8 + голос (1.4)</td>
-                    <td><span class="m-part">⚠</span> Ограничен</td>
-                    <td><span class="m-yes">✓</span> Zandronum до 32</td>
-                    <td><span class="m-yes">✓</span> Обновлён</td>
+                    <td class="grc-hero-cell"><span class="m-yes">✓</span> TCP до 8; голос — ⏳ в 1.4</td>
+                    <td><span class="m-part">⚠</span> DukeMatch до 8 (IPX/модем)</td>
+                    <td><span class="m-part">⚠</span> До 32 только через Zandronum (форк)</td>
+                    <td><span class="m-part">⚠</span> Обновлён, ограничен</td>
                     <td><span class="m-yes">✓</span></td>
                     <td><span class="m-yes">✓</span></td>
+                </tr>
+                <tr>
+                    <td class="grc-label">Встроенный редактор карт</td>
+                    <td class="grc-hero-cell"><span class="m-plan">⏳</span> Граф-редактор в 1.4</td>
+                    <td><span class="m-part">⚠</span> Mapster32 — отдельная программа</td>
+                    <td><span class="m-no">✕</span> Doom Builder / UDB — внешние</td>
+                    <td><span class="m-no">✕</span> UDB — внешний</td>
+                    <td><span class="m-part">⚠</span> Mapster32 — отдельно</td>
+                    <td><span class="m-yes">✓</span> Встроенный</td>
                 </tr>
                 <tr>
                     <td class="grc-label">Room-over-Room</td>
@@ -707,20 +716,20 @@
                 </tr>
                 <tr>
                     <td class="grc-label">Жанры из коробки</td>
-                    <td class="grc-hero-cell">FPS · хоррор · roguelike · Portal-like · CoD-like</td>
-                    <td>Только шутеры</td>
-                    <td>Только шутеры</td>
-                    <td>Только шутеры</td>
-                    <td>Только шутеры</td>
-                    <td>Только шутеры</td>
+                    <td class="grc-hero-cell">FPS · хоррор · roguelike · CoD-like · Backrooms <span class="m-plan">(Portal-like — в 1.4)</span></td>
+                    <td>Шутеры + моды любых жанров через CON</td>
+                    <td>Шутеры + любые жанры через ZScript (RPG, платформеры, пазлы — встречаются в сообществе)</td>
+                    <td>То же</td>
+                    <td>В основном шутеры</td>
+                    <td>В основном шутеры</td>
                 </tr>
                 <tr>
                     <td class="grc-label">Кроссплатформенность</td>
                     <td class="grc-hero-cell">Win · Linux · macOS (частично)</td>
-                    <td>Win · Linux</td>
-                    <td>Win · Linux · macOS · Switch</td>
-                    <td>Win · Linux</td>
-                    <td>Win · Linux</td>
+                    <td>Win · Linux · macOS · Android · FreeBSD (через EDuke32)</td>
+                    <td>Win · Linux · macOS</td>
+                    <td>Win · Linux · macOS</td>
+                    <td>Win · Linux · macOS</td>
                     <td>Win</td>
                 </tr>
             </tbody>
@@ -728,7 +737,7 @@
         </div>
         <div class="grc-legend">
             <span><span class="m-yes">✓</span> — есть из коробки</span>
-            <span><span class="m-part">⚠</span> — есть частично / через моды</span>
+            <span><span class="m-part">⚠</span> — есть частично / через моды / через внешние инструменты</span>
             <span><span class="m-no">✕</span> — нет</span>
             <span><span class="m-plan">⏳</span> — в планах</span>
         </div>
@@ -736,8 +745,7 @@
             <strong>Почему это важно.</strong>
             В гибридных движках RoR, тени и физика получаются из секторов и BSP «бесплатно» —
             архитектура сама их подсказывает. В чистом рейкастинге каждая из этих фич означает
-            переработку ядра алгоритма: как хранить высоты, как считать вторичные лучи,
-            как не убить производительность. Это и есть та самая «сложность разработки» —
+            переработку ядра алгоритма. Это и есть та самая «сложность разработки» —
             не жалоба, а факт, который отличает Gradus RC от остальных.
         </div>
     </div>
@@ -748,7 +756,6 @@
             <strong>На равных.</strong>
             Здесь мы <em>забываем</em> про архитектуру рендера. Просто смотрим на набор
             фич и возможностей — как если бы все движки были из одной категории.
-            Так честнее оценивать то, что видит конечный разработчик.
         </div>
         <div class="grc-table-wrap">
         <table>
@@ -756,7 +763,7 @@
                 <tr>
                     <th>Возможность</th>
                     <th class="grc-hero">Gradus RC v1.3</th>
-                    <th>Build Engine</th>
+                    <th>Build Engine / EDuke32</th>
                     <th>GZDoom</th>
                     <th>UZDoom</th>
                     <th>Raze</th>
@@ -767,7 +774,7 @@
                 <tr>
                     <td class="grc-label">Скриптинг</td>
                     <td class="grc-hero-cell"><span class="m-yes">✓</span> Python (полный API)</td>
-                    <td><span class="m-part">⚠</span> Теги + EVALDRAW</td>
+                    <td><span class="m-part">⚠</span> CON-скрипты</td>
                     <td><span class="m-yes">✓</span> ZScript / ACS</td>
                     <td><span class="m-yes">✓</span> ZScript / ACS</td>
                     <td><span class="m-yes">✓</span> ZScript</td>
@@ -777,9 +784,9 @@
                     <td class="grc-label">Физический движок</td>
                     <td class="grc-hero-cell"><span class="m-yes">✓</span> Тела · джойнты · слои · триггеры</td>
                     <td><span class="m-no">✕</span></td>
-                    <td><span class="m-part">⚠</span> Базовая</td>
-                    <td><span class="m-part">⚠</span> Базовая</td>
-                    <td><span class="m-part">⚠</span> Базовая</td>
+                    <td><span class="m-part">⚠</span> Через ZScript вручную</td>
+                    <td><span class="m-part">⚠</span> Через ZScript</td>
+                    <td><span class="m-part">⚠</span> Через ZScript</td>
                     <td><span class="m-part">⚠</span> Базовая</td>
                 </tr>
                 <tr>
@@ -792,30 +799,30 @@
                     <td><span class="m-yes">✓</span></td>
                 </tr>
                 <tr>
-                    <td class="grc-label">Мягкие тени</td>
-                    <td class="grc-hero-cell"><span class="m-yes">✓</span> RTE</td>
-                    <td><span class="m-no">✕</span></td>
-                    <td><span class="m-part">⚠</span> Только через шейдеры</td>
-                    <td><span class="m-part">⚠</span></td>
-                    <td><span class="m-yes">✓</span> Path tracing</td>
-                    <td><span class="m-part">⚠</span></td>
+                    <td class="grc-label">Отражения (реальное время)</td>
+                    <td class="grc-hero-cell"><span class="m-yes">✓</span> RTE — честный вторичный луч</td>
+                    <td><span class="m-part">⚠</span> Зеркала через Sector Effector</td>
+                    <td><span class="m-part">⚠</span> Line_Mirror</td>
+                    <td><span class="m-part">⚠</span> Line_Mirror</td>
+                    <td><span class="m-part">⚠</span> Наследует</td>
+                    <td><span class="m-part">⚠</span> Ограниченные</td>
                 </tr>
                 <tr>
-                    <td class="grc-label">Отражения</td>
-                    <td class="grc-hero-cell"><span class="m-yes">✓</span> Зеркала + вода</td>
+                    <td class="grc-label">Мягкие тени / RT</td>
+                    <td class="grc-hero-cell"><span class="m-yes">✓</span> RTE</td>
                     <td><span class="m-no">✕</span></td>
                     <td><span class="m-no">✕</span></td>
-                    <td><span class="m-part">⚠</span></td>
-                    <td><span class="m-yes">✓</span></td>
-                    <td><span class="m-part">⚠</span></td>
+                    <td><span class="m-no">✕</span></td>
+                    <td><span class="m-part">⚠</span> Только Duke-RT (мод)</td>
+                    <td><span class="m-no">✕</span></td>
                 </tr>
                 <tr>
                     <td class="grc-label">Процедурная генерация</td>
                     <td class="grc-hero-cell"><span class="m-yes">✓</span> 4 типа + кастомные</td>
                     <td><span class="m-no">✕</span></td>
-                    <td><span class="m-no">✕</span></td>
-                    <td><span class="m-no">✕</span></td>
-                    <td><span class="m-no">✕</span></td>
+                    <td><span class="m-part">⚠</span> Через ZScript/ACS</td>
+                    <td><span class="m-part">⚠</span> Через ZScript/ACS</td>
+                    <td><span class="m-part">⚠</span> Через ZScript</td>
                     <td><span class="m-no">✕</span></td>
                 </tr>
                 <tr>
@@ -830,7 +837,7 @@
                 <tr>
                     <td class="grc-label">Сохранения</td>
                     <td class="grc-hero-cell"><span class="m-yes">✓</span> JSON (вся игра)</td>
-                    <td><span class="m-part">⚠</span></td>
+                    <td><span class="m-yes">✓</span> Встроенные (EDuke32)</td>
                     <td><span class="m-yes">✓</span></td>
                     <td><span class="m-yes">✓</span></td>
                     <td><span class="m-yes">✓</span></td>
@@ -839,28 +846,28 @@
                 <tr>
                     <td class="grc-label">Кат-сцены</td>
                     <td class="grc-hero-cell"><span class="m-yes">✓</span> .gs3 + редактор</td>
-                    <td><span class="m-no">✕</span></td>
+                    <td><span class="m-part">⚠</span> Через CON-скрипты и анимацию (в Duke 3D были)</td>
                     <td><span class="m-part">⚠</span> Через скрипты</td>
                     <td><span class="m-part">⚠</span> Через скрипты</td>
                     <td><span class="m-part">⚠</span> Через скрипты</td>
-                    <td><span class="m-no">✕</span></td>
+                    <td><span class="m-part">⚠</span> Ограниченные</td>
                 </tr>
                 <tr>
                     <td class="grc-label">Мультиплеер</td>
-                    <td class="grc-hero-cell"><span class="m-yes">✓</span> TCP до 8</td>
+                    <td class="grc-hero-cell"><span class="m-yes">✓</span> TCP до 8 <span class="m-plan">(голос — 1.4)</span></td>
+                    <td><span class="m-part">⚠</span> DukeMatch до 8</td>
+                    <td><span class="m-part">⚠</span> До 32 в Zandronum (форк)</td>
                     <td><span class="m-part">⚠</span> Ограничен</td>
-                    <td><span class="m-yes">✓</span> До 32</td>
-                    <td><span class="m-yes">✓</span></td>
                     <td><span class="m-yes">✓</span></td>
                     <td><span class="m-yes">✓</span></td>
                 </tr>
                 <tr>
                     <td class="grc-label">Сплит-скрин</td>
                     <td class="grc-hero-cell"><span class="m-yes">✓</span> 2 игрока</td>
+                    <td><span class="m-part">⚠</span> Ограничен</td>
+                    <td><span class="m-part">⚠</span> Только в форках (SsZDooM, LZDoom)</td>
                     <td><span class="m-part">⚠</span></td>
-                    <td><span class="m-yes">✓</span></td>
-                    <td><span class="m-yes">✓</span></td>
-                    <td><span class="m-yes">✓</span></td>
+                    <td><span class="m-part">⚠</span></td>
                     <td><span class="m-no">✕</span></td>
                 </tr>
                 <tr>
@@ -873,20 +880,20 @@
                     <td><span class="m-no">✕</span></td>
                 </tr>
                 <tr>
-                    <td class="grc-label">Встроенный редактор</td>
+                    <td class="grc-label">Встроенный редактор карт</td>
                     <td class="grc-hero-cell"><span class="m-plan">⏳</span> Граф-редактор в 1.4</td>
-                    <td><span class="m-yes">✓</span> Mapster32</td>
-                    <td><span class="m-yes">✓</span> Doom Builder</td>
-                    <td><span class="m-yes">✓</span> UDB</td>
-                    <td><span class="m-yes">✓</span> Mapster32</td>
-                    <td><span class="m-yes">✓</span></td>
+                    <td><span class="m-part">⚠</span> Mapster32 — отдельно</td>
+                    <td><span class="m-no">✕</span> Doom Builder / UDB — внешние</td>
+                    <td><span class="m-no">✕</span> UDB — внешний</td>
+                    <td><span class="m-part">⚠</span> Mapster32 — отдельно</td>
+                    <td><span class="m-yes">✓</span> Встроенный</td>
                 </tr>
             </tbody>
         </table>
         </div>
         <div class="grc-legend">
             <span><span class="m-yes">✓</span> — есть из коробки</span>
-            <span><span class="m-part">⚠</span> — есть частично / через моды</span>
+            <span><span class="m-part">⚠</span> — есть частично / через моды / через внешние инструменты</span>
             <span><span class="m-no">✕</span> — нет</span>
             <span><span class="m-plan">⏳</span> — в планах</span>
         </div>
@@ -896,11 +903,9 @@
     <div class="grc-panel" data-grc-panel="dx" role="tabpanel">
         <div class="grc-desc">
             <strong>Скорость прототипа.</strong>
-            Здесь главный критерий — <em>сколько времени нужно от «установил движок»
-            до «играбельный прототип жанра X»</em>. Это тот самый показатель, который
-            чаще всего интересует людей, которые выбирают движок для пет-проекта.
-            Оценки — <em>порядок величины</em>, не точные секунды. Везде предполагается,
-            что разработчик уже знает язык, на котором пишет.
+            Главный критерий — <em>сколько времени от «установил движок» до «играбельный
+            прототип жанра X»</em>. Оценки — <em>порядок величины</em> для разработчика,
+            уже знающего язык. Везде предполагается базовое знакомство с API.
         </div>
         <div class="grc-table-wrap">
         <table>
@@ -908,7 +913,7 @@
                 <tr>
                     <th>Жанр / задача</th>
                     <th class="grc-hero">Gradus RC v1.3</th>
-                    <th>Build Engine</th>
+                    <th>Build Engine / EDuke32</th>
                     <th>GZDoom / UZDoom</th>
                     <th>Raze</th>
                     <th>BUILD2</th>
@@ -917,120 +922,136 @@
             <tbody>
                 <tr>
                     <td class="grc-label">Простой FPS-уровень</td>
-                    <td class="grc-hero-cell"><span class="m-yes">~15 мин</span></td>
+                    <td class="grc-hero-cell"><span class="m-yes">~10 мин</span></td>
+                    <td><span class="m-part">~1–2 часа</span></td>
+                    <td><span class="m-part">~2–4 часа</span></td>
+                    <td><span class="m-part">~2–4 часа</span></td>
                     <td><span class="m-part">~2 часа</span></td>
-                    <td><span class="m-part">~1 день</span></td>
-                    <td><span class="m-part">~1 день</span></td>
-                    <td><span class="m-part">~3 часа</span></td>
                 </tr>
                 <tr>
                     <td class="grc-label">Хоррор-атмосфера</td>
-                    <td class="grc-hero-cell"><span class="m-yes">~30 мин</span> + RTE</td>
-                    <td><span class="m-part">~день</span></td>
-                    <td><span class="m-part">~день</span></td>
-                    <td><span class="m-part">~день</span></td>
-                    <td><span class="m-part">~день</span></td>
+                    <td class="grc-hero-cell"><span class="m-yes">~20 мин</span> + RTE</td>
+                    <td><span class="m-part">~часы</span></td>
+                    <td><span class="m-part">~часы</span></td>
+                    <td><span class="m-part">~часы</span></td>
+                    <td><span class="m-part">~часы</span></td>
                 </tr>
                 <tr>
                     <td class="grc-label">Roguelike с процедуркой</td>
-                    <td class="grc-hero-cell"><span class="m-yes">~1 час</span> (генератор из коробки)</td>
-                    <td><span class="m-no">невозможно без мода</span></td>
-                    <td><span class="m-no">невозможно без мода</span></td>
-                    <td><span class="m-no">невозможно без мода</span></td>
-                    <td><span class="m-no">невозможно без мода</span></td>
+                    <td class="grc-hero-cell"><span class="m-yes">~30 мин</span> (генератор из коробки)</td>
+                    <td><span class="m-part">~дни</span> через CON-скрипты</td>
+                    <td><span class="m-part">~дни</span> через ZScript/ACS</td>
+                    <td><span class="m-part">~дни</span> через ZScript</td>
+                    <td><span class="m-part">~дни</span></td>
                 </tr>
                 <tr>
                     <td class="grc-label">Portal-like</td>
-                    <td class="grc-hero-cell"><span class="m-yes">~1 час</span> (порталы в 1.4)</td>
-                    <td><span class="m-no">сложно/костыльно</span></td>
-                    <td><span class="m-no">сложно/костыльно</span></td>
-                    <td><span class="m-no">сложно</span></td>
-                    <td><span class="m-no">сложно</span></td>
+                    <td class="grc-hero-cell"><span class="m-plan">⏳ 1.4</span></td>
+                    <td><span class="m-part">~дни</span> через сектора</td>
+                    <td><span class="m-part">~дни</span> через порталы + скрипты</td>
+                    <td><span class="m-part">~дни</span></td>
+                    <td><span class="m-part">~дни</span></td>
                 </tr>
                 <tr>
-                    <td class="grc-label">CoD-like / шутер с регенерацией</td>
-                    <td class="grc-hero-cell"><span class="m-yes">~1 час</span> (set_player_regen)</td>
-                    <td><span class="m-part">~дни</span></td>
-                    <td><span class="m-part">~дни</span></td>
-                    <td><span class="m-part">~дни</span></td>
-                    <td><span class="m-part">~дни</span></td>
+                    <td class="grc-label">CoD-like (регенерация HP, спринт)</td>
+                    <td class="grc-hero-cell"><span class="m-yes">~30 мин</span> (set_player_regen)</td>
+                    <td><span class="m-part">~часы</span> через CON</td>
+                    <td><span class="m-part">~1–2 часа</span> через ZScript (~20 строк)</td>
+                    <td><span class="m-part">~1–2 часа</span></td>
+                    <td><span class="m-part">~часы</span></td>
                 </tr>
                 <tr>
                     <td class="grc-label">Backrooms-like</td>
-                    <td class="grc-hero-cell"><span class="m-yes">~30 мин</span> (генератор + туман)</td>
-                    <td><span class="m-part">~день</span></td>
-                    <td><span class="m-part">~день</span></td>
-                    <td><span class="m-part">~день</span></td>
-                    <td><span class="m-part">~день</span></td>
+                    <td class="grc-hero-cell"><span class="m-yes">~20 мин</span> (генератор + туман)</td>
+                    <td><span class="m-part">~часы</span></td>
+                    <td><span class="m-part">~часы</span></td>
+                    <td><span class="m-part">~часы</span></td>
+                    <td><span class="m-part">~часы</span></td>
                 </tr>
                 <tr>
-                    <td class="grc-label">Гонки (вид от 1-го лица)</td>
-                    <td class="grc-hero-cell"><span class="m-part">~день</span> — вне рельсов, но возможно</td>
-                    <td><span class="m-no">не предназначено</span></td>
-                    <td><span class="m-no">не предназначено</span></td>
-                    <td><span class="m-no">не предназначено</span></td>
-                    <td><span class="m-no">не предназначено</span></td>
-                </tr>
-                <tr>
-                    <td class="grc-label">Своя кастомная пуля / оружие</td>
+                    <td class="grc-label">Своя кастомная пуля / снаряд</td>
                     <td class="grc-hero-cell"><span class="m-yes">~10 мин</span> (register_bullet_type)</td>
                     <td><span class="m-part">~часы</span> (C/C++)</td>
-                    <td><span class="m-part">~часы</span> (ZScript)</td>
-                    <td><span class="m-part">~часы</span> (ZScript)</td>
+                    <td><span class="m-part">~1–2 часа</span> (ZScript, ~50–100 строк)</td>
+                    <td><span class="m-part">~1–2 часа</span></td>
                     <td><span class="m-part">~часы</span></td>
                 </tr>
                 <tr>
                     <td class="grc-label">Кастомный HUD-элемент</td>
                     <td class="grc-hero-cell"><span class="m-yes">~5 мин</span> (bind_hud)</td>
-                    <td><span class="m-part">~день</span></td>
                     <td><span class="m-part">~часы</span></td>
+                    <td><span class="m-part">~30–60 мин</span> (ZScript/ACS)</td>
+                    <td><span class="m-part">~30–60 мин</span></td>
                     <td><span class="m-part">~часы</span></td>
-                    <td><span class="m-part">~день</span></td>
                 </tr>
                 <tr>
                     <td class="grc-label">Свой тип врага</td>
                     <td class="grc-hero-cell"><span class="m-yes">~10 мин</span> (register_enemy)</td>
                     <td><span class="m-part">~часы</span></td>
-                    <td><span class="m-part">~часы</span></td>
-                    <td><span class="m-part">~часы</span></td>
+                    <td><span class="m-part">~1–2 часа</span></td>
+                    <td><span class="m-part">~1–2 часа</span></td>
                     <td><span class="m-part">~часы</span></td>
                 </tr>
                 <tr>
                     <td class="grc-label">Сохранение / загрузка</td>
                     <td class="grc-hero-cell"><span class="m-yes">1 строка</span> (save_game)</td>
-                    <td><span class="m-part">~день</span> (вручную)</td>
+                    <td><span class="m-yes">Из коробки</span> (EDuke32)</td>
                     <td><span class="m-yes">Из коробки</span></td>
                     <td><span class="m-yes">Из коробки</span></td>
-                    <td><span class="m-part">~день</span></td>
+                    <td><span class="m-yes">Из коробки</span></td>
                 </tr>
             </tbody>
         </table>
         </div>
         <div class="grc-footnote">
             <strong>Что это показывает.</strong>
-            Порог входа — самое сильное преимущество Gradus RC.
-            Там, где в C/C++/ZScript надо потратить день на изучение API и ещё день на
-            первую рабочую версию, в Python + Gradus RC прототип получается за час.
-            Это не «лучше технически» — это <em>быстрее для разработчика</em>, и для
-            инди-сцены это часто важнее. Особенно для жанров, которые в других движках
-            из коробки не поддерживаются вообще: roguelike, Portal-like, CoD-like.
+            Порог входа — самое сильное преимущество Gradus RC. Там, где в C/C++/ZScript
+            надо потратить день-два на изучение API и первую рабочую версию, в Python +
+            Gradus RC прототип получается за час. Это не «лучше технически» — это
+            <em>быстрее для разработчика</em>. Особенно для жанров, которые в других движках
+            из коробки не поддерживаются: roguelike, Portal-like (с 1.4), CoD-like.
         </div>
-        <div class="grc-legend">
-            <span><span class="m-yes">✓</span> — быстро, из коробки</span>
-            <span><span class="m-part">⚠</span> — возможно, но с усилиями</span>
-            <span><span class="m-no">✕</span> — практически невозможно без переписывания ядра</span>
+        <div class="grc-footnote blue">
+            <strong>Справка по GZDoom.</strong>
+            Простой HUD или пуля в ZScript — это реально ~30–60 минут для знакомого с API.
+            Раньше таблица завышала время конкурентов. Теперь оценки приведены к
+            реалистичным для опытного разработчика, но всё ещё учитывают, что ZScript
+            требует изучения, в отличие от Python.
         </div>
     </div>
 
+    <!-- =================== CHANGELOG =================== -->
+    <div class="grc-changelog">
+        <h4>📝 Что исправлено в v2 (по фидбеку независимой проверки)</h4>
+        <ul>
+            <li><strong>Raze / Path tracing</strong> — убрано <code>✓</code>, поставлено <code>⚠</code> с пометкой «только Duke-RT (мод), не в базовом Raze».</li>
+            <li><strong>Build Engine / отражения</strong> — <code>✕</code> заменено на <code>⚠</code> (зеркала через Sector Effector — культовая фича Duke 3D).</li>
+            <li><strong>GZDoom / отражения</strong> — <code>✕</code> заменено на <code>⚠</code> (Line_Mirror).</li>
+            <li><strong>GZDoom / UZDoom / редактор карт</strong> — <code>✓</code> заменено на <code>✕</code> с пометкой «Doom Builder / UDB — внешние программы».</li>
+            <li><strong>Build Engine / скриптинг</strong> — «EVALDRAW» исправлено на «CON-скрипты». EVALDRAW — это BUILD2.</li>
+            <li><strong>GZDoom / сплит-скрин</strong> — <code>✓</code> заменено на <code>⚠</code> с пометкой «только в форках (SsZDooM, LZDoom)».</li>
+            <li><strong>GZDoom / мультиплеер «до 32»</strong> — уточнено: «до 32 в Zandronum (форк), не в самом GZDoom».</li>
+            <li><strong>Build Engine / кат-сцены</strong> — <code>✕</code> заменено на <code>⚠</code> с пометкой «через CON-скрипты и анимацию».</li>
+            <li><strong>Build Engine / сохранения</strong> — <code>~день (вручную)</code> заменено на «Из коробки» (EDuke32).</li>
+            <li><strong>Build Engine / кроссплатформенность</strong> — расширено: Win · Linux · macOS · Android · FreeBSD (EDuke32).</li>
+            <li><strong>BUILD2 / архитектура</strong> — «Секторный raycasting» заменено на «Секторный рендеринг» (неточная терминология).</li>
+            <li><strong>Жанры конкурентов</strong> — «Только шутеры» для GZDoom/UZDoom заменено на честное «Шутеры + любые жанры через ZScript (RPG, платформеры, пазлы встречаются в сообществе)».</li>
+            <li><strong>GZDoom / время прототипа</strong> — оценки снижены до реалистичных (CoD-like ~1–2 часа, HUD ~30–60 мин, пуля ~1–2 часа).</li>
+            <li><strong>Roguelike в GZDoom</strong> — «невозможно без мода» заменено на «~дни через ZScript/ACS».</li>
+            <li><strong>Portal-like и голос (1.4)</strong> — везде явно помечено <code>⏳ 1.4</code>, чтобы не создавалось впечатления, что уже есть.</li>
+        </ul>
+    </div>
+
     <!-- =================== ПОДВАЛ =================== -->
-    <div class="grc-footnote" style="border-left-color: #8ab4f8; margin-top: 22px;">
-        <strong style="color:#8ab4f8;">Источник данных.</strong>
+    <div class="grc-footnote blue" style="margin-top: 22px;">
+        <strong>Источник данных.</strong>
         Gradus RC — по официальной документации v1.3 и roadmap 1.4.
         Сравниваемые движки — по публичной документации и известным возможностям
-        на момент 2026 года. Все оценки «скорости прототипа» — порядок величины,
-        а не точные секунды; конкретные цифры зависят от опыта разработчика.
+        на момент 2026 года. Временные оценки — порядок величины; конкретика зависит
+        от опыта разработчика.
     </div>
 </div>
+
 <div class="tip" id="sys" style="border-color: #7ad37a;">
   <strong style="color:#7ad37a;">🚀 Системные требования</strong>
 
@@ -4414,10 +4435,8 @@ params   = layers['_params']     # dict</code></pre>
     var root = document.currentScript.closest('.grc-cmp') ||
                document.querySelector('.grc-cmp');
     if (!root) return;
-
     var tabs = root.querySelectorAll('.grc-tab');
     var panels = root.querySelectorAll('.grc-panel');
-
     tabs.forEach(function (tab) {
         tab.addEventListener('click', function () {
             var key = tab.getAttribute('data-grc-tab');
@@ -4431,5 +4450,6 @@ params   = layers['_params']     # dict</code></pre>
     });
 })();
 </script>
+
 </body>
 </html>
