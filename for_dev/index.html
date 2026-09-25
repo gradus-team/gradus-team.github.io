@@ -116,6 +116,8 @@
         .lang-btn.active.java { background: #f89820; }
         .lang-btn.active.python { background: #3776AB; }
         .lang-btn.active.javascript { background: #F7DF1E; color: #323330; }
+        .lang-btn.active.windows { background: #0078D4; }
+        .lang-btn.active.android { background: #3DDC84; color: #1a1a1a; }
 
         .actions {
             display: flex;
@@ -257,7 +259,6 @@
                 Микро-фреймворк для статических сайтов (только JS). Работа с API, Firebase, локальной БД, шаблоны в HTML. У вас есть возможность написать свои плейсхолдеры не копаясь в исходниках.
             </div>
             <div class="actions" style="margin-top: auto;">
-                <!-- Можно скачать архив или отдельные файлы, пока ссылка на основной файл -->
                 <a id="gradusstatic-download" href="staticjs.zip" class="btn btn-primary" data-download="staticjs_2_7_1.zip">
                     <i class="fas fa-download"></i> Скачать
                 </a>
@@ -267,13 +268,17 @@
             </div>
         </div>
 
+        <!-- ===== Gradus RC ===== -->
         <div class="card" id="gradus-rc">
             <div class="product-title">📚 Gradus RayCast ENGINE (1.3.5)</div>
-            <div class="desc">
+            <div class="desc" id="gradusrc-desc">
                 Полноценный движок на Python основанный на Ray Casting с авторскими технологиями Light Tracing, PhysicsAPI, MicroAPI, OBJ-Converter (конвертирует .obj в 128 спрайтов 512x512), RT Emulator, смотрите все остальное в документации.
             </div>
+            <div class="lang-switch" id="gradusrc-platform-switch">
+                <button class="lang-btn active windows" data-platform="windows"><i class="fab fa-windows"></i> Windows</button>
+                <button class="lang-btn android" data-platform="android"><i class="fab fa-android"></i> Android</button>
+            </div>
             <div class="actions" style="margin-top: auto;">
-                <!-- Можно скачать архив или отдельные файлы, пока ссылка на основной файл -->
                 <a id="gradusrc-download" href="gradus-rc.zip" class="btn btn-primary" data-download="gradus-rc.zip">
                     <i class="fas fa-download"></i> Скачать
                 </a>
@@ -382,7 +387,6 @@
             }
 
             btns.forEach(b => b.addEventListener('click', e => setLang(e.currentTarget.getAttribute('data-lang'))));
-            // Активируем первый язык
             const active = document.querySelector(`#${switchId} .lang-btn.active`);
             if (active) setLang(active.getAttribute('data-lang'));
             else setLang('java');
@@ -390,6 +394,44 @@
 
         setupCard('graduscore-lang-switch', 'graduscore-desc', 'graduscore-download', 'graduscore-docs', graduscoreData);
         setupCard('anticheat-lang-switch', 'anticheat-desc', 'anticheat-download', 'anticheat-docs', anticheatData);
+
+        // === Переключатель платформы для Gradus RC ===
+        const rcPlatformData = {
+            windows: {
+                desc: `Полноценный движок на Python основанный на Ray Casting с авторскими технологиями Light Tracing, PhysicsAPI, MicroAPI, OBJ-Converter (конвертирует .obj в 128 спрайтов 512x512), RT Emulator, смотрите все остальное в документации.`,
+                file: 'gradus-rc.zip'
+            },
+            android: {
+                desc: `Мобильная версия движка Gradus RC для Android. Ray Casting, Light Tracing, PhysicsAPI, MicroAPI — всё в одном APK. Запускайте проекты прямо на телефоне.`,
+                file: 'grc_engine_mobile.apk'
+            }
+        };
+
+        const rcBtns = document.querySelectorAll('#gradusrc-platform-switch .lang-btn');
+        const rcDesc = document.getElementById('gradusrc-desc');
+        const rcDownload = document.getElementById('gradusrc-download');
+
+        function setRcPlatform(platform) {
+            rcBtns.forEach(b => {
+                const p = b.getAttribute('data-platform');
+                b.classList.remove('active', 'windows', 'android');
+                if (p === platform) b.classList.add('active', p);
+            });
+            if (rcPlatformData[platform]) {
+                rcDesc.innerHTML = rcPlatformData[platform].desc;
+                rcDownload.href = rcPlatformData[platform].file;
+                rcDownload.setAttribute('data-download', rcPlatformData[platform].file);
+            }
+        }
+
+        rcBtns.forEach(b => b.addEventListener('click', e => {
+            setRcPlatform(e.currentTarget.getAttribute('data-platform'));
+        }));
+
+        // Активируем Windows по умолчанию
+        const rcActive = document.querySelector('#gradusrc-platform-switch .lang-btn.active');
+        if (rcActive) setRcPlatform(rcActive.getAttribute('data-platform'));
+        else setRcPlatform('windows');
     })();
 </script>
 </body>
