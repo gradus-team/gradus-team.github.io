@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Gradus Team — Антивирусные решения</title>
+    <title>Gradus Team — Antivirus, Engine GRC и игры</title>
+    <meta name="description" content="Gradus Team: антивирусные решения, Gradus RC Engine (GRC) для создания игр и браузерные игры WarCard и It's LLM.">
+    <meta name="keywords" content="Gradus Team, Gradus Antivirus, Gradus RC Engine, GRC, создание игр, WarCard, It's LLM, симулятор ИИ">
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="icon" href="./favicon.ico" type="image/x-icon">
@@ -150,6 +152,33 @@
             background: white; padding: 1.5rem; border-radius: 24px;
             max-width: 90%; max-height: 90%; overflow-y: auto; position: relative;
         }
+        .screenshot-modal-content { width:min(96vw,1180px); height:min(92dvh,900px); max-width:96vw; max-height:92dvh; overflow:hidden; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:clamp(.75rem,2vw,1.4rem); }
+        .screenshot-modal-content #modalImage { display:block; width:100%; height:100%; max-width:100%; max-height:calc(100% - 2.3rem); object-fit:contain; object-position:center; flex:1 1 0; min-height:0; min-width:0; margin:auto; }
+        .screenshot-modal-content #modalCaption { margin:.6rem 0 0; flex:0 0 auto; color:#38483e; text-align:center; }
+        .screenshot-modal-content .close-modal { z-index:2; top:8px; right:8px; }
+        @media(max-width:600px){ .screenshot-modal-content{width:98vw;height:88dvh;max-width:98vw;padding:.6rem;gap:.25rem;} .screenshot-modal-content #modalImage{width:100%;height:100%;max-width:100%;max-height:calc(100% - 2.7rem);object-fit:contain;} .screenshot-modal-content #modalCaption{font-size:.85rem;} }
+        .site-footer { margin-top:3rem; text-align:left; background:linear-gradient(135deg,#102c20,#173d2c 52%,#112a25); color:#dbeee2; border:0; padding:clamp(1.5rem,4vw,3rem) clamp(1rem,5vw,4rem) 1.3rem; border-radius:26px 26px 0 0; }
+        .footer-inner { display:grid; grid-template-columns:1.2fr .7fr 1fr; gap:clamp(1.5rem,4vw,4rem); max-width:1240px; margin:0 auto; padding-bottom:1.6rem; }
+        .footer-brand { font-weight:900; font-size:1.7rem; text-decoration:none; color:#fff; letter-spacing:-.04em; }
+        .footer-brand span { color:#85e2a8; }
+        .footer-brand-block p,.footer-column small { color:#abc9b6; line-height:1.7; }
+        .footer-support-badge { display:inline-flex; padding:.35rem .65rem; background:#ffffff10; border:1px solid #ffffff20; border-radius:999px; color:#bce8ca; font-size:.8rem; }
+        .site-footer { position:relative; overflow:hidden; box-shadow:0 -18px 55px #0f3a2410; }
+        .site-footer:before { content:""; position:absolute; width:340px; height:340px; right:-130px; top:-190px; border:1px solid #ffffff12; border-radius:50%; box-shadow:0 0 0 28px #ffffff05,0 0 0 58px #ffffff03; pointer-events:none; }
+        .footer-column { display:flex; flex-direction:column; align-items:flex-start; gap:.62rem; position:relative; z-index:1; }
+        .footer-column h3 { margin:0 0 .25rem; font-size:.92rem; color:#f0fff4; letter-spacing:.03em; }
+        .footer-column a { color:#c7e6d2; text-decoration:none; transition:color .18s,transform .18s; overflow-wrap:anywhere; }
+        .footer-column a:hover { color:#fff; transform:translateX(3px); }
+        .footer-column small { max-width:32rem; font-size:.75rem; margin-top:.2rem; }
+        .footer-bottom { max-width:1240px; margin:1.1rem auto 0; padding-top:1.15rem; border-top:1px solid #ffffff1d; display:flex; flex-wrap:wrap; gap:.6rem 1.5rem; justify-content:space-between; font-size:.76rem; color:#9fc0ac; }
+        .footer-bottom a { color:#bce8ca; text-decoration:none; }
+        .footer-bottom a:hover { color:#fff; text-decoration:underline; }
+        .footer-column { display:flex; flex-direction:column; align-items:flex-start; gap:.55rem; }
+        .footer-column h3 { color:#fff; font-size:1rem; margin:.2rem 0 .35rem; }
+        .footer-column a,.footer-bottom a { color:#bdebd0; text-decoration:none; overflow-wrap:anywhere; }
+        .footer-column a:hover,.footer-bottom a:hover { color:white; text-decoration:underline; }
+        .footer-bottom { max-width:1240px; margin:2rem auto 0; padding-top:1rem; border-top:1px solid #ffffff24; display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap; color:#9dbca9; font-size:.78rem; }
+        @media(max-width:720px){.footer-inner{grid-template-columns:1fr 1fr}.footer-brand-block{grid-column:1/-1}.footer-bottom{flex-direction:column;}}
         .close-modal {
             position: absolute; top: 10px; right: 20px; font-size: 2rem;
             cursor: pointer; color: #333; background: rgba(255,255,255,0.8);
@@ -220,6 +249,185 @@
             }
         }
 
+        [data-mode-content][hidden] { display: none !important; }
+        .mode-switch-section { padding-top: 2rem; padding-bottom: 2rem; }
+        .mode-switch-heading { display:flex; align-items:flex-end; justify-content:space-between; gap:1rem; flex-wrap:wrap; }
+        .mode-switch-heading .section-title { margin-bottom:1rem; }
+        .mode-eyebrow { display:block; text-transform:uppercase; letter-spacing:2px; color:#2C7A4D; font-size:.75rem; font-weight:700; margin-bottom:.4rem; }
+        .mode-switch-copy,.games-intro { color:#60746A; margin:0 0 1.25rem; max-width:760px; }
+        .mode-switch { display:inline-flex; gap:4px; padding:4px; border:1px solid #DCE8DE; border-radius:50px; background:#F4F8F4; margin-bottom:1.3rem; }
+        .mode-toggle { border:0; border-radius:40px; padding:.65rem 1.05rem; background:transparent; color:#365447; cursor:pointer; font-weight:700; }
+        .mode-toggle.active { background:#2C7A4D; color:#fff; box-shadow:0 5px 12px rgba(44,122,77,.18); }
+        .mode-toggle:focus-visible,.mode-link:focus-visible,.game-tile a:focus-visible { outline:3px solid #E9C84A; outline-offset:3px; }
+        .mode-feature[hidden] { display:none !important; }
+        .mode-feature { display:flex; align-items:center; gap:1.3rem; padding:1.3rem 1.5rem; background:linear-gradient(145deg,#F8FCF8,#EFF6F0); border:1px solid #DCE9DE; border-radius:24px; }
+        .engine-feature { background:linear-gradient(145deg,#F5F8FF,#EAF1FA); border-color:#D7E3F4; }
+        .mode-feature-icon { flex:0 0 66px; height:66px; display:grid; place-items:center; border-radius:20px; background:#E0F0E4; color:#267349; font-size:2rem; }
+        .engine-feature .mode-feature-icon { background:#DFEAF9; color:#2F5D99; }
+        .mode-feature-copy h2 { font-size:1.3rem; margin:0 0 .35rem; color:#1F3D32; }
+        .mode-feature-copy p { color:#52685B; margin:0 0 .5rem; max-width:850px; }
+        .mode-link { color:#1E6841; font-weight:700; text-decoration:none; }
+        .games-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1.25rem; }
+        .game-tile { display:flex; gap:1.2rem; align-items:flex-start; border-radius:28px; padding:1.6rem; border:1px solid #DEE8E0; box-shadow:0 12px 26px rgba(0,0,0,.045); min-width:0; }
+        .warcard-tile { background:linear-gradient(145deg,#1A2D4A,#243C61); border-color:#2B456A; color:#fff; }
+        .llm-tile { background:linear-gradient(145deg,#183B2F,#285642); border-color:#34684D; color:#fff; }
+        .game-tile-icon { flex:0 0 54px; width:54px; height:54px; display:grid; place-items:center; border-radius:17px; background:rgba(255,255,255,.12); color:#FDD835; font-size:1.7rem; }
+        .game-tile-content { min-width:0; display:flex; flex-direction:column; align-items:flex-start; gap:.45rem; }
+        .game-label { text-transform:uppercase; letter-spacing:1.2px; font-size:.68rem; color:#BED0E6; font-weight:800; }
+        .llm-tile .game-label { color:#B8E8CE; }
+        .game-tile h3 { font-size:1.55rem; margin:0; }
+        .game-tile p { color:#E0E8F2; margin:0 0 .6rem; }
+        .game-tile .promo-btn { margin-top:.4rem; }
+
+        .engine-page-section { padding: 1.5rem 0; scroll-margin-top: 100px; }
+        .engine-hero-card { display:grid; grid-template-columns:minmax(0,1.5fr) minmax(230px,.7fr); gap:1.25rem; padding:clamp(1.25rem,3vw,2rem); border-radius:24px; background:linear-gradient(135deg,#f1f5ff,#e6f5ef); border:1px solid #d4e3df; color:#1e342b; box-shadow:0 12px 40px #15352b12; }
+        .engine-hero-card p,.engine-about-card p { color:#52675f; line-height:1.7; }
+        .engine-version { font-size:.65em; padding:.25em .6em; border-radius:9px; color:#245d99; background:#d9e8ff; vertical-align:middle; }
+        .engine-cta-row { display:flex; flex-wrap:wrap; gap:.75rem; align-items:center; margin-top:1rem; }
+        .engine-cta-row .promo-btn,.engine-product-card .promo-btn { display:inline-flex; align-items:center; justify-content:center; text-decoration:none; border:1px solid #246f59; background:#246f59; color:#fff; padding:.85rem 1.1rem; border-radius:12px; font-weight:700; }
+        .engine-cta-row .engine-secondary { background:transparent; color:#246f59; }
+        .engine-highlight { padding:1.4rem; background:#fff; border:1px solid #d7e4df; border-radius:18px; align-self:stretch; display:flex; flex-direction:column; justify-content:center; }
+        .engine-highlight h3 { margin:.3rem 0; }
+        .engine-highlight-icon { font-size:2.4rem; }
+        .engine-highlight a,.engine-doc-card a,.engine-product-card a { color:#256849; font-weight:700; }
+        .engine-tags,.engine-roadmap-pills { display:flex; gap:.5rem; flex-wrap:wrap; margin-top:1rem; }
+        .engine-tags span,.engine-roadmap-pills span { padding:.45rem .7rem; border-radius:99px; background:#e3eee9; border:1px solid #d0dfd8; font-size:.85rem; color:#304c40; }
+        .engine-intro { color:#60746a; max-width:800px; line-height:1.65; }
+        .engine-doc-grid,.engine-products-grid,.engine-download-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1rem; }
+        .engine-doc-card,.engine-product-card,.engine-about-card { padding:1.2rem; border:1px solid #dde7e1; border-radius:16px; background:#fff; color:#243a30; box-shadow:0 5px 22px #163b2b08; }
+        .engine-doc-card summary,.engine-faq-list summary { cursor:pointer; font-weight:750; line-height:1.5; }
+        .engine-doc-card p,.engine-product-card p,.engine-faq-list p { color:#60746a; line-height:1.65; }
+        .engine-status { font-size:.75rem; color:#6a5b20; background:#fff4cb; border-radius:8px; padding:.3rem .5rem; }
+        .engine-product-card > span { font-size:1.9rem; }
+        .engine-product-card h3 { margin:.5rem 0; }
+        .engine-product-card small { color:#7a6b2a; }
+        .engine-fund-card { padding:clamp(1.25rem,3vw,2rem); display:grid; grid-template-columns:1fr minmax(240px,.7fr); gap:1.2rem; border-radius:22px; background:linear-gradient(135deg,#eef8f0,#edf3ff); border:1px solid #d7e4df; color:#213a2e; }
+        .fund-progress-head { display:flex; justify-content:space-between; gap:.6rem; margin-bottom:.6rem; }
+        .fund-progress-track { height:15px; border-radius:99px; background:#d3dfd8; overflow:hidden; margin-bottom:1rem; }
+        .fund-progress-track span { display:block; height:100%; background:linear-gradient(90deg,#319c71,#6dcf9a); border-radius:99px; }
+        .engine-price-table { margin:1rem 0; border:1px solid #e0e9e3; border-radius:12px; overflow:hidden; }
+        .engine-price-line { display:flex; justify-content:space-between; gap:1rem; padding:.75rem .9rem; flex-wrap:wrap; border-bottom:1px solid #e0e9e3; }
+        .engine-price-line:last-child { border-bottom:0; }
+        .engine-price-line strong { color:#285c47; }
+        .engine-price-line span { color:#62756a; }
+        .engine-price-line.sale { background:#fff6dc; }
+        .engine-purchase-card { max-width:900px; padding:1.3rem; background:#fff; border:1px solid #dbe6df; border-radius:18px; color:#243a30; }
+        .engine-purchase-card input,.engine-purchase-card select { width:100%; min-width:0; padding:.8rem; border:1px solid #cddbd1; border-radius:10px; background:#f9fcfa; color:#22392e; }
+        .engine-purchase-card .field label { color:#52675f; }
+        .engine-purchase-card { box-shadow:0 18px 45px rgba(17,56,36,.10); }
+        .engine-selected-product { display:flex; align-items:flex-start; gap:1rem; padding:1.2rem 1.25rem; margin:1rem 0 1.25rem; border-radius:18px; background:linear-gradient(135deg,#edf8f0 0%,#f3f7ff 100%); border:1px solid #d3e5d9; box-shadow:0 10px 28px #203e2a0c; transition:background .2s,border-color .2s; }
+        .engine-selected-icon { display:grid; place-items:center; flex:0 0 52px; height:52px; border-radius:15px; background:#fff; box-shadow:0 5px 15px #203e2a12; font-size:1.65rem; }
+        .engine-selected-product strong { color:#1d5b3d; font-size:1.08rem; }
+        .engine-purchase-card { position:relative; overflow:hidden; }
+        .engine-purchase-card:before { content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:linear-gradient(#3eac70,#467ed1); }
+        .engine-selected-icon { display:grid; place-items:center; flex:0 0 3.3rem; width:3.3rem; height:3.3rem; border-radius:13px; background:#ffffffb8; border:1px solid #d6e5db; font-size:1.6rem; box-shadow:0 5px 16px #122a1c12; }
+        .engine-selected-meta { display:inline-block; margin-top:.35rem; padding:.25rem .55rem; border-radius:999px; background:#ffffffb8; color:#2b6a4e; font-size:.78rem; }
+        .engine-selected-product p { margin:.3rem 0; line-height:1.6; color:#52675c; }
+        .engine-selected-meta { font-size:.8rem; color:#708377; }
+        .engine-purchase-card .engine-order-total { display:flex; justify-content:space-between; align-items:center; padding:1rem 1.15rem; border-radius:13px; background:#eaf7ee; }
+        .engine-order-total { font-size:1.35rem; font-weight:800; color:#23694c; border:1px solid #d1e9d8; box-shadow:inset 0 1px #fff; }
+        .engine-terms { display:flex; align-items:flex-start; gap:.5rem; }
+        .engine-terms input { width:auto; margin-top:.35rem; }
+        .engine-order-message { padding:1rem; background:#f0f7f2; border:1px dashed #9dbdab; overflow-wrap:anywhere; border-radius:10px; margin:1rem 0; }
+        .engine-fineprint { font-size:.82rem; color:#718177; }
+        .engine-faq-list { display:grid; gap:.75rem; }
+        .engine-faq-list details { padding:1rem 1.1rem; border:1px solid #dbe6df; border-radius:13px; background:#fff; color:#253b31; }
+        .engine-about-card { max-width:1000px; }
+        .engine-page-section .section-title { color:inherit; }
+
+        /* Refined checkout and footer surfaces */
+        .engine-purchase-card { max-width:1040px; padding:clamp(1rem,2.5vw,2rem); border-radius:24px; background:radial-gradient(circle at 95% 0%,#e5f2ff 0,transparent 34%),linear-gradient(145deg,#fff 0%,#f8fbf8 100%); border:1px solid #cbded2; box-shadow:0 24px 65px rgba(21,59,39,.13); }
+        .engine-purchase-card:before { width:6px; background:linear-gradient(180deg,#4bc38b,#5b91ec,#a58ae9); }
+        .engine-purchase-card .formrow { align-items:end; gap:1rem; }
+        .engine-purchase-card .field { flex:1 1 240px; }
+        .engine-purchase-card .field label { display:block; margin-bottom:.45rem; font-size:.82rem; letter-spacing:.02em; font-weight:800; color:#38594a; }
+        .engine-purchase-card input,.engine-purchase-card select { min-height:48px; padding:.85rem 1rem; border:1px solid #c9d9ce; border-radius:13px; background:#fff; box-shadow:0 2px 4px #173c2510; transition:border-color .18s,box-shadow .18s; }
+        .engine-purchase-card input:focus,.engine-purchase-card select:focus { outline:0; border-color:#3b9e73; box-shadow:0 0 0 4px #3b9e731c; }
+        .engine-selected-product { min-height:155px; align-items:center; gap:1.1rem; padding:clamp(1.1rem,2.5vw,1.6rem); border-radius:20px; background:linear-gradient(120deg,#e8f8ee,#edf3ff 72%,#f6f1ff); border-color:#cfdfd6; }
+        .engine-selected-icon { flex:0 0 64px; width:64px; height:64px; border-radius:18px; font-size:1.9rem; }
+        .engine-selected-product strong { display:block; color:#174d35; font-size:1.22rem; letter-spacing:-.02em; }
+        .engine-selected-product p { max-width:650px; margin:.45rem 0; line-height:1.65; color:#4d665b; }
+        .engine-selected-meta { margin-top:.45rem; padding:.28rem .62rem; border:1px solid #d5e5da; background:#ffffffa8; font-size:.78rem; }
+        .engine-purchase-card .engine-order-total { gap:1rem; min-height:70px; margin:1rem 0; padding:1.05rem 1.25rem; border:1px solid #c7e5d0; border-radius:16px; background:linear-gradient(100deg,#e5f7eb,#edf7f1); color:#1d6747; box-shadow:inset 0 1px #fff; font-size:1.45rem; }
+        .engine-terms { align-items:flex-start; margin:.8rem 0 1rem; color:#4d6357; line-height:1.5; font-size:.9rem; }
+        .engine-terms input { width:17px; min-height:17px; flex:0 0 17px; margin-top:.15rem; accent-color:#267c54; }
+        .engine-order-message { background:#f5f9ff; border:1px solid #cfdbec; border-radius:14px; color:#2e445d; }
+        #engineMakeOrder,#enginePayNow { min-height:48px; border-radius:13px; cursor:pointer; transition:transform .15s,box-shadow .15s; }
+        #engineMakeOrder:hover,#enginePayNow:hover { transform:translateY(-1px); box-shadow:0 8px 20px #183b281b; }
+        .engine-fineprint { margin-top:1rem; padding-top:.9rem; border-top:1px solid #e2eae4; line-height:1.65; }
+        .site-footer { margin-top:3rem; padding:0; overflow:hidden; color:#dbe8e1; background:radial-gradient(circle at 15% 0%,#1c493b 0,transparent 36%),linear-gradient(135deg,#101b25 0%,#142a29 58%,#111d2a 100%); border-top:1px solid #2e5547; }
+        .site-footer .footer-inner { max-width:1280px; margin:0 auto; padding:clamp(2rem,5vw,3.5rem) 1.4rem; display:grid; grid-template-columns:minmax(240px,1.3fr) repeat(2,minmax(180px,1fr)); gap:clamp(1.5rem,4vw,4rem); }
+        .site-footer .footer-brand { display:inline-block; color:#fff; font-size:1.65rem; font-weight:900; letter-spacing:-.04em; text-decoration:none; }
+        .site-footer .footer-brand span { color:#6ce2ab; }
+        .site-footer .footer-brand-block p { max-width:340px; color:#b8ccc2; line-height:1.7; }
+        .site-footer .footer-build-note { display:inline-flex; padding:.4rem .7rem; border:1px solid #406456; border-radius:999px; background:#17352e; color:#a8d9c0; font-size:.78rem; }
+        .site-footer .footer-column { display:flex; flex-direction:column; align-items:flex-start; gap:.65rem; }
+        .site-footer .footer-column h3 { margin:.15rem 0 .55rem; color:#fff; font-size:.9rem; letter-spacing:.1em; text-transform:uppercase; }
+        .site-footer .footer-column a { color:#cee1d7; text-decoration:none; line-height:1.5; overflow-wrap:anywhere; }
+        .site-footer .footer-column a:hover { color:#7ce5b3; text-decoration:underline; }
+        .site-footer .footer-column small { margin-top:.4rem; color:#8da99a; line-height:1.6; }
+        .site-footer .footer-bottom { display:flex; justify-content:space-between; gap:1rem; padding:1.1rem max(1.4rem,calc((100vw - 1280px)/2 + 1.4rem)); border-top:1px solid #2a453d; background:#0a121a88; color:#92a99d; font-size:.82rem; }
+        .site-footer .footer-bottom a { color:#a9d7c0; }
+        .engine-purchase-card { position:relative; overflow:hidden; }
+        .engine-purchase-card:after { content:""; position:absolute; width:260px; height:260px; right:-120px; top:-160px; border:1px solid #69b88d30; border-radius:50%; box-shadow:0 0 0 28px #69b88d0b,0 0 0 56px #69b88d08; pointer-events:none; }
+        .engine-purchase-card form { position:relative; z-index:1; }
+        .engine-selected-product { position:relative; overflow:hidden; }
+        .engine-selected-product:before { display:none; }
+        .engine-selected-icon { box-shadow:0 8px 20px #2b705020; }
+        .engine-fineprint { display:flex; align-items:center; gap:.55rem; color:#536b5d; font-size:.83rem; }
+        .site-footer { position:relative; isolation:isolate; }
+        .site-footer .footer-inner { gap:1rem; align-items:stretch; }
+        .site-footer .footer-brand-block { align-self:center; padding:1.5rem; border-radius:22px; background:linear-gradient(145deg,#ffffff10,#ffffff04); border:1px solid #ffffff18; }
+        .site-footer .footer-column { padding:1.35rem; transition:transform .18s,border-color .18s,background .18s; }
+        .site-footer .footer-column:hover { transform:translateY(-3px); border-color:#71cfa280; background:linear-gradient(145deg,#ffffff12,#ffffff06); }
+        .site-footer .footer-column a { padding:.2rem 0; }
+        .site-footer .footer-column a[href^="mailto:"] { color:#8ce6b6; font-weight:800; }
+        .site-footer .footer-column small { display:block; max-width:280px; }
+        .site-footer .footer-bottom { margin-top:0; }
+        @media(max-width:760px){.site-footer .footer-brand-block{padding:1.2rem}.site-footer .footer-column:hover{transform:none}}
+
+
+        /* Clearer subscription checkout and a more structured site footer */
+        .engine-purchase-card { max-width:900px; margin:1.6rem auto 0; border-radius:28px; background:linear-gradient(145deg,#ffffff 0%,#f7fbf8 62%,#f0f5ff 100%); box-shadow:0 26px 70px rgba(21,59,39,.16); border:1px solid #cedfd4; }
+        .engine-purchase-card form { padding:clamp(1rem,2.5vw,1.65rem); }
+        .engine-purchase-card .formrow:first-child { display:grid; grid-template-columns:minmax(0,1.5fr) minmax(180px,.8fr); gap:1rem; }
+        .engine-selected-product { display:grid; grid-template-columns:68px minmax(0,1fr); align-items:center; min-height:0; padding:1.35rem; margin:1.2rem 0; background:linear-gradient(125deg,#e8f8ee 0%,#f5f8ff 65%,#f4f0ff 100%); border:1px solid #cbded2; box-shadow:0 10px 26px #193d2a0d; }
+        .engine-selected-product > div { min-width:0; }
+        .engine-selected-product p { margin:.4rem 0 .25rem; color:#445b50; }
+        .engine-selected-meta { display:inline-flex; max-width:100%; white-space:normal; line-height:1.45; }
+        .engine-order-total { display:flex; justify-content:space-between; align-items:center; gap:1rem; padding:1.1rem 1.3rem; margin:1.2rem 0; background:linear-gradient(115deg,#123c2b,#206244); border:1px solid #2b8057; border-radius:17px; box-shadow:0 12px 26px #143b2a25; color:#fff!important; font-size:1.35rem; }
+        .engine-terms { padding:.8rem 1rem; background:#f5f8f5; border:1px solid #e0e8e1; border-radius:12px; }
+        .engine-cta-row { display:grid; grid-template-columns:1fr 1fr; gap:.75rem; margin-top:1.1rem; }
+        .engine-cta-row .promo-btn { display:flex; align-items:center; justify-content:center; min-height:52px; text-align:center; }
+        .engine-cta-row .engine-secondary { background:#fff; color:#276344; border:1px solid #cbded2; }
+        .engine-order-message { white-space:pre-wrap; font-family:ui-monospace,SFMono-Regular,Consolas,monospace; font-size:.88rem; line-height:1.65; }
+        .site-footer .footer-column { padding:1.25rem; border:1px solid #ffffff1a; border-radius:18px; background:linear-gradient(145deg,#ffffff0b,#ffffff04); box-shadow:inset 0 1px #ffffff0a; }
+        .site-footer .footer-column h3 { padding-bottom:.55rem; width:100%; border-bottom:1px solid #ffffff20; }
+        .site-footer .footer-brand-block { padding:1rem .25rem; }
+        .site-footer .footer-brand-block p { margin:.8rem 0 1rem; }
+        .site-footer .footer-build-note { line-height:1.45; white-space:normal; }
+        .site-footer .footer-bottom { margin-top:0; }
+        .site-notice { position:fixed; z-index:5000; right:18px; bottom:18px; max-width:min(420px,calc(100vw - 36px)); padding:14px 18px; border:1px solid #bcdac7; border-radius:15px; background:#f4fbf6; color:#1d5138; box-shadow:0 18px 48px #071b102b; line-height:1.55; font-weight:600; }
+        .site-notice[data-kind="error"] { background:#fff5f3; color:#8b3028; border-color:#f1c8c2; }
+        @media(max-width:760px){.engine-purchase-card .formrow:first-child{grid-template-columns:1fr}.engine-selected-product{grid-template-columns:52px minmax(0,1fr);padding:1rem}.engine-order-total{align-items:flex-start;flex-direction:column}.engine-cta-row{grid-template-columns:1fr}.site-footer .footer-column{padding:1rem}}
+
+        @media(max-width:760px) { .engine-selected-product { align-items:flex-start; } .engine-selected-icon { flex-basis:52px; width:52px; height:52px; } .engine-purchase-card .engine-order-total { align-items:flex-start; flex-direction:column; font-size:1.2rem; } .site-footer .footer-inner { grid-template-columns:1fr; gap:1.5rem; } .site-footer .footer-bottom { padding:1rem 1.25rem; flex-direction:column; } }
+
+        @media(max-width:760px) { .engine-hero-card,.engine-fund-card { grid-template-columns:1fr; } .engine-doc-grid,.engine-products-grid,.engine-download-grid { grid-template-columns:1fr; } .engine-price-line { display:block; } .engine-price-line span { display:block; margin-top:.25rem; } .footer-inner { grid-template-columns:1fr; gap:1.4rem; } .footer-bottom { align-items:flex-start; flex-direction:column; } }
+
+        @media (max-width: 820px) {
+            .games-grid { grid-template-columns:1fr; }
+            .mode-feature { align-items:flex-start; }
+        }
+        @media (max-width: 600px) {
+            .mode-switch-heading { align-items:flex-start; }
+            .mode-switch { width:100%; }
+            .mode-toggle { flex:1; padding:.65rem .5rem; }
+            .mode-feature { padding:1rem; gap:.8rem; }
+            .mode-feature-icon { flex-basis:48px; height:48px; font-size:1.4rem; border-radius:14px; }
+            .game-tile { padding:1.2rem; flex-direction:column; }
+        }
+
         /* адаптивность */
         @media (max-width: 820px) {
             .nav-container { flex-direction: row; justify-content: space-between; }
@@ -253,7 +461,47 @@
             .price { font-size: 1.3rem; }
             .section-title { font-size: 1.5rem; }
         }
-    </style>
+    
+        /* Final component layer: selected-product checkout and contact-forward footer. */
+        .engine-purchase-card { max-width:820px; margin:1.5rem auto 0; overflow:hidden; border-radius:26px; border:1px solid #d2dfd7; background:linear-gradient(145deg,#fff 0%,#f7fbf8 55%,#eef3ff 100%); box-shadow:0 24px 68px #173d2a1b; }
+        .engine-purchase-card:before { opacity:.95; }
+        .engine-purchase-card form { display:grid; gap:1rem; padding:clamp(1.1rem,3vw,2rem); }
+        .engine-selected-product { position:relative; display:grid; grid-template-columns:72px minmax(0,1fr); column-gap:1.1rem; row-gap:.5rem; padding:1.5rem; margin:.15rem 0 .35rem; border-radius:20px; background:linear-gradient(125deg,#e9f8ef 0%,#f5f8ff 68%,#f5f0ff 100%); border:1px solid #c7dfd0; box-shadow:0 12px 30px #234c3410; }
+        .engine-selected-label { grid-column:1/-1; color:#567b67; font-size:.68rem; font-weight:900; letter-spacing:.13em; }
+        .engine-selected-icon { grid-column:1; grid-row:2/5; align-self:start; flex:0 0 64px; display:grid; place-items:center; width:64px; height:64px; border:1px solid #c7e1d0; background:#ffffffbd; box-shadow:0 8px 20px #214a3212; }
+        .engine-selected-product > div { grid-column:2; min-width:0; }
+        .engine-selected-product strong { color:#174d35; font-size:1.17rem; }
+        .engine-selected-product p { margin:.35rem 0; max-width:100%; color:#445c50; line-height:1.6; }
+        .engine-selected-meta { display:inline-block; margin-top:.3rem; padding:.35rem .6rem; border-radius:9px; border:1px solid #d4e5da; background:#ffffffc9; color:#385b49; font-size:.78rem; line-height:1.5; }
+        .engine-order-total { margin:.15rem 0; padding:1.1rem 1.25rem; border-radius:16px; background:linear-gradient(105deg,#153d2d,#256947); box-shadow:0 12px 24px #153d2c20; font-size:1.32rem; }
+        .engine-fineprint { margin:0; padding:.35rem .1rem 0; border:0; color:#6a7d72; font-size:.8rem; }
+        .engine-terms { margin:0; }
+        .engine-cta-row { margin-top:.25rem; }
+        .site-footer { position:relative; isolation:isolate; margin-top:4rem; padding:0; border-radius:30px 30px 0 0; border-top:1px solid #365b4b; background:radial-gradient(ellipse at 6% 0%,#205944 0,transparent 38%),radial-gradient(ellipse at 93% 36%,#253f60 0,transparent 32%),linear-gradient(135deg,#0e1b22 0%,#122a28 54%,#101e2c 100%); box-shadow:0 -22px 65px #0c2f2118; }
+        .site-footer .footer-inner { max-width:1240px; grid-template-columns:minmax(240px,1.2fr) repeat(2,minmax(220px,.9fr)); gap:clamp(1rem,3vw,2rem); padding:clamp(2rem,5vw,3.6rem) 1.4rem; align-items:stretch; }
+        .site-footer .footer-brand-block { padding:1.1rem .4rem; }
+        .site-footer .footer-brand { display:inline-flex; align-items:center; gap:.15rem; font-size:1.75rem; }
+        .site-footer .footer-mark { display:grid; place-items:center; width:32px; height:32px; margin-left:.65rem; border-radius:10px; background:linear-gradient(135deg,#3dbb88,#5593ec); color:#fff!important; font-size:.67rem; letter-spacing:0; box-shadow:0 8px 18px #0003; }
+        .site-footer .footer-brand-block p { max-width:360px; margin:1rem 0; color:#c0d5ca; line-height:1.75; }
+        .footer-product-tags { display:flex; gap:.4rem; flex-wrap:wrap; margin:1rem 0 1.1rem; }
+        .footer-product-tags span { padding:.38rem .55rem; border:1px solid #3d6656; border-radius:8px; background:#142e27; color:#9ddbbd; font-size:.62rem; font-weight:850; letter-spacing:.08em; }
+        .site-footer .footer-build-note { display:inline-flex; max-width:340px; padding:.45rem .7rem; border-radius:12px; white-space:normal; line-height:1.5; background:#142c28; color:#a9caba; border-color:#345849; }
+        .site-footer .footer-column { padding:1.3rem; border:1px solid #ffffff18; border-radius:20px; background:linear-gradient(150deg,#ffffff0b,#ffffff03); box-shadow:inset 0 1px #ffffff0b,0 15px 30px #0000000a; }
+        .site-footer .footer-column h3 { width:100%; padding-bottom:.75rem; border-bottom:1px solid #ffffff20; color:#fff; font-size:.8rem; letter-spacing:.13em; text-transform:uppercase; }
+        .site-footer .footer-column > a:not(.footer-contact-link):not(.footer-social-link) { display:flex; align-items:center; gap:.7rem; width:100%; padding:.5rem .55rem; border-radius:10px; color:#d1e4d9; transition:background .15s,color .15s,transform .15s; }
+        .site-footer .footer-column > a:not(.footer-contact-link):not(.footer-social-link):hover { background:#ffffff0b; color:#7ce5b3; text-decoration:none; transform:translateX(2px); }
+        .footer-link-icon { display:inline-grid; place-items:center; width:28px; height:28px; border:1px solid #315647; border-radius:8px; color:#75dca8; background:#102821; font-weight:900; }
+        .site-footer .footer-support-card p { color:#a9c3b5; font-size:.86rem; line-height:1.6; margin:.1rem 0 .5rem; }
+        .site-footer .footer-contact-link { display:flex; align-items:center; gap:.75rem; width:100%; padding:.7rem; border:1px solid #ffffff18; border-radius:12px; background:#ffffff07; color:#e0efe7; text-decoration:none; overflow-wrap:anywhere; }
+        .site-footer .footer-contact-link > span:first-child { display:grid; place-items:center; flex:0 0 34px; height:34px; border:1px solid #315e4a; border-radius:10px; color:#7ce5b3; background:#102920; }
+        .site-footer .footer-contact-link small,.site-footer .footer-contact-link strong { display:block; }
+        .site-footer .footer-contact-link small { color:#8cae9b; font-size:.68rem; margin-bottom:.1rem; }
+        .site-footer .footer-contact-link strong { font-size:.8rem; font-weight:750; }
+        .site-footer .footer-contact-link:hover { border-color:#4d9573; background:#ffffff0c; text-decoration:none; }
+        .site-footer .footer-social-link { display:inline-flex; margin-top:.3rem; color:#b9e3ce; font-size:.8rem; }
+        .site-footer .footer-bottom { max-width:none; margin:0; padding:1.1rem max(1.4rem,calc((100vw - 1240px)/2 + 1.4rem)); border-top:1px solid #ffffff18; background:#070f1590; color:#8eaca0; }
+        @media(max-width:760px){.engine-selected-product{grid-template-columns:54px minmax(0,1fr);padding:1rem}.engine-selected-icon{grid-column:1;grid-row:2/5;width:50px;height:50px;font-size:1.5rem}.site-footer{border-radius:22px 22px 0 0}.site-footer .footer-inner{grid-template-columns:1fr;gap:1rem}.site-footer .footer-brand-block{padding:.4rem}.site-footer .footer-bottom{padding:1rem 1.25rem}}
+</style>
 </head>
 <body>
 <nav class="navbar">
@@ -261,37 +509,79 @@
         <div class="logo">GRADUS<span>SECURITY</span></div>
         <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
         <ul class="nav-links" id="navLinks">
-            <li><a href="#about">О нас</a></li>
-            <li><a href="#products">Продукты</a></li>
-            <li><a href="#purchase">Купить</a></li>
-            <li><a href="#download">Скачать</a></li>
-            <li><a href="./for_dev">Для разработчиков</a></li>
-            <li><a href="#faq">Техподдержка</a></li>
+            <li><a id="navAbout" href="#about">О нас</a></li>
+            <li><a id="navProducts" href="#products">Продукты</a></li>
+            <li><a id="navGames" href="#games">Игры</a></li>
+            <li><a id="navPurchase" href="#purchase">Купить</a></li>
+            <li><a id="navDownload" href="#download">Скачать</a></li>
+            <li><a id="navDev" href="./for_dev">Для разработчиков</a></li>
+            <li><a id="navFaq" href="#faq">Техподдержка</a></li>
         </ul>
     </div>
 </nav>
 <main>
-    <div class="promo-card">
-        <div class="promo-content">
-            <div class="promo-icon"><i class="fas fa-gamepad"></i></div>
-            <h3>WarCards — карточная стратегия</h3>
-            <p>Сражайтесь с ботом в пошаговой карточной игре с уникальными механиками. Стройте оборону, атакуйте и используйте поддержку — всё на основе Gradus Static.JS!</p>
-            <a href="/WarCard/index.html" class="promo-btn">Играть сейчас →</a>
+    <!-- Compact mode switch: Antivirus is the default; Engine remains available through its real, crawlable URL. -->
+    <section id="mode-switch" class="mode-switch-section" aria-labelledby="modeSwitchTitle">
+        <div class="mode-switch-heading">
+            <div>
+                <span class="mode-eyebrow">Gradus Team</span>
+                <h1 id="modeSwitchTitle" class="section-title">Выберите направление</h1>
+                <p class="mode-switch-copy">Переключатель меняет весь набор разделов сайта: продукты, документацию, игры, оплату, загрузки и вопросы. По умолчанию открыт Antivirus.</p>
+            </div>
+            <div class="mode-switch" role="group" aria-label="Переключатель Antivirus и Engine">
+                <button type="button" class="mode-toggle active" id="modeAntivirus" aria-pressed="true">Antivirus</button>
+                <button type="button" class="mode-toggle" id="modeEngine" aria-pressed="false">Engine (GRC)</button>
+            </div>
         </div>
-    </div>
-    <div class="promo-card">
-        <div class="promo-content">
-            <div class="promo-icon"><i class="fas fa-cubes"></i></div>
-            <h3>Gradus RC — современный Ray Casting движок</h3>
-            <p>Сделан на Python, помимо обычного Ray Casting встречайте авторские технологии - Ray Tracing Emulator, OBJ-Converter, PhycicsAPI, MicroAPI, BaseAPI и др. технологмм, которые помогут создать игру лучше чем простой RayCasting и проще чем любой другой движок</p>
-            <a href="/for_dev/rc" class="promo-btn">Начать сейчас →</a>
+        <div class="mode-feature" id="antivirusFeature">
+            <div class="mode-feature-icon"><i class="fas fa-shield-alt" aria-hidden="true"></i></div>
+            <div class="mode-feature-copy">
+                <h2>Gradus Antivirus</h2>
+                <p>Защита Windows и Android, проверка файлов и многоуровневый анализ угроз.</p>
+                <a href="#products" class="mode-link">Посмотреть антивирусные решения →</a>
+            </div>
         </div>
-    </div>
+        <div class="mode-feature engine-feature" id="engineFeature" hidden>
+            <div class="mode-feature-icon"><i class="fas fa-cubes" aria-hidden="true"></i></div>
+            <div class="mode-feature-copy">
+                <h2>Gradus RC Engine (GRC)</h2>
+                <p>Игровой движок Gradus RC: Ray Casting, Ray Tracing Emulator, OBJ-Converter, PhysicsAPI и инструменты для создания игр.</p>
+                <a href="/for_dev/rc/" class="mode-link">Открыть Gradus RC Engine →</a>
+            </div>
+        </div>
+    </section>
+
+    <div id="antivirusContent" data-mode-content="antivirus">
+    <!-- Games are grouped together below the Antivirus/Engine switch. No new sprite/image assets are required. -->
+    <section id="games" aria-labelledby="gamesTitle">
+        <h2 class="section-title" id="gamesTitle">Игры</h2>
+        <p class="games-intro">Браузерные игры Gradus Team. Открываются без установки; прогресс It's LLM хранится локально в браузере.</p>
+        <div class="games-grid">
+            <article class="game-tile warcard-tile">
+                <div class="game-tile-icon"><i class="fas fa-chess-board" aria-hidden="true"></i></div>
+                <div class="game-tile-content">
+                    <div class="game-label">Стратегия · карточная игра</div>
+                    <h3>WarCard</h3>
+                    <p>Сражайтесь с ботом в пошаговой карточной стратегии: стройте оборону, атакуйте и используйте поддержку.</p>
+                    <a href="/WarCard/index.html" class="promo-btn">Играть в WarCard →</a>
+                </div>
+            </article>
+            <article class="game-tile llm-tile">
+                <div class="game-tile-icon"><i class="fas fa-brain" aria-hidden="true"></i></div>
+                <div class="game-tile-content">
+                    <div class="game-label">Экономическая стратегия · 2009—∞</div>
+                    <h3>It's LLM</h3>
+                    <p>Создайте собственную AI-компанию: собирайте серверы, обучайте модели на разных датасетах, развивайте ум и логику и защищайтесь от конкурентов.</p>
+                    <a href="/Games/ItsLLM/" class="promo-btn">Играть в It's LLM →</a>
+                </div>
+            </article>
+        </div>
+    </section>
     <section id="about">
         <h2 class="section-title">О нас</h2>
         <div class="about-card">
-            <p style="font-size: 1.1rem; line-height: 1.5; margin-bottom: 1rem;"><strong>Gradus Team</strong> — команда энтузиастов и профессионалов в области информационной безопасности. Наша цель — создавать доступные, мощные и прозрачные антивирусные решения. Мы верим, что каждый пользователь заслуживает надёжную защиту без скрытых подписок.</p>
-            <p>Разрабатываем продукты с 2024 года, постоянно совершенствуем движки и добавляем инновационные методы обнаружения угроз.</p>
+            <p style="font-size: 1.1rem; line-height: 1.5; margin-bottom: 1rem;"><strong>Gradus Team</strong> — команда, которая создаёт программные продукты, инструменты для разработчиков, игровые технологии и решения в области информационной безопасности и ИИ. Наша цель — делать полезные технологии доступнее и развивать собственную экосистему продуктов.</p>
+            <p>Разрабатываем проекты с 2024 года; сайт был опубликован в 2025-м и продолжает обновляться. Помимо кибербезопасности, мы развиваем Gradus RC Engine, GradAI и интерактивные проекты.</p>
         </div>
 
         <!-- Блок "Коротко о наших продуктах" -->
@@ -335,6 +625,16 @@
                     <p><a href="./for_dev/staticjs" target="_blank">Документация Static.JS →</a></p>
                 </div>
             </div>
+            <div class="product-item">
+                <div class="product-title" onclick="toggleProduct(this)">
+                    <span><i class="fas fa-cubes"></i> Gradus RC Engine (GRC)</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="product-desc">
+                    <p><strong>Игровой движок и инструменты для разработчиков.</strong> GRC включает инструменты работы с игровым миром, рендерингом, физикой и расширяемым API. MicroAPI — большой программный интерфейс для взаимодействия с самим движком. WebTools и Static.JS относятся к отдельному направлению для сайтов и в GRC не входят.</p>
+                    <p><a href="/for_dev/rc/">Документация Gradus RC Engine →</a></p>
+                </div>
+            </div>
         </div>
     </section>
     <!-- Сбор средств -->
@@ -354,7 +654,7 @@
                 </div>
             </div>
             <div class="goals-grid">
-                <div class="goal-item"><i class="fas fa-microchip"></i> <span>Умный поведенченский анализ ✔️</span></div>
+                <div class="goal-item"><i class="fas fa-microchip"></i> <span>Умный поведенческий анализ ✔️</span></div>
                 <div class="goal-item"><i class="fas fa-flask"></i> <span>Песочница для файлов ✔️</span></div>
                 <div class="goal-item"><i class="fa fa-virus"></i> <span>Расширение on-access эмуляцией мини-фильтра ✔️️️</span></div>
                 <div class="goal-item"><i class="fa fa-code"></i> <span>Разработка C++ модулей (.dll) ❌</span></div>
@@ -378,15 +678,22 @@
                 <div class="product-icon"><i class="fas fa-chart-line"></i></div>
                 <h3>Gradus Standard</h3>
                 <p>Расширенная защита: авто-сканер, резервное копирование, антифишинг 2‑го уровня.</p>
-                <div class="price">79 ₽ <span class="old-price">490 ₽</span></div>
+                <div class="price">79 ₽</div>
                 <span class="click-hint">(Нажми для скриншота)</span>
             </div>
             <div class="product-card" data-product="pro">
                 <div class="product-icon"><i class="fas fa-crown"></i></div>
                 <h3>Gradus Pro</h3>
                 <p>Максимальная безопасность: VirusTotal, авто-удаление, приоритетная помощь.</p>
-                <div class="price">149 ₽ <span class="old-price">990 ₽</span></div>
+                <div class="price">149 ₽</div>
                 <span class="click-hint">(Нажми для скриншота)</span>
+            </div>
+            <div class="product-card" data-product="grc" role="link" tabindex="0" onclick="location.href='/for_dev/rc/'" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();location.href='/for_dev/rc/'}">
+                <div class="product-icon"><i class="fas fa-cubes"></i></div>
+                <h3>Gradus RC Engine (GRC)</h3>
+                <p>Игровой движок, DevKit, Ray Casting/RTE, инструменты физики, звука и визуального программирования.</p>
+                <div class="price">Документация и загрузки</div>
+                <a href="/for_dev/rc/" onclick="event.stopPropagation()">Открыть GRC →</a>
             </div>
         </div>
 
@@ -407,7 +714,7 @@
             <table class="comparison-table">
                 <thead><tr><th>Функция / Версия</th><th>Free</th><th>Standard</th><th>Pro</th></tr></thead>
                 <tbody>
-                    <tr><td>Цена</td><td>0 ₽</td><td>490 ₽</td><td>990 ₽</td></tr>
+                    <tr><td>Цена</td><td>0 ₽</td><td>79 ₽</td><td>149 ₽</td></tr>
                     <tr><td>Последнее обновление</td><td>15.05.26</td><td>15.05.26</td><td>15.05.26</td></tr>
                     <tr><td>Последняя версия</td><td>1.3.0.0</td><td>1.3.4.2</td><td>1.4.2.0</td></tr>
                     <tr><td>Сигнатурный сканер</td><td class="check-true">✔</td><td class="check-true">✔</td><td class="check-true">✔</td></tr>
@@ -525,39 +832,173 @@
                 <div class="faq-item"><a data-faq="3.2">3.2 Ошибка JRE — переустановка Java</a></div>
                 <div class="faq-item"><a data-faq="3.3">3.3 Приложение не запускается (общие советы)</a></div>
                 <div class="faq-item"><a data-faq="3.4">3.4 Ложное срабатывание на системный файл</a></div>
+                <div class="faq-item"><a data-faq="3.5">3.5 Проверка зависла или слишком долгая</a></div>
+                <div class="faq-item"><a data-faq="3.6">3.6 Нужно ли отключать защиту Windows?</a></div>
+                <div class="faq-item"><a data-faq="3.7">3.7 Почему обнаружена угроза?</a></div>
+                <div class="faq-item"><a data-faq="3.8">3.8 Как обновляются сигнатуры?</a></div>
+                <div class="faq-item"><a data-faq="3.9">3.9 Антивирус замедляет компьютер</a></div>
+                <div class="faq-item"><a data-faq="3.10">3.10 Как проверить файл безопасно?</a></div>
+                <div class="faq-item"><a data-faq="3.11">3.11 Как работает карантин и восстановление?</a></div>
+                <div class="faq-item"><a data-faq="3.12">3.12 Какие данные отправлять в поддержку?</a></div>
+                <div class="faq-item"><a data-faq="3.13">3.13 Почему чистый результат не гарантирует безопасность?</a></div>
+                <div class="faq-item"><a data-faq="3.14">3.14 Как проверить архив или большую папку?</a></div>
             </div>
             <div class="faq-category">
                 <h3><i class="fas fa-question-circle"></i> 4. Общие вопросы</h3>
                 <div class="faq-item"><a data-faq="4.1">4.1 На какой срок лицензия?</a></div>
                 <div class="faq-item"><a data-faq="4.2">4.2 Бесплатны ли обновления?</a></div>
                 <div class="faq-item"><a data-faq="4.3">4.3 Как получить обновление, если ключ использован?</a></div>
+                <div class="faq-item"><a data-faq="4.4">4.4 Какие версии Windows поддерживаются?</a></div>
+                <div class="faq-item"><a data-faq="4.5">4.5 Как сообщить о ложном срабатывании?</a></div>
             </div>
         </div>
         <div id="contacts" style="scroll-margin-top: 80px;"></div>
     </section>
+
+    </div>
+
+    <div id="engineContent" data-mode-content="engine" hidden>
+      <section id="engineOverview" class="engine-page-section">
+        <div class="engine-hero-card">
+          <div class="engine-hero-copy">
+            <span class="mode-eyebrow">Gradus Team · Developer tools</span>
+            <h2 class="section-title">Gradus RC Engine <span class="engine-version">GRC</span></h2>
+            <p>Игровой движок и набор инструментов для создания интерактивных миров: от лёгких ray-casting проектов и MicroPython до 3D-инструментов, физики, звука и визуального программирования.</p>
+            <div class="engine-cta-row"><a class="promo-btn" href="/for_dev/rc/">Открыть документацию →</a><a class="promo-btn engine-secondary" href="#engineDownload">Скачать / ресурсы</a></div>
+            <div class="engine-tags"><span>🧱 Ray Casting / RTE</span><span>🔊 Sound3D</span><span>🧩 Visual Programming</span><span>📱 Android tools</span></div>
+          </div>
+          <div class="engine-highlight">
+            <div class="engine-highlight-icon">🎮</div><h3>Создавай свои миры</h3>
+            <p>Модульная архитектура, DevKit, физика, инструменты для карт и мобильных устройств.</p>
+            <a href="/for_dev/rc/">Перейти к GRC →</a>
+          </div>
+        </div>
+      </section>
+      <section id="engineDocs" class="engine-page-section">
+        <h2 class="section-title">Документация Gradus RC</h2>
+        <p class="engine-intro">Разделы ниже можно раскрывать по мере необходимости. Полная техническая документация остаётся на отдельной индексируемой странице движка.</p>
+        <div class="engine-doc-grid">
+          <details class="engine-doc-card" open><summary>🧭 Архитектура и быстрый старт</summary><p>Назначение модулей, структура проекта, первые шаги и базовые сценарии работы с движком.</p><a href="/for_dev/rc/">Читать документацию →</a></details>
+          <details class="engine-doc-card"><summary>💡 Ray Casting, RTE и lightmaps</summary><p>Лёгкая отрисовка, эмуляция трассировки лучей и статическое освещение. Lightmap-процесс предназначен для карт и уменьшения повторных вычислений.</p><a href="/for_dev/rc/">Технический раздел →</a></details>
+          <details class="engine-doc-card"><summary>🧩 Visual Programming и AITools (1.5+)</summary><p>AITools не следует считать готовым пакетом только на основании этой страницы. AITools находится в планах на версию 1.5 или более позднюю; Visual Programming есть в 1.4 и полностью поддерживается.</p><a href="/for_dev/rc/">Материалы разработчика →</a><br><span class="engine-status">Планируется не раньше 1.5</span></details>
+          <details class="engine-doc-card"><summary>🌿 TransportManager и FaunaManager (1.5+)</summary><p>Обе системы пока планируются на версию 1.5 или более позднюю. TransportManager относится к транспорту и его взаимодействию с игровым миром; FaunaManager — к поведению фауны. Это ориентир дорожной карты, а не обещание конкретного API или даты релиза.</p><span class="engine-status">Планируется не раньше 1.5</span></details>
+          <details class="engine-doc-card"><summary>🎧 Sound3D и мир</summary><p>Пространственный звук, источники, окружение и игровые события. Отдельные подсистемы воды, погоды и смены времени относятся к направлению развития движка.</p><a href="/for_dev/rc/">Открыть документацию →</a></details>
+          <details class="engine-doc-card"><summary>📱 Android-сборка и целевые платформы</summary><p>Проверяй архитектуру, ограничения памяти, ввод, форматы ресурсов и доступность системных API для каждой версии Android. Перед публикацией проекта выполняй отдельную сборку для целевой ABI и тестируй установку на реальном устройстве.</p><a href="/for_dev/rc/">Документация GRC →</a></details>
+          <details class="engine-doc-card"><summary>🖼️ FXSS: версия 2.0 и будущая 3.0</summary><p>FXSS 2.0 запланирована для ветки 1.4. FXSS 3.0 пока не существует как выпущенная версия: это дальнейшее направление технологий качества изображения, объединяющее AImage, Frame Generation (FG) и Upscaling. По назначению это предполагаемый аналог подхода DLSS, а не веб-защита и не готовая функция текущей версии.</p><span class="engine-status">FXSS 2.0 — план 1.4 · FXSS 3.0 — будущее направление</span></details>
+          <details class="engine-doc-card"><summary>🤖 GradAI 4.3 GRC Edition (For NPC) · 1.5+</summary><p>Модель обученная на датасетах Gradus и полностью разработанная Gradus Team, специально сделана под движок и под NPC. Есть уже в 1.4 в вариациях Standard и Plus, используется для диалогов с NPC (текстовых/голосовых)</p><a href="/for_dev/rc/">Следить за документацией →</a> <span class="engine-status">Не раньше 1.5</span></details>
+        </div>
+      </section>
+      <section id="engineGames" class="engine-page-section">
+        <h2 class="section-title">Игры и интерактивные проекты</h2>
+        <p class="engine-intro">Игры Gradus Team доступны из браузера — без необходимости скачивать отдельные спрайты или устанавливать лаунчер.</p>
+        <div class="games-grid">
+          <article class="game-tile warcard-tile"><div class="game-tile-icon">♟️</div><div class="game-tile-content"><div class="game-label">Стратегия · карточная игра</div><h3>WarCard</h3><p>Пошаговая карточная стратегия с ботом, атакой, обороной и поддержкой.</p><a href="/WarCard/" class="promo-btn">Играть в WarCard →</a></div></article>
+          <article class="game-tile llm-tile"><div class="game-tile-icon">🧠</div><div class="game-tile-content"><div class="game-label">Экономическая стратегия · 2009—∞</div><h3>It's LLM</h3><p>Строй AI-компанию, обучай модели, развивай инфраструктуру и конкурируй с мировыми лабораториями.</p><a href="/Games/ItsLLM/" class="promo-btn">Играть в It's LLM →</a></div></article>
+        </div>
+      </section>
+      <section id="engineAbout" class="engine-page-section">
+        <h2 class="section-title">О Gradus Team</h2>
+        <div class="engine-about-card"><p><strong>Gradus Team</strong> развивает кибербезопасность, инструменты разработчиков, игровой движок и браузерные проекты. У каждого направления своя документация и собственная дорожная карта.</p><p>История проектов начинается в 2024 году; сайт был опубликован в 2025-м. Мы стараемся отдельно обозначать уже доступные возможности, запланированные функции и идеи на будущее.</p></div>
+      </section>
+      <section id="engineProducts" class="engine-page-section">
+        <h2 class="section-title">Коротко о roadmap</h2>
+        <div class="engine-products-grid">
+          <article class="engine-product-card"><span>🚗</span><h3>TransportManager</h3><p>Планируемая подсистема транспорта и маршрутов. Ожидаемый срок — версия 1.5 или позже.</p><small>Roadmap · 1.5+</small></article>
+          <article class="engine-product-card"><span>🦊</span><h3>FaunaManager</h3><p>Планируемая подсистема поведения фауны и NPC-животных. Ожидаемый срок — версия 1.5 или позже.</p><small>Roadmap · 1.5+</small></article>
+          <article class="engine-product-card"><span>🧰</span><h3>AITools</h3><p>Планируемый набор инструментов для разработчиков; пока не выпускается, рассматривается для версии 1.5 или позже.</p><small>Roadmap · 1.5+</small></article>
+          <article class="engine-product-card"><span>🖼️</span><h3>FXSS 2.0</h3><p>Планируемая версия графической технологии FXSS для ветки движка 1.4. Это дорожная карта, а не утверждение, что FXSS 2.0 уже выпущена.</p><small>Запланировано · GRC 1.4</small><div class="line"></div><h4>Будущая концепция: FXSS 3.0</h4><p>FXSS 3.0 ещё не существует как доступный релиз. Концепция объединяет AImage, Frame Generation (FG) и Upscaling — набор графических подходов, сходных по назначению с DLSS, но не заявляющий идентичную реализацию или дату выпуска.</p><small>Концепция · без подтверждённой версии релиза</small></article>
+          <article class="engine-product-card"><span>🤖</span><h3>GradAI 4.6 GRC Edition</h3><p>Планируемая редакция For NPC; не раньше версии 1.5. Текущий доступный продукт не следует путать с будущей интеграцией в GRC.</p><small>Roadmap · 1.5+</small></article>
+          <article class="engine-product-card"><span>🌦️</span><h3>Environment systems</h3><p>Вода, погодные эффекты, смена времени суток, окружение и взаимодействия.</p><small>Roadmap</small></article>
+          <article class="engine-product-card"><span>🧩</span><h3>MicroAPI</h3><p>Большой API для общения программного кода с игровым движком и обращения к его возможностям. Это интерфейс GRC; он не относится к WebTools или Static.JS.</p><a href="/for_dev/rc/">Документация движка →</a></article>
+          <article class="engine-product-card"><span>🎧</span><h3>Sound3D</h3><p>Пространственное аудио, позиционные источники звука и сигналы событий.</p><a href="/for_dev/rc/">Материалы GRC →</a></article>
+        </div>
+      </section>
+      <section id="engineFundraising" class="engine-page-section">
+        <div class="engine-fund-card">
+          <div><span class="mode-eyebrow">Отдельная цель для разработки GRC</span><h2>Поддержать Gradus RC Engine</h2><p>Цель сбора — 10 000 ₽. На старте кампании отмечено 1 200 ₽ (12%). Средства планируется направить на инструменты, тестирование и следующие этапы roadmap.</p></div>
+          <div class="fund-progress"><div class="fund-progress-head"><strong>1 200 ₽ из 10 000 ₽</strong><strong>12%</strong></div><div class="fund-progress-track"><span style="width:12%"></span></div><a class="promo-btn" href="https://www.donationalerts.com/r/gradus_team" target="_blank" rel="noopener noreferrer">Поддержать разработку →</a></div>
+          <div class="engine-roadmap-pills"><span>FXSS 2.0 · 1.4</span><span>FXSS 3.0 · концепция, срок не установлен</span><span>TransportManager · 1.5+</span><span>FaunaManager · 1.5+</span><span>AITools · 1.5+</span><span>GradAI 4.6 GRC Edition · 1.5+</span><span>3D tools</span><span>Android build tools</span><span>Sound3D</span><span>Static lightmaps</span></div>
+        </div>
+      </section>
+      <section id="enginePurchase" class="engine-page-section">
+        <h2 class="section-title">Подписки Gradus Engine и GradAI</h2>
+        <p class="engine-intro">Выбери один продукт или пакет. Карточка ниже покажет только его состав, срок и цену — без общего списка всех тарифов.</p>
+        <div class="engine-purchase-card">
+          <form id="enginePurchaseForm">
+            <div class="formrow"><div class="field"><label for="engineBuyProduct">Продукт</label><select id="engineBuyProduct"><option value="engine">Gradus RC Engine — VIP</option><option value="go">GradAI — Go</option><option value="plus">GradAI — Plus</option><option value="promo99">Акция до 11.11.26 — пакет 99 ₽</option><option value="promo199">Акция до 11.11.26 — пакет 199 ₽</option><option value="promo499">Акция до 11.11.26 — пакет 499 ₽</option></select></div><div class="field" id="engineDurationWrap"><label for="engineBuyDuration">Срок</label><select id="engineBuyDuration"><option value="1">1 месяц</option><option value="3">3 месяца</option><option value="6">6 месяцев</option><option value="12">12 месяцев</option></select></div></div>
+            <article class="engine-selected-product" id="engineSelectedSummary" aria-live="polite"><span class="engine-selected-label">ВЫБРАННЫЙ ПРОДУКТ</span><span class="engine-selected-icon" id="engineSelectedIcon">🧱</span><div><strong id="engineSelectedTitle">Gradus RC Engine VIP</strong><p id="engineSelectedDescription">Расширенные возможности Gradus RC Engine и доступ к VIP-направлению на выбранный срок.</p><span class="engine-selected-meta" id="engineSelectedMeta">Выбранный план и сумма заказа.</span></div></article>
+            <div class="formrow"><div class="field"><label for="engineBuyerEmail">Email</label><input id="engineBuyerEmail" type="email" placeholder="example@domain.com" required></div><div class="field"><label for="engineBuyerContact">Telegram / другой контакт</label><input id="engineBuyerContact" placeholder="@username" required></div></div>
+            <p class="engine-order-total" id="engineOrderTotal">К оплате: 129 ₽</p><label class="engine-terms"><input id="engineBuyerAgree" type="checkbox" required> Я согласен с условиями оплаты и ручной активации заказа.</label>
+            <div id="engineOrderMessage" class="engine-order-message" hidden></div><div class="engine-cta-row"><button class="promo-btn" type="button" id="engineMakeOrder">Сформировать заказ</button><button class="promo-btn engine-secondary" type="button" id="enginePayNow">Перейти к оплате</button></div>
+            <p class="engine-fineprint"><span aria-hidden="true">🔒</span> Активация вручную после подтверждения платежа. Номер заказа появится после формирования.</p>
+          </form>
+        </div>
+      </section>
+      <section id="engineDownload" class="engine-page-section">
+        <h2 class="section-title">Скачать и начать работу</h2><p class="engine-intro">Основные материалы GRC опубликованы как документация и ресурсы для разработчиков. Перед использованием проверяй требования конкретной версии.</p>
+        <div class="engine-download-grid"><article class="engine-product-card"><span>📚</span><h3>Документация и DevKit</h3><p>Описание движка, инструменты и ссылки на разделы разработки.</p><a class="promo-btn" href="/for_dev/rc/">Открыть документацию →</a></article><article class="engine-product-card"><span>🧩</span><h3>Developer portal</h3><p>Материалы Gradus Team для разработчиков.</p><a class="promo-btn" href="/for_dev/">Открыть портал →</a></article></div>
+      </section>
+      <section id="engineFaq" class="engine-page-section">
+        <h2 class="section-title">Технические вопросы</h2><p class="engine-intro">Практические ответы по организации проекта, производительности, API движка, рендерингу и подготовке сборки.</p>
+        <div class="engine-faq-list">
+          <details><summary>С чего начать работу с движком и как организовать проект?</summary><p>Сначала открой <a href="/for_dev/rc/">документацию Gradus RC</a> и выбери целевую платформу. Создай отдельную папку для исходников, ресурсов и сборки; записывай точную версию движка и настройки проекта. Начни с минимальной сцены, проверь запуск и ввод, а уже затем подключай звук, физику, освещение и дополнительные подсистемы. Это упрощает поиск ошибок и позволяет понять, какой модуль их вызвал.</p></details>
+          <details><summary>Что такое Ray Casting, RTE и Static Lightmaps и когда их применять?</summary><p><strong>Ray Casting</strong> можно использовать для получения геометрических сведений о луче: например, для определения стены перед камерой, линии видимости или попадания. <strong>RTE (Ray Tracing Emulator)</strong> — название направления эмуляции отдельных визуальных эффектов; его не стоит считать заменой аппаратной трассировке лучей без измерений на целевом устройстве. <strong>Static Lightmaps</strong> подходят для неподвижного освещения окружения: свет рассчитывается заранее и затем используется как текстура, уменьшая стоимость кадра ценой дополнительной памяти и необходимости пересчёта при изменении сцены. Подбирай метод по бюджету CPU/GPU и памяти; подтверждай результат профилировщиком.</p></details>
+          <details><summary>Как отлаживать производительность и нестабильные кадры?</summary><p>Сначала воспроизведи проблему в одной сцене и измени только один фактор за раз. Отдельно измеряй время CPU и GPU, количество вызовов отрисовки, размер текстур, число активных объектов, частоту обновления физики и работу скриптов. На слабых устройствах уменьши разрешение рендеринга, используй LOD/упрощённые модели, ограничивай дальность видимости и отключай невидимые объекты. Не делай вывод по одному запуску: сравни несколько прогонов в одинаковых условиях.</p></details>
+          <details><summary>Что реально доступно сейчас, а что пока в roadmap?</summary><p>На момент этой публикации TransportManager, FaunaManager, AITools и GradAI 4.6 GRC Edition for NPC планируются не раньше 1.5. FXSS 2.0 планируется для ветки 1.4, а FXSS 3.0 — более позднее направление обработки изображения (AImage, Frame Generation и Upscaling), которое ещё не выпущено. MicroAPI относится к самому GRC и предназначена для взаимодействия программного кода с движком. Сверяйся с release notes и документацией конкретной версии: сама запись в roadmap не означает, что интерфейс уже доступен.</p></details>
+          <details><summary>Чем MicroAPI отличается от WebTools и Static.JS?</summary><p><strong>MicroAPI относится к самому Gradus RC Engine.</strong> Это большой программный API, через который код проекта взаимодействует с возможностями движка. WebTools и Static.JS — отдельное направление веб-инструментов для сайтов: они не являются модулями GRC и не подменяют MicroAPI. Не переносите примеры и зависимости между этими проектами без проверки того, к какой платформе относится документация. Начинайте с раздела MicroAPI и справочника актуальной версии GRC; если нужный метод в документации не описан, не угадывайте его имя — подготовьте минимальный пример и запросите уточнение.</p><p>Ссылки: <a href="/for_dev/rc/">Gradus RC Engine</a> · <a href="/for_dev/web/">WebTools</a> · <a href="/for_dev/staticjs/">Static.JS</a>.</p></details>
+          <details><summary>Что обозначает FXSS 2.0 и будущая FXSS 3.0?</summary><p>FXSS — направление графических технологий, а не защита веб-сценариев. Версия 2.0 планируется для ветки 1.4. FXSS 3.0 ещё не выпущена; идея объединяет AImage, Frame Generation (FG) и Upscaling, то есть генерацию/восстановление и масштабирование кадров и изображения. По цели это аналогичный класс задач DLSS, но это не означает тождественную реализацию или гарантированный прирост FPS. До опубликования FXSS 3.0 не следует указывать её как готовую возможность продукта.</p></details>
+          <details><summary>Как переносить проект на MicroPython / ESP32-S3?</summary><p>Сначала уточни размер RAM/flash, разрешение и частоту дисплея, доступность аппаратных интерфейсов и версию прошивки. На микроконтроллере особенно важно избегать крупных временных буферов, держать размеры ресурсов под контролем и проверять доступность каждой библиотеки на конкретном порте MicroPython. Сначала добейся устойчивого запуска простого экрана/цикла, после чего подключай сеть, ввод и более дорогие операции.</p></details>
+          <details><summary>Как оформить отчёт об ошибке?</summary><p>Напиши на <a href="mailto:gradus.support@gmail.com">gradus.support@gmail.com</a> или в <a href="https://t.me/gradus_seo" target="_blank" rel="noopener noreferrer">Telegram поддержки</a>. Укажи операционную систему и устройство, версию/коммит движка, шаги для воспроизведения, ожидаемый и фактический результат, сообщения консоли и минимальный проект, если его можно безопасно приложить. Не прикладывай секретные ключи и персональные данные.</p></details>
+          <details><summary>Почему сборка запускается на одном устройстве, но не на другом?</summary><p>Сравни версии движка, целевую архитектуру, системные библиотеки, драйверы и доступные ресурсы. Перепроверь относительные пути ресурсов, регистр букв в именах файлов и наличие каждого файла в пакете сборки: файловые системы могут по-разному обрабатывать регистр. На Android и микроконтроллерах проверь память, поддержку используемых API и форматы текстур. Если проблема сохраняется, подготовь минимальный проект и список точных шагов воспроизведения.</p></details>
+          <details><summary>Как организовать ресурсы, текстуры и статическое освещение?</summary><p>Держи ресурсы по типам и не дублируй одинаковые текстуры в нескольких каталогах. Для текстур укажи целевое разрешение, формат и ограничение памяти, а для материалов — правила фильтрации и прозрачности. Static Lightmaps подходят только там, где геометрия и освещение не меняются часто: динамические объекты могут потребовать отдельного света или дополнительных проходов. После изменения ресурсов очищай старые результаты сборки и проверяй сцену заново, чтобы не спутать кэш со свежей версией.</p></details>
+          <details><summary>Каковы ограничения мобильного рендеринга?</summary><p>Рассматривай мобильную платформу как отдельную цель профилирования. Ограничивай число одновременно видимых объектов и материалов, размеры текстур, количество динамических источников света и выделения памяти на кадр. Проверяй реальную частоту кадров и температуру устройства на длительном запуске, а не только на пустой сцене в редакторе. Поддержку конкретной функции сверяй с версией движка и документацией целевой платформы.</p></details>
+          <details><summary>Как устроены PhysicsAPI и столкновения?</summary><p>Разделяй статическую геометрию уровня и динамические объекты. Для пола, стен и неподвижного окружения используй простые коллайдеры, а для движущихся объектов задавай корректную массу, форму и пределы скорости. Не смешивай визуальную сетку высокой детализации с физической формой без необходимости: простые примитивы обычно дешевле и стабильнее. Проверяй поведение при низком FPS, быстрых столкновениях и разном масштабе сцены. Перед использованием конкретных методов сверяйся с API актуальной версии GRC.</p></details>
+          <details><summary>Как импортировать модели и ресурсы через OBJ-Converter?</summary><p>Перед импортом проверь единицы измерения, направление осей, нормали, UV-развёртку и масштабы текстур. Сначала конвертируй небольшой тестовый объект и сравни его размеры в сцене, затем импортируй остальные ресурсы. Если модель отображается чёрной или перевёрнутой, проверь нормали, материалы и настройки освещения. Сохраняй исходные файлы отдельно от сгенерированных ресурсов, чтобы повторная конвертация не уничтожала оригиналы. Возможности конкретных форматов и параметров зависят от версии инструмента.</p></details>
+          <details><summary>Как организовать версии проекта и сборки?</summary><p>Храни исходники, ресурсы и готовую сборку в разных каталогах. Для релиза фиксируй версию движка, настройки рендеринга, перечень модулей и дату создания пакета. После каждого изменения делай контрольную сборку и запускай её вне редактора: это помогает обнаружить отсутствующие файлы, неверные относительные пути и зависимости, которые случайно доступны только на машине разработчика. Большие изменения сначала проверяй на отдельной ветке или копии проекта.</p></details>
+          <details><summary>Как диагностировать ошибку рендера или пустую сцену?</summary><p>Проверь камеру, направление взгляда, near/far clipping, видимость слоёв, материалы и положение источников света. Временно замени сложный материал простым и отключи постэффекты — так можно отделить ошибку геометрии от ошибки шейдера. Проверь журнал загрузки ресурсов и относительные пути, включая регистр символов. Зафиксируй минимальный проект и конкретную последовательность действий, после чего приложи журнал и характеристики устройства в обращении в поддержку.</p></details>
+        </div>
+      </section>
+    </div>
+
 </main>
 
-<footer class="footer">
-    <div class="contacts">
-        <p>📧 Связь с поддержкой: <a href="mailto:gradus.support@gmail.com">gradus.support@gmail.com</a> (ответ в течение 24 часов)</p>
+<footer class="footer site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand-block">
+      <a class="footer-brand" href="/">Gradus<span> Team</span><span class="footer-mark">GT</span></a>
+      <p>Разрабатываем защитные инструменты, технологии для разработчиков, игровой движок и браузерные проекты.</p>
+      <div class="footer-product-tags" aria-label="Направления проекта"><span>ANTIVIRUS</span><span>GRC ENGINE</span><span>WEB & GAMES</span></div>
+      <span class="footer-build-note">У каждого продукта — своя документация и дорожная карта.</span>
     </div>
-    <div class="social-links">
-        <a href="https://vk.com/official_gradus" target="_blank" rel="noopener noreferrer" aria-label="VK"><i class="fab fa-vk"></i></a>
-    </div>
-    <p style="margin-top: 1rem;">&copy; 2025 Gradus Team. Все права защищены.</p>
-    <p>
-        Copyright (c) 2025 Gradus Team
-        Licensed under CC BY-ND 4.0
-        https://creativecommons.org/licenses/by-nd/4.0/
-    </p>
+    <nav class="footer-column" aria-label="Навигация по сайту"><h3>Открыть раздел</h3><a href="#about" data-footer-route="about"><span class="footer-link-icon">↗</span><span>О команде</span></a><a href="#products" data-footer-route="products"><span class="footer-link-icon">▦</span><span>Продукты и проекты</span></a><a href="#games" data-footer-route="games"><span class="footer-link-icon">⌘</span><span>Браузерные игры</span></a><a href="/for_dev/"><span class="footer-link-icon">⌁</span><span>Портал разработчика</span></a></nav>
+    <div class="footer-column footer-support-card"><h3>Нужна помощь?</h3><p>Чтобы быстрее разобраться, укажи продукт, версию и шаги воспроизведения.</p><a class="footer-contact-link" href="mailto:gradus.support@gmail.com"><span>✉</span><span><small>Почта поддержки</small><strong>gradus.support@gmail.com</strong></span></a><a class="footer-contact-link" href="https://t.me/gradus_seo" target="_blank" rel="noopener noreferrer"><span>➤</span><span><small>Telegram</small><strong>@gradus_seo</strong></span></a><a class="footer-social-link" href="https://vk.com/official_gradus" target="_blank" rel="noopener noreferrer">Сообщество VK ↗</a></div>
+  </div>
+  <div class="footer-bottom"><span>Проекты с 2024 года · сайт опубликован в 2025 году</span><span>© 2025–2026 Gradus Team · <a href="https://creativecommons.org/licenses/by-nd/4.0/" target="_blank" rel="noopener noreferrer">CC BY-ND 4.0</a></span></div>
 </footer>
 
 <!-- Модалки -->
-<div id="screenshotModal" class="modal"><div class="modal-content"><span class="close-modal">&times;</span><img id="modalImage" src="" alt="Скриншот"><p id="modalCaption"></p></div></div>
+<div id="screenshotModal" class="modal"><div class="modal-content screenshot-modal-content"><span class="close-modal">&times;</span><img id="modalImage" src="" alt="Скриншот"><p id="modalCaption"></p></div></div>
 <div id="faqModal" class="modal"><div class="modal-content"><span class="close-modal" id="closeFaqModal">&times;</span><div id="faqAnswer"></div></div></div>
 <div id="licenseModal" class="modal"><div class="modal-content"><span class="close-modal" id="closeLicenseModal">&times;</span><div id="licenseText"><h3>Лицензионное соглашение и правила оплаты (оферта)</h3><p><strong>Настоящий документ является публичной офертой.</strong> Используя форму оплаты, вы соглашаетесь со всеми условиями.</p><ol><li>Платёж производится строго в сумме, вычисленной на сайте, и сопровождается уникальным сообщением, сгенерированным системой. Отсутствие этого сообщения или неверная сумма приравниваются к нецелевому платежу.</li><li>Если полученная сумма меньше 100% стоимости, но больше 0%, лицензии выдаются пропорционально оплаченной доле с округлением вниз. Частичный возврат не предусмотрен.</li><li>Если сумма составляет менее 50% от стоимости заказа, ключи не выдаются и деньги не возвращаются — это добровольное пожертвование.</li><li>Ключи высылаются на указанную почту в течение 72 часов после зачисления средств (обычно 24 часа).</li><li>Передача ключей третьим лицам запрещена, блокировка лицензии без возврата средств.</li><li>Возврат только если ключи не высланы в течение 10 рабочих дней с момента оплаты.</li><li>Проект не возвращает деньги, если пользователь передумал пользоваться антивирусом.</li><li>Применяется право РФ.</li></ol><p><strong>Нажимая «Принимаю», вы подтверждаете ознакомление и согласие.</strong></p></div></div></div>
 
 <script>
+    function showSiteNotice(message, kind='info') {
+        let notice = document.getElementById('siteNotice');
+        if (!notice) {
+            notice = document.createElement('div');
+            notice.id = 'siteNotice';
+            notice.className = 'site-notice';
+            notice.setAttribute('role', 'status');
+            notice.setAttribute('aria-live', 'polite');
+            document.body.appendChild(notice);
+        }
+        notice.dataset.kind = kind;
+        notice.textContent = String(message);
+        notice.hidden = false;
+        clearTimeout(showSiteNotice.timer);
+        showSiteNotice.timer = setTimeout(() => { notice.hidden = true; }, 5200);
+    }
+
     // раскрытие/скрытие описаний продуктов
     function toggleProduct(titleElement) {
         const desc = titleElement.nextElementSibling;
@@ -571,21 +1012,62 @@
         }
     }
 
+    // Whole-page mode switch. Each track has its own products, games, payment, downloads and support sections.
+    const modeAntivirus = document.getElementById('modeAntivirus');
+    const modeEngine = document.getElementById('modeEngine');
+    const navModeTargets = {
+      antivirus: {navAbout:'#about',navProducts:'#products',navGames:'#games',navPurchase:'#purchase',navDownload:'#download',navDev:'./for_dev',navFaq:'#faq',labels:['О нас','Продукты','Игры','Купить','Скачать','Для разработчиков','Техподдержка']},
+      engine: {navAbout:'#engineAbout',navProducts:'#engineProducts',navGames:'#engineGames',navPurchase:'#enginePurchase',navDownload:'#engineDownload',navDev:'/for_dev/rc/',navFaq:'#engineFaq',labels:['О нас','Продукты и roadmap','Игры','Подписки','Скачать','Документация GRC','Технические вопросы']}
+    };
+    function setSiteMode(mode, updateAddress=true) {
+      const isEngine = mode === 'engine';
+      document.querySelectorAll('[data-mode-content]').forEach(el => { el.hidden = el.dataset.modeContent !== (isEngine ? 'engine' : 'antivirus'); });
+      const featureAV = document.getElementById('antivirusFeature');
+      const featureGRC = document.getElementById('engineFeature');
+      if (featureAV) featureAV.hidden = isEngine;
+      if (featureGRC) featureGRC.hidden = !isEngine;
+      if (modeAntivirus) { modeAntivirus.classList.toggle('active', !isEngine); modeAntivirus.setAttribute('aria-pressed', String(!isEngine)); }
+      if (modeEngine) { modeEngine.classList.toggle('active', isEngine); modeEngine.setAttribute('aria-pressed', String(isEngine)); }
+      const cfg = navModeTargets[isEngine ? 'engine' : 'antivirus'];
+      Object.keys(cfg).filter(k=>k.startsWith('nav')).forEach((id)=>{ const link=document.getElementById(id); if(link && typeof cfg[id]==='string') link.setAttribute('href',cfg[id]); });
+      const navIds=['navAbout','navProducts','navGames','navPurchase','navDownload','navDev','navFaq'];
+      navIds.forEach((id,i)=>{const link=document.getElementById(id);if(link)link.textContent=cfg.labels[i];});
+      if (document.body) document.body.dataset.siteMode = isEngine ? 'engine' : 'antivirus';
+      if(updateAddress){ try { history.replaceState(null,'',isEngine ? '#engine' : '#antivirus'); } catch (_) {} }
+    }
+    if (modeAntivirus) modeAntivirus.addEventListener('click', () => { setSiteMode('antivirus'); document.getElementById('navLinks')?.classList.remove('active'); });
+    if (modeEngine) modeEngine.addEventListener('click', () => { setSiteMode('engine'); document.getElementById('navLinks')?.classList.remove('active'); });
+    setSiteMode(location.hash === '#engine' ? 'engine' : 'antivirus', false);
+    window.addEventListener('hashchange', () => { if(location.hash==='#engine')setSiteMode('engine',false);else if(location.hash==='#antivirus')setSiteMode('antivirus',false); });
+    document.querySelectorAll('[data-footer-route]').forEach(link=>link.addEventListener('click',event=>{const isEngine=document.body?.dataset.siteMode==='engine';const route=link.dataset.footerRoute;const targets={about:isEngine?'#engineAbout':'#about',products:isEngine?'#engineProducts':'#products',games:isEngine?'#engineGames':'#games'};const target=targets[route];const node=target?document.querySelector(target):null;if(node){event.preventDefault();history.replaceState(null,'',target);node.scrollIntoView({behavior:'smooth',block:'start'});}}));
+
     // --- FAQ контент ---
     const faqContent = {
-        "1.1": "<b>Как установить антивирус?</b><br>Скачайте лаунчер (раздел «Скачать»), запустите .jar, следуйте инструкциям.",
-        "1.2": "<b>Ошибка JRE / Java не найдена</b><br>Установите Java Runtime Environment 21 или новее с официального сайта.",
-        "1.3": "<b>На сервере не найден файл</b><br>Проверьте интернет. Если повторяется – используйте VPN или напишите в поддержку.",
-        "2.1": "<b>Как оплатить лицензию?</b><br>Заполните форму, сгенерируйте сообщение и переведите сумму на Donation Alerts с точным текстом.",
-        "2.2": "<b>Ключ активации уже использован</b><br>Ключи одноразовые. Если вы не активировали его – обратитесь в поддержку.",
-        "2.3": "<b>Ключ не работает</b><br>Проверьте пробелы. Если не помогает – техподдержка.",
-        "3.1": "<b>Как запустить антивирус?</b><br>Запустите gradus.exe из папки установки.",
-        "3.2": "<b>Ошибка JRE — переустановка Java</b><br>Установите Java отдельно или скопируйте JRE в папку с антивирусом.",
-        "3.3": "<b>Приложение не запускается</b><br>Проверьте Java, путь без кириллицы. Запустите из командной строки.",
-        "3.4": "<b>Ложное срабатывание</b><br>Добавьте файл в карантин (исключения) и сообщите нам.",
-        "4.1": "<b>На какой срок лицензия?</b><br>Бессрочная на версию. Обновления в течение 1 года бесплатно.",
-        "4.2": "<b>Бесплатны ли обновления?</b><br>Да, в рамках мажорной версии (например, 1.x).",
-        "4.3": "<b>Как получить обновление, если ключ использован?</b><br>Обратитесь в поддержку – проверим оплату и выдадим новый ключ для новой версии."
+        "1.1": "<b>Как установить антивирус?</b><br>1) Скачайте установщик только с официальной страницы Gradus Team. 2) Убедитесь, что на компьютере установлена поддерживаемая Java Runtime Environment (JRE), если она не включена в комплект. 3) Запустите установщик обычным пользователем; права администратора предоставляйте только если этого требует конкретная операция. 4) Выберите папку без необычных символов в пути, дождитесь завершения и запустите приложение. Если установка прерывается, запишите точный текст ошибки, версию ОС и версию установщика. Не отключайте системную защиту целиком ради установки.",
+        "1.2": "<b>Ошибка JRE / Java не найдена</b><br>Приложение на Java не запустится без совместимой среды выполнения. Проверьте, включена ли Java в сборку, и совпадает ли разрядность среды с приложением. Если требуется отдельная JRE, скачивайте её с официального сайта поставщика Java и выбирайте версию, указанную в требованиях именно вашей сборки. После установки полностью закройте приложение и запустите снова. В командной строке можно проверить `java -version`. Если команда не найдена, Java могла не попасть в PATH; можно переустановить её с настройкой PATH или указать среду в настройках приложения. Не скачивайте случайные DLL/JRE с файловых сайтов.",
+        "1.3": "<b>На сервере не найден файл</b><br>Проверьте подключение и повторите загрузку через официальный источник. Убедитесь, что адрес страницы открывается в обычном браузере, не блокируется DNS-фильтром, прокси или корпоративным межсетевым экраном. Проверьте системные дату и время, так как неверные часы могут мешать HTTPS-соединению. Если проблема продолжается, пришлите поддержке точное название файла, URL страницы, время ошибки и текст сообщения. Не подменяйте файл сторонней копией только потому, что она доступна быстрее.",
+        "2.1": "<b>Как оплатить лицензию?</b><br>Выберите редакцию и заполните форму покупки на сайте. Проверьте итоговую сумму, email и сгенерированное сообщение/номер заказа. Переведите точную сумму через указанный платёжный сервис и вставьте требуемое сообщение в комментарий, если форма этого просит. После оплаты сохраните чек и отправьте в поддержку email заказа, время, сумму и подтверждение платежа. Не отправляйте пароль от почты, данные банковской карты или коды подтверждения. Доступ активируется после ручной проверки поступления.",
+        "2.2": "<b>Ключ активации уже использован</b><br>Ключ одноразовый и может быть активирован только в предусмотренном правилами количестве. Сначала проверьте, не запускали ли вы активацию на другом устройстве или в другой установке. Если уверены, что ключ не использовался вами, не публикуйте его в открытом доступе: напишите в поддержку с номером заказа и адресом покупки. Поддержка проверит платёж и статус ключа. Не присылайте полный ключ в публичные комментарии.",
+        "2.3": "<b>Ключ не работает / ошибка активации</b><br>Скопируйте ключ целиком, без пробелов в начале и конце; проверьте, что выбрана правильная редакция продукта и установлена совместимая версия. Проверьте интернет и системные дату/время. Если ключ привязан к заказу, убедитесь, что платеж был подтверждён. Не пытайтесь многократно активировать ключ на случайных устройствах: это может усложнить проверку. При повторной ошибке пришлите точный код/текст сообщения, версию приложения и номер заказа в поддержку.",
+        "3.1": "<b>Как запустить антивирус после установки?</b><br>Откройте папку установки и запустите основной исполняемый файл/ярлык, созданный инсталлятором. При запуске впервые проверьте, что ОС не заблокировала файл, а Java соответствует требованиям. Начните с проверки отдельного файла или выбранной папки, чтобы убедиться, что интерфейс и журнал работают. Перед проверкой системных областей закройте приложения, в которых идёт запись важных данных, и сохраните работу. Если запуск завершается сразу, откройте лог и передайте сообщение об ошибке поддержке.",
+        "3.2": "<b>Ошибка JRE — переустановка Java</b><br>Удалите только повреждённую/неподходящую Java-среду, если точно знаете, что она не используется другими приложениями. Установите поддерживаемую JRE с официального сайта, затем проверьте `java -version`. Для приложения, ожидающего конкретную версию, установите именно её, а не самую новую наугад. Перезагрузите приложение, а при необходимости — систему. Если проблема остаётся, пришлите архитектуру ОС (x64/ARM), версию Java и stack trace без секретных данных.",
+        "3.3": "<b>Приложение не запускается: общие советы</b><br>Проверьте требования и целостность скачанного файла; перезапустите приложение и изучите точное сообщение об ошибке. Попробуйте простой путь установки латиницей, проверьте свободное место и права на папку данных. Не запускайте программу постоянно от администратора, если это не требуется. Если приложение блокируется встроенной защитой ОС, сначала проверьте происхождение и контрольную сумму файла через официальный канал, а не отключайте защиту целиком. Для диагностики отправьте версию ОС, версию приложения, время сбоя и логи.",
+        "3.4": "<b>Ложное срабатывание на системный файл</b><br>Не удаляйте системный файл автоматически только на основании одного срабатывания. Проверьте путь, цифровую подпись издателя, источник файла и результат повторной проверки обновлёнными базами. Если продукт предлагает карантин, используйте его вместо окончательного удаления, чтобы файл можно было восстановить. Перед добавлением исключения убедитесь, что оно ограничено конкретным файлом/папкой; широкие исключения могут снизить защиту. Отправьте в поддержку название детекта, версию базы, путь и, если возможно, хеш файла. Не передавайте сам файл, если он содержит конфиденциальные данные.",
+        "4.1": "<b>На какой срок лицензия?</b><br>Лицензия относится к указанной редакции и версии продукта. Срок использования программы и срок включённых обновлений могут различаться: проверьте условия конкретного тарифа при покупке. Если в заказе указана бессрочная лицензия на версию, это не означает автоматическое получение всех будущих крупных версий. При сомнении приложите номер заказа к обращению в поддержку до оплаты.",
+        "4.2": "<b>Бесплатны ли обновления?</b><br>Обновления в пределах периода и версии, указанных в условиях выбранной лицензии, предоставляются согласно тарифу. Крупные переходы между основными версиями могут иметь отдельные условия. Перед обновлением сохраните настройки и карантин, если приложение это поддерживает, и скачивайте установщик с официального сайта. Если обновление выдаёт ошибку, запишите старую и новую версии и точный текст сбоя.",
+        "4.3": "<b>Как получить обновление, если ключ использован?</b><br>Если ключ уже активирован, не пытайтесь многократно использовать его снова. Свяжитесь с поддержкой с тем же email, который использовался в заказе, и предоставьте номер заказа, текущую версию и желаемую версию. Поддержка сверит лицензию и сообщит доступный способ обновления. Никогда не отправляйте реквизиты карты, пароли или одноразовые коды подтверждения.",
+        "3.5": "<b>Что делать, если проверка зависла или работает слишком долго?</b><br>Начните с одной папки или небольшого набора файлов, затем повторите проверку более крупного объёма. Убедитесь, что устройство не перегрето, на диске достаточно свободного места, а другие тяжёлые приложения не используют все ресурсы. Зафиксируйте, на каком проценте или файле возникает задержка, и сохраните журнал, если приложение его предоставляет. Не удаляйте вручную файлы базы или карантина для ускорения. Если повторяемость подтверждается, отправьте поддержке размер набора, версию программы, ОС и лог без персональных данных.",
+        "3.6": "<b>Нужно ли отключать встроенную защиту Windows?</b><br>Не отключайте защиту Windows целиком. Если компонент блокирует запуск, проверьте источник и цифровую подпись установщика, получите файл только со страницы проекта и сверьте версию. Для диагностики используйте временное, узкое исключение только если вы уверены в происхождении файла и это прямо необходимо; затем удалите исключение. Если сомневаетесь в безопасности установщика, не запускайте его и обратитесь в поддержку.",
+        "4.4": "<b>Какие версии Windows поддерживаются?</b><br>Поддержка зависит от конкретной сборки продукта и её системных требований. Проверьте требования на странице загрузки и сравните их с редакцией Windows, архитектурой процессора и установленной средой Java, если она необходима. Не считайте отсутствие явной ошибки подтверждением официальной поддержки старой ОС. При обращении укажите точную сборку Windows, архитектуру и версию антивируса.",
+        "4.5": "<b>Как безопасно сообщить о ложном срабатывании?</b><br>Не загружайте потенциально конфиденциальный файл в публичный чат. Передайте поддержке название детекта, версию антивируса и базы, путь к файлу и его хеш, если можете вычислить его безопасно. Проверьте цифровую подпись и официальный источник, а до ответа оставьте подозрительный объект в карантине, если такая функция предусмотрена. Не добавляйте широкое исключение для всего диска или системной папки.",
+        "3.7": "<b>Почему сканирование обнаружило угрозу?</b><br>Результат может опираться на известную сигнатуру, эвристический признак или поведение файла в момент проверки. Откройте подробности детекта и запишите его имя, путь, версию продукта и дату базы. Не запускайте подозрительный файл повторно и не удаляйте карантин вручную. Если файл получен из официального источника и вы подозреваете ложное срабатывание, проверьте цифровую подпись и отправьте поддержке хеш и сведения о детекте для анализа.",
+        "3.8": "<b>Как часто обновляются сигнатуры?</b><br>Частота обновления зависит от сборки, доступности сети и способа доставки баз. В интерфейсе проверьте дату последнего обновления и версию базы; затем попробуйте штатную проверку обновлений и убедитесь, что HTTPS не блокируется прокси или межсетевым экраном. Если дата не меняется, приложите журнал обновления, версию антивируса, ОС и точное время попытки. Не устанавливайте базы с неофициальных сайтов.",
+        "3.9": "<b>Что делать, если антивирус замедляет компьютер?</b><br>Сначала сравните нагрузку в простое и во время сканирования, затем проверьте, не запущены ли параллельно несколько глубоких проверок. Запускайте полное сканирование вне критичных задач и проверяйте свободное место на диске. Если программа поддерживает выборочный режим, начните с важных каталогов. Не отключайте защиту целиком и не добавляйте весь системный диск в исключения. При постоянной высокой нагрузке отправьте поддержке логи, версию продукта и характеристики устройства.",
+        "3.10": "<b>Как проверить файл безопасно?</b><br>Используйте выборочное сканирование или проверку папки и дождитесь окончания анализа. До выяснения результата не открывайте подозрительный файл и не обходите предупреждение. Облачные или внешние сервисы могут получать файл либо его метаданные, поэтому для конфиденциальных документов проверьте правила обработки данных и по возможности отправляйте только хеш. Один отрицательный результат не доказывает абсолютную безопасность: поддерживайте систему обновлённой и проверяйте происхождение загрузки.",
+        "3.11": "<b>Как работает карантин и восстановление?</b><br>Карантин предназначен для изоляции подозрительного объекта без немедленного окончательного удаления. До восстановления проверьте источник файла, подпись издателя, название детекта и свежесть базы. Если срабатывание похоже на ложное, отправьте поддержке хеш и сведения о детекте и дождитесь проверки. Не восстанавливайте объект только потому, что он нужен для запуска программы: сначала подтвердите его происхождение. Если продукт не поддерживает карантин в вашей сборке, не удаляйте и не перемещайте системные файлы вручную — уточните безопасный порядок действий в документации.",
+        "3.12": "<b>Какие данные отправлять в поддержку?</b><br>Укажите версию Gradus, ОС и её архитектуру, время события, шаги воспроизведения, название угрозы, путь к файлу и текст ошибки. Хеш SHA-256 полезен, потому что позволяет идентифицировать файл без пересылки самого содержимого. При необходимости приложите скриншот и минимальный лог, предварительно удалив адреса личных каталогов, токены, пароли, ключи и данные третьих лиц. Подозрительные файлы и конфиденциальные документы не публикуйте в открытом чате; передавайте их только согласованным способом поддержки.",
+        "3.13": "<b>Почему отрицательный результат не гарантирует, что файл безопасен?</b><br>Сканер оценивает файл на основании доступных сигнатур, эвристик и других механизмов конкретной версии. Новый или изменённый вредоносный файл может ещё не иметь известного признака, а подозрительный файл может требовать контекстной проверки. Сверяйте источник загрузки и цифровую подпись, держите программу и базы в актуальном состоянии и не запускайте неизвестные вложения только потому, что одна проверка ничего не обнаружила. Для критичных файлов используйте несколько независимых признаков доверия и принцип наименьших привилегий.",
+        "3.14": "<b>Как проверить архив или папку с большим количеством файлов?</b><br>Начните с выборочной проверки архива или распакованной тестовой копии, если сканер поддерживает такой режим. Не открывайте найденные подозрительные объекты и не разрешайте макросы/скрипты из неизвестного источника. Если архив защищён паролем или содержит вложенные архивы, проверьте, умеет ли текущая сборка анализировать такой формат: отсутствие сообщения о детекте не означает, что вложенное содержимое было полностью проверено. При зависании зафиксируйте размер архива, число файлов, тип упаковки и журнал, а затем передайте сведения поддержке."
     };
     // Скриншоты
     const screenshots = {
@@ -672,7 +1154,7 @@
 
     generateBtn.addEventListener('click', () => {
         if (!emailInput.value || !alternativeInput.value || !agreeCheckbox.checked) {
-            alert('Пожалуйста, заполните все поля и примите лицензионное соглашение.');
+            showSiteNotice('Заполни email и контакт, затем прими лицензионное соглашение.', 'error');
             return;
         }
         const email = emailInput.value.trim();
@@ -688,9 +1170,43 @@
     });
 
     generateBtn2.addEventListener('click', () => {
-        alert('Переход на страницу оплаты. Скопируйте сообщение из поля выше и вставьте его в комментарий к донату.\nСумма уже предустановлена.');
+        showSiteNotice('Скопируй платёжное сообщение и вставь его в комментарий к донату. Сумма указана в заказе.');
         window.open('https://www.donationalerts.com/r/gradus_team', '_blank');
     });
+
+
+    // Engine/GradAI subscriptions and the three dated bundle offers.
+    const engineProduct = document.getElementById('engineBuyProduct');
+    const engineDuration = document.getElementById('engineBuyDuration');
+    const engineDurationWrap = document.getElementById('engineDurationWrap');
+    const engineTotal = document.getElementById('engineOrderTotal');
+    const engineSelectedSummary = document.getElementById('engineSelectedSummary');
+    const engineMessage = document.getElementById('engineOrderMessage');
+    const enginePrices = {engine:{1:129,3:359,6:599,12:1099},go:{1:99,3:249,6:399,12:599},plus:{1:199,3:499,6:799,12:1299}};
+    const engineProductNames = {engine:'Gradus RC Engine VIP',go:'GradAI Go',plus:'GradAI Plus',promo99:'Пакет Engine VIP + GradAI Go',promo199:'Пакет Engine VIP + GradAI Plus',promo499:'Годовой пакет Engine VIP + GradAI Plus'};
+    const engineProductDetails = {engine:{icon:'🧱',title:'Gradus RC Engine VIP',description:'Подписка VIP для направления Gradus RC Engine. Срок и сумма зависят от выбранного тарифа.',meta:'Подписка Gradus RC Engine VIP.'},go:{icon:'🤖',title:'GradAI Go',description:'Подписка на план GradAI Go. Условия и активация заказа подтверждаются командой после оформления.',meta:'План GradAI Go.'},plus:{icon:'🚀',title:'GradAI Plus',description:'Подписка на план GradAI Plus. Условия и активация заказа подтверждаются командой после оформления.',meta:'План GradAI Plus.'},promo99:{icon:'🎁',title:'Пакет за 99 ₽',description:'Engine VIP на 1 месяц и GradAI Go на 1 месяц.',meta:'Действует до 11 ноября 2026 года включительно.'},promo199:{icon:'🎁',title:'Пакет за 199 ₽',description:'Engine VIP на 2 месяца и GradAI Plus на 2 месяца.',meta:'Действует до 11 ноября 2026 года включительно.'},promo499:{icon:'🏆',title:'Пакет за 499 ₽',description:'Engine VIP на 12 месяцев и GradAI Plus на 12 месяцев.',meta:'Действует до 11 ноября 2026 года включительно.'}};
+    const enginePromoPrices = {promo99:99,promo199:199,promo499:499};
+    let currentEngineOrder = null;
+    function enginePromoActive(){return new Date() <= new Date('2026-11-11T23:59:59');}
+    function engineOrderPrice(){const key=engineProduct?.value||'engine';const duration=Number(engineDuration?.value||1);return enginePromoPrices[key] ?? (enginePrices[key]?.[duration]||129);}
+    function refreshEnginePrice(){if(!engineProduct||!engineTotal)return;const key=engineProduct.value;const promo=key.startsWith('promo');const detail=engineProductDetails[key]||engineProductDetails.engine;const price=engineOrderPrice();if(engineProduct.options)Array.from(engineProduct.options).filter(o=>String(o.value||'').startsWith('promo')).forEach(o=>{o.disabled=!enginePromoActive();});if(engineSelectedSummary){const icon=document.getElementById('engineSelectedIcon'),title=document.getElementById('engineSelectedTitle'),description=document.getElementById('engineSelectedDescription'),meta=document.getElementById('engineSelectedMeta');if(icon)icon.textContent=detail.icon;if(title)title.textContent=detail.title;if(description)description.textContent=detail.description;if(meta)meta.textContent=promo?detail.meta:`Срок: ${Number(engineDuration?.value||1)} мес. · цена этого тарифа: ${price.toLocaleString('ru-RU')} ₽`;}if(promo&&!enginePromoActive()){engineTotal.textContent='Акция завершена';}else{engineTotal.textContent=`Итого к оплате: ${price.toLocaleString('ru-RU')} ₽`;}if(engineDurationWrap)engineDurationWrap.hidden=promo;if(engineDuration)engineDuration.disabled=promo;}
+    if(engineProduct){engineProduct.addEventListener('change',refreshEnginePrice);engineDuration.addEventListener('change',refreshEnginePrice);refreshEnginePrice();}
+    const engineMakeOrder=document.getElementById('engineMakeOrder');
+    const enginePayNow=document.getElementById('enginePayNow');
+    if(engineMakeOrder)engineMakeOrder.addEventListener('click',()=>{
+      const email=document.getElementById('engineBuyerEmail')?.value.trim();const contact=document.getElementById('engineBuyerContact')?.value.trim();const agreed=document.getElementById('engineBuyerAgree')?.checked;
+      if(!email||!contact||!agreed){showSiteNotice('Заполни email и контакт, затем подтверди условия оплаты.', 'error');return;}
+      const product=engineProduct.value;if(product.startsWith('promo')&&!enginePromoActive()){showSiteNotice('Срок акции завершён: предложения действовали до 11.11.2026 включительно.', 'error');return;}
+      const amount=engineOrderPrice();const duration=Number(engineDuration.value||1);const orderId='GRC-'+Math.random().toString(36).slice(2,8).toUpperCase()+'-'+Date.now().toString().slice(-6);
+      currentEngineOrder={orderId,amount,product,duration,email,contact};
+      const payload=`Заказ ${orderId}
+Продукт: ${engineProductNames[product]}${product.startsWith('promo')?'':` (${duration} мес.)`}
+Сумма: ${amount} ₽
+Email: ${email}
+Контакт: ${contact}`;
+      engineMessage.textContent=payload;engineMessage.hidden=false;engineTotal.textContent=`К оплате: ${amount.toLocaleString('ru-RU')} ₽ · Заказ ${orderId}`;
+    });
+    if(enginePayNow)enginePayNow.addEventListener('click',()=>{if(!currentEngineOrder){showSiteNotice('Сначала сформируй заказ.', 'error');return;}const w=window.open('https://www.donationalerts.com/r/gradus_team','_blank','noopener');showSiteNotice(w?`Заказ ${currentEngineOrder.orderId} на ${currentEngineOrder.amount} ₽. Укажи номер и сумму в комментарии к платежу; затем отправь подтверждение в поддержку.`:'Браузер заблокировал окно оплаты. Разреши всплывающие окна и нажми «Перейти к оплате» ещё раз.', w?'info':'error');});
 
     // Мобильное меню
     const menuToggle = document.getElementById('menuToggle');
