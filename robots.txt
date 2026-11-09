@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://gradus-team.github.io/sitemap.xml
