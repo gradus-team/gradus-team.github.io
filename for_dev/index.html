@@ -276,7 +276,6 @@
             </div>
             <div class="lang-switch" id="gradusrc-platform-switch">
                 <button class="lang-btn active windows" data-platform="windows"><i class="fab fa-windows"></i> Windows</button>
-                <button class="lang-btn android" data-platform="android"><i class="fab fa-android"></i> Android (ALPHA-TEST)</button>
             </div>
             <div class="actions" style="margin-top: auto;">
                 <a id="gradusrc-download" href="gradus-rc.rar" class="btn btn-primary" data-download="gradus-rc.rar">
@@ -398,12 +397,8 @@
         // === Переключатель платформы для Gradus RC ===
         const rcPlatformData = {
             windows: {
-                desc: `Полноценный движок на Python основанный на Ray Casting с авторскими технологиями Light Tracing, PhysicsAPI, OBJ-Converter (конвертирует .obj в 128 спрайтов 512x512), RT Emulator. WebTools и Static.JS являются отдельными веб-инструментами и описаны в своих разделах.`,
-                file: 'gradus-rc.zip'
-            },
-            android: {
-                desc: `Мобильная версия движка Gradus RC для Android. RayCasting, MapEditor, Макросы, Враги, Оружие, билд в .grcm, запуск и разработка игры - все в одном APK.`,
-                file: 'grc_engine_mobile.apk'
+                desc: `Полноценный движок на Python+Cython+OpenGL основанный на Ray Casting + 3D с авторскими технологиями Unity Import, PhysicsAPI, OBJ-Converter (конвертирует .obj в 128 спрайтов 512x512), RT Emulator.`,
+                file: 'gradus-rc.rar'
             }
         };
 
