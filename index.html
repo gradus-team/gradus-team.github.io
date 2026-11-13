@@ -501,7 +501,94 @@
         .site-footer .footer-social-link { display:inline-flex; margin-top:.3rem; color:#b9e3ce; font-size:.8rem; }
         .site-footer .footer-bottom { max-width:none; margin:0; padding:1.1rem max(1.4rem,calc((100vw - 1240px)/2 + 1.4rem)); border-top:1px solid #ffffff18; background:#070f1590; color:#8eaca0; }
         @media(max-width:760px){.engine-selected-product{grid-template-columns:54px minmax(0,1fr);padding:1rem}.engine-selected-icon{grid-column:1;grid-row:2/5;width:50px;height:50px;font-size:1.5rem}.site-footer{border-radius:22px 22px 0 0}.site-footer .footer-inner{grid-template-columns:1fr;gap:1rem}.site-footer .footer-brand-block{padding:.4rem}.site-footer .footer-bottom{padding:1rem 1.25rem}}
-</style>
+
+        /* ====================================================
+           Обновления от последней итерации:
+           красные предупреждения, скрытая таблица, блок оплаты
+           ==================================================== */
+        .lease-warning {
+            position: relative; overflow: hidden;
+            max-width: 1000px; margin: 0 auto 2.2rem;
+            padding: clamp(1.2rem, 3vw, 2rem);
+            border-radius: 24px;
+            border: 1px solid #ef4444;
+            background: linear-gradient(135deg, #7f1d1d 0%, #b91c1c 55%, #991b1b 100%);
+            color: #fff;
+            box-shadow: 0 18px 40px -14px rgba(185, 28, 28, .6);
+        }
+        .lease-warning::before {
+            content: ""; position: absolute; width: 280px; height: 280px;
+            right: -110px; top: -150px; border-radius: 50%;
+            border: 1px solid #ffffff26;
+            box-shadow: 0 0 0 26px #ffffff0f, 0 0 0 54px #ffffff08;
+            pointer-events: none;
+        }
+        .lease-warning-head {
+            display: flex; align-items: center; gap: .7rem;
+            font-size: clamp(1.05rem, 2.4vw, 1.3rem);
+            font-weight: 800; letter-spacing: -.01em; margin-bottom: .7rem;
+        }
+        .lease-warning-head i { color: #fecaca; font-size: 1.5rem; }
+        .lease-warning p {
+            position: relative; z-index: 1; color: #fee2e2;
+            line-height: 1.65; margin: 0 0 .6rem; max-width: 780px; font-size: .98rem;
+        }
+        .lease-warning p strong { color: #fff; }
+        .lease-warning-btn {
+            display: inline-flex; align-items: center; gap: .55rem;
+            margin-top: .7rem; padding: .8rem 1.5rem;
+            border-radius: 50px; background: #fecaca; color: #7f1d1d;
+            font-weight: 800; font-size: .98rem; text-decoration: none;
+            transition: transform .15s, background .15s, box-shadow .15s;
+            position: relative; z-index: 1;
+        }
+        .lease-warning-btn:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 10px 22px rgba(0,0,0,.25); }
+        .lease-warning--compact { padding: 1.3rem 1.5rem; margin-bottom: 1.6rem; max-width: 100%; }
+        .lease-warning--compact .lease-warning-head { font-size: 1.1rem; }
+        .lease-warning-wrap { padding: 2rem 1.5rem 0; max-width: 1280px; margin: 0 auto; }
+        @media (max-width: 600px) {
+            .lease-warning { border-radius: 18px; padding: 1.1rem; }
+            .lease-warning-btn { width: 100%; justify-content: center; }
+        }
+
+        .comparison-controls { margin: 1.5rem 0 1rem; display: flex; flex-direction: column; gap: .8rem; align-items: flex-start; }
+        .comparison-unavailable {
+            background: #fef2f2; border: 1px solid #fecaca; color: #7f1d1d;
+            padding: 1rem 1.2rem; border-radius: 16px; margin: 0;
+            font-weight: 500; line-height: 1.6; font-size: .98rem;
+        }
+        .comparison-unavailable a { color: #b91c1c; font-weight: 700; text-decoration: underline; }
+        .comparison-toggle-btn {
+            display: inline-flex; align-items: center; gap: .5rem;
+            padding: .7rem 1.3rem; border-radius: 50px;
+            border: 1px solid #cfdfd4; background: #f4f8f4; color: #2C7A4D;
+            font-weight: 600; cursor: pointer; font-family: inherit; font-size: .95rem;
+            transition: background .15s, transform .15s;
+        }
+        .comparison-toggle-btn:hover { background: #e6f2ea; transform: translateY(-1px); }
+
+        .purchase-disabled-notice {
+            display: flex; align-items: center; gap: .6rem;
+            background: #fef2f2; border: 1px solid #fecaca; color: #7f1d1d;
+            padding: .9rem 1.1rem; border-radius: 14px;
+            font-weight: 700; font-size: 1.05rem; margin-bottom: .8rem;
+        }
+        .purchase-disabled-notice i { font-size: 1.2rem; color: #dc2626; }
+        .purchase-disabled-text { color: #4B5E5A; line-height: 1.6; margin-bottom: 1rem; }
+        .purchase-playerok-btn {
+            display: flex; align-items: center; justify-content: center; gap: .55rem;
+            background: linear-gradient(135deg, #b91c1c, #991b1b); color: #fff;
+            padding: 1rem; border-radius: 50px; font-weight: 800; font-size: 1.05rem;
+            text-decoration: none; margin-bottom: 1.5rem;
+            transition: transform .15s, box-shadow .15s;
+            box-shadow: 0 10px 24px -8px rgba(185,28,28,.5);
+        }
+        .purchase-playerok-btn:hover { transform: translateY(-2px); box-shadow: 0 14px 28px -8px rgba(185,28,28,.6); }
+        .purchase-card input:disabled, .purchase-card select:disabled {
+            background: #f1f4f2; color: #8a9a92; cursor: not-allowed; opacity: .75;
+        }
+        .purchase-card .btn-pay:disabled { background: #cbd5cf; cursor: not-allowed; opacity: .8; }
+    </style>
 </head>
 <body>
 <nav class="navbar">
@@ -552,6 +639,21 @@
     </section>
 
     <div id="antivirusContent" data-mode-content="antivirus">
+    <!-- Красное предупреждение об аренде серверов и Pro-версии -->
+    <div class="lease-warning-wrap">
+        <div class="lease-warning" role="alert">
+            <div class="lease-warning-head">
+                <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
+                Внимание: доступна только Pro-версия
+            </div>
+            <p>Из-за <strong>истечения срока аренды серверов</strong> и низких доходов мы больше не можем распространять бесплатную и Standard-версии Gradus Antivirus. Теперь скачать можно только <strong>Gradus Antivirus Pro</strong>.</p>
+            <p>Ключ активации покупается на Playerok — так мы покрываем серверы и продолжаем разработку.</p>
+            <a class="lease-warning-btn" href="https://playerok.com/products/4bcb619353a6-gradus-antivirus-pro-navsegda" target="_blank" rel="noopener noreferrer">
+                <i class="fas fa-key" aria-hidden="true"></i> Купить ключ на Playerok →
+            </a>
+        </div>
+    </div>
+
     <!-- Games are grouped together below the Antivirus/Engine switch. No new sprite/image assets are required. -->
     <section id="games" aria-labelledby="gamesTitle">
         <h2 class="section-title" id="gamesTitle">Игры</h2>
@@ -710,7 +812,16 @@
             </tbody>
         </table>
 
-        <div class="comparison-wrapper">
+        <div class="comparison-controls">
+            <p class="comparison-unavailable" id="comparisonNotice">
+                Временно доступна только Pro; Pro покупается по скидке за 90 рублей на
+                <a href="https://playerok.com/products/4bcb619353a6-gradus-antivirus-pro-navsegda" target="_blank" rel="noopener noreferrer">Playerok</a>.
+            </p>
+            <button type="button" class="comparison-toggle-btn" id="comparisonToggle" aria-expanded="false" aria-controls="comparisonWrapper">
+                <i class="fas fa-chevron-down" aria-hidden="true"></i> Показать таблицу сравнения версий
+            </button>
+        </div>
+        <div class="comparison-wrapper" id="comparisonWrapper" hidden>
             <table class="comparison-table">
                 <thead><tr><th>Функция / Версия</th><th>Free</th><th>Standard</th><th>Pro</th></tr></thead>
                 <tbody>
@@ -751,59 +862,64 @@
     <section id="purchase">
         <h2 class="section-title">Купить лицензию</h2>
         <div class="purchase-card">
-            <form id="purchaseForm">
+            <div class="purchase-disabled-notice" role="alert">
+                <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
+                <span>Временно недоступно</span>
+            </div>
+            <p class="purchase-disabled-text">Прямая покупка ключа на сайте временно приостановлена. Ключ <strong>Gradus Antivirus Pro</strong> можно купить на Playerok.</p>
+            <a class="purchase-playerok-btn" href="https://playerok.com/products/4bcb619353a6-gradus-antivirus-pro-navsegda" target="_blank" rel="noopener noreferrer">
+                <i class="fas fa-key" aria-hidden="true"></i> Купить ключ на Playerok →
+            </a>
+            <form id="purchaseForm" aria-disabled="true">
                 <label>Ваш Email (куда отправить ключ):</label>
-                <input type="email" id="email" required placeholder="example@domain.com">
+                <input type="email" id="email" placeholder="example@domain.com" disabled>
                 <label>Альтернативный способ связи (Telegram / ВК / телефон):</label>
-                <input type="text" id="alternative" required placeholder="@username или номер">
+                <input type="text" id="alternative" placeholder="@username или номер" disabled>
                 <label>Версия антивируса:</label>
-                <select id="version">
+                <select id="version" disabled>
                     <option value="standard">Gradus Standard — 79 ₽</option>
                     <option value="pro">Gradus Pro — 149 ₽</option>
                 </select>
                 <label>Количество ключей:</label>
-                <input type="number" id="quantity" value="1" min="1" max="10" step="1">
-                <div id="priceInfo" class="total-price">Сумма: 0 ₽</div>
-                <div class="help-text">* При покупке более 2 ключей скидка 25% на всю сумму.</div>
-                <div class="help-text">* При покупке от 10 ключей скидка 55% на всю сумму.</div>
+                <input type="number" id="quantity" value="1" min="1" max="10" step="1" disabled>
+                <div id="priceInfo" class="total-price">Временно недоступно</div>
                 <div class="checkbox">
-                    <input type="checkbox" id="agreeTerms" required>
+                    <input type="checkbox" id="agreeTerms" disabled>
                     <label>Я принимаю <a href="#" id="showLicenseLink">лицензионное соглашение</a> и условия оплаты</label>
                 </div>
                 <div id="donationMessageContainer" style="display:none;">
                     <div class="help-text">Ваше уникальное сообщение для доната (скопируйте его полностью):</div>
                     <div class="donation-message" id="donationMessage"></div>
                     <div class="help-text">Сумма к оплате: <strong id="finalAmount"></strong> ₽</div>
-                    <div class="help-text">⚠️ <strong>Важно:</strong> При переводе на Donation Alerts укажите именно эту сумму и этот текст сообщения. Никнейм донатера может быть любым. Если сумма или текст не совпадут, мы не сможем идентифицировать платёж.</div>
-                    <div class="help-text">После оплаты свяжитесь с нами через техподдержку (контакты внизу страницы) и сообщите время платежа. Ключи будут отправлены на указанный email.</div>
                 </div>
-                <button type="button" id="generateBtn" class="btn-pay">Сгенерировать сообщение</button>
-                <button type="button" id="generateBtn2" class="btn-pay">Перейти к оплате</button>
+                <button type="button" id="generateBtn" class="btn-pay" disabled>Временно недоступно</button>
+                <button type="button" id="generateBtn2" class="btn-pay" disabled>Временно недоступно</button>
             </form>
         </div>
     </section>
 
     <section id="download">
         <h2 class="section-title">Скачать</h2>
+        <div class="lease-warning lease-warning--compact" role="alert">
+            <div class="lease-warning-head">
+                <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
+                Скачивание ограничено: только Pro
+            </div>
+            <p>Серверы арендованы до истечения срока, доходов на продление не хватает. Free и Standard больше не раздаются — доступна только <strong>Gradus Antivirus Pro</strong>.</p>
+            <p>Ключ активации — на Playerok, по кнопке ниже.</p>
+            <a class="lease-warning-btn" href="https://playerok.com/products/4bcb619353a6-gradus-antivirus-pro-navsegda" target="_blank" rel="noopener noreferrer">
+                <i class="fas fa-key" aria-hidden="true"></i> Купить ключ на Playerok →
+            </a>
+        </div>
         <div class="launcher-wrapper">
-            <!-- Windows -->
             <div class="launcher-desc">
                 <div class="product-icon"><i class="fab fa-windows"></i></div>
-                <h3>Gradus AV Launcher</h3>
-                <p>Удобный инсталлятор для Windows 10/11. Автоматически загружает актуальную версию, проверяет лицензию и устанавливает антивирус.</p>
-                <a href="files/GradusAVInstaller.jar" class="download-btn" download>
-                    <i class="fas fa-download"></i> Скачать лаунчер (.jar)
+                <h3>Gradus Antivirus Pro — установщик</h3>
+                <p>Установщик для Windows 10/11. Скачивает актуальную Pro-версию, проверяет лицензию и устанавливает антивирус.</p>
+                <p class="click-hint" style="margin-top:10px;">Размер файла: 249 МБ · После установки занимает ~500 МБ на диске.</p>
+                <a href="files/https://drive.google.com/file/d/1o_sTTsGH6DcbzSp4eAdE0GkWIy2-W-SX/view?usp=sharing" class="download-btn" download>
+                    <i class="fas fa-download"></i> Скачать GradusAVSetup.exe (249 МБ)
                 </a>
-            </div>
-            <!-- Android -->
-            <div class="launcher-desc">
-                <div class="product-icon"><i class="fab fa-android"></i></div>
-                <h3>Gradus Mobile</h3>
-                <p>Антивирус для Android. Проверка установленных приложений и файлов, защита от вредоносных APK, белый список и журнал сканирования.</p>
-                <a href="files/GradusMobile.apk" class="download-btn" download>
-                    <i class="fas fa-download"></i> Скачать APK
-                </a>
-                <p class="click-hint" style="margin-top: 10px;">(Beta-версия, используйте на свой страх и риск)</p>
             </div>
         </div>
     </section>
@@ -1150,7 +1266,9 @@
     }
     versionSelect.addEventListener('change', updatePrice);
     quantityInput.addEventListener('input', updatePrice);
-    updatePrice();
+    if (document.getElementById('purchaseForm')?.getAttribute('aria-disabled') !== 'true') {
+        updatePrice();
+    }
 
     generateBtn.addEventListener('click', () => {
         if (!emailInput.value || !alternativeInput.value || !agreeCheckbox.checked) {
@@ -1243,6 +1361,22 @@ Email: ${email}
             }
         });
     });
+
+    // Переключатель таблицы сравнения версий
+    const comparisonToggle = document.getElementById('comparisonToggle');
+    const comparisonWrapper = document.getElementById('comparisonWrapper');
+    const comparisonNotice = document.getElementById('comparisonNotice');
+    if (comparisonToggle && comparisonWrapper) {
+        comparisonToggle.addEventListener('click', () => {
+            const willShow = comparisonWrapper.hidden;
+            comparisonWrapper.hidden = !willShow;
+            if (comparisonNotice) comparisonNotice.hidden = willShow;
+            comparisonToggle.setAttribute('aria-expanded', String(willShow));
+            comparisonToggle.innerHTML = willShow
+                ? '<i class="fas fa-chevron-up" aria-hidden="true"></i> Скрыть таблицу сравнения'
+                : '<i class="fas fa-chevron-down" aria-hidden="true"></i> Показать таблицу сравнения версий';
+        });
+    }
 </script>
 </body>
 </html>
